@@ -1,0 +1,13 @@
+name = "File Entity"
+description = "Extends Drupal file entities to be fieldable and viewable."
+package = Media
+core = 7.x
+dependencies[] = field
+dependencies[] = ctools
+
+; Information added by drupal.org packaging script on 2011-07-04
+version = "7.x-1.0-beta5"
+core = "7.x"
+project = "media"
+datestamp = "1309822319"
+

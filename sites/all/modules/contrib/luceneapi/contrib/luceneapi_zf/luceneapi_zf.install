@@ -1,0 +1,118 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for the Search Lucene ZF Adapter class.
+ */
+
+/**
+ * Implements hook_ininstall().
+ */
+function luceneapi_zf_uninstall() {
+  // Nothing to do ...
+}
+
+/**
+ * Implementation of hook_requirements().
+ */
+function luceneapi_zf_requirements($phase) {
+  $requirements = array();
+  // Ensure translations don't break at install time
+  $t = get_t();
+
+  // notifies user if ZF components are out of date
+  if ('runtime' == $phase) {
+
+    // Initialized library, sets supported versions.
+    try {
+      luceneapi_zf_library_initialize();
+      $initialized = TRUE;
+    }
+    catch (Exception $e) {
+      $initialized = FALSE;
+    }
+
+    // Expected Search Lucene API Library version.
+    $expected_versions = array('7.x-3.0-dev');
+
+    // Performs requirements check.
+    $requirements['luceneapi_zf_lib']['title'] = $t('Search Lucene API Library');
+    if (!$initialized) {
+      $requirements['luceneapi_zf_lib']['severity'] = REQUIREMENT_ERROR;
+      $requirements['luceneapi_zf_lib']['value'] = $t('Not installed');
+      $requirements['luceneapi_zf_lib']['description'] = $t(
+        'The Search Lucene API Library is not installed.'
+      );
+    }
+    elseif (!in_array(LuceneAPI_Version::VERSION, $expected_versions)) {
+      $requirements['luceneapi_zf_lib']['severity'] = REQUIREMENT_ERROR;
+      $requirements['luceneapi_zf_lib']['value'] = $t(
+        '@version (%library_path)',
+        array(
+          '@version' => LuceneAPI_Version::VERSION,
+          '%library_path' => luceneapi_zf_library_path(),
+        )
+      );
+      $requirements['luceneapi_zf_lib']['description'] = $t(
+        'The installed version of the Search Lucene API Library are not officially supported by <em>Search Lucene API</em>: Expecting version %version. Please check the <em>Search Lucene API Library</em> project at <em>SourceForge.net</em> to see if a new release is available for the version of <em>Search Lucene API</em> you are using.',
+        array('%version' => $expected_versions[0])
+      );
+    }
+    else {
+      $requirements['luceneapi_zf_lib']['severity'] = REQUIREMENT_OK;
+      $requirements['luceneapi_zf_lib']['value'] = $t(
+        '@version (%library_path)',
+        array(
+          '@version' => LuceneAPI_Version::VERSION,
+          '%library_path' => luceneapi_zf_library_path(),
+        )
+      );
+    }
+  }
+
+  // Makes sure PHP is suitable for the Zend Framework.
+  if ('install' == $phase) {
+
+    // Ensures iconv extension is installed.
+    $requirements['luceneapi_zf_iconv'] = array(
+      'title' => $t('Search Lucene ZF Adapter: iconv extension'),
+    );
+    if (extension_loaded('iconv')) {
+      $requirements['luceneapi_zf_iconv']['severity'] = REQUIREMENT_OK;
+    }
+    else {
+      $requirements['luceneapi_zf_iconv']['severity'] = REQUIREMENT_ERROR;
+      $requirements['luceneapi_zf_iconv']['description'] = $t('Search Lucene ZF Adapter requires the <em>iconv</em> extension.');
+    }
+
+    // Ensures mbstring extension is installed.
+    $requirements['luceneapi_zf_mbstring'] = array(
+      'title' => $t('Search Lucene API: Mbstring extension')
+    );
+    if (extension_loaded('mbstring')) {
+      $requirements['luceneapi_zf_mbstring']['severity'] = REQUIREMENT_OK;
+      $requirements['luceneapi_zf_mbstring']['value'] = $t('Installed');
+    }
+    else {
+      $requirements['luceneapi_zf_mbstring']['severity'] = REQUIREMENT_ERROR;
+      $requirements['luceneapi_zf_mbstring']['value'] = $t('Not installed');
+      $requirements['luceneapi_zf_mbstring']['description'] = $t('Search Lucene ZF Adapter requires the <em>Mbstring</em> extension.');
+    }
+
+    // Ensures PCRE unicode support is enabled.
+    $requirements['luceneapi_zf_pcre'] = array(
+      'title' => $t('Search Lucene API: PCRE unicode support'),
+    );
+    if (1 == @preg_match('/\pL/u', 'a')) {
+      $requirements['luceneapi_zf_pcre']['severity'] = REQUIREMENT_OK;
+      $requirements['luceneapi_zf_pcre']['value'] = $t('Enabled');
+    }
+    else {
+      $requirements['luceneapi_zf_pcre']['severity'] = REQUIREMENT_ERROR;
+      $requirements['luceneapi_zf_pcre']['value'] = $t('Disabled');
+      $requirements['luceneapi_zf_pcre']['description'] = $t('Search Lucene ZF Adapter requires PCRE unicode support to be enabled.');
+    }
+
+  }
+  return $requirements;
+}

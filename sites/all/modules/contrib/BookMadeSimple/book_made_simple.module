@@ -1,0 +1,779 @@
+<?php
+// Author: M. Morin
+/**
+ * Implementation of hook_help().
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_help($path, $arg) {
+  switch ($path) {
+    case 'admin/config/book_made_simple':
+      $output = t('On this page you can define context-types allowed as children of book and those that will be automatically created as main book pages.<br/>You can also define child pages by content-type in !content-type-settings in the BookMadeSimple section', array('!content-type-settings' => l(t('content type settings'), 'admin/structure/types/list')));
+      return $output;
+      break;
+  }
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_init() {
+  if (! variable_get('book_made_simple_admin_use_css', false)) {
+    drupal_add_css(drupal_get_path('module', 'book_made_simple') . '/book_made_simple.css');
+  }
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_permission() {
+  return array(
+    'show book reorder tab' => array("title" => t("Show (checked) or hide (unchecked) core book reorder tab")),
+    'show core Outline tab' => array("title" => t("Show (checked) or hide (unchecked) core Outline tab")),
+    'show core Outline form element' => array("title" => t("Show (checked) or hide (unchecked) outline section in form elements.")),
+  );
+}
+/**
+ * Implementation of hook_menu().
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_menu() {
+  $items = array();
+  $items['admin/config/book_made_simple'] = array(
+    'title' => 'BookMadeSimple',
+    'description' => 'book_made_simple settings.',
+    'position' => 'right',
+    'weight' => -10,
+    'access arguments' => array('access administration pages'),
+  );
+  $items['admin/config/book_made_simple/config'] = array(
+    'title' => 'BookMadeSimple Configuration.',
+    'description' => 'Configuration of BookMadeSimple module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('book_made_simple_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'weight' => -10,
+  );
+  $items['node/%node/reorder'] = array(
+    'title' => t('Reorder the book'),
+    'page callback' => 'book_made_simple_reorder',
+    'page arguments' => array(1),
+    'access callback' => 'is_reorder_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+  );
+  $items['node/%node/outline'] = array(
+    'title' => 'Outline',
+    'page callback' => 'book_outline',
+    'page arguments' => array(1),
+    //'access callback' => 'is_outline_access',
+    'access arguments' => array("show core Outline tab"),
+    'theme callback' => '_node_custom_theme',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10  ,
+    'file' => 'book.pages.inc',
+    'file path' => drupal_get_path('module', 'book'),
+  );
+  return $items;
+}
+
+function is_outline_access($node = NULL) {
+  if (isset($node->nid) && ! _book_outline_access($node)) {
+    return false;
+  }
+  return user_access("show core Outline form element");
+}
+/**
+ * Return access rights for book
+ */
+
+function is_reorder_access($node = NULL) {
+  if (isset($node->book) && $node->book['bid'] > 0) {
+    if (! _book_outline_access($node) || ! user_access('show book reorder tab')) {
+      return false;
+    }
+    // Cheching permissions according to rules/
+    $book = $node->book;
+    $linkVisibilty = variable_get('book_made_simple_reorder_link', "0");
+    $allowed = true;
+    if ($linkVisibilty == "0") {
+      $mainBook = $book;
+      if ($book['nid'] != $book['bid']) {
+        $mainBook = node_load($book['bid'])->book;
+      }
+      $allowed = (count(book_toc($mainBook['bid'], 9999)) > 2);
+    }
+    return $allowed;
+  }
+  return false;
+}
+/**
+ * Shortcut to reorder book page
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_reorder($node) {
+  // TODO array('query' => array("destination" => "node/" . $node->nid)) needs to be an array of keys and values instead of a string.
+  drupal_goto("admin/content/book/" . $node->book['bid'], array('query' => array("destination" => "node/" . $node->nid)));
+}
+/**
+ * Implementation of hook_settings_form).
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_settings_form($form, &$form_state) {
+  $types = node_type_get_names();
+  $form['book_made_simple'] = array(
+    '#type' => 'fieldset',
+    '#attributes' => array('class' => array('allowed-child')),
+    '#title' => t('Select node types that can be included in a book'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#description' => t('Check content-type that can be included as child in a book. This selection is overriden by selection in content-type settings.'),
+  );
+  $form['book_made_simple']['book_made_simple_add_types'] = array(
+    '#type' => 'checkboxes',
+    '#options' => $types,
+    '#multiple' => true,
+    '#default_value' => variable_get('book_made_simple_add_types', array()),
+  );
+  $form['book_made_simple2'] = array(
+    '#type' => 'fieldset',
+    '#attributes' => array('class' => array('auto-main')),
+    '#title' => t('Select node types to auto-create main book page'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#description' => t('Check content-types if you want they will automatically be created as main page of a book.'),
+  );
+  $form['book_made_simple2']['book_made_simple_auto_main_page'] = array(
+    '#type' => 'checkboxes',
+    '#options' => $types,
+    '#multiple' => true,
+    '#default_value' => variable_get('book_made_simple_auto_main_page', array()),
+  );
+  $form['book_made_simple3'] = array(
+    '#type' => 'fieldset',
+    '#attributes' => array('class' => array('other-settings')),
+    '#title' => t('Other settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['book_made_simple3']['book_made_simple_limit_depth'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default limit book depth'),
+    '#default_value' => variable_get('book_made_simple_limit_depth', 99),
+    '#description' => t('Maximum number of childs for a book'),
+    '#maxlength' => 2,
+    '#size' => 2,
+  );
+  $form['book_made_simple3']['book_made_simple_admin_use_css'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Disable BMS settings layout'),
+    '#default_value' => variable_get('book_made_simple_admin_use_css', false),
+    '#description' => t('Check to disable BMS layout (content types as columns).'),
+  );
+  $form['book_made_simple3']['book_made_simple_admin_show_legend'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Print titles in fieldsets legend. Uncheck to prefer static text.'),
+    '#default_value' => variable_get('book_made_simple_admin_show_legend', true),
+    '#description' => t('In content-types settings, titles are shown in fieldsets legends in vertical-tabs. Some themes hide legend. In this cas, uncheck this to print titles as static text.'),
+  );
+  $form['book_made_simple3']['book_made_simple_hide_default_add_child'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hide default add child link'),
+    '#default_value' => variable_get('book_made_simple_hide_default_add_child', true),
+    '#description' => t('Check to hide default add child page link.'),
+  );
+  $form['book_made_simple3']['book_made_simple_child_list_style'] = array(
+    '#type' => 'radios',
+    '#title' => t('Style of child list'),
+    '#options' => array(
+      "DDLIST" => t("Dropdown listbox"),
+      "LI" => t("Unordered list"),
+      "THEME" => t("Themeable function"),
+    ),
+    '#default_value' => variable_get('book_made_simple_child_list_style', "DDLIST"),
+    '#description' => t('Choose the style of the child list.'),
+  );
+  $form['book_made_simple3']['book_made_simple_child_list_style_position'] = array(
+    '#type' => 'select',
+    '#title' => t('Child list position in links area'),
+    '#options' => array(
+      "FIRST" => t("First"),
+      "LAST" => t("Last"),
+    ),
+    '#default_value' => variable_get('book_made_simple_child_list_style_position', "FIRST"),
+    '#description' => t('Choose where to print child list in the links area'),
+  );
+  $form['book_made_simple3']['book_made_simple_reorder_link'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show reorder tab even if book is empty'),
+    '#options' => array(
+      "0" => t("No"),
+      "1" => t("Yes"),
+    ),
+    '#default_value' => variable_get('book_made_simple_reorder_link', "0"),
+    '#description' => t('Show reorder tab even if book is empty. A book is considered empty when it has less than 2 subpages. In this case, does reordering make sense ?'),
+  );
+  return system_settings_form($form);
+}
+/**
+ * Implementation of hook_form_alter().
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  if (!empty($form['#node_edit_form'])) {
+    $node = $form['#node'];
+    $type = $form['type']['#value'];
+    // Not a book => Nothing to do
+    if (! isset($node->book)) {
+      return;
+    }
+    // 1 : Main page book. Verify if not forbidden
+    $isMainForbidden = (array_key_exists($type, variable_get('book_made_simple_forbid_main_page_creation', array())));
+    $isForbidden = ($isMainForbidden && $node->book['bid'] == 0);
+    if ($isMainForbidden   && $user->uid != 1) {
+      //$form['book']['bid']['#default_value'] = 0;
+      $nid = isset($node->nid) ? $node->nid : 'new';
+      unset($form['book']['bid']['#options'][$nid]);
+      $form['#node']->nid = isset($form['#node']->nid) ? $form['#node']->nid : '0';
+      $form['#node']->book['original_bid'] = $form['#node']->nid;
+    }
+    if (arg(1) == "add" && ! array_key_exists("parent", $_GET)) {
+      $isOnlyForBook = array_key_exists($type, variable_get("book_made_simple_only_on_books", array()));
+      if ($isOnlyForBook) {
+        $form = _book_made_simple_print_error("This type can't be created outside a book", $form['#id']);
+        $form_state['process_input'] = FALSE;
+        return;
+      }
+    }
+    // 2 : Add child page : Verify if parent allowed
+    if (arg(1) == "add" && array_key_exists("parent", $_GET)) {
+      $parent = book_link_load($_GET['parent']);
+      if (isset($parent)) {
+        $parentNode = node_load($parent['nid']);
+        $parentType = $parentNode->type;
+        $allowedChilds = variable_get('book_made_simple_for_type_' . $parentType, array());
+        if (count($allowedChilds) > 0 && ! in_array($type, $allowedChilds)) {
+          $form = _book_made_simple_print_error("This type is not allowed as child for type $parentType", $form['#id']);
+          $form_state['process_input'] = FALSE;
+          return;
+        }
+      }
+    }
+    //3 : show/hide Outline section
+    $book = $node->book;
+    if (is_outline_access($node)) {
+      if (isset($node->nid) && is_reorder_access($node)) {
+        $form['book']['reorder'] = array(
+          '#type' => 'item',
+          '#markup' => l(t("Reorder the book"), "admin/content/book/" . $book['bid'], array('query' => array("destination" => "node/" . $node->nid))),
+          '#description' => t("Shortcut to reorder the entire book"),
+          '#weight' => 10,
+        );
+      }
+    }
+    else {
+      $form['book']['#type'] = 'hidden';
+      $form['book']['bid']['#default_value'] = 0;
+    }
+    return $form;
+  }
+  switch ($form["#id"]) {
+    case "node-type-form": // $type . '_node_settings':
+      $type = $form["#node_type"]->type;
+      $default = array_key_exists($type, variable_get('book_made_simple_auto_main_page', array()));
+      $form['book_made_simple'] = array(
+        '#type' => 'fieldset',
+        '#attributes' => array('class' => array('bms-fieldset')),
+        '#title' => t('BookMadeSimple'),
+        '#group' => 'additional_settings',
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      );
+      $showLegend = variable_get("book_made_simple_admin_show_legend", true);
+      if (! $showLegend) {
+        $form['book_made_simple']['lib1'] = array(
+          '#type' => 'item',
+          '#title' => t('Select content-types allowed as child :'),
+        );
+      }
+      $form['book_made_simple']['1'] = array(
+        '#attributes' => array('class' => array('allowed-child' . ($showLegend ? "with" : "without") . "legend")),
+        '#type' => 'fieldset',
+        '#title' => t('Select content-types allowed as child.'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $types = node_type_get_names();
+      $form['book_made_simple']['1']['book_made_simple_for_type'] = array(
+        '#type' => 'checkboxes',
+        '#options' => $types,
+        '#multiple' => true,
+        '#default_value' => variable_get('book_made_simple_for_type_' . $type, array()),
+      );
+      $aa = array();
+      unset($types[$type]);
+      foreach ($types as $ctype => $name) {
+        $a = variable_get('book_made_simple_for_type_' . $ctype, array());
+        if (array_search($type, $a) !== FALSE) {
+          array_push($aa, $ctype);
+        }
+      }
+      if (! $showLegend) {
+        $form['book_made_simple']['lib2'] = array(
+          '#type' => 'item',
+          '#title' => t('Select content-types allowed as parent :'),
+        );
+      }
+      $form['book_made_simple']['2'] = array(
+        '#attributes' => array('class' => array('allowed-child' . ($showLegend ? "with" : "without") . "legend")),
+        '#title' => t('Select content-types allowed as parent'),
+        '#type' => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $form['book_made_simple']['2']['book_made_simple_for_book'] = array(
+        '#type' => 'checkboxes',
+        '#options' => $types,
+        '#multiple' => true,
+        '#default_value' => $aa,
+      );
+      if (! $showLegend) {
+        $form['book_made_simple']['lib3'] = array(
+          '#type' => 'item',
+          '#title' => t('Other settings :'),
+        );
+      }
+      $form['book_made_simple']['3'] = array(
+        '#attributes' => array('class' => array('allowed-child' . ($showLegend ? "with" : "without") . "legend")),
+        '#title' => t('Other settings'),
+        '#type' => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $varTypes = variable_get('book_made_simple_auto_main_page', array());
+      $default = (array_key_exists($type, $varTypes) && $varTypes[$type] != "0");
+      $form['book_made_simple']['3']['book_made_simple_auto_main_page'] = array(
+        '#attributes' => array('style' => 'float:none;clear:both'),
+        '#type' => 'checkbox',
+        '#title' => t('Auto create book main page'),
+        '#default_value' => $default,
+        '#description' => t('Checked will create a new book main page when adding.'),
+      );
+      $varTypes = variable_get('book_made_simple_forbid_main_page_creation', array());
+      $default = (array_key_exists($type, $varTypes) && $varTypes[$type] != "0");
+      $form['book_made_simple']['3']['book_made_simple_forbid_main_page_creation'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Forbid creation of book main page'),
+        '#default_value' => $default,
+        '#description' => t('Checked will prevent books from being manually created with this content type as main page type.'),
+      );
+      $varTypes = variable_get('book_made_simple_only_on_books', array());
+      $default = (array_key_exists($type, $varTypes) && $varTypes[$type] != "0");
+      $form['book_made_simple']['3']['book_made_simple_only_on_books'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Content type can only be created inside a book'),
+        '#default_value' => $default,
+        '#description' => t('Checked will prevent this content type be created outside a book.'),
+      );
+      $varTypes = variable_get('book_made_simple_add_types', array());
+      $default = (array_key_exists($type, $varTypes) && $varTypes[$type] != "0");
+      $form['book_made_simple']['3']['book_made_simple_add_types'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Allow content type as child of default book.'),
+        '#default_value' => $default,
+        '#description' => t('Checked will add this content-type to books where no content-types has been selected.'),
+      );
+      array_push($form['#submit'], "book_made_simple_form_submit");
+      break;
+  }
+  // endswitch $form_id
+} // endfunction book_made_simple_form_alter()
+/**
+ * Implementation of hook_form_submit().
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_form_submit($form, &$form_state) {
+  $values = $form_state["values"];
+  $text = $values["book_made_simple_auto_main_page"];
+  $type = $values["type"];
+  variable_del("book_made_simple_add_types_" . $type);
+  variable_del("book_made_simple_auto_main_page_" . $type);
+  $types = variable_get('book_made_simple_auto_main_page', array());
+  if ($text != "0") {
+    $types[$type] = $type;
+  }
+  else {
+    unset($types[$type]);
+  }
+  variable_set('book_made_simple_auto_main_page', $types);
+  $text = $values["book_made_simple_only_on_books"];
+  $type = $values["type"];
+  $types = variable_get('book_made_simple_only_on_books', array());
+  if ($text != "0") {
+    $types[$type] = $type;
+  }
+  else {
+    unset($types[$type]);
+  }
+  variable_set('book_made_simple_only_on_books', $types);
+  $text = $values["book_made_simple_forbid_main_page_creation"];
+  $type = $values["type"];
+  variable_del("book_made_simple_forbid_main_page_creation_" . $type);
+  $types = variable_get('book_made_simple_forbid_main_page_creation', array());
+  if ($text != "0") {
+    $types[$type] = $type;
+  }
+  else {
+    unset($types[$type]);
+  }
+  variable_set('book_made_simple_forbid_main_page_creation', $types);
+  $text = $values["book_made_simple_add_types"];
+  $types = variable_get('book_made_simple_add_types', array());
+  if ($text != "0") {
+    $types[$type] = $type;
+  }
+  else {
+    unset($types[$type]);
+  }
+  variable_set('book_made_simple_add_types', $types);
+  $text = $values["book_made_simple_for_type"];
+  if (count($text) == 0) {
+    variable_del("book_made_simple_for_type_" . $type);
+  }
+  $types = node_type_get_names();
+  $saved = $values["book_made_simple_for_book"];
+  $a2 = array();
+  foreach ($types as $ctype => $name) {
+    if ($ctype != $type) {
+      $a = variable_get('book_made_simple_for_type_' . $ctype, array());
+      $ind = array_search($type, $a);
+      if ($ind !== FALSE) {
+        unset($a[$ind]);
+      }
+      variable_set('book_made_simple_for_type_' . $ctype, $a);
+    }
+  }
+  foreach ($saved as $ctype => $name) {
+    if ($name != "0") {
+      $a = variable_get('book_made_simple_for_type_' . $ctype, array());
+      $a[$type] = $type;
+      variable_set('book_made_simple_for_type_' . $ctype, $a);
+    }
+  }
+  variable_del("book_made_simple_for_book_" . $type);
+}
+/**
+ * Implementation of hook_link(). Add dropdown listbox to links
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_link($type, $node = null, $teaser = false) {
+  $links = array();
+  $max_depth = variable_get('book_made_simple_limit_depth', 99);
+  if ($type == 'node' && !$teaser && isset($node->book["bid"]) && user_access('add content to books') && $node->status == 1 && $node->book['depth'] < $max_depth) {
+    $html = "";
+    $allowedTypes = array();
+    // Search for content-type for this one
+    $aTypes = variable_get('book_made_simple_for_type_' . $node->type, array());
+    $style =  variable_get('book_made_simple_child_list_style', "DDLIST");
+    // No content-type, so print all
+    if (count($aTypes) == 0) {
+      $aTypes = variable_get('book_made_simple_add_types', array());
+    }
+    foreach ($aTypes as $allowedType => $allowedName) {
+      $atype  = node_type_get_type($allowedName);
+      if (is_object($atype) && node_access('create', $atype->type)) {
+        $allowedTypes[str_replace("_", "-", $atype->type)] = $atype->name;
+      }
+    }
+    $book_link = $node->book;
+    if (count($allowedTypes) > 0) {
+      asort($allowedTypes, SORT_STRING);
+      if ($style == "LI") {
+        foreach ($allowedTypes as $type => $name ) {
+          $links['book_made_simple_' . $type] = array(
+            'title' => t('Add !content-type', array('!content-type' => t($name))),
+            'href' => "node/add/" . $type,
+            'query' => array("parent" => $node->book['mlid']),
+          );
+        }
+      }
+      elseif ($style == "DDLIST") {
+        $links['book_made_simple'] = array(
+          'title' => "<span id='book_made_simple'>" . book_made_simple_add_child_book_content_types_ddlist($allowedTypes, $node)  . "</span>",
+          'html' => true,
+        );
+      }
+      else {
+        $links['book_made_simple'] = array(
+          'title' => theme('add_child_book_content_types', $allowedTypes, $node),
+          'html' => true,
+        );
+      }
+    }
+  }
+  //$links["book_add_child"] = array();
+  return $links;
+}
+/**
+ * Implementation of hook_theme().
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_theme() {
+  return array(
+    'add_child_book_content_types' => array(
+      'variables' => array(
+        'allowedTypes' => NULL,
+        "node" => null,
+      ),
+    ),
+  );
+}
+/**
+ * Themeable function to display alloawed child types of book().
+ * @param $allowedTypes
+ *   Array of allowed child type.
+ * @param $node
+ *   Source node
+ * @return
+ *   Html code to display allowed child type
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function theme_add_child_book_content_types($allowedTypes, $node) {
+  // TODO Number of parameters in this theme funcion does not match number of parameters found in hook_theme.
+  return "";
+}
+/**
+ * Display alloawed child type as dropdown listbox.
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_add_child_book_content_types_ddlist($allowedTypes, &$node) {
+  $child_type = variable_get('book_child_type', 'book');
+  $html = "<option value='" . str_replace('_', '-', $child_type) . "'>" . t("Add child page") . "</option>";
+  foreach ($allowedTypes as $type => $name ) {
+    $html .= "<option value='" . $type . "'>" . t($name) . "</option>";
+  }
+  $isCleanUrl = variable_get('clean_url', 0);
+  $url = url("node/add/");
+  $op = "&";
+  if ($isCleanUrl) {
+    $op = "?";
+  }
+  $newUrl =  $url . "\" + this.value + \"" . $op . "parent=" . $node->book["mlid"];
+  return "<select onchange='location.href=\"" . $newUrl . "\"'>$html</select>";
+}
+/**
+ * Implementation of hook_nodeapi().
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_node_insert($node) {
+  if (empty($node->book["bid"])) {
+    $type = $node->type;
+    $max_depth = variable_get('book_made_simple_limit_depth', 99);
+    $isDepthAllowed = true;
+    if (array_key_exists('depth', $node->book)) {
+      $isDepthAllowed = ($node->book['depth'] < $max_depth);
+    }
+    if ((user_access('add content to books') || user_access('administer book outlines')) &&
+    node_access('create', $type) &&   $isDepthAllowed) {
+      $bookTypes = variable_get('book_made_simple_auto_main_page', array());
+      $bookType = (array_key_exists($type, $bookTypes) ? $bookTypes[$type] : null);
+      $toCreate = false;
+      if (null != $bookType && $bookType != "0") {
+        $toCreate = true;
+      }
+      if ($toCreate && ! isset($_GET['parent'])) {
+        $node->book["bid"] = $node->nid;
+        $node->book['nid'] = $node->nid;
+        $node->book['module'] = 'book';
+        $node->book['menu_name'] = book_menu_name($node->book['bid']);
+        _book_update_outline($node);
+      }
+    }
+  }
+}
+/*
+
+ function book_made_simple_node_prepare_translation($node)
+ {
+ // Hack for translation module. Adding parent property to automatically select parent book.
+ $translation = $node->translation_source;
+ if (isset($translation->book) && (! isset($_GET["parent"])))
+ {
+ // get parent menu link for the node + language
+ $plid = $translation->book['plid'];
+ $parentPage = book_link_load($plid);
+ if (isset($parentPage) && $parentPage > 0)
+ {
+ $pnid = $parentPage['nid'];
+ if (isset($pnid) && $pnid <> "")
+ {
+ $query= "SELECT bid, mlid FROM {node} n left join {book} b on b.nid = n.nid where tnid= $pnid and language='" . $node->language . "'";
+ $translatedParent = db_fetch_object(db_query($query));
+ if ($translatedParent)
+ {
+ $mlid = $translatedParent->mlid;
+ $params = array();
+ $params[] = "parent=$mlid";
+ foreach ($_GET as $key => $value)
+ {
+ if ($key == "q")
+ {
+ $path = $value;
+ }
+ else {$params[] = $key . "=" . $value;
+ }
+ }
+ $queryString = implode("&",$params);
+ drupal_goto($path, $queryString);
+ $ok = true;
+ }
+ else  {
+ drupal_set_message(t("This node has no translated parent, so no book selected"),"warning");
+ }
+ }
+ }
+ }
+ }
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_node_view($node, $view_mode, $langcode = 1) {
+  if ((! empty($node->book["bid"])) &&   ($view_mode != "teaser")) {
+    $r = book_made_simple_link("node", $node, false);
+    $node->content['links']['book_made_simple'] = array(
+      '#theme' => 'links__node__book_made_simple',
+      '#links' => $r,
+      '#attributes' => array('class' => array('links', 'inline')),
+    );
+
+  }
+  //print_r($node->content);
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_node_view_alter(&$build) {
+  if ( ! array_key_exists("#node", $build)) {
+    return;
+  }
+  $node = $build['#node'];
+  if ((! empty($node->book["bid"]) ) && $build['#view_mode'] != "teaser") {
+
+    if (array_key_exists("book_made_simple", $build['links'])) {
+      $r = $build['links']["book_made_simple"];
+      unset($build['links']["book_made_simple"]);
+    }
+    if (array_key_exists("book", $build['links']) && variable_get('book_made_simple_hide_default_add_child', true)) {
+      unset($build['links']['book']['#links']["book_add_child"]);
+    }
+    $position = variable_get("book_made_simple_child_list_style_position", "FIRST");
+    if ($position == "FIRST" && isset($r)) {
+      array_unshift($build['links'], $r);
+    }
+    if ($position == "LAST" && isset($r)) {
+      array_push($build['links'], $r);
+    }
+
+  }
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_theme_registry_alter(&$theme_registry) {
+  global $theme;
+  $theme_registry['BMS'] = array('menu_local_task' => $theme_registry['menu_local_task']);
+  // Replace them with our own. These will "preprocess" and call the real functions.
+  $theme_registry['menu_local_task']['function'] = 'book_made_simple_theme_menu_item_link';
+}
+/**
+ * Preprocessor for menu_item_link.
+ * Adds an ID attribute to menu links and helps the module
+ * follow the recursion of menu_tree_output().
+ */
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function book_made_simple_theme_menu_item_link($link) {
+  // Find out which theme function to dispatch to after preprocessing.
+  $registry = theme_get_registry();
+  if (isset($link['element']['#link']['path']) &&   $link['element']['#link']['path'] == 'node/%/outline' && ! user_access("show core Outline links")) {
+    return null;
+  }
+  $function = $registry['BMS']['menu_local_task']['function'];
+  if ($function) {
+    return $function($link);
+  }
+  return theme_menu_item_link($link);
+}
+
+function _book_made_simple_print_error($message, $formid) {
+  $form = array();
+  $form['#id'] = $formid . '-node-form';
+  $form['#tree'] = "";
+  $form['nid'] = array(
+    '#type' => "value",
+    '#value' => '',
+  );
+  $form['title'] = array(
+    '#type' => 'item',
+    '#title' => '',
+    '#markup' => t($message),
+  );
+  return $form;
+}

@@ -1,0 +1,16 @@
+name = Content Taxonomy
+description = Extends the Taxonomy Reference Fields
+
+core = 7.x
+package = Fields
+
+dependencies[] = taxonomy
+
+
+
+; Information added by drupal.org packaging script on 2011-06-22
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "content_taxonomy"
+datestamp = "1308744330"
+

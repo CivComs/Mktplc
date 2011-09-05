@@ -1,0 +1,26 @@
+<?php
+
+
+function book_made_simple_install() {
+	db_query("UPDATE {system} SET weight = 10 WHERE name = 'book_made_simple'");
+}
+
+function book_made_simple_update_6013() {
+  $ret = array();
+
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("UPDATE {system} SET weight = 10 WHERE name = 'book_made_simple'");
+      break;
+    }
+
+  return $ret;
+}
+
+function book_made_simple_uninstall() {
+
+	variable_del('book_made_simple_auto_main_page');
+	variable_del('book_made_simple_add_types');
+	
+}

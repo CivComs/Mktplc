@@ -1,0 +1,199 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for the Search Lucene API module.
+ *
+ * @ingroup luceneapi
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function luceneapi_schema() {
+  $schema = array();
+
+  $schema['cache_luceneapi'] = array(
+    'description' => 'Cached Search Lucene API results.',
+    'fields' => array(
+      'cid' => array(
+        'description' => 'Primary Key: Unique cache ID.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'data' => array(
+        'description' => 'A collection of data to cache.',
+        'type' => 'blob',
+        'not null' => FALSE,
+        'size' => 'big'
+      ),
+      'expire' => array(
+        'description' => 'A Unix timestamp indicating when the cache entry should expire, or 0 for never.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'created' => array(
+        'description' => 'A Unix timestamp indicating when the cache entry was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'headers' => array(
+        'description' => 'Any custom HTTP headers to be added to cached data.',
+        'type' => 'text',
+        'not null' => FALSE
+      ),
+      'serialized' => array(
+        'description' => 'A flag to indicate whether content is serialized (1) or not (0).',
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+    ),
+    'indexes' => array('expire' => array('expire')),
+    'primary key' => array('cid'),
+  );
+
+  $schema['luceneapi_searcher'] = array(
+    'description' => 'Search Lucene API searcher settings.',
+    'export' => array(
+      'key' => 'name',
+      'identifier' => 'searcher',
+      'default hook' => 'luceneapi_default_searchers',
+      'status' => 'luceneapi_searcher_status',
+      'api' => array(
+        'owner' => 'luceneapi',
+        'api' => 'luceneapi_defaults',
+        'minimum_version' => 3,
+        'current_version' => 3,
+      ),
+      'export callback' => 'luceneapi_searcher_settings_export',
+    ),
+    'fields' => array(
+      'name' => array(
+        'description' => 'The machine readable name of the searcher.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'label' => array(
+        'description' => 'The human readable name of the searcher.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'description' => array(
+        'description' => 'The description of the searcher.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'search_path' => array(
+        'description' => 'The path to the search page.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'page_title' => array(
+        'description' => 'The title of the search page.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'index_name' => array(
+        'description' => 'The human readable name of the index.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'settings' => array(
+        'description' => 'Serialized storage of general settings.',
+        'type' => 'text',
+        'serialize' => TRUE,
+      ),
+    ),
+    'primary key' => array('name'),
+    'indexes' => array(
+      'index_name' => array('index_name'),
+    ),
+  );
+
+  $schema['luceneapi_index'] = array(
+    'description' => 'Configuration settings for Search Lucene API indexes.',
+    'export' => array(
+      'key' => 'name',
+      'identifier' => 'index_settings',
+      'default hook' => 'luceneapi_default_indexes',
+      'status' => 'luceneapi_index_status',
+      'api' => array(
+        'owner' => 'luceneapi',
+        'api' => 'luceneapi_defaults',
+        'minimum_version' => 3,
+        'current_version' => 3,
+      ),
+      'export callback' => 'luceneapi_index_settings_export',
+    ),
+    'fields' => array(
+      'name' => array(
+        'description' => 'The machine readable name of the index.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'label' => array(
+        'description' => 'The human readable name of the index.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'description' => array(
+        'description' => 'The description of the index.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'indexer' => array(
+        'description' => 'The machine readable name of the indexer.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'backend' => array(
+        'description' => 'The machine readable name of the backend.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'settings' => array(
+        'description' => 'Serialized storage of general settings.',
+        'type' => 'text',
+        'serialize' => TRUE,
+      ),
+    ),
+    'primary key' => array('name'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function luceneapi_uninstall() {
+  drupal_uninstall_schema('luceneapi');
+}

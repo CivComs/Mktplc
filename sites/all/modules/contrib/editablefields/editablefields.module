@@ -1,0 +1,509 @@
+<?php
+
+/**
+ * @file
+ * Editable fields module.
+ */
+
+/**
+ * Implementation of hook_field_formatter_info().
+ */
+function editablefields_field_formatter_info() {
+  $all_types = array_keys(field_info_field_types());
+  return array(
+    'editable' => array(
+      'label' => t('Editable'),
+      'field types' => $all_types,
+      'settings' => array(
+        'fallback_format' => NULL,
+        'fallback_settings' => array(),
+        'click_to_edit' => FALSE,
+        'empty_text' => '',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_library().
+ */
+function editablefields_library() {
+  $libraries['editablefields'] = array(
+    'title' => 'Editable Fields',
+    'version' => '1.x',
+    'js' => array(
+      drupal_get_path('module', 'editablefields') . '/editablefields.js' => array('group' => JS_DEFAULT + 1),
+    ),
+    'dependencies' => array(
+      array('system', 'drupal.form'),
+      // editablefields.js contains a small override to the autocomplete code.
+      // as a consequence, we need to load the autocomplete code unconditionnally.
+      array('system', 'drupal.autocomplete'),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function editablefields_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = editablefields_field_formatter_default_settings($display['settings'], $field);
+
+  // Include the field_ui admin form.
+  module_load_include('inc', 'field_ui', 'field_ui.admin');
+
+  // Get the list of formatters for this field type, and remove our own.
+  $formatters = field_ui_formatter_options($field['type']);
+  unset($formatters['editable']);
+
+  $element['click_to_edit'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Click to edit'),
+    '#default_value' => $settings['click_to_edit'],
+  );
+  $element['empty_text'] = array(
+    '#type' => 'textarea',
+    '#rows' => 3,
+    '#title' => t('Empty text'),
+    '#description' => t('Text to show when the field is empty.'),
+    '#default_value' => $settings['empty_text'],
+  );
+
+  $element['fallback_format'] = array(
+    '#type' => 'select',
+    '#title' => t('Fallback formatter'),
+    '#options' => $formatters,
+    '#default_value' => $settings['fallback_format'],
+  );
+
+  // Refresh the form automatically when we know which context we are in.
+  if (isset($form_state['complete form']) && $form_state['complete form']['#form_id'] == 'field_ui_display_overview_form') {
+    // Field UI.
+    $element['fallback_format'] += array(
+      '#field_name' => $field['field_name'],
+      '#op' => 'edit',
+      '#executes_submit_callback' => TRUE,
+      '#submit' => array('editablefields_field_ui_display_overview_multistep_submit'),
+      '#ajax' => array(
+        'callback' => 'field_ui_display_overview_multistep_js',
+        'wrapper' => 'field-display-overview-wrapper',
+        'effect' => 'fade',
+      ),
+    );
+  }
+  else if (isset($form_state['form_id']) && $form_state['form_id'] == 'views_ui_config_item_form') {
+    // Views UI.
+    $element['fallback_format'] += array(
+      '#ajax' => array(
+        'path' => views_ui_build_form_url($form_state),
+      ),
+      '#submit' => array('views_ui_config_item_form_submit_temporary'),
+      '#executes_submit_callback' => TRUE,
+    );
+  }
+
+  $fallback_formatter = field_info_formatter_types($settings['fallback_format']);
+  $fallback_settings = $settings['fallback_settings'] + field_info_formatter_settings($settings['fallback_format']);
+
+  // Store the settings in a '_dummy' view mode.
+  $instance['display']['_dummy'] = array(
+    'type' => $settings['fallback_format'],
+    'settings' => $fallback_settings,
+  );
+
+  // Get the settings form.
+  $settings_form = array('#value' => array());
+  $function = $fallback_formatter['module'] . '_field_formatter_settings_form';
+  if (function_exists($function)) {
+    $settings_form = $function($field, $instance, '_dummy', $form, $form_state);
+  }
+  $element['fallback_settings'] = $settings_form;
+
+  return $element;
+}
+
+/**
+ * Form submit handler for AJAX change of the fallback formatter.
+ */
+function editablefields_field_ui_display_overview_multistep_submit($form, &$form_state) {
+  $trigger = $form_state['triggering_element'];
+  $op = $trigger['#op'];
+
+  // Store the saved settings.
+  $field_name = $trigger['#field_name'];
+  $values = $form_state['values']['fields'][$field_name]['settings_edit_form']['settings'];
+  $form_state['formatter_settings'][$field_name] = $values;
+
+  $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function editablefields_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = editablefields_field_formatter_default_settings($display['settings'], $field);
+
+  return t('Fallback formatter: @formatter', array('@formatter' => $settings['fallback_format']));
+}
+
+/**
+ * Return default settings for a field type.
+ */
+function editablefields_field_formatter_default_settings($settings, $field) {
+  if (empty($settings['fallback_format'])) {
+    $field_type = field_info_field_types($field['type']);
+    $settings['fallback_format'] = $field_type['default_formatter'];
+  }
+  $settings += array('fallback_settings' => array());
+  return $settings;
+}
+
+/**
+ * Format a field using the fallback formatter of the editable field.
+ */
+function editablefields_fallback_formatter($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  // Set the fallback formatter.
+  $display['type'] = $display['settings']['fallback_format'];
+  $display['settings'] = $display['settings']['fallback_settings'];
+  $formatter_type = field_info_formatter_types($display['type']);
+  $display['module'] = $formatter_type['module'];
+
+  // Clone the entity to avoid messing with it.
+  $cloned_entity = clone $entity;
+
+  return field_view_field($entity_type, $cloned_entity, $field['field_name'], $display, $langcode);
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function editablefields_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, &$items, $display) {
+  if (!$display['type'] == 'editable') {
+    continue;
+  }
+
+  $field_name = $field['field_name'];
+  list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
+
+  // See if access to this form element is restricted,
+  // if so, skip widget processing and just set the value.
+  if (!entity_access('update', $entity_type, $entity) || !field_access('edit', $field, $entity_type, $entity)) {
+    // Can't edit.
+    return editablefields_fallback_formatter($entity_type, $entity, $field, $instance, $langcode, $items, $display);
+  }
+
+  if (isset($display['views_view'])) {
+    // Views integration mode: we need to pass the unrendered form to the handler.
+
+    // Remove the View data from the display, we don't need to save it.
+    $view = $display['views_view'];
+    $views_field = $display['views_field'];
+    $row_id = $display['views_row_id'];
+    unset($display['views_view']);
+    unset($display['views_field']);
+    unset($display['views_row_id']);
+
+    // Set our form callback.
+    $views_field->views_form_callback = 'editablefields_views_form';
+
+    // Load the original (unrendered) entity from the cache of the Field API views handler.
+    $entity = $view->result[$row_id]->_field_data[$views_field->field_alias]['entity'];
+
+    // Save our data.
+    $views_field->editablefield_data[$row_id] = compact('entity_type', 'entity', 'langcode', 'display');
+    $views_field->editablefield_field = $field;
+    $views_field->editablefield_instance = $instance;
+
+    // Add a class to the field wrapper (a cell for example).
+    if (empty($views_field->seen_by_editable_fields)) {
+      $views_field->options['element_class'] .= ' views-field-editablefield';
+      $views_field->seen_by_editable_fields = TRUE;
+    }
+
+    // Search for the field object in the $view->field array, so as to extract
+    // its actual ID. Views doesn't provide any reliable way to do that otherwise.
+    $field_id = array_search($views_field, $view->field, TRUE);
+
+    $items = array(0 => array());
+    return array(
+      0 => '<!--form-item-' . $field_id . '--' . $row_id . '-->',
+    );
+  }
+  else {
+    // Standard Field API integration: generate the form.
+    // Inject the HTML form.
+    $items = array(0 => array());
+    return array(
+      0 => drupal_get_form('editablefields_form__' . $entity_type . '__' . $id . '__' . $vid . '__' . $field['field_name'], $entity_type, $entity, $field, $instance, $langcode, $display),
+    );
+  }
+}
+
+/**
+ * Implements hook_forms().
+ */
+function editablefields_forms($form_id) {
+  $forms = array();
+  if (preg_match('/^editablefields_form_/', $form_id)) {
+    $forms[$form_id] = array(
+      'callback' => 'editablefields_form',
+    );
+  }
+  return $forms;
+}
+
+/**
+ * Form builder callback.
+ */
+function editablefields_form($form, &$form_state, $entity_type, $entity, $field, $instance, $langcode, $display) {
+  // TODO: set a #action to a "safe" URL so that forms embedded in Views do not
+  // break when the result set displayed in the Views changes.
+
+  // Set #parents to 'top-level' by default.
+  $form += array('#parents' => array());
+
+  $form['#attached']['library'][] = array('editablefields', 'editablefields');
+  $form['#attributes'] = array('class' => 'editable-field');
+
+  // Set the base properties of the form.
+  list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
+  $form['#entity_type'] = $entity_type;
+  $form['#bundle'] = $bundle;
+  $form['#langcode'] = $langcode;
+
+  list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
+  $form['#entity_id'] = $id;
+  if (!isset($form_state['editablefields_entities'][$entity_type][$id])) {
+    $form_state['editablefields_entities'][$entity_type][$id] = $entity;
+  }
+
+  // Set the IDs of the entity.
+  $info = entity_get_info($entity_type);
+  foreach (array('id', 'revision', 'bundle') as $key) {
+    // Objects being created might not have id/vid yet.
+    $id = isset($entity->{$info['entity keys']['id']}) ? $entity->{$info['entity keys']['id']} : NULL;
+    if (isset($info['entity keys'][$key]) && isset($entity->{$info['entity keys'][$key]})) {
+      $form[$info['entity keys'][$key]] = array(
+        '#type' => 'value',
+        '#value' => $entity->{$info['entity keys'][$key]},
+      );
+    }
+  }
+
+  // Wrap the whole form into a wrapper, and prepare AJAX settings.
+  $wrapper_id = drupal_html_id('editablefields-' . $field['field_name']);
+  $form['#prefix'] = '<div id="' . $wrapper_id . '" class="editablefield-item">';
+  $form['#suffix'] = '</div>';
+  $ajax = array(
+    'callback' => 'editablefields_form_update',
+    'wrapper' => $wrapper_id,
+    'effect' => 'fade',
+    'event' => 'click',
+    'progress' => array(
+      'type' => 'throbber',
+      'message' => t('Please wait'),
+    ),
+  );
+
+  // Remove the title of the field.
+  $instance['label'] = '';
+
+  $edit_mode_state = isset($form_state['edit_mode']) && drupal_array_get_nested_value($form_state['edit_mode'], $form['#parents']);
+  $edit_mode = empty($display['settings']['click_to_edit']) || $edit_mode_state;
+
+  if ($edit_mode) {
+    // Insert the field form.
+    $items = $entity->{$field['field_name']};
+    $items = isset($items[$langcode]) ? $items[$langcode] : array();
+
+    $form += field_default_form($entity_type, $entity, $field, $instance, $langcode, $items, $form, $form_state);
+
+    $form['actions'] = array('#type' => 'actions');
+    $form['actions']['submit'] = array(
+      '#name' => 'submit-' . implode('-', $form['#parents']),
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#ajax' => $ajax,
+      '#submit' => array('editablefields_form_submit'),
+      '#limit_validation_errors' => array($form['#parents']),
+    );
+  }
+  else {
+    $items = $entity->{$field['field_name']};
+    $items = isset($items[$langcode]) ? $items[$langcode] : array();
+    $shield = new EditableFieldsShield();
+    $shield->arguments = array($entity_type, $entity, $field, $instance, $langcode, $items, $display);
+
+    $form['field'] = array(
+      '#pre_render' => array('editablefields_lazy_render_fields'),
+      '#arguments' => $shield,
+    );
+    // Click to edit mode: generate a AJAX-bound submit handler.
+    $form['actions']['edit'] = array(
+      '#name' => 'edit-' . implode('-', $form['#parents']),
+      '#type' => 'submit',
+      '#value' => t('Edit this field'),
+      '#submit' => array('editablefields_form_submit_edit_mode'),
+      '#ajax' => $ajax,
+      '#limit_validation_errors' => array($form['#parents']),
+      '#attributes' => array(
+        'class' => array('editablefield-edit'),
+      ),
+    );
+  }
+
+  return $form;
+}
+
+
+/**
+ * A special purpose object harbouring values that cannot be serialized.
+ */
+class EditableFieldsShield {
+  function __sleep() {
+    return array();
+  }
+}
+
+/**
+ * #pre-render function: render the fallback formatter of a field, but only if it is actually displayed.
+ */
+function editablefields_lazy_render_fields($element) {
+  $element['field'] = call_user_func_array('editablefields_fallback_formatter', $element['#arguments']->arguments);
+  if (empty($element['field']) && !empty($element['#arguments']->arguments[6]['settings']['empty_text'])) {
+    $element['field'] = array(
+      '#markup' => $element['#arguments']->arguments[6]['settings']['empty_text'],
+    );
+  }
+  return $element;
+}
+
+/**
+ * Form builder callback for Views-embedded forms.
+ */
+function editablefields_views_form($view, $views_field, &$form, &$form_state) {
+  // Search for the field object in the $view->field array, so as to extract
+  // its actual ID. Views doesn't provide any reliable way to do that otherwise.
+  $field_id = array_search($views_field, $view->field, TRUE);
+
+  if (!isset($form_state['editablefields'][$field_id])) {
+    $form_state['editablefields'][$field_id] = array(
+      'rows' => $views_field->editablefield_data,
+      'field' => $views_field->editablefield_field,
+      'instance' => $views_field->editablefield_instance,
+    );
+  }
+
+  $field = $form_state['editablefields'][$field_id]['field'];
+  $instance = $form_state['editablefields'][$field_id]['instance'];
+
+  foreach ($form_state['editablefields'][$field_id]['rows'] as $row_id => $row) {
+    // $entity_type, $entity, $langcode, $display
+    extract($row);
+
+    if (isset($row['entity'])) {
+      list($entity_id, ) = entity_extract_ids($entity_type, $row['entity']);
+      if (!isset($form_state['editablefields_entities'][$entity_type][$entity_id])) {
+        $form_state['editablefields_entities'][$entity_type][$entity_id] = $entity;
+      }
+      else {
+        $entity = $form_state['editablefields_entities'][$entity_type][$entity_id];
+      }
+      $form_state['editablefields'][$field_id][$row_id]['entity_id'] = $entity_id;
+      unset($form_state['editablefields'][$field_id][$row_id]['entity']);
+    }
+    else {
+      $entity = $form_state['editablefields_entities'][$entity_type][$row['entity_id']];
+    }
+
+    $temp_form = array(
+      '#parents' => array($field_id, $row_id),
+      '#tree' => TRUE,
+    );
+    $form[$field_id][$row_id] = editablefields_form($temp_form, $form_state, $entity_type, $entity, $field, $instance, $langcode, $display);
+  }
+
+  // Remove our temporary data to make the views object smaller.
+  // It's particularly important because some modules (e.g. Devel), try to
+  // serialize it unconsiderably.
+  unset($views_field->editablefield_data);
+
+  // $form_state['build_info']['args'] = array();
+}
+
+/**
+ * Ajax callback: process an Ajax submission of the form.
+ */
+function editablefields_form_update($form, $form_state) {
+  // Return the proper part of the form.
+  $parents = $form_state['triggering_element']['#array_parents'];
+  // Remove the 'actions' and 'link' elements.
+  array_pop($parents);
+  array_pop($parents);
+
+  $element = &$form;
+  foreach ($parents as $parent) {
+    $element = &$element[$parent];
+  }
+
+  return $element;
+}
+
+/**
+ * Form validation callback: process the fields.
+ */
+function editablefields_form_validate(&$form, &$form_state) {
+  entity_form_field_validate($form['#entity_type'], $form, $form_state);
+}
+
+/**
+ * Form submit callback: switch to edit mode.
+ */
+function editablefields_form_submit_edit_mode(&$form, &$form_state) {
+  // Remove the 'actions' and 'link' elements.
+  $parents = $form_state['triggering_element']['#array_parents'];
+  array_pop($parents);
+  array_pop($parents);
+  if (!isset($form_state['edit_mode'])) {
+    $form_state['edit_mode'] = array();
+  }
+  drupal_array_set_nested_value($form_state['edit_mode'], $parents, TRUE);
+
+  $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Form submit callback: save the field modifications.
+ */
+function editablefields_form_submit(&$form, &$form_state) {
+  // Return the proper part of the form.
+  $parents = $form_state['triggering_element']['#array_parents'];
+  // Remove the 'actions' and 'link' elements.
+  array_pop($parents);
+  array_pop($parents);
+
+  $element = &$form;
+  foreach ($parents as $parent) {
+    $element = &$element[$parent];
+  }
+  if (!isset($form_state['edit_mode'])) {
+    $form_state['edit_mode'] = array();
+  }
+  drupal_array_set_nested_value($form_state['edit_mode'], $parents, FALSE);
+
+  $entity = $form_state['editablefields_entities'][$element['#entity_type']][$element['#entity_id']];
+
+  entity_form_submit_build_entity($element['#entity_type'], $entity, $element, $form_state);
+
+  // TODO: needs a try / catch.
+  entity_save($element['#entity_type'], $entity);
+  $form_state['rebuild'] = TRUE;
+
+  // Re-load the entity so that fields can act on the new value.
+  $entity = entity_load($element['#entity_type'], array($element['#entity_id']));
+  $form_state['editablefields_entities'][$element['#entity_type']][$element['#entity_id']] = reset($entity);
+}

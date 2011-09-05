@@ -1,0 +1,15 @@
+name = Search Lucene Zend Framework Adapter
+description = Provides the Zend Framework's PHP port of Lucene as a backend for Search Lucene API.
+dependencies[] = luceneapi
+package = Search
+core = 7.x
+files[] = plugins/luceneapi/backend.inc
+files[] = plugins/luceneapi/highlighter.inc
+files[] = plugins/luceneapi/filters.inc
+
+; Information added by drupal.org packaging script on 2011-03-26
+version = "7.x-3.0-unstable3"
+core = "7.x"
+project = "luceneapi"
+datestamp = "1301152868"
+
