@@ -1,0 +1,21 @@
+name = Search Lucene API
+description = A framework for building search pages and indexes using Lucene-based backends.
+dependencies[] = ctools
+dependencies[] = search
+package = Search
+core = 7.x
+configure = admin/config/search/luceneapi
+files[] = luceneapi.abstract.inc
+files[] = luceneapi.interface.inc
+files[] = plugins/luceneapi/backend.inc
+files[] = plugins/luceneapi/highlighter.inc
+files[] = plugins/luceneapi/highlighter_summary.inc
+files[] = plugins/luceneapi/indexer.inc
+files[] = plugins/luceneapi/normalizers.inc
+
+; Information added by drupal.org packaging script on 2011-03-26
+version = "7.x-3.0-unstable3"
+core = "7.x"
+project = "luceneapi"
+datestamp = "1301152868"
+

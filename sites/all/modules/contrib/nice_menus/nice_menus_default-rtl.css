@@ -1,0 +1,111 @@
+
+/*
+  This is the default overrides for nice menu to work with right-to-left
+  languages (RTL). The major change, compared to the regular
+  nice_menus_default.css file, is that horizontal menus float the items to
+  the right and open the sub menus to the left.
+*/
+
+/******************************
+ Global CSS for ALL menu types
+******************************/
+
+ul.nice-menu li {
+  float: right;
+}
+
+ul.nice-menu ul {
+  left: auto;
+  right: -1px;
+  margin-left: 0;
+}
+
+/* Fix vertical menus position */
+ul.nice-menu-left ul,
+ul.nice-menu-right ul{
+    right:auto;
+}
+
+/******************************
+ HORIZONTAL (down) menus
+******************************/
+
+/* IE6 doesn't correctly calculate the width of a floated element that contains right floated elements. */
+ul.nice-menu-down {
+  float: none;
+}
+
+ul.nice-menu-down ul {
+  left: auto;
+  right: 0;
+  /* Set a width on the parent <ul> to stop the <li> elements from floating
+   out of the viewport in IE6. */
+  width:12.5em;
+}
+
+ul.nice-menu-down li ul li ul {
+  left: auto;
+  right: 12.5em;
+}
+
+ul.nice-menu-down .menuparent a {
+  padding-right: 5px;
+  padding-left: 15px;
+}
+
+ul.nice-menu-down li.menuparent {
+  background-position: left center;
+}
+
+ul.nice-menu-down li.menuparent:hover {
+  background-position: left center;
+}
+
+ul.nice-menu-down li li.menuparent {
+  background: #eee url(arrow-left.png) left center no-repeat;
+}
+
+ul.nice-menu-down li li.menuparent:hover {
+  background: #ccc url(arrow-left.png) left center no-repeat;
+}
+
+/******************************
+ Garland-specific CSS
+******************************/
+
+/**
+ * Global CSS for ALL menu types
+ */
+ul.nice-menu li {
+  padding-right: 0;
+}
+
+#header-region ul.nice-menu ul {
+  left: auto;
+  right: -1px;
+  margin-left: 0;
+}
+
+/**
+ * HORIZONTAL (down) menus
+ */
+#header-region ul.nice-menu-down li ul li ul {
+  left: auto;
+  right: 12.5em;
+}
+
+#header-region ul.nice-menu-down li.menuparent {
+  background-position: left center;
+}
+
+#header-region ul.nice-menu-down li.menuparent:hover {
+  background-position: left center;
+}
+
+#header-region ul.nice-menu-down li li.menuparent {
+  background: #eee url(arrow-left.png) left center no-repeat;
+}
+
+#header-region ul.nice-menu-down li li.menuparent:hover {
+  background: #ccc url(arrow-left.png) left center no-repeat;
+}

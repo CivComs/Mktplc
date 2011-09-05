@@ -1,0 +1,306 @@
+<?php
+
+/**
+ * @file
+ * Provides a UI for managing Search Lucene API searchers.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function luceneapi_ui_menu() {
+  $items = array();
+
+  $items['admin/config/search/luceneapi'] = array(
+    'title' => 'Search Lucene API',
+    'description' => t('Configure Search Lucene API indexes and search pages.'),
+    'page callback' => 'luceneapi_ui_searcher_list_page',
+    'access arguments' => array('administer search'),
+    'file' => 'luceneapi_ui.pages.inc',
+  );
+
+  //
+  // Search pages
+  //
+
+  $items['admin/config/search/luceneapi/search-pages'] = array(
+    'title' => 'Search pages',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items['admin/config/search/luceneapi/search-pages/add'] = array(
+    'title' => 'Add search page configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('luceneapi_ui_add_searcher_form'),
+    'access arguments' => array('administer search'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'luceneapi_ui.admin.inc',
+  );
+
+  $items['admin/config/search/luceneapi/search-pages/import'] = array(
+    'title' => 'Import search page configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('luceneapi_ui_import_searcher_form'),
+    'access arguments' => array('administer search'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'luceneapi_ui.admin.inc',
+  );
+
+  $items['admin/config/search/luceneapi/search-pages/%luceneapi_searcher/edit'] = array(
+    'title' => 'Edit search page configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('luceneapi_ui_searcher_settings_form', 5),
+    'access arguments' => array('administer search'),
+    'file' => 'luceneapi_ui.admin.inc',
+  );
+
+  $items['admin/config/search/luceneapi/search-pages/%luceneapi_searcher/export'] = array(
+    'title' => 'Export search page configuration',
+    'load arguments' => array('luceneapi_searcher'),
+    'page callback' => 'luceneapi_ui_export_page',
+    'page arguments' => array(5),
+    'access arguments' => array('administer search'),
+    'file' => 'luceneapi_ui.pages.inc',
+  );
+
+  $items['admin/config/search/luceneapi/search-pages/%luceneapi_searcher/delete'] = array(
+    'title' => 'Delete search page configuration',
+    'load arguments' => array('luceneapi_searcher'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('luceneapi_ui_delete_searcher_confirm', 5),
+    'access arguments' => array('administer search'),
+    'file' => 'luceneapi_ui.pages.inc',
+  );
+
+  //
+  // Indexes
+  //
+
+  $items['admin/config/search/luceneapi/indexes'] = array(
+    'title' => 'Indexes',
+    'page callback' => 'luceneapi_ui_index_list_page',
+    'access arguments' => array('administer search'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'luceneapi_ui.pages.inc',
+  );
+
+  $items['admin/config/search/luceneapi/indexes/add'] = array(
+    'title' => 'Add index configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('luceneapi_ui_add_index_form'),
+    'access arguments' => array('administer search'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'luceneapi_ui.admin.inc',
+  );
+
+  $items['admin/config/search/luceneapi/indexes/import'] = array(
+    'title' => 'Import index configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('luceneapi_ui_import_index_form'),
+    'access arguments' => array('administer search'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'luceneapi_ui.admin.inc',
+  );
+
+  $items['admin/config/search/luceneapi/indexes/%luceneapi_index/edit'] = array(
+    'title' => 'Edit index configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('luceneapi_ui_index_settings_form', 5),
+    'access arguments' => array('administer search'),
+    'file' => 'luceneapi_ui.admin.inc',
+  );
+
+  $items['admin/config/search/luceneapi/indexes/%luceneapi_index/export'] = array(
+    'title' => 'Export index configuration',
+    'load arguments' => array('luceneapi_index'),
+    'page callback' => 'luceneapi_ui_export_page',
+    'page arguments' => array(5),
+    'access arguments' => array('administer search'),
+    'file' => 'luceneapi_ui.pages.inc',
+  );
+
+  $items['admin/config/search/luceneapi/indexes/%luceneapi_index/delete'] = array(
+    'title' => 'Delete index configuration',
+    'load arguments' => array('luceneapi_index'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('luceneapi_ui_delete_index_confirm', 5),
+    'access arguments' => array('administer search'),
+    'file' => 'luceneapi_ui.pages.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function luceneapi_ui_theme() {
+  return array(
+    'luceneapi_ui_setting_overview' => array(
+      'variables' => array('label' => NULL, 'name' => NULL, 'description' => NULL),
+      'file' => 'luceneapi_ui.pages.inc',
+    ),
+    'luceneapi_ui_fields_table' => array(
+      'render element' => 'element',
+      'file' => 'luceneapi_ui.admin.inc',
+    ),
+    'luceneapi_ui_sortable_fields_table' => array(
+      'render element' => 'element',
+      'file' => 'luceneapi_ui.admin.inc',
+    ),
+    'luceneapi_ui_bias_fields_table' => array(
+      'render element' => 'element',
+      'file' => 'luceneapi_ui.admin.inc',
+    ),
+  );
+}
+
+/**
+ * Gets fields, organizes into groups.
+ *
+ * @return
+ *   An array containing the grouped fields.
+ */
+function luceneapi_ui_get_field_groups(LuceneapiIndex $index, $enabled_only = FALSE, $filter_callback = FALSE) {
+
+  // Gets fields, filters if callback passed.
+  $fields = (!$enabled_only) ? $index->getFields() : $index->getEnabledFields();
+  if ($filter_callback) {
+    $fields = array_filter($fields, $filter_callback);
+  }
+
+  // Organizes fields into groups.
+  $groups = array();
+  foreach ($fields as $field_name => $field_info) {
+    $groups[$field_info['group']][$field_name] = $field_info;
+  }
+  ksort($groups);
+  return $groups;
+}
+
+/**
+ * Returns plugin options for FAPI elements.
+ *
+ * @param $type
+ *   The type of plugin.
+ * @return
+ *   An array of options that can be used in FAPI elements.
+ * @see luceneapi_ui_set_label()
+ */
+function luceneapi_ui_get_plugin_options($type) {
+  ctools_include('plugins');
+  $plugins = ctools_get_plugins('luceneapi', $type);
+  array_walk($plugins, 'luceneapi_ui_set_label');
+  return $plugins;
+}
+
+/**
+ * Returns registered plugin options for FAPI elements.
+ *
+ * @param $type
+ *   The type of plugin.
+ * @param $index
+ *   A LuceneapiIndex object containing the registered plugins.
+ * @return
+ *   An array of options that can be used in FAPI elements.
+ * @see luceneapi_ui_set_label()
+ */
+function luceneapi_ui_get_registered_plugin_options($type, LuceneapiIndex $index) {
+  $plugins = $index->getPlugins($type);
+  array_walk($plugins, 'luceneapi_ui_set_label');
+  return $plugins;
+}
+
+/**
+ *
+ * @see luceneapi_ui_set_label()
+ */
+function luceneapi_ui_get_index_options() {
+  ctools_include('export');
+  $options = ctools_export_crud_load_all('luceneapi_index');
+  array_walk($options, 'luceneapi_ui_set_label');
+  return $options;
+}
+
+/**
+ * Converts an item to an array key by module to the label.
+ *
+ * Useful as a callback to array_walk().
+ *
+ * @param $item
+ *   An array containing the item.
+ * @param $key
+ *   A string containing the array key.
+ */
+function luceneapi_ui_set_label(&$item, $key) {
+  $item = is_array($item) ? $item['handler']['label'] : $item->label;
+}
+
+/**
+ * Array sorting callback; sorts elements by 'label' key.
+ */
+function luceneapi_ui_sort_label($a, $b) {
+  if (!isset($b['label'])) {
+    return -1;
+  }
+  if (!isset($a['label'])) {
+    return 1;
+  }
+  return strcasecmp($a['label'], $b['label']);
+}
+
+/**
+ * Calculates the setting path based on the table storing the configurations.
+ *
+ * @param $table
+ *   A string containing the table the configuration options are stored in.
+ */
+function luceneapi_ui_calculate_settings_path($table) {
+  $path = 'admin/config/search/luceneapi/';
+  $path .= ('luceneapi_index' != $table) ? 'search-pages' : 'indexes';
+  return $path;
+}
+
+/**
+ * Gets the redirect path based on the setting name, table, and submitted
+ * button.
+ *
+ * @param $name
+ *
+ * @param $table
+ *
+ * @param $button
+ *
+ * @return
+ *
+ */
+function luceneapi_ui_get_redirect_path($name, $table, $button) {
+  $redirect_path = luceneapi_ui_calculate_settings_path($table);
+  if (t('Save and go back to list') != $button['#value']) {
+    $redirect_path .= '/' . $name . '/edit';
+  }
+  return $redirect_path;
+}
+
+/**
+ * Combines settings named "setting:*" into a single array of settings so they
+ * can more easily be processed at runtime.
+ *
+ * @param $setting_name
+ *   A string containing the name of the setting.
+ * @param $settings
+ *   An object containing the settings loaded from CTools.
+ */
+function luceneapi_ui_combine_settings($setting_name, $settings) {
+  $start = strlen($setting_name) + 1;
+  $settings->settings[$setting_name] = array();
+  foreach ($settings->settings as $name => $value) {
+    if (0 === strpos($name, $setting_name . ':')) {
+      $key = substr($name, $start);
+      unset($settings->settings[$name]);
+      $settings->settings[$setting_name][$key] = $value;
+    }
+  }
+}
+

@@ -1,0 +1,16 @@
+; $Id: openlayers_cck.info,v 1.5.2.1.2.1 2010/09/17 16:19:02 tmcw Exp $
+name = OpenLayers CCK
+description = Provides CCK fields and widgets through an OpenLayers interface.
+core = 7.x
+package = OpenLayers
+dependencies[] = openlayers
+dependencies[] = content
+
+files[] = openlayers_cck.module
+
+; Information added by drupal.org packaging script on 2011-01-14
+version = "7.x-2.0-alpha1"
+core = "7.x"
+project = "openlayers"
+datestamp = "1295020307"
+
