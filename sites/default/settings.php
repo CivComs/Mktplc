@@ -182,10 +182,10 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'nuams_cc',
-      'username' => 'nuams_2',
-      'password' => 'GhGPMATq',
-      'host' => 'db142e.pair.com',
+      'database' => 'cc_iovchuk',
+      'username' => 'root',
+      'password' => 'nownthen',
+      'host' => 'localhost',
       'port' => '',
       'driver' => 'mysql',
       'prefix' => '',
