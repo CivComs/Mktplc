@@ -1,0 +1,21 @@
+<?php
+function cc_formatters_field_formatter_info() {
+	return array(
+		'image_content_ref' => array(
+			'label' => t('Image Content Reference'),
+			'description' => t('Output of a field referencing to Image content type node.'),
+			'field types' => array('node_reference')
+		)
+	);
+}
+function cc_formatters_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+	module_load_include('inc', 'cc_formatters', 'cc_formatters');
+	if($display['type'] == 'image_content_ref'){
+		$galleries = array();
+		drupal_add_js(drupal_get_path('module', 'cc_formatters') . '/cc_formatters.js', 'file');
+		foreach($items as $delta => $item) {
+			$galleries = array_merge($galleries, _cc_formatters_shadowbox_gallery(node_load($item['nid'])));
+		}
+		return $galleries;
+	}
+}
