@@ -266,6 +266,7 @@ $drupal_hash_salt = 'DQIBprH37Pc2bCVUFTJ6dUSgmvxNPH4WDa9eexlDSFs';
  */
 ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100);
+ini_set('display_errors', 1);
 
 /**
  * Set session lifetime (in seconds), i.e. the time from the user's last visit
