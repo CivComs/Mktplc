@@ -1,0 +1,367 @@
+<?php
+/**
+ * @file
+ * Module file providing the "corresponding node reference" module main functions.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function corresponding_node_references_menu() {
+  $items = array();
+  $items['admin/config/system/corresponding_node_references'] = array(
+    'title' => 'Corresponding node references',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('corresponding_node_references_settings_form'),
+    'access arguments' => array('administer corresponding node references settings'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['admin/config/system/corresponding_node_references/references'] = array(
+    'title' => 'Corresponding node references',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('corresponding_node_references_settings_form'),
+    'access arguments' => array('administer corresponding node references settings'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['admin/config/system/corresponding_node_references/update'] = array(
+    'title' => 'Update existing nodes',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('corresponding_node_references_update_form'),
+    'access arguments' => array('administer corresponding node references settings'),
+    'type' => MENU_LOCAL_TASK,
+
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function corresponding_node_references_permission() {
+  return array('administer corresponding node references settings' => array(
+                 'title' => t('Administer corresponding node reference settings'),
+                 'description' => t('Administer corresponding node reference settings'),
+  ));
+}
+
+/**
+ * The settings form
+ */
+function corresponding_node_references_settings_form() {
+  $form['intro'] = array('#value' => t('Check which node references should listen to each other.
+  When checking a check box a reference on node type A to node B will automatically update the node reference field on node B
+  adding an entrie which points to node A.'));
+
+  $result = db_query("SELECT field_name, data FROM {field_config} WHERE type = :type", array(':type' => 'node_reference'));
+  foreach ($result as $row) {
+    $data = unserialize($row->data);
+      foreach ($data['settings']['referenceable_types'] as $reference) {
+        if ($reference != '0') {
+          $references[$row->field_name][] = $reference;
+      }
+    }
+  }
+
+  $result = db_query("SELECT fci.field_name, fci.entity_type, fci.bundle FROM {field_config_instance} fci INNER JOIN {field_config} fc ON fc.field_name = fci.field_name WHERE fc.type = :type", array(':type' => 'node_reference'));
+
+  foreach ($result as $row) {
+    if (!empty($references[$row->field_name])) {
+      foreach ($references[$row->field_name] as $reference) {
+        if ($row->entity_type == 'node')
+        $fields_to_compare[] = array('field_type' => $row->field_name, 'bundle' => $row->bundle, 'reference' => $reference);
+      }
+    }
+  }
+  if (!empty($fields_to_compare)) {
+    $corr_noderefs = array();
+    foreach ($fields_to_compare as $field) {
+      foreach ($fields_to_compare as $second_field) {
+        if ($field['bundle'] == $second_field['reference'] && $second_field['bundle'] == $field['reference']) {
+          if (!array_key_exists($field['bundle'] . ' ' . $field['field_type'] . ' ' . $second_field['bundle'] . ' ' . $second_field['field_type'], $corr_noderefs) && !array_key_exists($second_field['bundle'] . ' ' . $second_field['field_type'] . ' ' . $field['bundle'] . ' ' . $field['field_type'], $corr_noderefs)) {
+            $corr_noderefs[$field['bundle'] . ' ' . $field['field_type'] . ' ' . $second_field['bundle'] . ' ' . $second_field['field_type']] = array('bundle_1' => $field['bundle'], 'field_1' => $field['field_type'], 'bundle_2' => $second_field['bundle'], 'field_2' => $second_field['field_type']);
+          }
+        }
+      }
+    }
+
+    if (!empty($corr_noderefs)) {
+      $count = 0;
+      foreach ($corr_noderefs as $key => $corr_noderef) {
+        $formated_label = corresponding_node_references_format_label($key);
+        $formated_key = str_replace(' ', '*', $key);
+        $mapping[] = $formated_key;
+        $form['values'][$count] = array(
+          '#type' => 'fieldset',
+        );
+        $form['values'][$count]['enabled_' . $count] = array(
+          '#type' => 'checkbox',
+          '#default_value' => db_query("SELECT enabled FROM {corresponding_node_references} WHERE node_types_content_fields = :key", array(':key' => $formated_key))->fetchField(),
+          '#title' => $formated_label,
+        );
+        $count++;
+      }
+
+      //We are using a hidden field to submit the configuration because on some systems the checkbox name length is limited
+      //, using the key would cause the length to be too long see issue #558612
+      $form['mapping'] = array(
+        '#type' => 'hidden',
+        '#value' => serialize($mapping),
+      );
+      $form['submit'] = array('#type' => 'submit', '#value' => t('Save'));
+    }
+    else {
+      $form['text'] = array('#value' => '<div>' . t('There are no node types which have a corresponding node reference') . '</div>');
+    }
+  }
+
+  return $form;
+}
+
+/**
+ * Submit function for settings form
+ */
+function corresponding_node_references_settings_form_submit($form, $form_values) {
+  db_update('corresponding_node_references')->fields(array('enabled' => 0))->execute();
+  $query_values = array();
+
+  $mapping = unserialize($form_values['values']['mapping']);
+  foreach ($form_values['values'] as $key => $value) {
+    $keys = explode('_', $key);
+    if ($keys[0] == 'enabled') {
+      $query_values[$mapping[$keys[1]]] = $value;
+    }
+  }
+
+  foreach ($query_values as $key => $value) {
+    db_delete('corresponding_node_references')->condition('node_types_content_fields', $key)->execute();
+    db_insert('corresponding_node_references')->fields(array('node_types_content_fields' => $key, 'enabled' => $value))->execute();
+  }
+
+  drupal_set_message(t('The configuration has been saved'));
+}
+
+/**
+ * Formats a label
+ */
+function corresponding_node_references_format_label($key) {
+  $key = explode(' ', $key);
+  return t('Field instance:"!field1" on Bundle type:"!type1" <b>Corresponds with</b> Field instance:"!field2" on Bundle type:"!type2"',
+    array('!type1' => $key[0], '!field1' => $key[1], '!type2' => $key[2], '!field2' => $key[3]));
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function corresponding_node_references_node_insert($node) {
+  corresponding_node_references_processing_node('insert', $node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function corresponding_node_references_node_update($node) {
+  corresponding_node_references_processing_node('update', $node);
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function corresponding_node_references_node_delete($node) {
+  corresponding_node_references_processing_node('delete', $node);
+}
+
+
+/**
+ * Process a node's corresponding node references.
+ *
+ * @param $op the operation being performed on the node.
+ * @param $node the node object
+ * @param $process_unchanged whether or not to process node reference fields whose values have not changed.
+ */
+function corresponding_node_references_processing_node($op, $node, $process_unchanged = FALSE) {
+  module_load_include('inc', 'corresponding_node_references', 'corresponding_node_references.crud');
+
+  $result = db_query("SELECT node_types_content_fields FROM {corresponding_node_references} WHERE enabled = :enabled", array(':enabled' => 1));
+  while ($row = $result->fetchObject()) {
+    $key = explode('*', $row->node_types_content_fields);
+
+    switch ($node->type) {
+      case $key[0]:
+        $args = array($node, $key[1], $key[2], $key[3], $process_unchanged);
+        $function = 'corresponding_node_references_' . $op;
+        call_user_func_array($function, $args);
+        if ($key[0] != $key[2]) {
+          break;
+        }
+      // Fall through.
+      case $key[2]:
+        $args = array($node, $key[3], $key[0], $key[1], $process_unchanged);
+        $function = 'corresponding_node_references_' . $op;
+        call_user_func_array($function, $args);
+        break;
+    }
+  }
+}
+
+/**
+ * The update form.
+ * Allows updating of current nodes.
+ */
+function corresponding_node_references_update_form() {
+  $form = array();
+
+  $form['intro'] = array(
+    '#value' => t('This will update all the existing nodes for the selected content types so that their node reference fields are in sync.') . '<br />' . t('This process may take a long time depending on the number of nodes you are updating.') . '<br />' . t('When the process is finished you will see a count of the number of nodes that were updated.'));
+
+    $options = _node_types_build()->types;
+    foreach ($options as $type => $class) {
+      $options[$type] = $class->name;
+    }
+
+  $form['types'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Node types'),
+    '#options' => $options,
+    '#description' => t('Select the node types that you want to update.'),
+  );
+
+
+
+  $form['limit'] = array(
+    '#type' => 'select',
+    '#title' => t('Number of nodes to process at once'),
+    '#options' => array(
+      10 => t('10'),
+      20 => t('20'),
+      30 => t('30'),
+      50 => t('50'),
+      75 => t('75'),
+      100 => t('100'),
+      125 => t('125'),
+      150 => t('150'),
+      200 => t('200'),
+      250 => t('250'),
+      300 => t('300'),
+      350 => t('350'),
+      400 => t('400'),
+      450 => t('450'),
+      500 => t('500'),
+    ),
+    '#default_value' => 50,
+    '#description' => t('This process is done in batches. This is the number of nodes processed in each batch. If necessary, reduce the number of nodes to prevent timeouts and memory errors while processing.'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'submit',
+  );
+
+  return $form;
+}
+
+/**
+ * The update form.
+ * Allows updating of current nodes.
+ */
+function corresponding_node_references_update_form_validate($form, &$form_state) {
+  $types = array_filter($form_state['values']['types']);
+  if (empty($types)) {
+    form_set_error('types', t('You must select at least one node type.'));
+  }
+}
+
+/**
+ * The update form.
+ * Allows updating of current nodes.
+ */
+function corresponding_node_references_update_form_submit($form, &$form_state) {
+  $types = array_filter($form_state['values']['types']);
+  $types = array_keys($types);
+  corresponding_node_references_batch_index_remaining($types, $form_state['values']['limit']);
+}
+
+/**
+ * Submit a batch job to index the remaining, unindexed content.
+ */
+function corresponding_node_references_batch_index_remaining($types, $limit) {
+  $batch = array(
+    'operations' => array(
+      array('corresponding_node_references_batch_update_existing_nodes', array($types, $limit)),
+    ),
+    'finished' => 'corresponding_node_references_batch_update_existing_finished',
+    'title' => t('Processing'),
+    'init_message' => t('Preparing to update corresponding node references for existing nodes...'),
+    'progress_message' => t('Processing nodes...'),
+    'error_message' => t('Corresponding node references existing node update has encountered an error.'),
+  );
+  batch_set($batch);
+}
+
+/**
+ * Batch Operation Callback
+ *
+ * @see corresponding_node_references_batch_index_remaining()
+ */
+function corresponding_node_references_batch_update_existing_nodes($types, $limit, &$context) {
+  // If we are on our first time through.
+  if (!isset($context['sandbox']['progress'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['current_node'] = 0;
+    $context['sandbox']['max'] = db_query("SELECT COUNT(DISTINCT nid) FROM {node} WHERE type IN (:types)", array(':types' => $types))->fetchField();
+  }
+
+  $nids = array();
+  $args = $types;
+  $args[] = $context['sandbox']['current_node'];
+  // Get node IDs to update.
+  $result = db_query_range("SELECT nid
+                              FROM {node}
+                             WHERE type IN (:types)
+                               AND nid > :args
+                          ORDER BY nid", 0, $limit, array(':types' => $types, ':args' => $args[0]));
+
+  while ($row = $result->fetchObject()) {
+    $node = node_load($row->nid);
+    corresponding_node_references_processing_node('update', $node, TRUE);
+
+    // Update our progress information.
+    $context['sandbox']['progress']++;
+    $context['sandbox']['current_node'] = $node->nid;
+    $context['message'] = t('Processed @current of @total nodes', array('@current' => $context['sandbox']['progress'], '@total' => $context['sandbox']['max']));
+  }
+
+  // Inform the batch engine that we are not finished,
+  // and provide an estimation of the completion level we reached.
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+  // Put the total into the results section when we're finished so we can
+  // show it to the admin.
+  if ($context['finished']) {
+    $context['results']['count'] = $context['sandbox']['progress'];
+  }
+}
+
+/**
+ * Batch 'finished' callback.
+ *
+ * @see corresponding_node_references_batch_index_remaining()
+ */
+function corresponding_node_references_batch_update_existing_finished($success, $results, $operations) {
+  if ($success) {
+    $type = 'status';
+    $message = format_plural($results['count'], '1 node processed successfully.', '@count nodes processed successfully.');
+  }
+  else {
+    $type = 'error';
+    // An error occurred.
+    // $operations contains the operations that remained unprocessed.
+    $error_operation = reset($operations);
+    $message = 'An error occurred while processing ' . $error_operation[0] . ' with arguments:' . print_r($error_operation[0], TRUE);
+  }
+  drupal_set_message($message, $type);
+}
+
