@@ -1,0 +1,16 @@
+name = AddToAny
+description = "Helps readers share, bookmark, and email your articles and pages using any service, such as Facebook, Twitter, Delicious, Digg, and over 100 more using the <a href='http://www.addtoany.com/' target='_blank'>AddToAny</a> widget."
+core = 7.x
+
+files[] = addtoany.module
+files[] = addtoany.css
+files[] = addtoany.admin.inc
+files[] = views/addtoany_handler_field_addtoany_link.inc
+files[] = views/addtoany.views.inc
+configure = admin/config/system/addtoany
+; Information added by drupal.org packaging script on 2011-03-07
+version = "7.x-3.1"
+core = "7.x"
+project = "addtoany"
+datestamp = "1299485766"
+
