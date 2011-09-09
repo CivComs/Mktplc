@@ -1,2 +1,81 @@
 <?php
 // $Id: cc_ratings.module,v 0.1 2011/09/09 Sergei Churilo Exp $
+
+define('CC_RATINGS_TYPE_1', 'deployment_story');
+define('CC_RATINGS_OVERALL_FIELD', 'field_depstory_overall');
+define('CC_RATINGS_RATING_1', 'field_depstory_usage');
+define('CC_RATINGS_RATING_2', 'field_depstory_doc');
+define('CC_RATINGS_RATING_3', 'field_depstory_support');
+define('CC_RATINGS_RATING_4', 'field_depstory_install');
+define('CC_RATINGS_NUM',      4);
+define('CC_RATINGS_REF_1', 'field_depstory_deployment');
+define('CC_RATINGS_REF_2', 'field_deployment_agency_app');
+
+/*
+ * hook_form_alter
+ */
+function cc_ratings_form_alter(&$form, &$form_state, $form_id) {
+  if(empty($form['#node_edit_form']) || $form['type']['#value'] != CC_RATINGS_TYPE_1 || empty($form[CC_RATINGS_OVERALL_FIELD])) {
+    return;
+  }
+  
+  $lang = $form['language']['#value'];
+  $form[CC_RATINGS_OVERALL_FIELD][$lang][0]['rating']['#type'] = 'hidden'; 
+  $form['#submit'][] = '_cc_ratings_node_submit';
+}
+
+/*
+ * node submit callback for CC_RATINGS_TYPE_1 node add/delete form
+ */
+function _cc_ratings_node_submit($form, &$form_state) {
+  $lang = $form['language']['#value'];
+  $summary = 
+    (int) $form_state['values'][CC_RATINGS_RATING_1][$lang][0]['rating'] +
+    (int) $form_state['values'][CC_RATINGS_RATING_2][$lang][0]['rating'] +
+    (int) $form_state['values'][CC_RATINGS_RATING_3][$lang][0]['rating'] +
+    (int) $form_state['values'][CC_RATINGS_RATING_4][$lang][0]['rating'];
+  $overall = round($summary / CC_RATINGS_NUM);
+  $form_state['values'][CC_RATINGS_OVERALL_FIELD][$lang][0]['rating'] = $overall;
+}
+
+/*
+ * get average rating for node and number of votes
+ */
+function _cc_ratings_average_rating($nid, $voice_num = FALSE) {
+  static $voices = 0;
+  
+  if($voice_num) {
+    return $voices;
+  }
+  
+  $query = db_select('field_data_'.CC_RATINGS_OVERALL_FIELD, 'rating');
+  $query->join('field_data_'.CC_RATINGS_REF_1, 'ref1', 'rating.entity_id = ref1.entity_id');
+  $query->join('field_data_'.CC_RATINGS_REF_2, 'ref2', 'ref1.'.CC_RATINGS_REF_1.'_nid = ref2.entity_id');
+  $query->fields('rating', array(CC_RATINGS_OVERALL_FIELD.'_rating'));
+  $query->condition('ref2.'.CC_RATINGS_REF_2.'_nid', $nid, '=');
+
+  $result = $query->execute();
+  
+  $data = array();
+  while($row = $result->fetchField()) {
+    $data[] = $row;
+  }
+  
+  if(empty($data)) {
+    return 0;
+  }
+  
+  $voices = count($data);
+  $average = round(array_sum($data) / $voices);
+
+  return  $average;
+}
+
+/*
+ * theme rating using fivestar static formatter
+ */
+function _cc_ratings_print_average_value($nid, $stars = 5, $tag = 'vote') {
+  $rating = _cc_ratings_average_rating($nid);
+
+  return theme('fivestar_static', array('rating' => $rating, 'stars' => $stars, 'tag' => $tag));
+}
