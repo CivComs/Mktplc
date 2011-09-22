@@ -1,0 +1,14 @@
+name = Conditional Fields
+description = Define dependencies between fields based on their states and values.
+core = 7.x
+package = Fields
+
+dependencies[] = field
+configure = admin/structure/dependencies
+
+; Information added by drupal.org packaging script on 2011-09-13
+version = "7.x-3.x-dev"
+core = "7.x"
+project = "conditional_fields"
+datestamp = "1315872831"
+
