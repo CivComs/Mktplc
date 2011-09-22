@@ -1,0 +1,27 @@
+name = Phone Number
+description = "The phone module allows administrators to define a CCK field type for phone numbers."
+package = CCK
+dependencies[] = field
+core = 7.x
+
+files[] = cck_phone.module
+files[] = includes/cck_phone_countrycodes.inc
+files[] = includes/phone.au.inc
+files[] = includes/phone.ca.inc
+files[] = includes/phone.gb.inc
+files[] = includes/phone.my.inc
+files[] = includes/phone.pl.inc
+files[] = includes/phone.us.inc
+files[] = tests/cck_phone.crud.test
+files[] = tests/cck_phone.crud_input.test
+files[] = tests/phone.gb.test
+files[] = tests/phone.my.test
+files[] = tests/phone.us.test
+
+
+; Information added by drupal.org packaging script on 2011-03-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "cck_phone"
+datestamp = "1298937780"
+

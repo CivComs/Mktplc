@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Testing Malaysia phone numbers.
+ */
+
+/**
+ * Testing is valid Malaysia phone numbers.
+ */
+class MYPhoneNumberTest extends DrupalWebTestcase {
+  /**
+   * Phone number supposed to be good.
+   */
+  const PHONENUMBER_INPUT_TYPE_GOOD = 0;
+
+  /**
+   * Phone number supposed to have a bad number.
+   */
+  const PHONENUMBER_INPUT_TYPE_BAD = 1;
+
+  function getInfo() {
+    return array(
+      'name' => t('Phone number test - Malaysia'),
+      'description' => t('Tests various valid and invalid Malaysia phone numbers.'),
+      'group' => t('Phone Number'),
+    );
+  }
+
+  function testPhoneNumber() {
+    $test_cases = array(
+      array(
+        'number' => '388888888',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '03-8888 8888',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '(04) 123-4567',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '04 123 4567',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '4-123 4567',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '012 123 4567',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '12-123 4567',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '082-28 8888',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '03-888 8888',
+        'type' => self::PHONENUMBER_INPUT_TYPE_BAD
+      ),
+      array(
+        'number' => '04-8888 8888',
+        'type' => self::PHONENUMBER_INPUT_TYPE_BAD
+      ),
+      array(
+        'number' => '012 1234 5678',
+        'type' => self::PHONENUMBER_INPUT_TYPE_BAD
+      ),
+    );
+
+    foreach ($test_cases as $test) {
+      if ($test['type'] == self::PHONENUMBER_INPUT_TYPE_GOOD) {
+        $this->assertTrue(my_validate_number($test['number'], '', $dummy), 'Test valid: ' . $test['number']);
+      }
+      elseif ($test['type'] == self::PHONENUMBER_INPUT_TYPE_BAD) {
+        $this->assertFalse(my_validate_number($test['number'], '', $dummy), 'Test invalid: ' . $test['number']);
+      }
+    }
+  }
+}
