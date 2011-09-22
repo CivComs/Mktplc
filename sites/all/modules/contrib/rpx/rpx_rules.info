@@ -1,0 +1,15 @@
+name = Janrain Engage Rules integration
+description = Provides integration of Janrain Engage with rules
+dependencies[] = rpx_core
+dependencies[] = rpx_widgets
+dependencies[] = rules
+package = Janrain Engage
+core = 7.x
+files[]=rpx_rules.rules.inc
+
+; Information added by drupal.org packaging script on 2011-08-08
+version = "7.x-2.1"
+core = "7.x"
+project = "rpx"
+datestamp = "1312817532"
+
