@@ -1,0 +1,6 @@
+; $Id: cc_helper.info,v 0.x-dev 2011/09/21 Paul de Paula Exp $
+name = CC Helper
+description = General Helper Module.
+core = 7.x
+
+version = "7.x-0.1"
