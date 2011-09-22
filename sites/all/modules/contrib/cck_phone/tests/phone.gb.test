@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Testing US & Canada phone numbers.
+ */
+
+/**
+ * Testing is valid United Kingdom phone numbers.
+ */
+class GBPhoneNumberTest extends DrupalWebTestcase {
+  /**
+   * Phone number supposed to be good.
+   */
+  const PHONENUMBER_INPUT_TYPE_GOOD = 0;
+
+  /**
+   * Phone number supposed to have a bad number.
+   */
+  const PHONENUMBER_INPUT_TYPE_BAD = 1;
+
+  function getInfo() {
+    return array(
+      'name' => t('Phone number test - United Kingdom'),
+      'description' => t('Tests various valid and invalid United Kingdom phone numbers.'),
+      'group' => t('Phone Number'),
+    );
+  }
+
+  function testPhoneNumber() {
+    $test_cases = array(
+      array(
+        'number' => '01905 23819',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '01222 555 555',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '0122 555 5555',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '1970123456',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '(0)1970123456',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '1970 123 456',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '(0)1970 123 456',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '(01970) 123456',
+        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+      ),
+      array(
+        'number' => '1222 555 5555',
+        'type' => self::PHONENUMBER_INPUT_TYPE_BAD
+      ),
+      array(
+        'number' => '(010) 55555555',
+        'type' => self::PHONENUMBER_INPUT_TYPE_BAD
+      ),
+      array(
+        'number' => '(1970)1234567',
+        'type' => self::PHONENUMBER_INPUT_TYPE_BAD
+      ),
+    );
+
+    foreach ($test_cases as $test) {
+      if ($test['type'] == self::PHONENUMBER_INPUT_TYPE_GOOD) {
+        $this->assertTrue(gb_validate_number($test['number'], '', $dummy), 'Test valid: ' . $test['number']);
+      }
+      elseif ($test['type'] == self::PHONENUMBER_INPUT_TYPE_BAD) {
+        $this->assertFalse(gb_validate_number($test['number'], '', $dummy), 'Test invalid: ' . $test['number']);
+      }
+    }
+  }
+}
