@@ -1,33 +1,94 @@
 <?php
 // $Id: cc_ratings.module,v 0.1 2011/09/09 Sergei Churilo Exp $
 
-define('CC_RATINGS_TYPE_1', 'deployment_story');
-define('CC_RATINGS_OVERALL_FIELD', 'field_depstory_overall');
-define('CC_RATINGS_RATING_1', 'field_depstory_usage');
-define('CC_RATINGS_RATING_2', 'field_depstory_doc');
-define('CC_RATINGS_RATING_3', 'field_depstory_support');
-define('CC_RATINGS_RATING_4', 'field_depstory_install');
-define('CC_RATINGS_NUM',      4);
-define('CC_RATINGS_REF_1', 'field_depstory_deployment');
-define('CC_RATINGS_REF_2', 'field_deployment_agency_app');
+define('CC_RATINGS_TYPE_1',           'deployment_story');
+define('CC_RATINGS_OVERALL_FIELD',    'field_depstory_overall');
+define('CC_RATINGS_RATING_1',         'field_depstory_usage');
+define('CC_RATINGS_RATING_2',         'field_depstory_doc');
+define('CC_RATINGS_RATING_3',         'field_depstory_support');
+define('CC_RATINGS_RATING_4',         'field_depstory_install');
+define('CC_RATINGS_NUM',              4);
+define('CC_RATINGS_REF_1',            'field_depstory_deployment');
+define('CC_RATINGS_REF_2',            'field_deployment_agency_app');
+define('CC_RATINGS_TYPE_2',           'application');
+define('CC_RATINGS_OVERALL_FIELD_2',  'field_application_rating');
+define('CC_RATINGS_VOTES_NUM_FIELD',  'field_application_votes');
+define('CC_RATINGS_VAGON_SIZE',       100);
 
 /*
- * hook_form_alter
+ * implementation of hook_form_alter
  */
 function cc_ratings_form_alter(&$form, &$form_state, $form_id) {
-  if(empty($form['#node_edit_form']) || $form['type']['#value'] != CC_RATINGS_TYPE_1 || empty($form[CC_RATINGS_OVERALL_FIELD])) {
+  if(empty($form['#node_edit_form'])) {
     return;
   }
   
-  $lang = $form['language']['#value'];
-  $form[CC_RATINGS_OVERALL_FIELD][$lang][0]['rating']['#type'] = 'hidden'; 
-  $form['#submit'][] = '_cc_ratings_node_submit';
+  if($form['type']['#value'] == CC_RATINGS_TYPE_1) {
+    $lang = $form['language']['#value'];
+    $form[CC_RATINGS_OVERALL_FIELD][$lang][0]['rating']['#type'] = 'hidden'; 
+    $form['#submit'][] = '_cc_ratings_node_submit_1';
+    
+    return;
+  }
+
+  if($form['type']['#value'] == CC_RATINGS_TYPE_2) {
+    $lang = $form['language']['#value'];
+    $form[CC_RATINGS_OVERALL_FIELD_2][$lang][0]['rating']['#type'] = 'hidden'; 
+    $form[CC_RATINGS_VOTES_NUM_FIELD][$lang][0]['#type'] = 'hidden'; 
+    return;
+  }
+}
+
+/*
+ * implementation of hook_cron
+ */
+function cc_ratings_cron() {
+  $vagon = variable_get('cc_ratings_vagon', 0);
+  $nids = _cc_ratings_get_vagon($vagon);
+  
+  if(empty($nids)) {
+    $vagon = 0;
+    $nids = _cc_ratings_get_vagon($vagon);
+  }
+  
+  foreach($nids as $nid) {
+    $node = node_load($nid);
+    $votes = _cc_ratings_update_average_rating($node);
+    _cc_ratings_set_votes_count($node, $votes);
+    node_save($node);
+  }
+  
+  watchdog('cc_ratings', '@nodes nodes has been updated under vagon #@vagon.', array('@nodes' => count($nids), '@vagon' => $vagon), WATCHDOG_INFO);
+  variable_set('cc_ratings_vagon', $vagon++);
+}
+
+/*
+ * get nid's array of current vagon
+ */
+function _cc_ratings_get_vagon($vagon = 0) {
+  $start_nid = $vagon * CC_RATINGS_VAGON_SIZE;
+  $end_nid = (($vagon + 1) * CC_RATINGS_VAGON_SIZE) - 1;
+  
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->condition('n.type', CC_RATINGS_TYPE_2, '=');
+  $query->orderBy('nid', 'ASC');
+  $query->range($start_nid, $end_nid);
+  
+  $result = $query->execute();
+  
+  $data = array();
+  while($row = $result->fetchField()) {
+    $data[] = $row;
+  }
+  
+  return $data;
 }
 
 /*
  * node submit callback for CC_RATINGS_TYPE_1 node add/delete form
  */
-function _cc_ratings_node_submit($form, &$form_state) {
+function _cc_ratings_node_submit_1($form, &$form_state) {
   $lang = $form['language']['#value'];
   $summary = 
     (int) $form_state['values'][CC_RATINGS_RATING_1][$lang][0]['rating'] +
@@ -41,18 +102,12 @@ function _cc_ratings_node_submit($form, &$form_state) {
 /*
  * get average rating for node and number of votes
  */
-function _cc_ratings_average_rating($nid, $voice_num = FALSE) {
-  static $voices = 0;
-  
-  if($voice_num) {
-    return $voices;
-  }
-  
+function _cc_ratings_update_average_rating(&$node) {
   $query = db_select('field_data_'.CC_RATINGS_OVERALL_FIELD, 'rating');
   $query->join('field_data_'.CC_RATINGS_REF_1, 'ref1', 'rating.entity_id = ref1.entity_id');
   $query->join('field_data_'.CC_RATINGS_REF_2, 'ref2', 'ref1.'.CC_RATINGS_REF_1.'_nid = ref2.entity_id');
   $query->fields('rating', array(CC_RATINGS_OVERALL_FIELD.'_rating'));
-  $query->condition('ref2.'.CC_RATINGS_REF_2.'_nid', $nid, '=');
+  $query->condition('ref2.'.CC_RATINGS_REF_2.'_nid', $node->nid, '=');
 
   $result = $query->execute();
   
@@ -65,17 +120,53 @@ function _cc_ratings_average_rating($nid, $voice_num = FALSE) {
     return 0;
   }
   
-  $voices = count($data);
-  $average = round(array_sum($data) / $voices);
+  $votes = count($data);
+  $average = round(array_sum($data) / $votes);
 
-  return  $average;
+  _cc_ratings_set_average_value($node, $average);
+  
+  return $votes;
+}
+
+/*
+ * set average rating value for node
+ */
+function _cc_ratings_set_average_value(&$node, $value) {
+  $node->{CC_RATINGS_OVERALL_FIELD_2}[$node->language][0]['rating'] = $value;
+}
+ 
+/*
+ * get average rating for node and number of votes
+ */
+function _cc_ratings_get_average_value($nid) {
+  $node = node_load($nid);  
+  $lang = $node->language;
+  
+  return $node->{CC_RATINGS_OVERALL_FIELD_2}[$lang][0]['rating']; 
+}
+
+/*
+ * set count of votes for node
+ */
+function _cc_ratings_set_votes_count(&$node, $value) {
+  $node->{CC_RATINGS_VOTES_NUM_FIELD}[$node->language][0]['value'] = $value;
+}
+
+/*
+ * counts number of votes for node
+ */
+function _cc_ratings_get_votes_count($nid) {
+  $node = node_load($nid);  
+  $lang = $node->language;
+
+  return (!empty($node->{CC_RATINGS_VOTES_NUM_FIELD}[$lang][0]['value'])) ? (int) $node->{CC_RATINGS_VOTES_NUM_FIELD}[$lang][0]['value'] : 0; 
 }
 
 /*
  * theme rating using fivestar static formatter
  */
 function _cc_ratings_print_average_value($nid, $stars = 5, $tag = 'vote') {
-  $rating = _cc_ratings_average_rating($nid);
+  $rating = _cc_ratings_get_average_value($nid);
 
   return theme('fivestar_static', array('rating' => $rating, 'stars' => $stars, 'tag' => $tag));
 }

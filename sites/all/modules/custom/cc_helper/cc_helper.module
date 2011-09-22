@@ -1,0 +1,31 @@
+<?php
+// $Id: cc_helper.module,v 0.1 2011/09/21 Paul de Paula Exp $
+
+
+/*
+ * implementats of hook_user_view_alter
+ */
+function cc_helper_user_view_alter(&$build) {
+  global $user;
+
+  $build['summary']['login_history'] = array(
+        '#type' => 'user_profile_item', 
+        '#title' => t('Number of logins'), 
+        '#markup' => 100, 
+        '#weight' => 10,);
+  unset($build['summary']);
+  drupal_set_title(t(''));
+  $userfields = array('field_my_website',
+      'field_interests',
+      'field_gender', 
+      'field_other_social_network',
+      'field_share_profile',
+      'field_share_address',
+      'field_allow_others',
+      'field_full_name');
+      
+  foreach($userfields as $field)
+  {
+    unset($build[$field]);
+  }
+}
