@@ -248,11 +248,13 @@ a:link, a:visited {
 .block-nice-menus-1{
   float: right;
   margin-top:10px;
+  clear: both;
 }
 
 .block-nice-menus-2{
   background-color: #D7E7F7;
   float:right;
+  clear:both;
 }
 
 .block-nice-menus-1 .block-inner .content ul.nice-menu,
