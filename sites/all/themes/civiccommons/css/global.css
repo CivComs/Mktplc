@@ -9,6 +9,8 @@ body {
 
 .page {
   background-color: #fff;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 #breadcrumb {
@@ -20,6 +22,7 @@ body {
     float: left;
     margin-right: 20px;
     margin-top: 15px;
+    margin-bottom: 5px;
 }
 
 .region-content h1.title {
@@ -118,7 +121,8 @@ a:link, a:visited {
 .block-block-10,
 .block-block-9,
 .block-application-releases-block,
-.block-vendors-block-1 {
+.block-vendors-block-1,
+.block-block-18 {
   border: 2px solid #FFFFFF;
   -webkit-box-shadow: 0 1px 8px 1px #DED8D8;
   box-shadow: 0 1px 8px 1px #DED8D8;
@@ -137,7 +141,8 @@ a:link, a:visited {
 .block-block-10 h2.block-title,
 .block-application-releases-block h2.block-title,
 .block-vendors-block-1 h2.block-title,
-.block-block-9 h2.block-title
+.block-block-9 h2.block-title,
+.block-block-18 h2.block-title
 {
   background-color: #E1C83D;
   color: #FFFFFF;
@@ -265,7 +270,7 @@ a:link, a:visited {
 }
 
 .block-nice-menus-1 .block-inner .content ul.nice-menu a {
-    color: #666666;
+    color: #848080;
     display: block;
 }
 
@@ -274,7 +279,7 @@ a:link, a:visited {
 .block-nice-menus-1 .block-inner .content ul.nice-menu li a:link,
 .block-nice-menus-1 .block-inner .content ul.nice-menu li a:visited, 
 ul.nice-menu li a:visited  { 
-    color:#666666; 
+    color:#848080;
     background: #fff;
     text-decoration: none;
     background: url("../images/nav_separator.png") no-repeat scroll right center transparent;
@@ -286,7 +291,7 @@ ul.nice-menu li a:visited  {
 .block-nice-menus-1 .block-inner .content ul.nice-menu li.last a:active, 
 .block-nice-menus-1 .block-inner .content ul.nice-menu li.last a:link, 
 .block-nice-menus-1 .block-inner .content ul.nice-menu li.last a:visited  { 
-    color:#666666; 
+    color:#848080;
     background: #fff;
     text-decoration: none;
     background: none;
@@ -313,9 +318,8 @@ ul.nice-menu li a:visited  {
     color:#3399ff; 
     background-color: #d6e6f5;
     text-decoration: none;
-    padding-left: 0.8em;
-    padding-right: 0.8em;
-    font-size: 16px;  
+    padding: 8px 0.8em 8px;
+    font-size: 15px;  
 }
 
 
@@ -325,9 +329,8 @@ ul.nice-menu li a:visited  {
   background-color: #d6e6f5;
   text-decoration: none;
   background: url("../images/hover_triangle.png") no-repeat scroll bottom center transparent;
-  padding-left: 0.8em;
-  padding-right: 0.8em;
-  font-size: 16px; 
+  padding: 8px 0.8em 8px;
+  font-size: 15px; 
 }
 
 
@@ -479,6 +482,54 @@ ul.nice-menu li a:visited  {
   padding-left: 15px;
   padding-top: 10px;
   width: 120%;
+}
+
+
+.block-custom-search-blocks-1 .content {
+  background-color: #297FD1;
+  padding-left: 15px;
+  padding-right: 5px;
+}
+
+.block-custom-search-blocks-1 .form-item-custom-search-blocks-form-1{
+  clear: both;
+  float: left;
+  width: 65%;
+}
+
+
+.block-custom-search-blocks-1 input.custom-search-box {
+    color: #999999;
+    font-size: 15px;
+    height: 42px;
+    padding: 5px;
+    width: 96%;
+}
+
+.block-custom-search-blocks-1 .form-item-custom-search-types {
+    background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/search_arrow3.png") no-repeat scroll right center #FFFFFF;
+    float: left;
+    margin-left: -10px;
+    margin-right: 0;
+    overflow: hidden;
+    width: 27%;
+}
+
+.block-custom-search-blocks-1 .custom-search-selector {
+  background: none repeat scroll 0 0 transparent;
+  color: #999999;
+  float: left;
+  font-size: 15px;
+  height: 42px;
+  padding-top: 10px;
+  width: 126%;
+}
+
+.block-custom-search-blocks-1 input.custom-search-button {
+    height: 42px;
+    margin-left: 15px;
+    margin-right: 0;
+    margin-top: 12px;
 }
 
 /* Fivestar Module */
@@ -725,4 +776,17 @@ div.fivestar-widget-static .star span.off {
 
 .block-block-17{
   margin-top: 12px;
+}
+
+
+/* ORGANIZATION */
+
+
+.block-views-ec4dedca467f7a3362801868ff73408d h2.block-title,
+.block-views-f180557b90e1950dc78c1a58bbf318df h2.block-title{
+  color: #666666;
+  font-family: helvetica neue;
+  font-size: 14px;
+  margin: 0;
+  text-transform: uppercase;
 }

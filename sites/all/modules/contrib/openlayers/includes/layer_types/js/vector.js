@@ -1,4 +1,3 @@
-// $Id: vector.js,v 1.1.2.2 2010/09/15 21:28:21 tmcw Exp $
 
 /**
  * Process Vector Layers

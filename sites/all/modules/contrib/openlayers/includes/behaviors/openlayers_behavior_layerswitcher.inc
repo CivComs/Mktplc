@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_behavior_layerswitcher.inc,v 1.1.2.6 2010/08/31 08:26:28 strk Exp $
 
 /**
  * @file
@@ -39,7 +38,8 @@ class openlayers_behavior_layerswitcher extends openlayers_behavior {
    * Render.
    */
   function render(&$map) {
-    drupal_add_js(drupal_get_path('module', 'openlayers') .'/includes/behaviors/js/openlayers_behavior_layerswitcher.js');
+    drupal_add_js(drupal_get_path('module', 'openlayers') . 
+      '/includes/behaviors/js/openlayers_behavior_layerswitcher.js');
     return $this->options;
   }
 }

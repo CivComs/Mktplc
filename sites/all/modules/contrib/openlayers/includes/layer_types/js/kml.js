@@ -1,4 +1,3 @@
-// $Id: kml.js,v 1.1.2.5 2010/08/04 17:22:25 tmcw Exp $
 
 /**
  * @file
@@ -8,17 +7,18 @@
 /**
  * Openlayer layer handler for KML layer
  */
+(function($) {
 Drupal.openlayers.layer.kml = function(title, map, options) {
   var styleMap = Drupal.openlayers.getStyleMap(map, options.drupalID);
 
   options.projection = 'EPSG:' + options.projection;
 
   var layer = new OpenLayers.Layer.Vector(
-    title, 
+    title,
     $.extend(options, {
     strategies: [new OpenLayers.Strategy.Fixed()],
     protocol: new OpenLayers.Protocol.HTTP({
-        url: options.url, 
+        url: options.url,
         format: new OpenLayers.Format.KML(
           options.formatOptions
         )
@@ -29,3 +29,4 @@ Drupal.openlayers.layer.kml = function(title, map, options) {
   layer.styleMap = styleMap;
   return layer;
 };
+})(jQuery);

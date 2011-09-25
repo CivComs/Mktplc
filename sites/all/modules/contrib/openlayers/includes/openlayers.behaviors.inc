@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers.behaviors.inc,v 1.1.2.14.2.2 2010/11/29 21:38:12 tmcw Exp $
 
 /**
  * @file
@@ -16,7 +15,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Attribution'),
       'description' => t('Allows layers to provide attribution to the map if it exists.'),
       'type' => 'layer',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_attribution.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_attribution',
@@ -28,7 +27,7 @@ function _openlayers_openlayers_behaviors() {
       'description' => t('Parses Permalink-formatted arguments without adding a 
         Permalink link to the map'),
       'type' => 'layer',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_argparser.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_argparser',
@@ -39,7 +38,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Pop Up'),
       'description' => t('Adds clickable info boxes to points or shapes on maps.'),
       'type' => 'layer',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_popup.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_popup',
@@ -50,7 +49,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Tooltip'),
       'description' => t('Adds info boxes on hover to points or shapes on maps.'),
       'type' => 'layer',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_tooltip.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_tooltip',
@@ -61,7 +60,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Fullscreen'),
       'description' => t('Provides a button that expands maps to the size of the page.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_fullscreen.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_fullscreen',
@@ -72,7 +71,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Keyboard Defaults'),
       'description' => t('Provides keyboard shortcuts to pan and zoom the map.'),
       'type' => 'layer',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_keyboarddefaults.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_keyboarddefaults',
@@ -83,7 +82,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Layer Switcher'),
       'description' => t('Provides the ability to switch layers in the map interface.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_layerswitcher.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_layerswitcher',
@@ -94,7 +93,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Mouse Position'),
       'description' => t('Provides a visual indication of the mouse position to the user.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_mouseposition.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_mouseposition',
@@ -105,7 +104,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Navigation'),
       'description' => t('Provides the ability to navigate the map interface.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_navigation.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_navigation',
@@ -116,7 +115,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('DragPan'),
       'description' => t('Provides the ability to pan in the map interface.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_dragpan.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_dragpan',
@@ -127,7 +126,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('PanZoom'),
       'description' => t('Provides the ability to pan and zoom in the map interface.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_panzoom.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_panzoom',
@@ -138,7 +137,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('PanZoomBar'),
       'description' => t('Gives user ability to pan and zoom, with a zoom bar, in the map interface.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_panzoombar.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_panzoombar',
@@ -149,7 +148,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Map Form Values'),
       'description' => t('Provides a way of updating form elements with zoom level and centering from a map.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_mapformvalues.inc',
       'ui_visibility' => FALSE,
       'behavior' => array(
@@ -161,7 +160,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Boxselect'),
       'description' => t('Allows the selection and display of a box.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_boxselect.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_boxselect',
@@ -172,7 +171,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Permalink'),
       'description' =>  t('Provides a URL that will link to a specific map position.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_permalink.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_permalink',
@@ -183,7 +182,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Scale Line'),
       'description' => t('Provides a line of scale in the map interface.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_scaleline.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_scaleline',
@@ -194,7 +193,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Zoom Box'),
       'description' => t('Provides a zoom box that can be drawn on shift + click.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_zoombox.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_zoombox',
@@ -205,7 +204,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Zoom Panel'),
       'description' => t('Provides a Zoom In, Zoom Out, and Zoom to Max Extent Button'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_zoompanel.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_zoompanel',
@@ -216,7 +215,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Zoom to Max Extent'),
       'description' => t('Provides button to zoom to the maximum extent of the map.'),
       'type' => 'map',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_zoomtomaxextent.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_zoomtomaxextent',
@@ -227,7 +226,7 @@ function _openlayers_openlayers_behaviors() {
       'title' => t('Zoom to Layer'),
       'description' => t('Zooms to the extent of a given layer on map loading.'),
       'type' => 'layer',
-      'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
       'file' => 'openlayers_behavior_zoomtolayer.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_zoomtolayer',
@@ -238,7 +237,7 @@ function _openlayers_openlayers_behaviors() {
        'title' => t('Draw Features'),
        'description' => t('Provides functionality for adding features to a map.'),
        'type' => 'layer',
-       'path' => drupal_get_path('module', 'openlayers') .'/includes/behaviors',
+       'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
        'file' => 'openlayers_behavior_drawfeatures.inc',
        'behavior' => array(
          'class' => 'openlayers_behavior_drawfeatures',
@@ -253,6 +252,16 @@ function _openlayers_openlayers_behaviors() {
       'file' => 'openlayers_behavior_cluster.inc',
       'behavior' => array(
         'class' => 'openlayers_behavior_cluster',
+        'parent' => 'openlayers_behavior',
+      ),
+    ),
+    'openlayers_behavior_geolocate' => array(
+      'title' => t('Geolocate'),
+      'description' => t('Provides the geolcoation control and simply zooms to users location.'),
+      'path' => drupal_get_path('module', 'openlayers') . '/includes/behaviors',
+      'file' => 'openlayers_behavior_geolocate.inc',
+      'behavior' => array(
+        'class' => 'openlayers_behavior_geolocate',
         'parent' => 'openlayers_behavior',
       ),
     ),

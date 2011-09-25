@@ -1,5 +1,31 @@
 <?php
-// $Id: openlayers_ui.module,v 1.1.2.40.2.7 2010/11/30 20:44:59 tmcw Exp $
+/**
+ * @file
+ * Main Drupal module file for the OpenLayers UI module
+ *
+ * @ingroup openlayers
+ */
+
+/**
+ * Implements hook_init
+ */
+function openlayers_init() {
+  // For backwards compability for the change from maps to presets
+  // in the 7.x-2.x version, we want to make it really obvious that
+  // administrators and developers should be updating their maps
+  if (strpos($_GET['q'], 'admin/structure/openlayers') === 0) {
+    include_once DRUPAL_ROOT . '/includes/install.inc';
+    drupal_load_updates();
+    module_load_include('install', 'openlayers', 'openlayers');
+    $reqs = openlayers_requirements('runtime');
+    foreach ($reqs as $r) {
+      drupal_set_message(t('<strong>!title</strong> !message', array(
+        '!title' => $r['value'],
+        '!message' => $r['description'],
+        )), 'error');
+    }
+  }
+}
 
 /**
  * Implements hook_help
@@ -8,35 +34,35 @@ function openlayers_ui_help($path, $arg) {
   switch ($path) {
     case 'admin/help#openlayers_ui':
       return '<p>'. t('Provides a user interface to manage OpenLayers maps.') .'</p>';
-    case 'admin/build/openlayers':
+    case 'admin/structure/openlayers':
       return '<p>'. t('Configure where Drupal finds 
         the OpenLayers javascript library. Using a local or <a href="@olb">compacted 
         version</a> of OpenLayers can reduce filesize, but remember to set the Image Path and 
-        CSS Path options in every preset, because OpenLayers is not able to find these resources 
+        CSS Path options in every map, because OpenLayers is not able to find these resources 
         automatically. See the included documentation in /doc for 
         more details.',
         array('@olb' => 'http://trac.openlayers.org/wiki/Profiles')) .'</p>';
-    case 'admin/build/openlayers/styles':
+    case 'admin/structure/openlayers/styles':
       return '<p>'. t('OpenLayer styles are stored versions of 
         <a href="@ols">javascript StyleMap objects</a>, but are much easier to 
         configure through an interface. Styles will typically define the icon, 
         fill color, border, and radius of points or polygons, so they are used 
         on overlays more often than base layers, which are not affected by vector 
         styles.', array("@ols" => 'http://trac.openlayers.org/wiki/Styles')) .'</p>';
-    case 'admin/build/openlayers/styles/add':
+    case 'admin/structure/openlayers/styles/add':
       return '<p>'. t('The name, title, and description you give a style is for Drupal\'s 
         interal storage. The rest of the properties are documented on openlayers.org')
         . '</p>';
-    case 'admin/build/openlayers/presets':
-      return '<p>'. t('Presets are combinations of the layers, styles, and behaviors 
+    case 'admin/structure/openlayers/maps':
+      return '<p>'. t('Maps are combinations of the layers, styles, and behaviors 
         which constitute maps. They also contain basic configuration like the 
         width and centerpoint of the map - everything except for a mechanism 
         to put a map on a page. For that, use the Views OpenLayers Map style.') .'</p>';
-    case 'admin/build/openlayers/layers':
+    case 'admin/structure/openlayers/layers':
       return '<p>'. t('Layers are stored versions of javascript OpenLayers layer 
         objects. They point at a data source, like OpenStreetMap, Google Maps, 
         or Drupal itself, and sometimes define the zoom levels for which they apply.') .'</p>';
-    case 'admin/build/openlayers/layers/settings':
+    case 'admin/structure/openlayers/layers/settings':
       return '<p>'. t('Commercial layer providers like Google will require API keys 
         to ensure that users are\'t abusing the service and to enforce limits. Not all 
         of these keys are required, of course, only those that are used on a site.') .'</p>';
@@ -45,10 +71,15 @@ function openlayers_ui_help($path, $arg) {
 }
 
 /**
- * Implements hook_perm
+ * Implements hook_permission().
  */
-function openlayers_ui_perm() {
-  return array('administer openlayers');
+function openlayers_ui_permission() {
+  return array(
+    'administer openlayers' => array(
+      'title' => t('Administer OpenLayers'),
+      'description' => t('Configure OpenLayers settings, styles, maps, and layers.'),
+    ),
+  );
 }
 
 /**
@@ -58,7 +89,7 @@ function openlayers_ui_menu() {
   $items = array();
 
   // Core OpenLayers settings pages.
-  $items['admin/build/openlayers'] = array(
+  $items['admin/structure/openlayers'] = array(
     'title' => 'OpenLayers',
     'description' => 'Manage maps, layers, styles, and map behaviors.',
     'page callback' => 'drupal_get_form',
@@ -67,14 +98,14 @@ function openlayers_ui_menu() {
     'file' => 'includes/openlayers_ui.admin.inc',
     'type' => MENU_NORMAL_ITEM
   );
-  $items['admin/build/openlayers/settings'] = array(
+  $items['admin/structure/openlayers/settings'] = array(
     'title' => 'Settings',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -20,
   );
 
   // Layers.
-  $items['admin/build/openlayers/layers'] = array(
+  $items['admin/structure/openlayers/layers'] = array(
     'title' => 'Layers',
     'page callback' => 'openlayers_ui_object_list',
     'page arguments' => array(3),
@@ -83,13 +114,13 @@ function openlayers_ui_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => -10,
   );
-  $items['admin/build/openlayers/layers/list'] = array(
+  $items['admin/structure/openlayers/layers/list'] = array(
     'title' => 'List',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -20,
   );
   // Layer type drilldown
-  $items['admin/build/openlayers/layers/add'] = array(
+  $items['admin/structure/openlayers/layers/add'] = array(
     'title' => 'Add',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_layers_types'),
@@ -99,7 +130,7 @@ function openlayers_ui_menu() {
     'weight' => -10,
   );
   // Actual add-layer form
-  $items['admin/build/openlayers/layers/add/%openlayers_layer_type'] = array(
+  $items['admin/structure/openlayers/layers/add/%openlayers_layer_type'] = array(
     'title' => 'Add',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_layers_form', 5),
@@ -108,17 +139,17 @@ function openlayers_ui_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => -15,
   );
-  $items['admin/build/openlayers/layers/clone/%openlayers_layer'] = array( 
+  $items['admin/structure/openlayers/layers/clone/%openlayers_layer'] = array( 
     'title' => 'Clone layer',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_layers_form', 5),
     'access arguments' => array('administer openlayers'),
     'file' => 'includes/openlayers_ui.layers.inc',
     'type' => MENU_NORMAL_ITEM,
-    'tab_parent' => 'admin/build/openlayers/layers',
+    'tab_parent' => 'admin/structure/openlayers/layers',
   );
   // Edit-layer form
-  $items['admin/build/openlayers/layers/%openlayers_layer/edit'] = array(
+  $items['admin/structure/openlayers/layers/%openlayers_layer/edit'] = array(
     'title' => 'Edit layer',
     'description' => 'Edit OpenLayers layer.',
     'page callback' => 'drupal_get_form',
@@ -126,9 +157,9 @@ function openlayers_ui_menu() {
     'access arguments' => array('administer openlayers'),
     'file' => 'includes/openlayers_ui.layers.inc',
     'type' => MENU_LOCAL_TASK,
-    'tab_parent' => 'admin/build/openlayers/layers',
+    'tab_parent' => 'admin/structure/openlayers/layers',
   );
-  $items['admin/build/openlayers/layers/%openlayers_layer_export/delete'] = array(
+  $items['admin/structure/openlayers/layers/%openlayers_layer_export/delete'] = array(
     'title' => 'Delete layer',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_object_delete', 3, 4),
@@ -136,7 +167,7 @@ function openlayers_ui_menu() {
     'file' => 'includes/openlayers_ui.layers.inc',
     'type' => MENU_NORMAL_ITEM
   );
-  $items['admin/build/openlayers/layers/%openlayers_layer_export/export'] = array(
+  $items['admin/structure/openlayers/layers/%openlayers_layer_export/export'] = array(
     'title' => 'Export layer',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_object_export', 3, 4),
@@ -145,7 +176,7 @@ function openlayers_ui_menu() {
     'type' => MENU_NORMAL_ITEM
   );
   // Layer-type-wide settings form
-  $items['admin/build/openlayers/layers/settings'] = array(
+  $items['admin/structure/openlayers/layers/settings'] = array(
     'title' => 'API Keys',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_layers_settings'),
@@ -156,7 +187,7 @@ function openlayers_ui_menu() {
   );
 
   // Styles.
-  $items['admin/build/openlayers/styles'] = array(
+  $items['admin/structure/openlayers/styles'] = array(
     'title' => 'Styles',
     'page callback' => 'openlayers_ui_object_list',
     'page arguments' => array(3),
@@ -165,12 +196,12 @@ function openlayers_ui_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => -10,
   );
-  $items['admin/build/openlayers/styles/list'] = array(
+  $items['admin/structure/openlayers/styles/list'] = array(
     'title' => 'List',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -20,
   );
-  $items['admin/build/openlayers/styles/add'] = array(
+  $items['admin/structure/openlayers/styles/add'] = array(
     'title' => 'Add',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_styles_form'),
@@ -179,7 +210,7 @@ function openlayers_ui_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => -10,
   );
-  $items['admin/build/openlayers/styles/add/%openlayers_style'] = array(
+  $items['admin/structure/openlayers/styles/add/%openlayers_style'] = array(
     'title' => 'Add',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_styles_form', 5),
@@ -188,7 +219,7 @@ function openlayers_ui_menu() {
     'type' => MENU_NORMAL_ITEM,
     'weight' => -10,
   );
-  $items['admin/build/openlayers/styles/clone/%openlayers_style'] = array(
+  $items['admin/structure/openlayers/styles/clone/%openlayers_style'] = array(
     'title' => 'Clone style',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_styles_form', 5),
@@ -196,7 +227,7 @@ function openlayers_ui_menu() {
     'file' => 'includes/openlayers_ui.styles.inc',
     'type' => MENU_LOCAL_TASK,
   );
-  $items['admin/build/openlayers/styles/%openlayers_style/edit'] = array(
+  $items['admin/structure/openlayers/styles/%openlayers_style/edit'] = array(
     'title' => 'Edit style',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_styles_form', 4, TRUE),
@@ -204,7 +235,7 @@ function openlayers_ui_menu() {
     'file' => 'includes/openlayers_ui.styles.inc',
     'type' => MENU_LOCAL_TASK
   );
-  $items['admin/build/openlayers/styles/%openlayers_style/delete'] = array(
+  $items['admin/structure/openlayers/styles/%openlayers_style/delete'] = array(
     'title' => 'Delete style',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_object_delete', 3, 4),
@@ -212,7 +243,7 @@ function openlayers_ui_menu() {
     'file' => 'includes/openlayers_ui.styles.inc',
     'type' => MENU_LOCAL_TASK
   );
-  $items['admin/build/openlayers/styles/%openlayers_style/export'] = array(
+  $items['admin/structure/openlayers/styles/%openlayers_style/export'] = array(
     'title' => 'Export style',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_object_export', 3, 4),
@@ -221,86 +252,86 @@ function openlayers_ui_menu() {
     'type' => MENU_LOCAL_TASK
   );
 
-  // Presets.
-  $items['admin/build/openlayers/presets'] = array(
-    'title' => 'Presets',
-    'description' => 'Create OpenLayers map presets.',
+  // Maps.
+  $items['admin/structure/openlayers/maps'] = array(
+    'title' => 'Maps',
+    'description' => 'Create OpenLayers maps.',
     'page callback' => 'openlayers_ui_object_list',
     'page arguments' => array(3),
     'access arguments' => array('administer openlayers'),
-    'file' => 'includes/openlayers_ui.presets.inc',
+    'file' => 'includes/openlayers_ui.maps.inc',
     'type' => MENU_LOCAL_TASK,
-    'weight' => -10,
+    'weight' => 10,
   );
-  $items['admin/build/openlayers/presets/list'] = array(
+  $items['admin/structure/openlayers/maps/list'] = array(
     'title' => 'List',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -20,
   );
-  $items['admin/build/openlayers/presets/add'] = array(
+  $items['admin/structure/openlayers/maps/add'] = array(
     'title' => 'Add',
-    'description' => 'Add OpenLayers map preset.',
+    'description' => 'Add OpenLayers maps.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('openlayers_ui_presets_form'),
+    'page arguments' => array('openlayers_ui_maps_form'),
     'access arguments' => array('administer openlayers'),
-    'file' => 'includes/openlayers_ui.presets.inc',
+    'file' => 'includes/openlayers_ui.maps.inc',
     'type' => MENU_LOCAL_TASK,
     'weight' => -10,
   );
-  $items['admin/build/openlayers/presets/add/%openlayers_preset'] = array(
-    'title' => 'Clone Preset',
-    'description' => 'Add OpenLayers map preset.',
+  $items['admin/structure/openlayers/maps/add/%openlayers_map'] = array(
+    'title' => 'Clone Map',
+    'description' => 'Add OpenLayers maps.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('openlayers_ui_presets_form', 5),
+    'page arguments' => array('openlayers_ui_maps_form', 5),
     'access arguments' => array('administer openlayers'),
-    'file' => 'includes/openlayers_ui.presets.inc',
+    'file' => 'includes/openlayers_ui.maps.inc',
     'type' => MENU_NORMAL_ITEM,
     'weight' => -10,
   );
-  $items['admin/build/openlayers/presets/clone/%openlayers_preset'] = array(
-    'title' => 'Clone preset',
-    'description' => 'Clone OpenLayers map preset.',
-    'page callback' => 'openlayers_ui_presets_clone',
+  $items['admin/structure/openlayers/maps/clone/%openlayers_map'] = array(
+    'title' => 'Clone Map',
+    'description' => 'Clone OpenLayers maps.',
+    'page callback' => 'openlayers_ui_maps_clone',
     'page arguments' => array(5),
     'access arguments' => array('administer openlayers'),
-    'file' => 'includes/openlayers_ui.presets.inc',
+    'file' => 'includes/openlayers_ui.maps.inc',
     'type' => MENU_LOCAL_TASK, 
   );
-  $items['admin/build/openlayers/presets/%openlayers_preset/edit'] = array(
-    'title' => 'Edit preset',
-    'description' => 'Edit OpenLayers map preset.',
+  $items['admin/structure/openlayers/maps/%openlayers_map/edit'] = array(
+    'title' => 'Edit map',
+    'description' => 'Edit OpenLayers maps.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('openlayers_ui_presets_form', 4, TRUE),
+    'page arguments' => array('openlayers_ui_maps_form', 4, TRUE),
     'access arguments' => array('administer openlayers'),
-    'file' => 'includes/openlayers_ui.presets.inc',
+    'file' => 'includes/openlayers_ui.maps.inc',
     'type' => MENU_LOCAL_TASK,
-    'tab_parent' => 'admin/build/openlayers/presets',
+    'tab_parent' => 'admin/structure/openlayers/maps',
   );
-  $items['admin/build/openlayers/presets/%openlayers_preset/delete'] = array(
-    'title' => 'Delete preset',
-    'description' => 'Delete OpenLayers map preset.',
+  $items['admin/structure/openlayers/maps/%openlayers_map/delete'] = array(
+    'title' => 'Delete map',
+    'description' => 'Delete OpenLayers map.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_object_delete', 3, 4),
     'access arguments' => array('administer openlayers'),
-    'file' => 'includes/openlayers_ui.presets.inc',
+    'file' => 'includes/openlayers_ui.maps.inc',
     'type' => MENU_LOCAL_TASK,
-    'tab_parent' => 'admin/build/openlayers/presets',
+    'tab_parent' => 'admin/structure/openlayers/maps',
   );
-  $items['admin/build/openlayers/presets/%openlayers_preset/export'] = array(
-    'title' => 'Export preset',
-    'description' => 'Export OpenLayers map preset.',
+  $items['admin/structure/openlayers/maps/%openlayers_map/export'] = array(
+    'title' => 'Export map',
+    'description' => 'Export OpenLayers map.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('openlayers_ui_object_export', 3, 4),
     'access arguments' => array('administer openlayers'),
-    'file' => 'includes/openlayers_ui.presets.inc',
+    'file' => 'includes/openlayers_ui.maps.inc',
     'type' => MENU_LOCAL_TASK,
-    'tab_parent' => 'admin/build/openlayers/presets',
+    'tab_parent' => 'admin/structure/openlayers/maps',
   );
-  $items['openlayers/ahah/preset'] = array(
+  $items['openlayers/ahah/map'] = array(
     'title' => 'OpenLayers AHAH',
-    'page callback' => 'openlayers_ui_preset_ahah',
+    'page callback' => 'openlayers_ui_map_ahah',
     'access callback' => TRUE,
-    'file' => 'includes/openlayers_ui.presets.inc',
+    'file' => 'includes/openlayers_ui.maps.inc',
     'type' => MENU_CALLBACK,
   );
 
@@ -327,15 +358,15 @@ function openlayers_ui_theme($existing, $type, $theme, $path) {
       ),
       'file' => 'includes/openlayers_ui.theme.inc',
     ),
-    'openlayers_ui_presets_form' => array(
+    'openlayers_ui_maps_form' => array(
       'render element' => 'elements',
       'file' => 'includes/openlayers_ui.theme.inc',
     ),
-    'openlayers_ui_presets_form_layers' => array(
+    'openlayers_ui_maps_form_layers' => array(
       'render element' => 'elements',
       'file' => 'includes/openlayers_ui.theme.inc',
     ),
-    'openlayers_ui_presets_form_behaviors' => array(
+    'openlayers_ui_maps_form_behaviors' => array(
       'render element' => 'elements',
       'file' => 'includes/openlayers_ui.theme.inc',
     ),
@@ -350,74 +381,81 @@ function openlayers_ui_object_list($type) {
 
   switch ($type) {
     case 'styles':
+      $header = array(t('Icon'), t('Title'), t('Description'), t('Actions'));
       $objects = openlayers_styles(TRUE);
       break;
     case 'layers':
+      $header = array(t('Title'), t('Type'), t('Description'), t('Actions'));
+      $layer_types = openlayers_layer_types();
       $objects = openlayers_layers_load(TRUE);
       break;
-    case 'presets':
-      $objects = openlayers_presets(TRUE);
+    case 'maps':
+      $header = array(t('Title'), t('Layers'), t('Description'), t('Actions'));
+      $layers = openlayers_layers_load();
+      $objects = openlayers_maps(TRUE);
       break;
-  }
-
-  // Make table of presets and actions
-  if ($type == 'layers') {
-    $header = array(t('Title'), t('Type'), t('Description'), t('Actions'));
-    $layer_types = openlayers_layer_types();
-  }
-  elseif ($type == 'presets') {
-    $header = array(t('Title'), t('Layers'), t('Description'), t('Actions'));
-    $layers = openlayers_layers_load();
-  }
-  else {
-    $header = array(t('Title'), t('Description'), t('Actions'));
   }
 
   // Create table rows
   foreach ($objects as $object) {
     $row = array();
     $links = array();
+    
+    // Any pre-title cells.
+    switch ($type) {
+      case 'styles':
+      	// Add the icon as an image in the row if it exists.
+      	$row[] = isset($object->data['externalGraphic']) ? theme('image',array('path'=>$object->data['externalGraphic'])) : NULL;
+        break;
+      
+      default:
+      	break;
+    }
+    
+    // Check map type and create links accordingly.
+    $links[] = l(t('Export'), "admin/structure/openlayers/{$type}/{$object->name}/export");
+    $links[] = l(t('Clone'), "admin/structure/openlayers/{$type}/clone/{$object->name}");
+    
     switch ($object->export_type) {
       case (EXPORT_IN_DATABASE | EXPORT_IN_CODE):
         $row[] = $object->title .' <em><small>(' . t('Overridden') . ')</small></em>';
+        $links[] = l(t('Edit'), "admin/structure/openlayers/{$type}/{$object->name}/edit");
+        $links[] = l(t('Revert'), "admin/structure/openlayers/{$type}/{$object->name}/delete");
         break;
+
       case EXPORT_IN_DATABASE:
-        $row[] = $object->title .' <em><small>(' . t('Normal') . ')</small></em>';
+        $links[] = l(t('Edit'), "admin/structure/openlayers/{$type}/{$object->name}/edit");
+        $links[] = l(t('Delete'), "admin/structure/openlayers/{$type}/{$object->name}/delete");
+      	$row[] = $object->title .' <em><small>(' . t('Normal') . ')</small></em>';
         break;
+
       case EXPORT_IN_CODE:
         $row[] = $object->title .' <em><small>(' . t('Default') . ')</small></em>';
         break;
     }
 
-    if ($type == 'layers') {
-      $row[] = $layer_types[$object->data['layer_type']]['title'];
-    }
-    elseif ($type == 'presets') {
-      if (!empty($object->data['layers'])) {
-        $layer_names = array();
-        foreach ($object->data['layers'] as $layer) {
-          $layer_names[] = empty($layers[$layer]->title) ? $layer : $layers[$layer]->title;
+    // Post title rows.
+    switch ($type) {
+      case 'layers':
+        $row[] = $layer_types[$object->data['layer_type']]['title'];
+      	break;
+
+      case 'maps':
+        if (!empty($object->data['layers'])) {
+          $layer_names = array();
+          foreach ($object->data['layers'] as $layer) {
+            $layer_names[] = empty($layers[$layer]->title) ? $layer : $layers[$layer]->title;
+          }
+          $row[] = '<small>' . implode(', ', $layer_names) . '</small>';
         }
-        $row[] = '<small>' . implode(', ', $layer_names) . '</small>';
-      }
-      else {
-        $row[] = '';
-      }
+        break;
+      
+      default:
+      	break;
     }
 
+    // Add description and links.
     $row[] = $object->description;
-
-    // Check preset type and create links accordingly.
-    if ($object->export_type == (EXPORT_IN_CODE | EXPORT_IN_DATABASE)) {
-      $links[] = l(t('Edit'), "admin/build/openlayers/{$type}/{$object->name}/edit");
-      $links[] = l(t('Revert'), "admin/build/openlayers/{$type}/{$object->name}/delete");
-    }
-    elseif ($object->export_type == EXPORT_IN_DATABASE) {
-      $links[] = l(t('Edit'), "admin/build/openlayers/{$type}/{$object->name}/edit");
-      $links[] = l(t('Delete'), "admin/build/openlayers/{$type}/{$object->name}/delete");
-    }
-    $links[] = l(t('Export'), "admin/build/openlayers/{$type}/{$object->name}/export");
-    $links[] = l(t('Clone'), "admin/build/openlayers/{$type}/clone/{$object->name}");
     $row[] = implode(' | ', $links);
     $rows[] = $row;
   }
@@ -445,12 +483,12 @@ function openlayers_ui_object_delete($form_state, $args) {
     $message = ($object->export_type & EXPORT_IN_CODE) ?
       t('Are you sure you want to revert %object?', array('%object' => $object->title)) :
       t('Are you sure you want to delete %object?', array('%object' => $object->title));
-    return confirm_form($form, $message, 'admin/build/openlayers/'. $type);
+    return confirm_form($form, $message, 'admin/structure/openlayers/'. $type);
   }
 }
 
 /**
- * Form Submit Callback for Preset Delete Form
+ * Form Submit Callback for Map Delete Form
  */
 function openlayers_ui_object_delete_submit($form, &$form_state) {
   $type = $form_state['values']['type'];
@@ -465,8 +503,8 @@ function openlayers_ui_object_delete_submit($form, &$form_state) {
       $result = openlayers_layer_delete($object);
       break;
       
-    case 'presets':
-      $result = openlayers_preset_delete($object);
+    case 'maps':
+      $result = openlayers_map_delete($object);
       break;
   }
 
@@ -479,13 +517,15 @@ function openlayers_ui_object_delete_submit($form, &$form_state) {
   }
 
   // Redirect
-  $form_state['redirect'] = 'admin/build/openlayers/'. $type;
+  $form_state['redirect'] = 'admin/structure/openlayers/'. $type;
 }
 
 /**
  * Menu callback for object export form.
  */
-function openlayers_ui_object_export(&$form_state, $type, $object) {
+function openlayers_ui_object_export($form, $form_state, $type, $object) {
+  drupal_set_title(t('OpenLayers @type export', array('@type' => ucwords($type))));
+
   // Determine type
   switch ($type) {
     case 'styles':
@@ -496,8 +536,8 @@ function openlayers_ui_object_export(&$form_state, $type, $object) {
       $api = 'openlayers_layers';
       break;
       
-    case 'presets':
-      $api = 'openlayers_map_presets';
+    case 'maps':
+      $api = 'openlayers_maps';
       break;
   }
   
@@ -523,24 +563,24 @@ function openlayers_ui_object_export(&$form_state, $type, $object) {
     '#type' => 'submit',
     '#value' => t('Done'),
   );
-  $form['#redirect'] = 'admin/build/openlayers/' . $type;
+  $form['#redirect'] = 'admin/structure/openlayers/' . $type;
 
   return $form;
 }
 
 /**
- * Import a preset from cut & paste
+ * Import a map from cut & paste
  */
 function openlayers_ui_import_page(&$form_state) {
   $form['name'] = array(
     '#type' => 'textfield',
-    '#title' => t('Preset name'),
-    '#description' => t('Enter the name to use for this preset if it is different from the source preset. Leave blank to use the name of the preset.'),
+    '#title' => t('Map name'),
+    '#description' => t('Enter the name to use for this map if it is different from the source map. Leave blank to use the name of the map.'),
   );
 
   $form['view'] = array(
     '#type' => 'textarea',
-    '#title' => t('Paste preset code here'),
+    '#title' => t('Paste map code here'),
     '#required' => TRUE,
   );
 
@@ -554,36 +594,36 @@ function openlayers_ui_import_page(&$form_state) {
 }
 
 /**
- * Validate handler to import a preset
+ * Validate handler to import a map
  */
 function openlayers_ui_import_validate($form, &$form_state) {
   $view = '';
   ob_start();
-  eval($form_state['values']['preset']);
+  eval($form_state['values']['map']);
   ob_end_clean();
 
-  if (!is_object($preset)) {
-    return form_error($form['view'], t('Unable to interpret preset code.'));
+  if (!is_object($map)) {
+    return form_error($form['view'], t('Unable to interpret map code.'));
   }
 
   // View name must be alphanumeric or underscores, no other punctuation.
   if (!empty($form_state['values']['name']) &&
     preg_match('/[^a-zA-Z0-9_]/', $form_state['values']['name'])) {
-    form_error($form['name'], t('Preset name must be alphanumeric or underscores only.'));
+    form_error($form['name'], t('Map name must be alphanumeric or underscores only.'));
   }
 
   if ($form_state['values']['name']) {
-    $preset->name = $form_state['values']['name'];
+    $map->name = $form_state['values']['name'];
   }
 
-  $test = openlayers_preset_load($preset->name);
+  $test = openlayers_map_load($map->name);
   if ($test && $test->type != t('Default')) {
-    form_set_error('', t('A preset by that name already exists; please choose a different name'));
+    form_set_error('', t('A map by that name already exists; please choose a different name'));
   }
 
   // TODO: The import process should test layer existence
 
-  $form_state['preset'] = &$preset;
+  $form_state['map'] = &$map;
 }
 
 /**

@@ -1,4 +1,3 @@
-// $Id: openlayers_behavior_boxselect.js,v 1.1.2.4.2.3 2010/11/29 21:24:21 tmcw Exp $
 
 /**
  * @file
@@ -14,7 +13,7 @@ Drupal.behaviors.openlayers_behavior_boxselect = {
   'attach': function(context, settings) {
     function setRestrictedExtent(box) {
       bounding_box = box.geometry.getBounds().toBBOX();
-      $('#edit-center-restrict-restrictedExtent').val(bounding_box);
+      $('#edit-center-restrict-restrictedextent').val(bounding_box);
       for (i = 0; i < selections_layer.features.length; i++) {
         if (selections_layer.features[i] != box) {
           selections_layer.features[i].destroy();
@@ -37,8 +36,8 @@ Drupal.behaviors.openlayers_behavior_boxselect = {
       control.events.on({'featureAdded': this.setRestrictedExtent});
       data.openlayers.addLayer(selections_layer);
       data.openlayers.addControl(control);
-      if ($('edit-center-restrict-restrictedextent').val()) {
-        bounds = $('edit-center-restrict-restrictedextent').val();
+      if ($('#edit-center-restrict-restrictedextent').val()) {
+        bounds = $('#edit-center-restrict-restrictedextent').val();
         geometry = new OpenLayers.Bounds.fromString(bounds).toGeometry();
         feature = new OpenLayers.Feature.Vector(geometry);
         selections_layer.addFeatures([feature]);

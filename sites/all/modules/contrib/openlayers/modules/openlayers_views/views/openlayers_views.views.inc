@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_views.views.inc,v 1.3.2.3.2.2 2010/12/03 14:27:19 tmcw Exp $
 
 /**
  * @file
@@ -19,7 +18,7 @@ function openlayers_views_views_plugins() {
         'title' => t('OpenLayers Data Overlay'),
         'help' => t('Data layer for OpenLayers maps.'),
         'handler' => 'openlayers_views_plugin_display_openlayers',
-        'path' => drupal_get_path('module', 'openlayers_views') .'/views',
+        'path' => drupal_get_path('module', 'openlayers_views') . '/views',
         'uses hook menu' => FALSE,
         'use ajax' => FALSE,
         'use pager' => FALSE,
@@ -33,8 +32,8 @@ function openlayers_views_views_plugins() {
         'help' => t('Displays a View as an OpenLayers map.'),
         'handler' => 'openlayers_views_style_map',
         'theme' => 'openlayers_views_map',
-        'theme path' => drupal_get_path('module', 'openlayers_views') .'/views',
-        'path' => drupal_get_path('module', 'openlayers_views') .'/views',
+        'theme path' => drupal_get_path('module', 'openlayers_views') . '/views',
+        'path' => drupal_get_path('module', 'openlayers_views') . '/views',
         'uses fields' => FALSE,
         'uses row plugin' => FALSE,
         'uses options' => TRUE,
@@ -47,10 +46,10 @@ function openlayers_views_views_plugins() {
         'help' => t('Provides Data to Power an OpenLayers map.'),
         'handler' => 'openlayers_views_style_data',
         'theme' => 'openlayers_views_data',
-        'theme path' => drupal_get_path('module', 'openlayers_views') .'/views',
-        'path' => drupal_get_path('module', 'openlayers_views') .'/views',
+        'theme path' => drupal_get_path('module', 'openlayers_views') . '/views',
+        'path' => drupal_get_path('module', 'openlayers_views') . '/views',
         'uses fields' => TRUE,
-        'uses row plugin' => FALSE,
+        'uses row plugin' => TRUE,
         'uses options' => TRUE,
         'uses grouping' => TRUE,
         'type' => 'openlayers',

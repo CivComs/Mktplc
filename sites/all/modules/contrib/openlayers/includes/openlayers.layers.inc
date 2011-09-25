@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers.layers.inc,v 1.9.2.24 2010/08/06 13:59:09 tmcw Exp $
 
 /**
  * @file

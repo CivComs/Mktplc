@@ -1,13 +1,16 @@
-; $Id: openlayers_test.info,v 1.2.2.2.2.1 2010/09/21 03:04:53 tmcw Exp $
-
-name = OpenLayers Tests
-description = OpenLayers test module.  There is no reason to install this.
+name = "OpenLayers Tests"
+description = "OpenLayers test module.  There is no reason to install this."
 core = 7.x
-package = OpenLayers
+package = "OpenLayers"
+dependencies[] = openlayers
+hidden = TRUE
+files[] = openlayers.test
+files[] = includes/openlayers_test.maps.inc
+files[] = includes/openlayers_test.views.inc
 
-; Information added by drupal.org packaging script on 2011-01-14
-version = "7.x-2.0-alpha1"
+; Information added by drupal.org packaging script on 2011-09-10
+version = "7.x-2.0-alpha2"
 core = "7.x"
 project = "openlayers"
-datestamp = "1295020307"
+datestamp = "1315687906"
 

@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers.layer_types.inc,v 1.1.2.5 2010/05/30 19:38:01 tmcw Exp $
 
 /**
  * @file
@@ -22,7 +21,7 @@ function _openlayers_openlayers_layer_types() {
       'title' => t('Google'),
       'description' => t('Google Maps API Map'),
       'layer_type' => array(
-        'path' => drupal_get_path('module', 'openlayers') .'/includes/layer_types',
+        'path' => drupal_get_path('module', 'openlayers') . '/includes/layer_types',
         'file' => 'google.inc',
         'class' => 'openlayers_layer_type_google',
         'parent' => 'openlayers_layer_type',
@@ -32,7 +31,7 @@ function _openlayers_openlayers_layer_types() {
       'title' => t('Yahoo'),
       'description' => t('Yahoo Maps API Map'),
       'layer_type' => array(
-        'path' => drupal_get_path('module', 'openlayers') .'/includes/layer_types',
+        'path' => drupal_get_path('module', 'openlayers') . '/includes/layer_types',
         'file' => 'yahoo.inc',
         'class' => 'openlayers_layer_type_yahoo',
         'parent' => 'openlayers_layer_type',
@@ -42,7 +41,7 @@ function _openlayers_openlayers_layer_types() {
       'title' => t('Virtual Earth'),
       'description' => t('Microsoft Virtual Earth'),
       'layer_type' => array(
-        'path' => drupal_get_path('module', 'openlayers') .'/includes/layer_types',
+        'path' => drupal_get_path('module', 'openlayers') . '/includes/layer_types',
         'file' => 'virtualearth.inc',
         'class' => 'openlayers_layer_type_virtualearth',
         'parent' => 'openlayers_layer_type',
@@ -53,7 +52,7 @@ function _openlayers_openlayers_layer_types() {
       'description' => t('<a href="!url">CloudMade</a> Custom Map',
         array('!url' => 'http://cloudmade.com/')),
       'layer_type' => array(
-        'path' => drupal_get_path('module', 'openlayers') .'/includes/layer_types',
+        'path' => drupal_get_path('module', 'openlayers') . '/includes/layer_types',
         'file' => 'cloudmade.inc',
         'class' => 'openlayers_layer_type_cloudmade',
         'parent' => 'openlayers_layer_type',
