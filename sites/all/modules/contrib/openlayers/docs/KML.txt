@@ -1,4 +1,3 @@
-$Id: KML.txt,v 1.1.2.2 2010/03/10 22:18:09 tmcw Exp $
 
 Current for 2.x
 
@@ -22,7 +21,7 @@ Without a special workaround.
 
 # Proxy Host
 
-For this, there is a special setting in every preset called "Proxy Host." It is
+For this, there is a special setting in every map called "Proxy Host." It is
 in the 'General information' tab, at the bottom of the page. You can use any of
 a number of [PHP
 proxies](http://www.google.com/search?sourceid=chrome&ie=UTF-8&q=php+proxy) for

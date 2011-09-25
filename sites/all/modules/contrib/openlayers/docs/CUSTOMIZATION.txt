@@ -1,4 +1,3 @@
-$Id: CUSTOMIZATION.txt,v 1.1.2.4 2010/05/18 19:25:57 tmcw Exp $
 
 Current for 6.x-2.0-alpha3
 
@@ -26,7 +25,7 @@ edit full.cfg or lite.cfg to include the components your map uses.
 This will produce a compacted, slimmed OpenLayers.js file.
 
 After doing this, make sure to set the ImgPath and ThemePath in the OpenLayers
-administration - these are per-preset settings. The OpenLayers library guesses
+administration - these are per-map settings. The OpenLayers library guesses
 the location of its style.css and images, so if you make a compacted
 OpenLayers.js in an otherwise empty folder, it will fail in this task and have
 blank images and a nonfunctional ZoomBox control (the red 'zooming box') will

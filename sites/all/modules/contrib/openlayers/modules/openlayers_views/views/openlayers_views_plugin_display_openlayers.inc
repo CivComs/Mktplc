@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_views_plugin_display_openlayers.inc,v 1.1.2.3.2.2 2010/12/06 02:43:26 tmcw Exp $
 
 /**
  * @file
@@ -32,6 +31,8 @@ class openlayers_views_plugin_display_openlayers extends views_plugin_display {
     $options['title']['translatable'] = 0;
     $options['displays'] = array('default' => array());
     $options['style_plugin']['default'] = 'openlayers_data';
+    $options['row_plugin']['default'] = 'fields';
+    $options['defaults']['default']['row_plugin'] = FALSE;
     return $options;
   }
 

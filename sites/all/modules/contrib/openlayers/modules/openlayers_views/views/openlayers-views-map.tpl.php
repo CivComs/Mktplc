@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers-views-map.tpl.php,v 1.1.2.4.2.2 2010/12/03 00:05:45 tmcw Exp $
 
 /**
  * @file

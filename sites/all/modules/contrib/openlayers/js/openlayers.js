@@ -1,4 +1,3 @@
-// $Id: openlayers.js,v 1.47.2.37.2.6 2010/12/06 18:39:30 tmcw Exp $
 /*jslint white: false */
 /*jslint forin: true */
 /*global OpenLayers Drupal $ document jQuery window */
@@ -34,17 +33,19 @@ Drupal.behaviors.openlayers = {
         Drupal.settings.openlayers.maps &&
         !$(context).data('openlayers')) {
       $('.openlayers-map:not(.openlayers-processed)').each(function() {
-        $(this).addClass('openlayers-processed');
+        // By setting the stop_render variable to TRUE, this will
+        // halt the render process.  If set, one could remove this setting
+        // then call Drupal.attachBehaviors again to get it started
         var map_id = $(this).attr('id');
+        if (Drupal.settings.openlayers.maps[map_id] && Drupal.settings.openlayers.maps[map_id].stop_render != true) {
+          var map = Drupal.settings.openlayers.maps[map_id];
+          $(this).addClass('openlayers-processed');
 
-        // Use try..catch for error handling.
-        try {
-          if (Drupal.settings.openlayers.maps[map_id]) {
+          // Use try..catch for error handling.
+          try {
             // Set OpenLayers language based on document language,
             // rather than browser language
             OpenLayers.Lang.setCode($('html').attr('lang'));
-
-            var map = Drupal.settings.openlayers.maps[map_id];
 
             $(this)
               // @TODO: move this into markup in theme function, doing this dynamically is a waste.
@@ -98,13 +99,13 @@ Drupal.behaviors.openlayers = {
               Drupal.openlayers.redrawVectors();
             }
           }
-        }
-        catch (e) {
-          if (typeof console != 'undefined') {
-            console.log(e);
-          }
-          else {
-            $(this).text('Error during map rendering: ' + e);
+          catch (e) {
+            if (typeof console != 'undefined') {
+              console.log(e);
+            }
+            else {
+              $(this).text('Error during map rendering: ' + e);
+            }
           }
         }
       });

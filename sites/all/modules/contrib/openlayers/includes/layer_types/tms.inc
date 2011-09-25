@@ -1,5 +1,4 @@
 <?php
-// $Id: tms.inc,v 1.1.2.12 2010/06/25 16:23:51 tmcw Exp $
 
 /**
  * @file
@@ -43,7 +42,7 @@ class openlayers_layer_type_tms extends openlayers_layer_type {
       'base_url' => array(
         '#type' => 'textfield',
         '#title' => t('Base URL'),
-        '#default_value' => isset($this->data['base_url']) ? 
+        '#default_value' => isset($this->data['base_url']) ?
           $this->data['base_url'] : ''
       ),
       'layername' => array(
@@ -51,6 +50,12 @@ class openlayers_layer_type_tms extends openlayers_layer_type {
         '#title' => t('Layer Name'),
         '#default_value' => isset($this->data['layername']) ?
           $this->data['layername'] : ''
+      ),
+      'baselayer' => array(
+        '#type' => 'checkbox',
+        '#default_value' => $this->data['baselayer'],
+        '#title' => t('BaseLayer'),
+        '#description' => t('Uncheck to make this map an overlay')
       ),
       'type' => array(
         '#type' => 'select',
@@ -84,7 +89,7 @@ class openlayers_layer_type_tms extends openlayers_layer_type {
    * Render.
    */
   function render(&$map) {
-    drupal_add_js(drupal_get_path('module', 'openlayers') 
+    drupal_add_js(drupal_get_path('module', 'openlayers')
       . '/includes/layer_types/js/tms.js');
     return $this->options;
   }

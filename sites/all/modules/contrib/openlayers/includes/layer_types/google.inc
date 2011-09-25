@@ -1,5 +1,4 @@
 <?php
-// $Id: google.inc,v 1.1.2.15.2.2 2011/01/10 15:15:45 tmcw Exp $
 
 /**
  * @file
@@ -40,7 +39,8 @@ class openlayers_layer_type_google extends openlayers_layer_type {
     $google_layer_types = array(
       'hybrid' => 'Hybrid',
       'normal' => 'Normal',
-      'satellite' => 'Satellite');
+      'satellite' => 'Satellite',
+    );
     return array(
       'type' => array(
         '#title' => t('Google Layer Type'),
@@ -68,6 +68,16 @@ class openlayers_layer_type_google extends openlayers_layer_type {
    */
   function settings_form() {
     return array(
+      'openlayers_google_version' => array(
+        '#type' => 'select',
+        '#title' => t('Google Maps API version'),
+        '#description' => t('If you use Google Maps v3, an API key is not necessary.'),
+        '#options' => array(
+          '2' => t('v2'),
+          '3.2' => t('v3.2'),
+        ),
+        '#default_value' => variable_get('openlayers_google_version', '2'),
+      ),
       'openlayers_layers_google_api' => array(
         '#type' => 'textfield',
         '#title' => t('Google API Key'),
@@ -98,21 +108,23 @@ class openlayers_layer_type_google extends openlayers_layer_type {
     static $google_maps_included;
     
     if (!isset($google_maps_included)) {
-      // Check for language.
-      $lang = variable_get('openlayers_layers_google_language', '');
-      if (!empty($lang)) {
-        $lang = '&hl=' . $lang;
-      }
-      
       // Include files.
       drupal_add_js(drupal_get_path('module', 'openlayers') . 
         '/includes/layer_types/js/google.js');
-      drupal_add_js(
-        'http://maps.google.com/maps?file=api&v=2' .
-        $lang . '&sensor=false&key=' . 
-        variable_get('openlayers_layers_google_api', 
-          variable_get('googlemap_api_key', '')
-        ), 'external');
+        
+      // Create URL for google include
+      $url = '';
+      $url .= 'http://maps.google.com/maps?file=api';
+      $url .= '&sensor=false';
+      $url .= '&v=' . variable_get('openlayers_google_version', '2');
+      
+      $lang = variable_get('openlayers_layers_google_language', '');
+      $url .= !empty($lang) ? '&hl=' . $lang : '';
+      
+      $key = variable_get('openlayers_layers_google_api', variable_get('googlemap_api_key', ''));
+      $url .= !empty($key) ? '&key=' . $key : '';
+        
+      drupal_add_js($url, 'external');
       $google_maps_included = TRUE;
     }
     return $this->options;

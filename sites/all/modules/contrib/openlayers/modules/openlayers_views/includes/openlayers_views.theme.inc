@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_views.theme.inc,v 1.3.2.3.2.2 2010/12/06 19:42:04 tmcw Exp $
 
 /**
  * @file

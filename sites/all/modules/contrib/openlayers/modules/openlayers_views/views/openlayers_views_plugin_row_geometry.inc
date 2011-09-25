@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_views_plugin_row_geometry.inc,v 1.1.2.1 2010/12/03 00:05:45 tmcw Exp $
 /**
  * @file
  */
