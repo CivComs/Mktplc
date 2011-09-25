@@ -1,0 +1,31 @@
+<?php
+
+function cc_places_menu(){
+	$items['cc/places/%/%'] = array(
+		'title' => 'Single place',
+		'page callback' => '_cc_places_place_page',
+		'page arguments' => array(1, 2),
+		'access arguments' => 'access content'
+	);
+	return $items;
+}
+
+function _cc_places_place_page($place_type = 'city', $place = 'test'){
+	
+	$geometry = geocode('google',  $place, 'point');
+	dpm($geometry);
+	$geo_array = geofield_get_values_from_geometry($geometry);
+	dpm($geo_array);
+	$place_wkt = $geo_array['wkt'];
+	dpm($place_wkt);
+	$map_preset = openlayers_preset_load('cc_places_map');
+	dpm($map_preset);
+	$output = openlayers_render_map($map_preset->data, $map_preset->name);
+	return $output;
+}
+
+function _cc_places_wkt($place, $wkt_type = 'point'){
+	$geometry = geocode('google', $place, $wkt_type);
+	$geo_array = geofield_get_values_from_geometry($geometry);
+	return $geo_array['wkt'];
+}
