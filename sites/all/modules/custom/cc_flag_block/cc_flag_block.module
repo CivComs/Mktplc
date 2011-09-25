@@ -1,0 +1,36 @@
+<?php
+//Basic block information.
+function cc_flag_block_block_info() {
+	return array(
+		'flag_block' => array(
+			'info' => t('Flags')
+		)
+	);
+}
+//Block output.
+function cc_flag_block_block_view($delta = '') {
+	$block = array();
+	$block['subject'] = NULL;
+	$node = menu_get_object('node', 1, NULL);
+	$links = flag_link('node', $node, FALSE);
+	$block['content'] = array(
+		'#theme' => 'links__node__flag',
+		'#links' => $links
+	);
+	return $block;
+}
+//Node output without flags.
+function cc_flag_block_node_view($node, $view_mode = 'full', $langcode = NULL) {
+	if(isset($node->content['links']['flag'])) {
+		unset($node->content['links']['flag']);
+	}
+}
+//Make changes after (not before) Flag.
+function cc_flag_block_module_implements_alter(&$implementations, $hook) {
+	if($hook != 'node_view') {
+		return FALSE;
+	}
+	$m = $implementations['cc_flag_block'];
+	unset($implementations['cc_flag_block']);
+	$implementations['cc_flag_block'] = $m;
+}
