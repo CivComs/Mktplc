@@ -23,5 +23,20 @@ function civiccommons_form_alter(&$form, &$form_state, $form_id) {
 }
 }
 
+/**
+ * Preprocessor for page.tpl.php template file.
+ */
+function civiccommons_preprocess_page(&$vars, $hook) {
+
+  drupal_set_message("All content on the site is dummy content and will be deleted on October 4.", 'status');
+
+}
+
+
+function civiccommons_preprocess_region(&$vars) {
+  if (isset($vars['elements']['#page']['node']) && $vars['elements']['#region'] == 'content') {
+    $vars['theme_hook_suggestions'][] = 'region__content__'. $vars['elements']['#page']['node']->type;
+  }
+}
 
 ?>
