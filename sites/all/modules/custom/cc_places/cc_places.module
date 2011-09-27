@@ -1,5 +1,21 @@
 <?php
 
+function cc_places_views_pre_render(&$view) {
+	if(!($view->name == 'cc_organizations' && $view->current_display == 'block')) {
+		return FALSE;
+	}
+	$v = views_get_view('cc_organizations');
+	$v->set_display('openlayers_1');
+	$v->execute();
+	$c = count($v->result);
+	if(isset($view->build_info['title'])) {
+		$view->build_info['title'] .=
+			!empty($c)
+			? ' (' . $c . ')'
+			: '';
+	}
+}
+
 function cc_places_menu(){
 	$items['cc/places/%/%'] = array(
 		'title' => 'Single place',
