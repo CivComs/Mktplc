@@ -94,3 +94,30 @@ function _cc_helper_unique_views_result_count($viewname){
 	return 0;
 	
 }
+
+/* "Has your agency used or tried this app?" form */
+function _cc_helper_tried_this_app_form() {
+	$form = array();
+	$interactions = array('1'=>1, '2'=>2, '3'=>3,);
+	$form['title'] = array(
+		'#type' =>'item',
+		'#title' => t('Has your agency used or tried this app?'),
+	);
+	$form['interaction'] = array(
+		'#type' => 'select',
+		'#title' => t('Yes, we'),
+		'#name' => 'interaction',
+		'#options' => $interactions,
+	);
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => 'Go',
+	);
+	
+	return $form;
+}
+
+function _cc_helper_render_tried_this_app_form() {
+	$out = drupal_get_form('_cc_helper_tried_this_app_form');
+	return $out;
+}
