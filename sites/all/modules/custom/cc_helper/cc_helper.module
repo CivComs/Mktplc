@@ -1,6 +1,34 @@
 <?php
 // $Id: cc_helper.module,v 0.1 2011/09/21 Paul de Paula Exp $
 
+/*
+ * Count a view results. $view - unexecuted view object.
+ */
+function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
+	if(!empty($custom_arguments)) {
+		$view->args = $custom_arguments;
+	}
+	$view->set_display($display);
+	$view->render();
+	if(!empty($view->total_rows)) {
+		return $view->total_rows;
+	}else{
+		if(is_array($view->result)) {
+			return count($view->result);
+		}
+	}
+	return FALSE;
+}
+
+/*
+ * "Using / Sharing" HTML.
+ */
+function _cc_helper_using_sharing($using = 0, $sharing = 0) {
+	$o = '';
+	$o .= '<div class="cc-org-apps"><div class="cc-org-prefix-using">Using</div><div class="cc-org-count">' . $using . '</div><div class="cc-org-postfix">apps</div></div>';
+	$o .= '<div class="cc-org-apps"><div class="cc-org-prefix-sharing">Sharing</div><div class="cc-org-count">' . $sharing . '</div><div class="cc-org-postfix">apps</div></div>';
+	return $o;
+}
 
 /*
  * implementats of hook_user_view_alter
