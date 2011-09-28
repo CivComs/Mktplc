@@ -9,7 +9,7 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
 		$view->args = $custom_arguments;
 	}
 	$view->set_display($display);
-	$view->render;
+	$view->render();
 	if(!empty($view->total_rows)) {
 		return $view->total_rows;
 	}else{
@@ -56,4 +56,41 @@ function cc_helper_user_view_alter(&$build) {
   {
     unset($build[$field]);
   }
+}
+
+/* Helper stats functions */
+function _cc_helper_get_references_count($nid, $ref_content_type = 'interaction', $ref_field = 'field_interaction_application') {
+	$query = new EntityFieldQuery();
+	$entities = $query->entityCondition('entity_type', 'node')
+						->entityCondition('bundle', $ref_content_type)
+						->fieldCondition($ref_field, 'nid', $nid)
+						->fieldCondition('field_interaction_type', 'tid', 156)
+						->propertyCondition('status', 1)
+						->execute();
+	
+	if($entities){
+		return count(node_load_multiple(array_keys($entities['node'])));
+	}
+	
+	
+	return FALSE;
+}
+
+/* Count unique view results */
+function _cc_helper_unique_views_result_count($viewname){
+	//$result=0;
+	$view = views_get_view($viewname);
+	$result_array = array();
+	if($view){
+		$view->preview();
+		$result = $view->result;
+		foreach($result as $row){
+			$result_array[] = $row->_field_data['node_field_data_field_interaction_organization_nid']['entity']->field_organization_address['und'][0]['locality'];
+		}
+		$result_array = array_unique($result_array);
+		//dsm($result_array);
+		return count($result_array);
+	}
+	return 0;
+	
 }
