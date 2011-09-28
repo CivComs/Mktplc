@@ -48,11 +48,21 @@ function _cc_helper_get_references_count($nid, $ref_content_type = 'interaction'
 	return FALSE;
 }
 
-function _cc_places_count($nid, $ref_content_type = 'interaction', $ref_field = 'field_application_interactions') {
-	$query = new EntityFieldQuery();
-	$entities = $query->entityCondition('entity_type', 'node')
-						->entityCondition('bundle', $ref_content_type)
-						->fieldCondition($ref_field, 'nid', $nid)
-						;
-	return FALSE;
+/* Count unique view results */
+function _cc_helper_unique_views_result_count($viewname){
+	//$result=0;
+	$view = views_get_view($viewname);
+	$result_array = array();
+	if($view){
+		$view->preview();
+		$result = $view->result;
+		foreach($result as $row){
+			$result_array[] = $row->_field_data['node_field_data_field_interaction_organization_nid']['entity']->field_organization_address['und'][0]['locality'];
+		}
+		$result_array = array_unique($result_array);
+		//dsm($result_array);
+		return count($result_array);
+	}
+	return 0;
+	
 }
