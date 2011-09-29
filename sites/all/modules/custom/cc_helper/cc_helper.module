@@ -95,29 +95,35 @@ function _cc_helper_unique_views_result_count($viewname){
 	
 }
 
-/* "Has your agency used or tried this app?" form */
-function _cc_helper_tried_this_app_form() {
-	$form = array();
-	$interactions = array('1'=>1, '2'=>2, '3'=>3,);
-	$form['title'] = array(
-		'#type' =>'item',
-		'#title' => t('Has your agency used or tried this app?'),
-	);
-	$form['interaction'] = array(
-		'#type' => 'select',
-		'#title' => t('Yes, we'),
-		'#name' => 'interaction',
-		'#options' => $interactions,
-	);
-	$form['submit'] = array(
-		'#type' => 'submit',
-		'#value' => 'Go',
-	);
-	
-	return $form;
-}
+/**
+* Implements hook_entity_info_alter().
+*/
+function cc_helper_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['cc_business_card'] = array(
+    'label' => t('CC Business card'),
+    'custom settings' => TRUE,
+  );
+} 
 
-function _cc_helper_render_tried_this_app_form() {
-	$out = drupal_get_form('_cc_helper_tried_this_app_form');
+function _cc_helper_creators_info($appid) {
+	$node = node_load($appid);
+	$out='<ul>';
+	foreach($node->field_application_creator['und'] as $row){
+		$creator_node = node_load($row['nid']);
+		//dsm($creator_node);
+		$link = drupal_get_path_alias("node/".$creator_node->vid);
+		$title = '<a href="'.$link.'">'.$creator_node->title.'</a>';
+		$creator = node_view($creator_node, 'cc_business_card');
+		//dsm(node_load($creator_node['nid']));
+		$image_uri = $creator['field_organization_logo'][0]['#item'][uri];
+		$image_style = $creator['field_organization_logo'][0]['#image_style'];
+		$logo = theme('image_style', array('style_name'=>$image_style, 'path'=>$image_uri));
+		$addr = $creator['field_organization_address']['#items'][0];
+		$address = '('.$addr['locality'].','.$addr['administrative_area'].','.$addr['country'].')';
+		$out .= '<li>'.$logo.'<div>'.$title.'</div>'.'<div>'.$address.'</div>'.'</li>';
+		//dsm($logo);
+	}
+	$out.='</ul>';
+	//dsm($out);
 	return $out;
 }
