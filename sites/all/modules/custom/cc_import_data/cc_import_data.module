@@ -1,0 +1,841 @@
+<?php
+// $Id: cc_import_data.module,v 1.0 2011/09/23 Alexander Komarovski Exp $
+
+/**
+ * Implements hook_menu().
+ */
+function cc_import_data_menu() {
+    $items['admin/config/content/cc_import_data'] = array(
+            'title' => 'Import data from CSV',
+            'page callback' => array('_cc_import_data_callback_admin'),
+            'page arguments' => array('_cc_import_data_callback_admin_settings'),
+            'access arguments' => array('administer data importer'),
+            'description' => 'Import data from CSV',
+            'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+
+    $items['admin/config/content/cc_import_data_result'] = array(
+            'title' => 'Import Results',
+            'page callback' => array('_cc_import_data_result_callback'),
+            'access arguments' => array('administer data importer'),
+            'description' => 'Import Results',
+            'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+/**
+ * Implements hook_perm().
+ */
+function cc_import_data_permission() {
+    return array(
+            'administer data importer' =>  array(
+                    'title' => t('Administer Data Importer'),
+                    'description' => t('Perform administration tasks for Data Importer.'),
+            ),
+    );
+}
+
+function _cc_import_data_finished_callback($success, $results, $operations) {
+    // The 'success' parameter means no fatal PHP errors were detected. All
+    // other error management should be handled using 'results'.
+    if ($success) {
+        $message = t('Completed Successfully');
+    }
+    else {
+        $message = t('Finished with an error.');
+    }
+    drupal_set_message($message);
+
+    $_SESSION['my_batch_results'] = $results;
+
+    drupal_goto('admin/config/content/cc_import_data_result');
+}
+
+function _cc_import_data_result_callback() {
+    if (isset($_SESSION['my_batch_results'])) {
+        $items = $_SESSION['my_batch_results'];
+        unset($_SESSION['my_batch_results']);
+    } else {
+        $items = array();
+    }
+
+
+    $output = '';
+    foreach ($items as $item) {
+        $output.=$item.'<br>';
+    }
+    return $output;
+}
+
+function _cc_import_data_callback_admin() {
+
+    $batch = array(
+            'title' => t('Importing Data'),
+            'operations' => array(
+                    array('_cc_import_data_load_interaction_types', array()),
+                    array('_cc_import_data_load_organization_types', array()),
+                    array('_cc_import_data_load_organizations', array()),
+                    array('_cc_import_data_load_applications', array()),
+                    array('_cc_import_data_load_relations', array()),
+                    array('_cc_import_data_load_notes', array()),
+                    array('_cc_import_data_load_addresses', array()),
+            ),
+            'finished' => '_cc_import_data_finished_callback',
+            //'file' => 'path_to_file_containing_myfunctions',
+    );
+    batch_set($batch);
+    // Only needed if not inside a form _submit handler.
+    // Setting redirect in batch_process.
+    batch_process(/*redirect link*/);
+}
+
+
+
+//==============================================================================
+function _cc_import_data_load_interaction_types(&$context) {
+
+    if (empty($context['sandbox'])) {
+        $filename="sites/default/files/content_data/relation_types";
+        $context['sandbox']['filetoimport'] = array();
+        if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $context['sandbox']['filetoimport'][] = $data;
+            }
+            fclose($handle);
+        }
+        $context['sandbox']['progress'] = 0;
+        $context['sandbox']['updatedrecords'] = 0;
+        $context['sandbox']['addedrecords'] = 0;
+        $context['sandbox']['max'] = count($context['sandbox']['filetoimport'])-1;
+    }
+
+    $updated = $context['sandbox']['updatedrecords'];
+    $added = $context['sandbox']['addedrecords'];
+    $limit = 5;
+    $progress = $context['sandbox']['progress'];
+
+    $tax=taxonomy_vocabulary_machine_name_load("interaction_type");
+    //TAXONOMY
+    //interaction types =======================================================
+    //id,name,type_name,created_at,updated_at,parent
+    //1,funds,Organization,2010-11-15 03:38:37.867004+0000,2010-11-15 03:38:37.867004+0000,t
+    $to = min(array($progress + $limit, $context['sandbox']['max']));
+    for ($row = $progress; $row < $to; $row++) {
+        $data = $context['sandbox']['filetoimport'][$row];
+        if ($row > 0 && count($data)>2 && $data[2] == 'Organization') {
+            //try to find by ss_id (field_tit_ss_id)
+            $query = new EntityFieldQuery;
+            $result = $query
+                    ->entityCondition('entity_type', 'taxonomy_term')
+                    ->entityCondition('bundle', 'interaction_type')
+                    ->fieldCondition('field_tit_ss_id', 'value', intval(trim($data[0])))
+                    ->execute();
+            if (!empty($result)) {
+                $tax_item = array_shift(array_shift($result));
+                $tax_item = taxonomy_term_load($tax_item->tid);
+
+                $tax_item->name = trim($data[1]);
+                taxonomy_term_save($tax_item);
+                $updated++;
+            } else {
+                //try to find by name
+                $tax_item = taxonomy_term_load_multiple(array(), array('name' => trim($data[1]), 'vid' => $tax->vid));
+                if (!empty($tax_item)) {
+                    $tax_item = array_shift($tax_item);
+
+                    $tax_item->field_tit_ss_id[LANGUAGE_NONE][0]['value'] = intval(trim($data[0]));
+                    taxonomy_term_save($tax_item);
+                    $updated++;
+                } else {
+                    //crete new
+                    $tax_item = new StdClass();
+                    $tax_item->vid = $tax->vid;
+                    $tax_item->name = trim($data[1]);
+                    $tax_item->field_tit_ss_id[LANGUAGE_NONE][0]['value'] = intval(trim($data[0]));
+                    taxonomy_term_save($tax_item);
+                    $added++;
+                }
+            }
+        }
+        $context['sandbox']['progress']++;
+        $context['message'] = 'Importing interaction types ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+
+    $context['sandbox']['updatedrecords'] = $updated;
+    $context['sandbox']['addedrecords'] = $added;
+
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    } else {
+        $context['results'][] = 'Importing interaction types ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+}
+//==============================================================================
+function _cc_import_data_load_organization_types(&$context) {
+
+    if (empty($context['sandbox'])) {
+        $filename="sites/default/files/content_data/org_types";
+        $context['sandbox']['filetoimport'] = array();
+        if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $context['sandbox']['filetoimport'][] = $data;
+            }
+            fclose($handle);
+        }
+        $context['sandbox']['progress'] = 0;
+        $context['sandbox']['updatedrecords'] = 0;
+        $context['sandbox']['addedrecords'] = 0;
+        $context['sandbox']['max'] = count($context['sandbox']['filetoimport'])-1;
+    }
+
+    $updated = $context['sandbox']['updatedrecords'];
+    $added = $context['sandbox']['addedrecords'];
+    $limit = 5;
+    $progress = $context['sandbox']['progress'];
+
+    $tax=taxonomy_vocabulary_machine_name_load("organization_type");
+    //TAXONOMY
+    //organization types =======================================================
+    //id
+    //name
+    //created_at
+    //updated_at
+    $to = min(array($progress + $limit, $context['sandbox']['max']));
+    for ($row = $progress; $row < $to; $row++) {
+        //id,address,city,state,zipcode,country,lat,long,addressable_type,addressable_id,created_at,updated_at
+        $data = $context['sandbox']['filetoimport'][$row];
+        if ($row > 0 && count($data)>2) {
+            //try to find by ss_id (field_tot_ss_id)
+            $query = new EntityFieldQuery;
+            $result = $query
+                    ->entityCondition('entity_type', 'taxonomy_term')
+                    ->entityCondition('bundle', 'organization_type')
+                    ->fieldCondition('field_tot_ss_id', 'value', intval(trim($data[0])))
+                    ->execute();
+            if (!empty($result)) {
+                $tax_item = array_shift(array_shift($result));
+                $tax_item = taxonomy_term_load($tax_item->tid);
+
+                $tax_item->name = trim($data[1]);
+                taxonomy_term_save($tax_item);
+                $updated++;
+            } else {
+                //try to find by name
+                $tax_item = taxonomy_term_load_multiple(array(), array('name' => trim($data[1]), 'vid' => $tax->vid));
+                if (!empty($tax_item)) {
+                    $tax_item = array_shift($tax_item);
+
+                    $tax_item->field_tot_ss_id[LANGUAGE_NONE][0]['value'] = intval(trim($data[0]));
+                    taxonomy_term_save($tax_item);
+                    $updated++;
+                } else {
+                    //crete new
+                    $tax_item = new StdClass();
+                    $tax_item->vid = $tax->vid;
+                    $tax_item->name = trim($data[1]);
+                    $tax_item->field_tot_ss_id[LANGUAGE_NONE][0]['value'] = intval(trim($data[0]));
+                    taxonomy_term_save($tax_item);
+                    $added++;
+                }
+            }
+        }
+        $context['sandbox']['progress']++;
+        $context['message'] = 'Importing organization types ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+
+    $context['sandbox']['updatedrecords'] = $updated;
+    $context['sandbox']['addedrecords'] = $added;
+
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    } else {
+        $context['results'][] = 'Importing organization types ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+}
+//==============================================================================
+function _cc_import_data_load_organizations(&$context) {
+    global $user;
+
+    if (empty($context['sandbox'])) {
+        $filename="sites/default/files/content_data/organizations";
+        $context['sandbox']['filetoimport'] = array();
+        if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $context['sandbox']['filetoimport'][] = $data;
+            }
+            fclose($handle);
+        }
+        $context['sandbox']['progress'] = 0;
+        $context['sandbox']['updatedrecords'] = 0;
+        $context['sandbox']['addedrecords'] = 0;
+        $context['sandbox']['max'] = count($context['sandbox']['filetoimport'])-1;
+    }
+
+    $updated = $context['sandbox']['updatedrecords'];
+    $added = $context['sandbox']['addedrecords'];
+    $limit = 5;
+    $progress = $context['sandbox']['progress'];
+
+    $tax=taxonomy_vocabulary_machine_name_load("organization_type");
+    $to = min(array($progress + $limit, $context['sandbox']['max']));
+    for ($row = $progress; $row < $to; $row++) {
+        //id,name,org_type_id,created_at,updated_at
+        $data = $context['sandbox']['filetoimport'][$row];
+        if ($row > 0 && count($data)>2) {
+            $query = new EntityFieldQuery;
+            $result = $query
+                    ->entityCondition('entity_type', 'taxonomy_term')
+                    ->entityCondition('bundle', 'organization_type')
+                    ->fieldCondition('field_tot_ss_id', 'value', intval(trim($data[2])))
+                    ->execute();
+            if (!empty($result)) {
+                $taxitem = array_shift(array_shift($result));
+                $taxitem = $taxitem->tid;
+            } else {
+                $taxitem = null;
+            }
+
+            //try to find by ss_id (field_organization_ss_id)
+            $query = new EntityFieldQuery;
+            $result = $query
+                    ->entityCondition('entity_type', 'node')
+                    ->entityCondition('bundle', 'organization')
+                    ->fieldCondition('field_organization_ss_id', 'value', intval(trim($data[0])))
+                    ->execute();
+
+            if (!empty($result)) {
+                $node = array_shift(array_shift($result));
+                $node = node_load($node->nid);
+                $node->title = trim($data[1]);
+                $node->field_organization_type[$node->language][0] = array('tid' => $taxitem);
+                node_save($node);
+                $updated++;
+            } else {
+                //try to find by name
+                $result = $query
+                        ->entityCondition('entity_type', 'node')
+                        ->entityCondition('bundle', 'organization')
+                        ->propertyCondition('title', trim($data[1]))
+                        ->fieldCondition('field_organization_ss_id', 'value', null)
+                        ->execute();
+
+                if (!empty($result)) {
+                    $node = array_shift(array_shift($result));
+                    $node = node_load($node->nid);
+                    $node->field_organization_ss_id[$node->language][0]['value'] = intval(trim($data[0]));
+                    $node->field_organization_type[$node->language][0] = array('tid' => $taxitem);
+                    node_save($node);
+                    $updated++;
+                } else {
+                    //crete new
+                    $node = new StdClass();
+                    $node->nid = null;
+                    $node->type = 'organization';
+                    $node->title = trim($data[1]);
+                    $node->language = LANGUAGE_NONE;
+                    $node->status = 1;
+                    $node->body = "";
+                    $node->uid = $user->uid;
+                    node_object_prepare($node);
+                    $node->field_organization_ss_id[$node->language][0]['value'] = intval(trim($data[0]));
+                    $node->field_organization_type[$node->language][0] = array('tid' => $taxitem);
+                    $node = node_submit($node);
+                    node_save($node);
+                    $added++;
+                }
+            }
+        }
+
+        $context['sandbox']['progress']++;
+        $context['message'] = 'Importing organizations ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+
+    $context['sandbox']['updatedrecords'] = $updated;
+    $context['sandbox']['addedrecords'] = $added;
+
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    } else {
+        $context['results'][] = 'Importing organizations ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+
+
+}
+//==============================================================================
+function _cc_import_data_load_applications(&$context) {
+    global $user;
+
+    if (empty($context['sandbox'])) {
+        $filename="sites/default/files/content_data/products";
+        $context['sandbox']['filetoimport'] = array();
+        if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $context['sandbox']['filetoimport'][] = $data;
+            }
+            fclose($handle);
+        }
+        $context['sandbox']['progress'] = 0;
+        $context['sandbox']['updatedrecords'] = 0;
+        $context['sandbox']['addedrecords'] = 0;
+        $context['sandbox']['max'] = count($context['sandbox']['filetoimport'])-1;
+    }
+
+    $updated = $context['sandbox']['updatedrecords'];
+    $added = $context['sandbox']['addedrecords'];
+    $limit = 5;
+    $progress = $context['sandbox']['progress'];
+
+$to = min(array($progress + $limit, $context['sandbox']['max']));
+    for ($row = $progress; $row < $to; $row++) {
+        //id,address,city,state,zipcode,country,lat,long,addressable_type,addressable_id,created_at,updated_at
+        $data = $context['sandbox']['filetoimport'][$row];
+        if ($row > 0 && count($data)>2) {
+
+
+            //try to find by ss_id (field_application_ss_id)
+            $query = new EntityFieldQuery;
+            $result = $query
+                    ->entityCondition('entity_type', 'node')
+                    ->entityCondition('bundle', 'application')
+                    ->fieldCondition('field_application_ss_id', 'value', intval(trim($data[0])))
+                    ->execute();
+
+            if (!empty($result)) {
+                $node = array_shift(array_shift($result));
+                $node = node_load($node->nid);
+                $node->title = trim($data[1]);
+                node_save($node);
+                $updated++;
+            } else {
+                //try to find by name
+                $result = $query
+                        ->entityCondition('entity_type', 'node')
+                        ->entityCondition('bundle', 'application')
+                        ->propertyCondition('title', trim($data[1]))
+                        ->fieldCondition('field_application_ss_id', 'value', null)
+                        ->execute();
+
+                if (!empty($result)) {
+                    $node = array_shift(array_shift($result));
+                    $node = node_load($node->nid);
+                    $node->field_application_ss_id[$node->language][0]['value'] = intval(trim($data[0]));
+                    node_save($node);
+                    $updated++;
+                } else {
+                    //crete new
+                    $node = new StdClass();
+                    $node->nid = null;
+                    $node->type = 'application';
+                    $node->title = trim($data[1]);
+                    $node->language = LANGUAGE_NONE;
+                    $node->status = 1;
+                    $node->body = "";
+                    $node->uid = $user->uid;
+                    node_object_prepare($node);
+                    $node->field_application_ss_id[$node->language][0]['value'] = intval(trim($data[0]));
+                    $node = node_submit($node);
+                    node_save($node);
+                    $added++;
+                }
+            }
+        }
+        $context['sandbox']['progress']++;
+        $context['message'] = 'Importing products ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+
+    $context['sandbox']['updatedrecords'] = $updated;
+    $context['sandbox']['addedrecords'] = $added;
+
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    } else {
+        $context['results'][] = 'Importing products ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+
+
+
+
+}
+
+//==============================================================================
+function _cc_import_data_load_relations(&$context) {
+    global $user;
+
+    if (empty($context['sandbox'])) {
+        $filename="sites/default/files/content_data/relationships";
+        $context['sandbox']['filetoimport'] = array();
+        if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $context['sandbox']['filetoimport'][] = $data;
+            }
+            fclose($handle);
+        }
+        $context['sandbox']['progress'] = 0;
+        $context['sandbox']['updatedrecords'] = 0;
+        $context['sandbox']['addedrecords'] = 0;
+        $context['sandbox']['max'] = count($context['sandbox']['filetoimport'])-1;
+    }
+
+    $updated = $context['sandbox']['updatedrecords'];
+    $added = $context['sandbox']['addedrecords'];
+    $limit = 5;
+    $progress = $context['sandbox']['progress'];
+
+    $tax=taxonomy_vocabulary_machine_name_load("interaction_type");
+    $to = min(array($progress + $limit, $context['sandbox']['max']));
+    for ($row = $progress; $row < $to; $row++) {
+        //id,relation_type,parentable_type,parentable_id,childable_type,childable_id,created_at,updated_at
+        //11,uses,Organization,1,Product,11,2010-11-15 03:55:34.110699+0000,2010-11-15 03:55:34.110699+0000
+        $data = $context['sandbox']['filetoimport'][$row];
+        if ($row > 0 && count($data)>2 && $data[2] =='Organization' && $data[4] =='Product') {
+
+            $tax_item = taxonomy_term_load_multiple(array(), array('name' => trim($data[1]), 'vid' => $tax->vid));
+            if (!empty($tax_item)) {
+                $tax_item = array_shift($tax_item);
+            } else {
+                throw new Exception('Taxonomy term '.trim($data[1]).' not found');
+            }
+
+             //try to find by ss_id (field_organization_ss_id)
+            $query = new EntityFieldQuery;
+            $result = $query
+                    ->entityCondition('entity_type', 'node')
+                    ->entityCondition('bundle', 'organization')
+                    ->fieldCondition('field_organization_ss_id', 'value', intval(trim($data[3])))
+                    ->execute();
+
+            if (!empty($result)) {
+                $node1 = array_shift(array_shift($result));
+                $node1 = node_load($node1->nid);
+            } else {
+                throw new Exception('organization #'.trim($data[3]).' not found');
+            }
+
+
+            //try to find by ss_id (field_application_ss_id)
+            $query = new EntityFieldQuery;
+            $result = $query
+                    ->entityCondition('entity_type', 'node')
+                    ->entityCondition('bundle', 'application')
+                    ->fieldCondition('field_application_ss_id', 'value', intval(trim($data[5])))
+                    ->execute();
+
+            if (!empty($result)) {
+                $node2 = array_shift(array_shift($result));
+                $node2 = node_load($node2->nid);
+            } else {
+                 throw new Exception('application #'.trim($data[5]).' not found');
+            }
+
+
+            //try to find Relation
+            $query = new EntityFieldQuery;
+            $result = $query
+                    ->entityCondition('entity_type', 'node')
+                    ->entityCondition('bundle', 'interaction')
+                    ->fieldCondition('field_interaction_organization', 'nid', $node1->nid)
+                    ->fieldCondition('field_interaction_application', 'nid', $node2->nid)
+                    ->fieldCondition('field_interaction_type', 'tid', $tax_item->tid)
+                    ->execute();
+
+            if (!empty($result)) {
+                $updated++;
+            } else {
+                //crete new
+                $node = new StdClass();
+                $node->nid = null;
+                $node->type = 'interaction';
+                $node->title = 'New Interaction';
+                $node->language = LANGUAGE_NONE;
+                $node->status = 1;
+                $node->body = "";
+                $node->uid = $user->uid;
+                node_object_prepare($node);
+                
+                $node->field_interaction_organization[$node->language][0]['nid'] = $node1->nid;
+                $node->field_interaction_application[$node->language][0]['nid'] = $node2->nid;
+                $node->field_interaction_type[$node->language][0]['tid'] = $tax_item->tid;
+
+                $node = node_submit($node);
+                node_save($node);
+                $added++;
+            }
+
+
+        }
+
+        $context['sandbox']['progress']++;
+        $context['message'] = 'Importing relationships ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+
+    $context['sandbox']['updatedrecords'] = $updated;
+    $context['sandbox']['addedrecords'] = $added;
+
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    } else {
+        $context['results'][] = 'Importing relationships ...  Records added: '.$added.', Records updated: '.$updated;
+    }
+
+
+}
+
+//==============================================================================
+function _cc_import_data_load_notes(&$context) {
+    if (empty($context['sandbox'])) {
+        $filename="sites/default/files/content_data/notes";
+        $context['sandbox']['filetoimport'] = array();
+        if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $context['sandbox']['filetoimport'][] = $data;
+            }
+            fclose($handle);
+        }
+        $context['sandbox']['progress'] = 0;
+        $context['sandbox']['updatedrecords'] = 0;
+        $context['sandbox']['max'] = count($context['sandbox']['filetoimport']);//!!! AHTUNG !!! notes file does not contain initial line
+    }
+
+    $updated = $context['sandbox']['updatedrecords'];
+    $limit = 5;
+    $progress = $context['sandbox']['progress'];
+
+$to = min(array($progress + $limit, $context['sandbox']['max']));
+    for ($row = $progress; $row < $to; $row++) {
+        //id,address,city,state,zipcode,country,lat,long,addressable_type,addressable_id,created_at,updated_at
+        $data = $context['sandbox']['filetoimport'][$row];
+        if ($row >= 0 && count($data)>2) {//!!! AHTUNG !!! notes file does not contain initial line
+            if (!in_array($data[4], array('Product', 'Organization'))) {
+                die ('Unrecognized entity type '.$data[4]);
+            }
+
+            //try to find by ss_id (field_application_ss_id or field_organization_ss_id)
+
+            $query = new EntityFieldQuery;
+            $query->entityCondition('entity_type', 'node');
+            if ($data[4] == 'Product') {
+                $query->entityCondition('bundle', 'application')->fieldCondition('field_application_ss_id', 'value', intval(trim($data[3])));
+            } elseif ($data[4] == 'Organization') {
+                $query->entityCondition('bundle', 'organization')->fieldCondition('field_organization_ss_id', 'value', intval(trim($data[3])));
+            }
+            $result = $query->execute();
+
+            if (!empty($result)) {
+                $node = array_shift(array_shift($result));
+                $node = node_load($node->nid);
+                if ($data[4] == 'Product') {
+                    $node->field_application_description[$node->language][0]['value'] = trim($data[2]);
+                } elseif ($data[4] == 'Organization') {
+                    $node->field_organization_decs[$node->language][0]['value'] = trim($data[2]);
+                }
+                node_save($node);
+                $updated++;
+            }
+        }
+        $context['sandbox']['progress']++;
+        $context['message'] = 'Importing notes for organizations and applications ...  Records updated: '.$updated;
+    }
+
+    $context['sandbox']['updatedrecords'] = $updated;
+
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    } else {
+        $context['results'][] = 'Importing notes for organizations and applications ...  Records updated: '.$updated;
+    }
+
+
+
+}
+//==============================================================================
+function _cc_import_data_load_addresses(&$context) {
+
+    if (empty($context['sandbox'])) {
+        $filename="sites/default/files/content_data/addresses";
+        $context['sandbox']['filetoimport'] = array();
+        if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $context['sandbox']['filetoimport'][] = $data;
+            }
+            fclose($handle);
+        }
+        $context['sandbox']['progress'] = 0;
+        $context['sandbox']['updatedrecords'] = 0;
+        $context['sandbox']['max'] = count($context['sandbox']['filetoimport'])-1;
+    }
+
+    $updated = $context['sandbox']['updatedrecords'];
+    $limit = 5;
+    $progress = $context['sandbox']['progress'];
+    $to = min(array($progress + $limit, $context['sandbox']['max']));
+    for ($row = $progress; $row < $to; $row++) {
+        //id,address,city,state,zipcode,country,lat,long,addressable_type,addressable_id,created_at,updated_at
+        $data = $context['sandbox']['filetoimport'][$row];
+        if ($row > 0 && count($data)>2) {
+
+            if (!in_array($data[8], array('Organization'))) {
+                die ('Unrecognized entity type '.$data[8]);
+            }
+            //try to find by ss_id (field_organization_ss_id)
+
+            $query = new EntityFieldQuery;
+            $query->entityCondition('entity_type', 'node');
+            if ($data[8] == 'Organization') {
+                $query->entityCondition('bundle', 'organization')->fieldCondition('field_organization_ss_id', 'value', intval(trim($data[9])));
+            }
+            $result = $query->execute();
+
+            if (!empty($result)) {
+                //print_r($data);die;
+                $node = array_shift(array_shift($result));
+                $node = node_load($node->nid);
+                //print_r($node);die;
+                if ($data[8] == 'Organization') {
+//                        [field_organization_address] => Array
+//                        (
+//                            [und] => Array
+//                                (
+//                                    [0] => Array
+//                                        (
+//                                            [country] => US
+//                                            [administrative_area] => AL
+//                                            [sub_administrative_area] =>
+//                                            [locality] => city 555
+//                                            [dependent_locality] =>
+//                                            [postal_code] => 10505
+//                                            [thoroughfare] => Address 111
+//                                            [premise] => Address 222
+//                                            [sub_premise] =>
+//                                            [organisation_name] =>
+//                                            [name_line] =>
+//                                            [first_name] =>
+//                                            [last_name] =>
+//                                            [data] =>
+//                                        )
+//
+//                                )
+//
+//                        )
+
+
+                    if (!empty($data[1]) && $data[1] !='bull') {//address
+                        $node->field_organization_address[$node->language][0]['thoroughfare'] = trim($data[1]);
+                    }
+                    if (!empty($data[2]) && $data[2] !='bull') {//city
+                        $node->field_organization_address[$node->language][0]['locality'] = trim($data[2]);
+                    }
+                    if (!empty($data[3]) && $data[3] !='bull') {//state
+                        $node->field_organization_address[$node->language][0]['administrative_area'] = trim($data[3]);
+                    }
+                    if (!empty($data[4]) && $data[4] !='bull') {//zipcode
+                        $node->field_organization_address[$node->language][0]['postal_code'] = trim($data[4]);
+                    }
+
+                    if (!empty($data[5]) && $data[5] !='bull') {//country
+                        $data[5] = _cc_import_data_convert_country_abbr3_to_abbr2(trim($data[5]));
+                        $node->field_organization_address[$node->language][0]['country'] = $data[5];
+                    }
+
+                    if (!empty($data[6]) && $data[6] !='bull' && !empty($data[7]) && $data[7] !='bull') {
+                        // //lat
+                        $node->field_organization_coords[$node->language][0]['lat'] = trim($data[6]);
+                        //long
+                        $node->field_organization_coords[$node->language][0]['lon'] = trim($data[7]);
+
+                        //if country and state not defined, try to get it from coordinates
+                        if (empty($node->field_organization_address[$node->language][0]['country']) ||
+                                empty($node->field_organization_address[$node->language][0]['locality']) ||
+                                        empty($node->field_organization_address[$node->language][0]['administrative_area'])) {
+
+
+                                $url = "http://maps.googleapis.com/maps/api/geocode/json";
+                                $url .= '?latlng ='. urlencode($node->field_organization_coords[$node->language][0]['lat'].",".$node->field_organization_coords[$node->language][0]['lon']);
+                                $url .= '&sensor=false';
+                                $result = json_decode(@file_get_contents($url));
+
+                                $country = '';
+                                $city = '';
+                                $state = '';
+                                $address = '';
+
+                                if (is_object($result) && $result->status == 'OK' && !empty($result->results[0]->formatted_address)) {
+                                   $address = $result->results[0]->formatted_address;
+                                }
+                                if (is_object($result) && $result->status == 'OK' && !empty($result->results[0]->address_components)) {
+                                   // print_r($result->results[0]->address_components);die;
+                                    $l = $result->results[0]->address_components;
+                                    foreach ($l as $k => $v) {
+                                          foreach ($v->types as $type) {
+                                            switch ($type) {
+                                                case 'locality':
+                                                    $city = $v->short_name;
+                                                    break;
+                                                case 'administrative_area_level_1':
+                                                    $state = $v->short_name;
+                                                    break;
+                                                case 'country':
+                                                    $country = $v->short_name;
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                if (!empty($address) && empty($node->field_organization_address[$node->language][0]['thoroughfare'])) {//address
+                                    $node->field_organization_address[$node->language][0]['thoroughfare'] =$address;
+                                }
+
+                                if (!empty($city) && empty($node->field_organization_address[$node->language][0]['locality'])) {//city
+                                    $node->field_organization_address[$node->language][0]['locality'] =$city;
+                                }
+
+                                if (!empty($state) && empty($node->field_organization_address[$node->language][0]['administrative_area'])) {//state
+                                    $node->field_organization_address[$node->language][0]['administrative_area'] =$state;
+                                }
+
+                                if (!empty($country) && empty($node->field_organization_address[$node->language][0]['country'])) {//country
+                                    $node->field_organization_address[$node->language][0]['country'] =$country;
+                                }
+
+                        }
+
+                    }
+
+
+                    $node->field_organization_address[$node->language][0]['value'] = trim($data[2]);
+                }
+                node_save($node);
+                $updated++;
+            }
+
+        }
+
+        $context['sandbox']['progress']++;
+        $context['message'] = 'Importing addresses for organizations ... Records updated: '.$updated;
+    }
+
+    $context['sandbox']['updatedrecords'] = $updated;
+
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    } else {
+        $context['results'][] = 'Importing addresses for organizations ... Records updated: '.$updated;
+    }
+}
+
+function _cc_import_data_convert_country_abbr3_to_abbr2($abbr3) {
+    $convert = array(
+        'USA' => 'US',
+        'Los Angeles' => 'US',
+    );
+
+    if (!isset($convert[$abbr3])) {
+        throw new Exception('Can\'t convert '.$abbr3);
+        return '';
+    }
+
+    return $convert[$abbr3];
+}
