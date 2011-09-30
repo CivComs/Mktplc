@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Installation file for Google Fonts module.
+ */
+
+function google_fonts_install() {
+  drupal_set_message(st('To use the Google Fonts on your website, your have to <a href="!settings_link">select which ones to use</a>.', array('!settings_link' => url('admin/config/system/google_fonts'))));
+}
+
+/**
+ * Delete settings variable
+ */
+function google_fonts_uninstall() {
+  variable_del('google_fonts_enabled_fonts');
+  variable_del('google_fonts_css_contents');
+  variable_del('google_fonts_webfonts');
+}
+
+/**
+ * Change the google_fonts array of enabled fonts to the new format
+ */
+function google_fonts_update_7100() {
+  $ret = array();
+  
+  if ($all_fonts = _google_fonts_available_fonts()) {
+    $enabled_fonts = variable_get('google_fonts_enabled_fonts', array());
+    $enabled = array();
+    foreach ($all_fonts as $font) {
+      foreach ($font->variants as $variant) {
+        $key = ($variant == 'regular') ? $font->family : $font->family . ' ' . $variant;
+        if (!empty($enabled_fonts[$key]) && empty($enabled[$array_key])) {
+          $array_key = _google_fonts_family_array_key_encode($font->family, $variant);
+          $enabled[$array_key] = array(
+            'family' => $font->family,
+            'subsets' => in_array('latin', $font->variants) ? array('latin' => 'latin') : array_shift($font->variants),
+            'variants' => array($variant => $variant),
+          );
+        }
+      }
+    }
+    db_query('DELETE FROM {variable} WHERE name LIKE :name', array(':name' => 'google_fonts_ui_%'));
+
+    // Overwrite the old format with the new format
+    variable_set('google_fonts_enabled_fonts', $enabled);
+    
+    return $ret;
+  }
+  else {
+    return array(array('success' => FALSE, 'query' => t("There seems to be a problem to connect to the Google API. Please check your connection and try again."))); 
+  }
+}
