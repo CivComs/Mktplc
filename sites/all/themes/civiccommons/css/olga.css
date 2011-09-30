@@ -7,15 +7,42 @@
 		margin-right: auto;
 		width: 960px;
 	}
-	.region-content h1.title {
+	.container-16 .cc-org-content  h1.title {    
+		left: 0;
+		margin: 0;
+		padding: 0 0 0 100px;
+		position: relative;
+		top: 0;
 		color: #000;	
 		font-size:28px;
+		text-transform:capitalize;
 		font-family: 'PT Sans', helvetica, arial, sans-serif;
+	}
+	.container-16 .region-content h1.title {    
+		color: #000;	
+		font-size:28px;
+		line-height:32px;
+		text-transform:capitalize;
+		font-family: 'PT Sans', helvetica, arial, sans-serif;
+	}
+	.cc-org-content{
+		position:relative;
+	}
+	.cc-org-content .block-system-main  .field-name-field-organization-logo .field-item img{
+		position:absolute;
+		top:0;
+		left:0;
 	}
 	#page .grid-11 {
 		margin-left: 15px;
 		margin-right: 15px;
 		width: 630px;
+	}
+	#block-cc-flag-block-flag-block li{
+		list-style:none;
+	}
+	.block-system-main .field-name-field-organization-logo{
+		float:left;
 	}
 	.region-content .field-group-format,
 	.region-content .field{
@@ -124,7 +151,7 @@
 		border:none;
 		color: #FFFFFF;
 		background-color: #E1C83D;
-		font:normal 18px/20px  Helvetica, Arial, sans-serif;
+		font:normal 18px/20px  'PT Sans', helvetica, arial, sans-serif;
 		padding: 8px 12px 7px;
 		text-transform: uppercase;
 	}
@@ -218,13 +245,37 @@
 		font-size:14px;
 		line-height:18px;
 	}
+	.addapp .button-add1,
+	.spotapp .button-add2{
+	  box-shadow: 0 1px 8px 1px #A2A7AA;
+	  height: 35px;
+	  margin-right: 10px; 
+	  margin-top: 30px;
+	  width: 120px;
+	}
+
+	.addapp .button-add1 { /*gold*/
+	  padding: 10px 15px;
+	  background-color: #E49A2F;   
+	  text-decoration:none;
+	  font-size:16px;
+	  color: #fff;
+	}
+
+	.spotapp .button-add2 {   /* Blue */
+	  padding: 10px 15px;
+	  background-color: #2479CC;  
+	  text-decoration:none;
+	  font-size:16px;
+	  color: #fff;
+	}
 	/*Browse by*/
 	.container-16 #block-block-21 h2.block-title,
 	.container-16 #block-block-22 h2.block-title{		
 		border:none;
 		color: #FFFFFF;
 		background-color: #E1C83D;
-		font:normal 18px/20px  Helvetica, Arial, sans-serif;
+		font:normal 18px/20px  'PT Sans', helvetica, arial, sans-serif;
 		padding: 8px 15px 7px;
 		text-transform: uppercase;
 		margin-bottom:0;
@@ -368,39 +419,62 @@
 	.view-cc-organizations table.views-view-grid  tr.row-last .views-field-field-organization-address{
 		border:none;
 	}
-	.container-16 .grid-8 #block-views-cc-organizations-block .view-cc-organizations .views-field-title,
-	.container-16 .grid-8 #block-views-cc-organizations-block .view-cc-organizations .views-field-field-organization-address{
+	.container-16 .grid-8 #block-views-cc-organizations-block-1 .view-cc-organizations .views-field-title,
+	.container-16 .grid-8 #block-views-cc-organizations-block-1 .view-cc-organizations .views-field-field-organization-address,
+	.container-16 .grid-8 #block-views-places-block-2 .views-field-title,
+	.container-16 .grid-8 #block-views-places-block-2 .views-field-field-organization-address,
+	.container-16 .grid-8 #block-views-places-block-1 .views-field-title,
+	.container-16 .grid-8 #block-views-places-block-1 .views-field-field-organization-address	{
 		width:60%;
+		font-family: 'PT Sans', helvetica, arial, sans-serif;
 	}
-	.view-cc-organizations .views-field-php{
+	.view-cc-organizations .views-field-php,
+	#block-views-places-block-2 .views-field-php,
+	#block-views-places-block-1 .views-field-php-3{
 		float:right;
-		margin-top:-35px;
+		margin-top:-40px;
 	}
-	.view-cc-organizations .views-field-php .cc-org-apps {
+	.view-cc-organizations .views-field-php .cc-org-apps,
+	#block-views-places-block-1 .views-field .cc-org-apps,
+	#block-views-places-block-2 .views-field .cc-org-apps{
 		width: auto;
 		color: #808080;
 		font-size: 14px;
 		padding-right:10px;
 		text-transform: lowercase;
 	}
-	.view-cc-organizations .views-field-php .cc-org-prefix-sharing{
+	.view-cc-organizations .views-field-php .cc-org-prefix-sharing,
+	#block-views-places-block-1 .views-field-php-3 .cc-org-prefix-sharing,
+	#block-views-places-block-2 .views-field-php .cc-org-prefix-sharing	{
 		background-position: center top;
 	}
-	.view-cc-organizations .views-field-php .cc-org-count {
+	.view-cc-organizations .views-field-php .cc-org-count,
+	#block-views-places-block-1 .views-field-php-3 .cc-org-count,
+	#block-views-places-block-2 .views-field-php .cc-org-count{
 		color: #808080;
 		font-weight: bold;
 	}
-	.view-cc-organizations .views-field-php .cc-org-postfix {
+	.view-cc-organizations .views-field-php .cc-org-postfix,
+	#block-views-places-block-1 .views-field-php-3 .cc-org-postfix,
+	#block-views-places-block-2 .views-field-php .cc-org-postfix{
 		display:none;
 	}
-	.view-cc-organizations .views-field-title a {
+	.view-cc-organizations .views-field-title a,
+	#block-views-places-block-1 	 .views-field-php a,
+	#block-views-places-block-2 .views-field-title a{
 		color: #2479CC;
 		font-size: 16px;
 		font-weight: 700;
 		text-decoration: none;
+		font-family: 'PT Sans', helvetica, arial, sans-serif;
 	}
-	.view-cc-organizations .views-field-title a:hover {
+	.view-cc-organizations .views-field-title a:hover,
+	#block-views-places-block-1 	 .views-field-php a:hover,
+	#block-views-places-block-2 .views-field-title a:hover{
 		text-decoration: underline;
+	}
+	#popup{
+		color:#666;
 	}
 	/* Place Detail */
 	.zone-content .region-content .block{
@@ -415,7 +489,9 @@
 		text-transform: uppercase;
 	}
 	.zone-content .view-cc-organizations .views-row,
-	.block-views-interactions-block   .views-row	{
+	.block-views-interactions-block   .views-row,
+	#block-views-places-block-1 	 .views-row ,
+	#block-views-places-block-2 	 .views-row {
 		border-bottom:1px dotted #666;
 		padding:10px 0 15px;
 	}
@@ -434,6 +510,7 @@
 	}
 	.view-interactions .views-field-field-interaction-application .field-content a{
 		text-transform: none;
+		font-family:'PT Sans', helvetica, arial, sans-serif;
 	}
 	.views-field-field-interaction-organization a,
 	.views-field-field-interaction-application a	{
@@ -451,10 +528,31 @@
 		float:left;
 		padding-right: 5px;
 	}
+	#block-views-cc-organizations-block .openlayers-views-map{
+		border:none;
+	}
+	/* Map */
+	.openlayers-views-map h2.point-title {
+		margin-bottom:10px;
+	}
+	.openlayers-views-map h2.point-title a,
+	.openlayers-views-map h2.point-title{
+		font-family:'PT Sans', helvetica, arial, sans-serif;
+		font-size:18px;
+		line-height:20px
+	}
+	#block-views-cc-organizations-block .openlayers-views-map .openlayers-tooltip-name{
+		display:none;
+	}
 	.openlayers-views-map{
 		border:2px solid #aaa;
 	}
 	/* Activity  */
+	#block-block-23{
+		border-bottom:1px dotted #666;
+		padding:  10px 0;
+		margin-bottom:0;
+	}
 	#block-block-23 h2.block-title,
 	#block-views-interactions-block-3 h2.block-title{
 	  color: #8A9093;
@@ -465,17 +563,26 @@
 	  border-bottom: 1px dotted #666666;
 	  font:bold 14px/16px 'PT Sans', helvetica, arial, sans-serif;
 	}	
-	#block-block-23 .content form  div:first-child {
+	#block-block-23 .content form div.has-you-tried{
+		font-weight: bold;
+	}
+	#block-block-23 .content form div{
 		color: #000000;
 		font-size: 14px;
-		font-weight: bold;
-	}	
-	#block-views-interactions-block-2  .views-row{
+		float: left;		
+		width: 50%;
+	}
+	#block-views-interactions-block-2  .views-row,
+	#block-views-interactions-block-4  .views-row,
+	#block-views-interactions-block-3  .views-row{
 		overflow:hidden;
 		border-bottom:1px dotted #666;
 		padding:15px 0;
 	}
-	
+	#block-views-interactions-block-4 .views-field-created,
+	#block-views-interactions-block-3 .views-field-created{
+		margin:0;
+	}
 /* --------- Sidebar Second ------------ */
 	.region-sidebar-second-inner .block{
 		border: 2px solid #FFFFFF;
@@ -540,6 +647,9 @@
 	.region-sidebar-second-inner  .item-list .views-field-title a {
 		font:bold 16px Helvetica, Arial, sans-serif;
 		text-decoration: none;
+	}
+	.region-sidebar-second-inner  .block-views-at-a-glance-block .view-content{
+		clear:both;
 	}
 	/* At A Glance */	
 	.region-sidebar-second-inner .view-at-a-glance-application- a:link {
@@ -629,6 +739,9 @@
 		display:block;
 		padding:5px 20px;
 		float:right;
+	}
+	.cc-org-content  .view-footer a{
+		text-decoration:none;
 	}
 /* ---------Footer-------- */
 
