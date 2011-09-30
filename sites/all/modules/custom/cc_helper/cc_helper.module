@@ -58,21 +58,58 @@ function cc_helper_user_view_alter(&$build) {
   }
 }
 
-/* Helper stats functions */
-function _cc_helper_get_references_count($nid, $ref_content_type = 'interaction', $ref_field = 'field_interaction_application') {
-	$query = new EntityFieldQuery();
-	$entities = $query->entityCondition('entity_type', 'node')
-						->entityCondition('bundle', $ref_content_type)
-						->fieldCondition($ref_field, 'nid', $nid)
-						->fieldCondition('field_interaction_type', 'tid', 156)
-						->propertyCondition('status', 1)
-						->execute();
-	
-	if($entities){
-		return count(node_load_multiple(array_keys($entities['node'])));
+/* $locality - a locality (i.e. city) textual name. */
+function _cc_helper_interactions_in_the_locality($locality, $types = array()) {
+	$orgs = _cc_helper_orgs($locality);
+	$counts = array();
+	foreach($orgs as $org) {
+		$counts[] = _cc_helper_get_references_count(
+			$org,
+			'interaction',
+			'field_interaction_organization',
+			$types
+		);
 	}
-	
-	
+	return array_sum($counts);
+}
+
+/* Organizations in the locality. */
+function _cc_helper_orgs($locality) {
+	$query = new EntityFieldQuery();
+	$orgs = $query
+		->entityCondition('entity_type', 'node')
+		->entityCondition('bundle', 'organization')
+		->fieldCondition(
+			'field_organization_address',
+			'locality',
+			$locality
+		)
+		->propertyCondition('status', 1)
+		->execute();
+	if(isset($orgs['node'])) {
+		return array_keys($orgs['node']);
+	}
+	return array();
+}
+
+/* Helper stats functions */
+function _cc_helper_get_references_count($nid = NULL, $ref_content_type = 'interaction', $ref_field = 'field_interaction_application', $tids = array()) {
+	$query = new EntityFieldQuery();
+	$query
+		->entityCondition('entity_type', 'node')
+		->entityCondition('bundle', $ref_content_type);
+	if($nid) {
+		$query->fieldCondition($ref_field, 'nid', $nid);
+	}
+	foreach($tids as $tid) {
+		$query->fieldCondition('field_interaction_type', 'tid', $tid);
+	}
+	$entities = $query
+		->propertyCondition('status', 1)
+		->execute();
+	if($entities) {
+		return count($entities['node']);
+	}
 	return FALSE;
 }
 
