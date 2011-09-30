@@ -124,7 +124,32 @@ function _cc_import_data_load_interaction_types(&$context) {
     $to = min(array($progress + $limit, $context['sandbox']['max']));
     for ($row = $progress; $row < $to; $row++) {
         $data = $context['sandbox']['filetoimport'][$row];
-        if ($row > 0 && count($data)>2 && $data[2] == 'Organization') {
+        if ($row > 0 && count($data)>2 && $data[2] == 'Organization' && !in_array(trim($data[1]), array('board', 'works', 'depends'))) {
+
+//https://secure.warecorp.com/redmine/issues/14787
+//            funds => Contributed to
+//            owns => Created
+//            sponsors => Created
+//            services => Provided support services for
+//            uses => Deployed
+//            codes => Contributed to
+//            board => (ignore)
+//            works => (ignore)
+//            depends => (ignore)
+
+            $replace = array(
+                'funds' => 'Contributed to',
+                'owns' => 'Created',
+                'sponsors' => 'Created',
+                'services' => 'Provided support services for',
+                'uses' => 'Deployed',
+                'codes' => 'Contributed to'
+            );
+
+            if (isset($replace[trim($data[1])])) {
+                $data[1] = $replace[trim($data[1])];
+            }
+
             //try to find by ss_id (field_tit_ss_id)
             $query = new EntityFieldQuery;
             $result = $query
@@ -207,6 +232,34 @@ function _cc_import_data_load_organization_types(&$context) {
         //id,address,city,state,zipcode,country,lat,long,addressable_type,addressable_id,created_at,updated_at
         $data = $context['sandbox']['filetoimport'][$row];
         if ($row > 0 && count($data)>2) {
+
+//https://secure.warecorp.com/redmine/issues/14787
+//nonprofit => Nonprofit/Foundation/NGO
+//foundation => Nonprofit/Foundation/NGO
+//company => Company
+//City => Municipal
+//Department => Government
+//State => State
+//Federal Agency => National
+//County => County
+
+            $replace = array(
+                'nonprofit' => 'Nonprofit/Foundation/NGO',
+                'foundation' => 'Nonprofit/Foundation/NGO',
+                'company' => 'Company',
+                'services' => 'Provided support services for',
+                'City' => 'Municipal',
+                'Department' => 'Government',
+                'Federal Agency' => 'National'
+            );
+
+            if (isset($replace[trim($data[1])])) {
+                $data[1] = $replace[trim($data[1])];
+            }
+
+
+
+
             //try to find by ss_id (field_tot_ss_id)
             $query = new EntityFieldQuery;
             $result = $query
@@ -553,7 +606,7 @@ function _cc_import_data_load_relations(&$context) {
                 $node->body = "";
                 $node->uid = $user->uid;
                 node_object_prepare($node);
-                
+
                 $node->field_interaction_organization[$node->language][0]['nid'] = $node1->nid;
                 $node->field_interaction_application[$node->language][0]['nid'] = $node2->nid;
                 $node->field_interaction_type[$node->language][0]['tid'] = $tax_item->tid;
