@@ -58,40 +58,6 @@ function cc_helper_user_view_alter(&$build) {
   }
 }
 
-/* $locality - a locality (i.e. city) textual name. */
-function _cc_helper_interactions_in_the_locality($locality, $types = array()) {
-	$orgs = _cc_helper_orgs($locality);
-	$counts = array();
-	foreach($orgs as $org) {
-		$counts[] = _cc_helper_get_references_count(
-			$org,
-			'interaction',
-			'field_interaction_organization',
-			$types
-		);
-	}
-	return array_sum($counts);
-}
-
-/* Organizations in the locality. */
-function _cc_helper_orgs($locality) {
-	$query = new EntityFieldQuery();
-	$orgs = $query
-		->entityCondition('entity_type', 'node')
-		->entityCondition('bundle', 'organization')
-		->fieldCondition(
-			'field_organization_address',
-			'locality',
-			$locality
-		)
-		->propertyCondition('status', 1)
-		->execute();
-	if(isset($orgs['node'])) {
-		return array_keys($orgs['node']);
-	}
-	return array();
-}
-
 /* Helper stats functions */
 function _cc_helper_get_references_count($nid = NULL, $ref_content_type = 'interaction', $ref_field = 'field_interaction_application', $tids = array()) {
 	$query = new EntityFieldQuery();
@@ -111,6 +77,84 @@ function _cc_helper_get_references_count($nid = NULL, $ref_content_type = 'inter
 		return count($entities['node']);
 	}
 	return FALSE;
+}
+
+function _cc_helper_get_references($nid = NULL, $ref_content_type = 'interaction', $ref_field = 'field_interaction_application', $tids = array()) {
+	$query = new EntityFieldQuery();
+	$query
+		->entityCondition('entity_type', 'node')
+		->entityCondition('bundle', $ref_content_type);
+	if($nid) {
+		$query->fieldCondition($ref_field, 'nid', $nid);
+	}
+	foreach($tids as $tid) {
+		$query->fieldCondition('field_interaction_type', 'tid', $tid);
+	}
+	$entities = $query
+		->propertyCondition('status', 1)
+		->execute();
+	if($entities) {
+		return array_keys($entities['node']);
+	}
+	return FALSE;
+}
+
+function _cc_helper_app_locs($app_id) {
+	$intrs = _cc_helper_get_references($app_id, 'interaction', 'field_interaction_application', array());
+	$orgs = array();
+	$locs = array();
+	foreach($intrs as $int) {
+		$orgs = array_merge(_cc_helper_get_references(
+			$int,
+			'organization',
+			'field_organization_interactions',
+			array()), $orgs);
+	}
+	foreach($orgs as $org) {
+		$locs = array_merge(_cc_helper_org_localities($org), $locs);
+	}
+	return count(array_unique($locs));
+}
+
+/* Locality of the organization. */
+function _cc_helper_org_localities($org_id) {
+	$org = node_load($org_id);
+	$a = field_get_items('node', $org, 'field_organization_address');
+	$ls = array();
+	if(is_array($a)) {
+		foreach($a as $i) {
+			$ls[] = $i['locality'];
+		}
+	}
+	return $ls;
+}
+
+/* $locality - a locality (i.e. city) textual name. */
+function _cc_helper_interactions_in_the_locality($locality, $types = array()) {
+	$query = new EntityFieldQuery();
+	$entities = $query
+		->entityCondition('entity_type', 'node')
+		->entityCondition('bundle', 'organization')
+		->fieldCondition(
+			'field_organization_address',
+			'locality',
+			$locality
+		)
+		->propertyCondition('status', 1)
+		->execute();
+	if(isset($entities['node'])) {
+		$orgs = array_keys($entities['node']);
+	}
+	$counts = array();
+	foreach($orgs as $org) {
+		$counts[] = _cc_helper_get_references_count(
+			$org,
+			'interaction',
+			'field_interaction_organization',
+			$types
+		);
+	}
+	return array_sum($counts);
 }
 
 /* Count unique view results */
