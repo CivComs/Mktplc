@@ -322,7 +322,8 @@ ul.nice-menu li a:visited  {
     background-color: #d6e6f5;
     text-decoration: none;
     padding: 8px 0.8em 8px;
-    font-size: 15px;  
+    font-size: 15px;
+    font-weight: 700;
 }
 
 
@@ -334,6 +335,7 @@ ul.nice-menu li a:visited  {
   background: url("../images/hover_triangle.png") no-repeat scroll bottom center transparent;
   padding: 8px 0.8em 8px;
   font-size: 15px; 
+  font-weight: 700;
 }
 
 
