@@ -3,10 +3,9 @@
 body {
   background-image: url('../images/bg3.png');
   background-repeat: repeat;
-  font-family: helvetica neue, arial;
+  font-family: 'PT Sans';
   font-size: 12px;
 }
-
 .page {
   background-color: #fff;
   padding-left: 5px;
@@ -134,7 +133,7 @@ a:link, a:visited {
   filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DED8D8');
   box-shadow: 0 1px 8px 1px #DED8D8;
   color: #666666;
-  font-family: helvetica;
+  font-family: 'PT Sans';
   padding: 0 5px;
   margin-bottom: 10px;
 }
@@ -525,7 +524,7 @@ ul.nice-menu li a:visited  {
   float: left;
   font-size: 15px;
   height: 42px;
-  padding-top: 11px;
+  padding: 11px;
   width: 126%;
   background: rgb(255,255,255); /* Old browsers */
   background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%); /* FF3.6+ */
@@ -627,7 +626,7 @@ div.fivestar-widget-static .star span.off {
 .block-views-dashboard-block-3 h2.block-title{
   background-color: #E1C83D;
   color: #FFFFFF;
-  font-family: helvetica;
+  font-family: 'PT Sans';
   font-weight: 600;
   margin: 5px -20px 5px 0;
   padding: 7px 3px 3px 10px;
@@ -637,7 +636,7 @@ div.fivestar-widget-static .star span.off {
 .block-views-dashboard-block-4 h2.block-title{
   background-color: #E1C83D;
   color: #FFFFFF;
-  font-family: helvetica;
+  font-family: 'PT Sans';
   font-weight: 600;
   margin: 5px 0px 5px 0;
   padding: 7px 3px 3px 10px;
@@ -716,7 +715,7 @@ div.fivestar-widget-static .star span.off {
 .block-views-watching-orgs-block h2.block-title {
   background-color: #E1C83D;
   color: #FFFFFF;
-  font-family: helvetica;
+  font-family: 'PT Sans';
   font-weight: 600;
   margin: 5px 0px 5px 0px;
   padding: 7px 9px 4px 15px;
@@ -728,7 +727,7 @@ div.fivestar-widget-static .star span.off {
   margin: 5px -20px 5px 0px;
   background-color: #E1C83D;
   color: #FFFFFF;
-  font-family: helvetica;
+  font-family: 'PT Sans';
   padding: 7px 9px 4px 15px;
   text-transform: uppercase;
 }
@@ -770,7 +769,7 @@ div.fivestar-widget-static .star span.off {
 .block-block-17 h2.block-title {  /* Manage You account & add to marketplace blocks  */
   background-color: #C4C4C4;
   color: #FFFFFF;
-  font-family: helvetica neue;
+  font-family: 'PT Sans';
   font-size: 14px;
   font-weight: 500;
   padding: 5px 20px;
@@ -799,13 +798,18 @@ div.fivestar-widget-static .star span.off {
   margin-bottom: 20px;
 }
 
-.block-views-ec4dedca467f7a3362801868ff73408d h2.block-title, 
-.block-views-f180557b90e1950dc78c1a58bbf318df h2.block-title {
+
+
+#block-views-cc-organizations-block h2.block-title,
+#block-views-ec4dedca467f7a3362801868ff73408d h2.block-title,
+#block-views-f180557b90e1950dc78c1a58bbf318df h2.block-title,
+#block-views-interactions-block h2.block-title{
+  background-color: transparent;
   border-bottom: 1px dotted;
-  color: #666666;
-  font-family: helvetica neue;
-  font-size: 14px;
+  color: #8A9093;
+  font: bold 14px/16px 'PT Sans',helvetica,arial,sans-serif;
   margin: 0 0 10px;
+  padding-left: 0;
   text-transform: uppercase;
 }
 
@@ -820,6 +824,7 @@ div.fivestar-widget-static .star span.off {
 .block-views-f180557b90e1950dc78c1a58bbf318df .views-row{
   border-bottom: 1px dotted;
   padding-bottom: 10px;
+  padding-top: 10px;
   height: 60px;
 }
 
@@ -899,12 +904,18 @@ div.fivestar-widget-static .star span.off {
   text-transform: uppercase;
 }
 
-.block-views-commercial-services-block .view-header p{
-  border-bottom: 1px dotted;
+.block-views-commercial-services-block .view-header p {
   color: #666666;
   font-size: 12px;
   margin-bottom: 10px;
   text-transform: uppercase;
+  font-weight: 700;
+}
+
+.block-views-commercial-services-block .view-content{
+  border-top: 1px dotted #666666;
+  color: #2479CC;
+  padding-top: 10px;
 }
 
 .block-views-commercial-services-block a:link, 
@@ -915,7 +926,7 @@ div.fivestar-widget-static .star span.off {
 
 .cc-org-content h1.title {  /* title */
     color: #000000;
-    font-family: helvetica;
+    font-family: 'PT Sans';
     font-size: 24px;
     left: 100px;
     position: absolute;
@@ -928,60 +939,110 @@ div.fivestar-widget-static .star span.off {
   margin-left: 100px;
 }
 
-/* Olga: Application Detail Page */
+.view-interactions {
+    color: #696969;
+    font-size: 14px;
+}
 
-#region-sidebar-second .block{
-	border: 2px solid #FFFFFF;
-	-webkit-box-shadow: 0 1px 8px 1px #DED8D8;
-	box-shadow: 0 1px 8px 1px #DED8D8;
-	/* For IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DED8D8')";
-	/* For IE 5.5 - 7 */
-	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DED8D8');
-	box-shadow: 0 1px 8px 1px #DED8D8;
-	color: #666666;
-	font-family: helvetica;
-	padding: 0 5px;
-	margin-bottom: 10px;
+.view-cc-organizations, .view-interactions {
+    font-family: PT Sans,Helvetica,sans-serif;
 }
-#region-sidebar-second .block h2.block-title{
-	background-color: #E1C83D;
-	color: #FFFFFF;
-	font-family: helvetica;
-	font-size: 9.5pt;
-	font-weight: 600;
-	margin: -4px -7px 5px;
-	padding: 9px 15px 6px;
-	text-transform: uppercase;
+
+.views-field-field-interaction-organization a, .views-field-field-interaction-application a {
+    color: #2479CC;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
 }
-#region-sidebar-second .block .views-row{
-	border-bottom: 1px dotted;
-	margin:0 0 10px;
-	padding-bottom: 10px;
+
+.zone-content .view-cc-organizations .views-row, .block-views-interactions-block .views-row {
+    border-bottom: 1px dotted #666666;
+    padding: 10px 0 15px;
 }
-#region-sidebar-second .block .views-row-last{
-	border-bottom: none;
+
+
+
+/* APPS DETAILED PAGE */
+
+.block-views-cc-organizations-block .col-1 a, 
+.block-views-cc-organizations-block .col-2 a {
+    color: #2479CC;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
 }
-#region-sidebar-second  .content{
-	padding: 7px;
-}
-#region-sidebar-second  .cc-rel-apps-find-more-in-title{
-  color: #666666;
-  margin: 0 0 10px;
-  text-transform: uppercase;
+
+.block-views-cc-organizations-block .views-field-field-organization-address{
   border-bottom: 1px dotted;
-  font:normal 12px Helvetica, Arial, sans-serif;
+  color: #666666;
+  font-size: 14px;
 }
-#region-sidebar-second  table.views-view-grid{
-	border:none;
+
+.block-views-cc-organizations-block h2.block-title{
+   border-bottom: 1px dotted;
+   color: #666666;
+   font-family: 'PT Sans';
+   font-size: 14px;
+   margin: 0 0 10px;
+   text-transform: uppercase;
 }
-#region-sidebar-second  table.views-view-grid td{
-	padding:2px 5px 3px;
-	color:#2479CC;
+
+.block-views-cc-organizations-block table {
+  border: none;
 }
-#region-sidebar-second  table.views-view-grid td a{
-	text-decoration:none;
+
+/* Home */
+
+#block-block-24 {
+  background-color: #E6E7E9;
+  border: 2px solid #999999;
+  color: #666666;
+  font-family: 'PT Sans',helvetica,arial,sans-serif;
+  margin-bottom: 10px;
+  margin-top: 0;
+  padding: 0 5px;
+  box-shadow:none;
 }
-#region-sidebar-second  table.views-view-grid td a:hover{
-	text-decoration:underline;
+
+#block-block-24 h2.block-title {
+    background-color: #999999;
+    border: medium none;
+    color: #FFFFFF;
+    font: 18px/20px Helvetica,Arial,sans-serif;
+    font-family: 'PT Sans',helvetica,arial,sans-serif;
+    margin: -4px -7px 5px;
+    padding: 14px 15px 14px;
+    text-transform: uppercase;
+}
+
+.addtomarket0{
+ color: #000000; 
+ margin-bottom: 10px;
+ font-size:13px;
+}
+
+.addtomarket1{
+  color:#000000; 
+  font-size: 16px; 
+  font-weight: 600;
+  text-align: center;
+}
+
+.addtomarketfooter{
+ text-align:center;
+}
+
+.addtomarketlist{
+  margin: 4px 0 25px;
+  text-align: center;
+}
+
+.addtomarketlist a{
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.addtomarketfooter a {
+  text-decoration: none;
+  font-size:13px;
 }

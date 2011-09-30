@@ -21,6 +21,12 @@ regions[top_menu] = Top Menu
 regions[content_top] = Content Top
 regions[content_top2] = Content Top2
 regions[content_top3] = Content Top3
+regions[content_leftcolumn] = Left Column Content 
+regions[content_rightcolumn] = Right Column Content
+regions[content_main] = Main Column Content
+
+regions[content_doormat] = Content Doormat
+
 regions[search_bar] = Search Bar
 regions[content_bottom] = Content Bottom 1
 regions[content_bottom2] = Content Bottom 2
@@ -38,17 +44,17 @@ zones[footer] = Footer
 
 ; OPTIONAL STYLESHEETS
 
-css[global.css][name] = Your custom global styles
-css[global.css][description] = This file holds all the globally active custom CSS of your theme.
-css[global.css][options][weight] = 10
+css[olga.css][name] = Olga custom global styles
+css[olga.css][description] = This file holds all the olga's active custom CSS of your theme.
+css[olga.css][options][weight] = 10
 
 css[sheldon.css][name] = sheldon custom global styles
 css[sheldon.css][description] = This file holds all sheldon's active custom CSS of your theme.
 css[sheldon.css][options][weight] = 11
 
-css[olga.css][name] = Olga custom global styles
-css[olga.css][description] = This file holds all the olga's active custom CSS of your theme.
-css[olga.css][options][weight] = 12
+css[global.css][name] = Your custom global styles
+css[global.css][description] = This file holds all the globally active custom CSS of your theme.
+css[global.css][options][weight] = 12
 
 ; THEME SETTINGS (DEFAULTS)
 
