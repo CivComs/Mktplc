@@ -1,0 +1,6 @@
+id,name,setting,created_at,updated_at
+2,Geoname,	http://geonames.usgs.gov/,2011-01-22 04:47:52.598213+0000,2011-01-22 04:47:52.598213+0000
+3,Census County Codes,http://www.census.gov/datamap/fipslist/AllSt.txt,2011-01-22 04:48:09.102933+0000,2011-01-22 04:48:09.102933+0000
+4,LongLat,,2011-01-22 04:53:14.680821+0000,2011-01-22 04:53:14.680821+0000
+6,google search,product,2011-01-22 20:31:05.561605+0000,2011-01-22 20:31:05.561605+0000
+
