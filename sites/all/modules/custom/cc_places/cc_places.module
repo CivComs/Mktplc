@@ -45,3 +45,19 @@ function _cc_places_wkt($place, $wkt_type = 'point'){
 	$geo_array = geofield_get_values_from_geometry($geometry);
 	return $geo_array['wkt'];
 }
+
+// Function to validate place received from URL against existing places in the system.
+function _cc_places_validate_place($place, $place_type = 'locality', $node_type = 'organization', $field_name = 'field_organization_address'){
+	$query = new EntityFieldQuery();
+	$entities = $query->entityCondition('entity_type', 'node')
+						->entityCondition('bundle', $node_type)
+						->fieldCondition($field_name, $place_type, $place)
+						->propertyCondition('status', 1)
+						->execute();
+	
+	if($entities){
+		return TRUE;
+	}
+	
+	return FALSE;
+}
