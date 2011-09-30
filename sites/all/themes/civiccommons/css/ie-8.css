@@ -1,0 +1,16 @@
+/* ie-8 Stylesheet */
+
+.region-sidebar-second-inner {
+    display: inline;
+    float: left;
+    margin: 0 10px;
+    position: relative;
+    width: 280px;
+}
+
+#zone-content .region-sidebar-second-inner .block,
+#zone-content .region-sidebar-second-inner .block-block-9{
+	border: 1px solid #DED8D8;
+	margin-bottom: 10px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DED8D8')";
+}

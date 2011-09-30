@@ -1,0 +1,23 @@
+/* ie-7 Stylesheet */
+
+.region-sidebar-second-inner {
+    display: inline;
+    float: left;
+    margin: 0 10px;
+    position: relative;
+    width: 280px;
+}
+#section-content .region-sidebar-second-inner .block{
+	margin-bottom: 10px;
+	padding-left:0;
+	padding-right:0;
+	filter: progid:DXImageTransform.Microsoft.Shadow(strength=4, direction=135, color='#DED8D8');
+	box-shadow: 0 1px 8px 1px #DED8D8;
+}
+#section-content .region-sidebar-second-inner .block h2.block-title {
+	margin-left:0;
+	margin-right:0;
+	padding-right:0;
+	padding-left:0;
+	text-indent:7px;
+}
