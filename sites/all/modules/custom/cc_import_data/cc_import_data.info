@@ -1,0 +1,9 @@
+; $Id: cc_import_data.info,v 1.0 2011/09/22 Alexander Komarovski Exp $
+name = Import Data
+description = Import data from csv.
+configure = admin/config/cc_import_data
+core = 7.x
+package = Warecorp
+version = "7.x-1.x-dev"
+files[] = cc_import_data.module
+files[] = cc_import_data.install
