@@ -138,12 +138,12 @@ function _cc_import_data_load_interaction_types(&$context) {
 //            depends => (ignore)
 
             $replace = array(
-                'funds' => 'Contributed to',
-                'owns' => 'Created',
-                'sponsors' => 'Created',
-                'services' => 'Provided support services for',
-                'uses' => 'Deployed',
-                'codes' => 'Contributed to'
+                    'funds' => 'Contributed to',
+                    'owns' => 'Created',
+                    'sponsors' => 'Created',
+                    'services' => 'Provided support services for',
+                    'uses' => 'Deployed',
+                    'codes' => 'Contributed to'
             );
 
             if (isset($replace[trim($data[1])])) {
@@ -170,10 +170,20 @@ function _cc_import_data_load_interaction_types(&$context) {
                 if (!empty($tax_item)) {
                     $tax_item = array_shift($tax_item);
 
-                    $tax_item->field_tit_ss_id[LANGUAGE_NONE][0]['value'] = intval(trim($data[0]));
+                    $exists = false;
+                    foreach ($tax_item->field_tit_ss_id[LANGUAGE_NONE] as $id) {
+                        if ($id['value'] == trim($data[0])) {
+                            $exists = true;
+                        }
+                    }
+                    if (!$exists) {
+                        $tax_item->field_tit_ss_id[LANGUAGE_NONE][]['value'] = intval(trim($data[0]));
+                    }
+
                     taxonomy_term_save($tax_item);
                     $updated++;
                 } else {
+                    die;
                     //crete new
                     $tax_item = new StdClass();
                     $tax_item->vid = $tax->vid;
@@ -244,13 +254,13 @@ function _cc_import_data_load_organization_types(&$context) {
 //County => County
 
             $replace = array(
-                'nonprofit' => 'Nonprofit/Foundation/NGO',
-                'foundation' => 'Nonprofit/Foundation/NGO',
-                'company' => 'Company',
-                'services' => 'Provided support services for',
-                'City' => 'Municipal',
-                'Department' => 'Government',
-                'Federal Agency' => 'National'
+                    'nonprofit' => 'Nonprofit/Foundation/NGO',
+                    'foundation' => 'Nonprofit/Foundation/NGO',
+                    'company' => 'Company',
+                    'services' => 'Provided support services for',
+                    'City' => 'Municipal',
+                    'Department' => 'Government',
+                    'Federal Agency' => 'National'
             );
 
             if (isset($replace[trim($data[1])])) {
@@ -280,7 +290,16 @@ function _cc_import_data_load_organization_types(&$context) {
                 if (!empty($tax_item)) {
                     $tax_item = array_shift($tax_item);
 
-                    $tax_item->field_tot_ss_id[LANGUAGE_NONE][0]['value'] = intval(trim($data[0]));
+                    $exists = false;
+                    foreach ($tax_item->field_tot_ss_id[LANGUAGE_NONE] as $id) {
+                        if ($id['value'] == trim($data[0])) {
+                            $exists = true;
+                        }
+                    }
+                    if (!$exists) {
+                        $tax_item->field_tot_ss_id[LANGUAGE_NONE][]['value'] = intval(trim($data[0]));
+                    }
+
                     taxonomy_term_save($tax_item);
                     $updated++;
                 } else {
@@ -346,59 +365,58 @@ function _cc_import_data_load_organizations(&$context) {
             if (!empty($result)) {
                 $taxitem = array_shift(array_shift($result));
                 $taxitem = $taxitem->tid;
-            } else {
-                $taxitem = null;
-            }
 
-            //try to find by ss_id (field_organization_ss_id)
-            $query = new EntityFieldQuery;
-            $result = $query
-                    ->entityCondition('entity_type', 'node')
-                    ->entityCondition('bundle', 'organization')
-                    ->fieldCondition('field_organization_ss_id', 'value', intval(trim($data[0])))
-                    ->execute();
-
-            if (!empty($result)) {
-                $node = array_shift(array_shift($result));
-                $node = node_load($node->nid);
-                $node->title = trim($data[1]);
-                $node->field_organization_type[$node->language][0] = array('tid' => $taxitem);
-                node_save($node);
-                $updated++;
-            } else {
-                //try to find by name
+                //try to find by ss_id (field_organization_ss_id)
+                $query = new EntityFieldQuery;
                 $result = $query
                         ->entityCondition('entity_type', 'node')
                         ->entityCondition('bundle', 'organization')
-                        ->propertyCondition('title', trim($data[1]))
-                        ->fieldCondition('field_organization_ss_id', 'value', null)
+                        ->fieldCondition('field_organization_ss_id', 'value', intval(trim($data[0])))
                         ->execute();
 
                 if (!empty($result)) {
                     $node = array_shift(array_shift($result));
                     $node = node_load($node->nid);
-                    $node->field_organization_ss_id[$node->language][0]['value'] = intval(trim($data[0]));
+                    $node->title = trim($data[1]);
                     $node->field_organization_type[$node->language][0] = array('tid' => $taxitem);
                     node_save($node);
                     $updated++;
                 } else {
-                    //crete new
-                    $node = new StdClass();
-                    $node->nid = null;
-                    $node->type = 'organization';
-                    $node->title = trim($data[1]);
-                    $node->language = LANGUAGE_NONE;
-                    $node->status = 1;
-                    $node->body = "";
-                    $node->uid = $user->uid;
-                    node_object_prepare($node);
-                    $node->field_organization_ss_id[$node->language][0]['value'] = intval(trim($data[0]));
-                    $node->field_organization_type[$node->language][0] = array('tid' => $taxitem);
-                    $node = node_submit($node);
-                    node_save($node);
-                    $added++;
+                    //try to find by name
+                    $result = $query
+                            ->entityCondition('entity_type', 'node')
+                            ->entityCondition('bundle', 'organization')
+                            ->propertyCondition('title', trim($data[1]))
+                            ->fieldCondition('field_organization_ss_id', 'value', null)
+                            ->execute();
+
+                    if (!empty($result)) {
+                        $node = array_shift(array_shift($result));
+                        $node = node_load($node->nid);
+                        $node->field_organization_ss_id[$node->language][0]['value'] = intval(trim($data[0]));
+                        $node->field_organization_type[$node->language][0] = array('tid' => $taxitem);
+                        node_save($node);
+                        $updated++;
+                    } else {
+                        //crete new
+                        $node = new StdClass();
+                        $node->nid = null;
+                        $node->type = 'organization';
+                        $node->title = trim($data[1]);
+                        $node->language = LANGUAGE_NONE;
+                        $node->status = 1;
+                        $node->body = "";
+                        $node->uid = $user->uid;
+                        node_object_prepare($node);
+                        $node->field_organization_ss_id[$node->language][0]['value'] = intval(trim($data[0]));
+                        $node->field_organization_type[$node->language][0] = array('tid' => $taxitem);
+                        $node = node_submit($node);
+                        node_save($node);
+                        $added++;
+                    }
                 }
             }
+
         }
 
         $context['sandbox']['progress']++;
@@ -440,7 +458,7 @@ function _cc_import_data_load_applications(&$context) {
     $limit = 5;
     $progress = $context['sandbox']['progress'];
 
-$to = min(array($progress + $limit, $context['sandbox']['max']));
+    $to = min(array($progress + $limit, $context['sandbox']['max']));
     for ($row = $progress; $row < $to; $row++) {
         //id,address,city,state,zipcode,country,lat,long,addressable_type,addressable_id,created_at,updated_at
         $data = $context['sandbox']['filetoimport'][$row];
@@ -539,6 +557,7 @@ function _cc_import_data_load_relations(&$context) {
     $tax=taxonomy_vocabulary_machine_name_load("interaction_type");
     $to = min(array($progress + $limit, $context['sandbox']['max']));
     for ($row = $progress; $row < $to; $row++) {
+        $skipRelation = false;
         //id,relation_type,parentable_type,parentable_id,childable_type,childable_id,created_at,updated_at
         //11,uses,Organization,1,Product,11,2010-11-15 03:55:34.110699+0000,2010-11-15 03:55:34.110699+0000
         $data = $context['sandbox']['filetoimport'][$row];
@@ -548,10 +567,11 @@ function _cc_import_data_load_relations(&$context) {
             if (!empty($tax_item)) {
                 $tax_item = array_shift($tax_item);
             } else {
-                throw new Exception('Taxonomy term '.trim($data[1]).' not found');
+                $skipRelation = true;
+                //throw new Exception('Taxonomy term '.trim($data[1]).' not found');
             }
 
-             //try to find by ss_id (field_organization_ss_id)
+            //try to find by ss_id (field_organization_ss_id)
             $query = new EntityFieldQuery;
             $result = $query
                     ->entityCondition('entity_type', 'node')
@@ -563,7 +583,8 @@ function _cc_import_data_load_relations(&$context) {
                 $node1 = array_shift(array_shift($result));
                 $node1 = node_load($node1->nid);
             } else {
-                throw new Exception('organization #'.trim($data[3]).' not found');
+                $skipRelation = true;
+                //throw new Exception('organization #'.trim($data[3]).' not found');
             }
 
 
@@ -579,44 +600,44 @@ function _cc_import_data_load_relations(&$context) {
                 $node2 = array_shift(array_shift($result));
                 $node2 = node_load($node2->nid);
             } else {
-                 throw new Exception('application #'.trim($data[5]).' not found');
+                $skipRelation = true;
+                //throw new Exception('application #'.trim($data[5]).' not found');
             }
 
+            if (!$skipRelation) {
+                //try to find Relation
+                $query = new EntityFieldQuery;
+                $result = $query
+                        ->entityCondition('entity_type', 'node')
+                        ->entityCondition('bundle', 'interaction')
+                        ->fieldCondition('field_interaction_organization', 'nid', $node1->nid)
+                        ->fieldCondition('field_interaction_application', 'nid', $node2->nid)
+                        ->fieldCondition('field_interaction_type', 'tid', $tax_item->tid)
+                        ->execute();
 
-            //try to find Relation
-            $query = new EntityFieldQuery;
-            $result = $query
-                    ->entityCondition('entity_type', 'node')
-                    ->entityCondition('bundle', 'interaction')
-                    ->fieldCondition('field_interaction_organization', 'nid', $node1->nid)
-                    ->fieldCondition('field_interaction_application', 'nid', $node2->nid)
-                    ->fieldCondition('field_interaction_type', 'tid', $tax_item->tid)
-                    ->execute();
+                if (!empty($result)) {
+                    $updated++;
+                } else {
+                    //crete new
+                    $node = new StdClass();
+                    $node->nid = null;
+                    $node->type = 'interaction';
+                    $node->title = 'New Interaction';
+                    $node->language = LANGUAGE_NONE;
+                    $node->status = 1;
+                    $node->body = "";
+                    $node->uid = $user->uid;
+                    node_object_prepare($node);
 
-            if (!empty($result)) {
-                $updated++;
-            } else {
-                //crete new
-                $node = new StdClass();
-                $node->nid = null;
-                $node->type = 'interaction';
-                $node->title = 'New Interaction';
-                $node->language = LANGUAGE_NONE;
-                $node->status = 1;
-                $node->body = "";
-                $node->uid = $user->uid;
-                node_object_prepare($node);
+                    $node->field_interaction_organization[$node->language][0]['nid'] = $node1->nid;
+                    $node->field_interaction_application[$node->language][0]['nid'] = $node2->nid;
+                    $node->field_interaction_type[$node->language][0]['tid'] = $tax_item->tid;
 
-                $node->field_interaction_organization[$node->language][0]['nid'] = $node1->nid;
-                $node->field_interaction_application[$node->language][0]['nid'] = $node2->nid;
-                $node->field_interaction_type[$node->language][0]['tid'] = $tax_item->tid;
-
-                $node = node_submit($node);
-                node_save($node);
-                $added++;
+                    $node = node_submit($node);
+                    node_save($node);
+                    $added++;
+                }
             }
-
-
         }
 
         $context['sandbox']['progress']++;
@@ -655,7 +676,7 @@ function _cc_import_data_load_notes(&$context) {
     $limit = 5;
     $progress = $context['sandbox']['progress'];
 
-$to = min(array($progress + $limit, $context['sandbox']['max']));
+    $to = min(array($progress + $limit, $context['sandbox']['max']));
     for ($row = $progress; $row < $to; $row++) {
         //id,address,city,state,zipcode,country,lat,long,addressable_type,addressable_id,created_at,updated_at
         $data = $context['sandbox']['filetoimport'][$row];
@@ -800,58 +821,58 @@ function _cc_import_data_load_addresses(&$context) {
                         //if country and state not defined, try to get it from coordinates
                         if (empty($node->field_organization_address[$node->language][0]['country']) ||
                                 empty($node->field_organization_address[$node->language][0]['locality']) ||
-                                        empty($node->field_organization_address[$node->language][0]['administrative_area'])) {
+                                empty($node->field_organization_address[$node->language][0]['administrative_area'])) {
 
 
-                                $url = "http://maps.googleapis.com/maps/api/geocode/json";
-                                $url .= '?latlng ='. urlencode($node->field_organization_coords[$node->language][0]['lat'].",".$node->field_organization_coords[$node->language][0]['lon']);
-                                $url .= '&sensor=false';
-                                $result = json_decode(@file_get_contents($url));
+                            $url = "http://maps.googleapis.com/maps/api/geocode/json";
+                            $url .= '?latlng ='. urlencode($node->field_organization_coords[$node->language][0]['lat'].",".$node->field_organization_coords[$node->language][0]['lon']);
+                            $url .= '&sensor=false';
+                            $result = json_decode(@file_get_contents($url));
 
-                                $country = '';
-                                $city = '';
-                                $state = '';
-                                $address = '';
+                            $country = '';
+                            $city = '';
+                            $state = '';
+                            $address = '';
 
-                                if (is_object($result) && $result->status == 'OK' && !empty($result->results[0]->formatted_address)) {
-                                   $address = $result->results[0]->formatted_address;
-                                }
-                                if (is_object($result) && $result->status == 'OK' && !empty($result->results[0]->address_components)) {
-                                   // print_r($result->results[0]->address_components);die;
-                                    $l = $result->results[0]->address_components;
-                                    foreach ($l as $k => $v) {
-                                          foreach ($v->types as $type) {
-                                            switch ($type) {
-                                                case 'locality':
-                                                    $city = $v->short_name;
-                                                    break;
-                                                case 'administrative_area_level_1':
-                                                    $state = $v->short_name;
-                                                    break;
-                                                case 'country':
-                                                    $country = $v->short_name;
-                                                    break;
-                                            }
+                            if (is_object($result) && $result->status == 'OK' && !empty($result->results[0]->formatted_address)) {
+                                $address = $result->results[0]->formatted_address;
+                            }
+                            if (is_object($result) && $result->status == 'OK' && !empty($result->results[0]->address_components)) {
+                                // print_r($result->results[0]->address_components);die;
+                                $l = $result->results[0]->address_components;
+                                foreach ($l as $k => $v) {
+                                    foreach ($v->types as $type) {
+                                        switch ($type) {
+                                            case 'locality':
+                                                $city = $v->short_name;
+                                                break;
+                                            case 'administrative_area_level_1':
+                                                $state = $v->short_name;
+                                                break;
+                                            case 'country':
+                                                $country = $v->short_name;
+                                                break;
                                         }
                                     }
                                 }
+                            }
 
 
-                                if (!empty($address) && empty($node->field_organization_address[$node->language][0]['thoroughfare'])) {//address
-                                    $node->field_organization_address[$node->language][0]['thoroughfare'] =$address;
-                                }
+                            if (!empty($address) && empty($node->field_organization_address[$node->language][0]['thoroughfare'])) {//address
+                                $node->field_organization_address[$node->language][0]['thoroughfare'] =$address;
+                            }
 
-                                if (!empty($city) && empty($node->field_organization_address[$node->language][0]['locality'])) {//city
-                                    $node->field_organization_address[$node->language][0]['locality'] =$city;
-                                }
+                            if (!empty($city) && empty($node->field_organization_address[$node->language][0]['locality'])) {//city
+                                $node->field_organization_address[$node->language][0]['locality'] =$city;
+                            }
 
-                                if (!empty($state) && empty($node->field_organization_address[$node->language][0]['administrative_area'])) {//state
-                                    $node->field_organization_address[$node->language][0]['administrative_area'] =$state;
-                                }
+                            if (!empty($state) && empty($node->field_organization_address[$node->language][0]['administrative_area'])) {//state
+                                $node->field_organization_address[$node->language][0]['administrative_area'] =$state;
+                            }
 
-                                if (!empty($country) && empty($node->field_organization_address[$node->language][0]['country'])) {//country
-                                    $node->field_organization_address[$node->language][0]['country'] =$country;
-                                }
+                            if (!empty($country) && empty($node->field_organization_address[$node->language][0]['country'])) {//country
+                                $node->field_organization_address[$node->language][0]['country'] =$country;
+                            }
 
                         }
 
@@ -881,8 +902,8 @@ function _cc_import_data_load_addresses(&$context) {
 
 function _cc_import_data_convert_country_abbr3_to_abbr2($abbr3) {
     $convert = array(
-        'USA' => 'US',
-        'Los Angeles' => 'US',
+            'USA' => 'US',
+            'Los Angeles' => 'US',
     );
 
     if (!isset($convert[$abbr3])) {
