@@ -1,6 +1,31 @@
 <?php
 // $Id: cc_helper.module,v 0.1 2011/09/21 Paul de Paula Exp $
 
+function cc_helper_views_pre_render(&$view) {
+	if(!(
+		(
+			$view->name == 'apps_this_organization_has_creat'
+			&& $view->current_display == 'block'
+		) || (
+			$view->name == 'apps_this_organization_has_used'
+			&& $view->current_display == 'block'
+		)
+	)) {
+		return FALSE;
+	}
+	$org = menu_get_object('node', 1, NULL);
+	$f = field_get_items('node', $org, 'field_organization_type');
+	$term = isset($f[0]['tid']) ? taxonomy_term_load($f[0]['tid']) : FALSE;
+	$org_type = isset($term->field_watchname['und'][0]['safe_value']) ? $term->field_watchname['und'][0]['safe_value'] : '';
+	$c = $view->total_rows;
+	if(isset($view->build_info['title'])) {
+		$view->build_info['title'] = strtr(
+			$view->build_info['title'],
+			array('!count' => $c, '!org_type' => $org_type)
+		);
+	}
+}
+
 /*
  * Count a view results. $view - unexecuted view object.
  */
