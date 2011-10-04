@@ -561,7 +561,20 @@ function _cc_import_data_load_relations(&$context) {
         //id,relation_type,parentable_type,parentable_id,childable_type,childable_id,created_at,updated_at
         //11,uses,Organization,1,Product,11,2010-11-15 03:55:34.110699+0000,2010-11-15 03:55:34.110699+0000
         $data = $context['sandbox']['filetoimport'][$row];
-        if ($row > 0 && count($data)>2 && $data[2] =='Organization' && $data[4] =='Product') {
+        if ($row > 0 && count($data)>2 && $data[2] =='Organization' && $data[4] =='Product' && !in_array(trim($data[1]), array('board', 'works', 'depends'))) {
+
+            $replace = array(
+                    'funds' => 'Contributed to',
+                    'owns' => 'Created',
+                    'sponsors' => 'Created',
+                    'services' => 'Provided support services for',
+                    'uses' => 'Deployed',
+                    'codes' => 'Contributed to'
+            );
+
+            if (isset($replace[trim($data[1])])) {
+                $data[1] = $replace[trim($data[1])];
+            }
 
             $tax_item = taxonomy_term_load_multiple(array(), array('name' => trim($data[1]), 'vid' => $tax->vid));
             if (!empty($tax_item)) {
