@@ -214,22 +214,35 @@ function cc_helper_entity_info_alter(&$entity_info) {
 function _cc_helper_creators_info($appid) {
 	$node = node_load($appid);
 	$out='<ul>';
-	foreach($node->field_application_creator['und'] as $row){
+	$lng = $node->language;
+	if(isset($node->field_application_creator[$lng])){
+	foreach($node->field_application_creator[$lng] as $row){
 		$creator_node = node_load($row['nid']);
-		//dsm($creator_node);
 		$link = drupal_get_path_alias("node/".$creator_node->vid);
 		$title = '<a href="'.$link.'">'.$creator_node->title.'</a>';
 		$creator = node_view($creator_node, 'cc_business_card');
-		//dsm(node_load($creator_node['nid']));
 		$image_uri = $creator['field_organization_logo'][0]['#item'][uri];
 		$image_style = $creator['field_organization_logo'][0]['#image_style'];
 		$logo = theme('image_style', array('style_name'=>$image_style, 'path'=>$image_uri));
 		$addr = $creator['field_organization_address']['#items'][0];
 		$address = '('.$addr['locality'].','.$addr['administrative_area'].','.$addr['country'].')';
 		$out .= '<li>'.$logo.'<div>'.$title.'</div>'.'<div>'.$address.'</div>'.'</li>';
-		//dsm($logo);
-	}
+	}}
 	$out.='</ul>';
-	//dsm($out);
 	return $out;
 }
+
+function cc_helper_block_view_alter(&$data, $block){
+	if($block->bid=='block-22'){
+		$count_apps = db_query("SELECT COUNT(*) FROM {node} WHERE type = 'Application'")->fetchField();
+		$count_places = db_select('field_data_field_organization_address', 'a')
+			->fields('a', array('field_organization_address_locality'))
+			->distinct()
+			->countQuery()
+			->execute()
+			->fetchField();
+		$block->title = 'tracking '.$count_apps.' apps in '.$count_places.' cities';
+	}
+	
+}
+
