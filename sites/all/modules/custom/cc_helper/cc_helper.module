@@ -213,7 +213,8 @@ function cc_helper_entity_info_alter(&$entity_info) {
 
 function _cc_helper_creators_info($appid) {
 	$node = node_load($appid);
-	$out='<ul>';
+	$empty = !is_array($node->field_application_creator[$lng]);
+	$out=!$empty ? '<ul>' : '';
 	$lng = $node->language;
 	if(isset($node->field_application_creator[$lng])){
 	foreach($node->field_application_creator[$lng] as $row){
@@ -228,7 +229,7 @@ function _cc_helper_creators_info($appid) {
 		$address = '('.$addr['locality'].','.$addr['administrative_area'].','.$addr['country'].')';
 		$out .= '<li>'.$logo.'<div>'.$title.'</div>'.'<div>'.$address.'</div>'.'</li>';
 	}}
-	$out.='</ul>';
+	$out.=!$empty ? '</ul>' : '';
 	return $out;
 }
 
