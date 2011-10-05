@@ -16,4 +16,5 @@
   <?php if (isset($page['footer'])) : ?>
     <?php print render($page['footer']); ?>
   <?php endif; ?>
+  
 </div>
