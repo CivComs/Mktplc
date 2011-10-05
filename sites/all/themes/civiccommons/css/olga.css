@@ -168,15 +168,14 @@
 		font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 		color:#666;
 	}
-	.container-16 .grid-8 .view-applications .views-row{
-		overflow:hidden;
-		border-bottom:1px dotted #666;
-		padding:5px 0;
-	}
+	
+	/* see line ~ */
+
 	.container-16 .grid-8 .view-applications .views-field-field-application-logo{
 		float:left; 
 		margin-right: 10px;
-	}	
+	}
+	.page-taxonomy-term h2.node-title a,	
 	.view-applications .views-field-title a {
 		color: #2479CC;
 		font-size: 16px;
@@ -184,6 +183,11 @@
 		line-height:18px;
 		text-decoration: none;
 	}
+
+	.page-taxonomy-term .node-readmore {
+        	display: none;
+	}
+
 	.view-applications .views-field-title a:hover {
 		text-decoration: underline;
 	}
@@ -275,9 +279,33 @@
 	  font-size:16px;
 	  color: #fff;
 	}
-	.region-content-rightcolumn .block-applications-block-3 .view-applications .views-row {
-		padding-bottom:9px;
+
+
+        #block-views-interactions-block-2  .views-row,
+/*        #block-views-interactions-block-4  .views-row, targetted below */
+	.view.view-interactions.view-id-interactions.view-display-id-block_4.view-dom-id-5 .views-row, 
+        #block-views-interactions-block-3  .views-row,
+	.zone-content .view-cc-organizations .views-row,
+	.block-views-interactions-block .views-row, 
+        .region-content-rightcolumn .block-applications-block-3 .view-applications .views-row,
+        .container-16 .grid-8 .view-applications .views-row{
+                overflow:hidden;
+                border-bottom:1px dotted #666;
+                padding:5px 0;
+        	height: 60px;
 	}
+
+	.region-content-rightcolumn .block-applications-block-3 .view-applications .views-row {
+		height: 60px;
+		padding-bottom: 5px;
+	}
+
+/* http://dev.cc.warecorp.com/places/Burlington */
+.view.view-cc-organizations.view-id-cc_organizations.view-display-id-block_1.view-dom-id-4 .views-row,
+.view.view-interactions.view-id-interactions.view-display-id-block_4.view-dom-id-5 .views-row {
+	height: 60px;
+}
+
 	/*Browse by*/
 	.container-16 #block-block-21 h2.block-title,
 	.container-16 #block-block-22 h2.block-title{		
@@ -539,13 +567,16 @@
 		padding: 8px 15px 7px;
 		text-transform: uppercase;
 	}
-	.zone-content .view-cc-organizations .views-row,
-	.block-views-interactions-block   .views-row,
-	#block-views-places-block-1 	 .views-row ,
+
+	.page-taxonomy-term article,
+/*	.zone-content .view-cc-organizations .views-row, */
+/*	.block-views-interactions-block   .views-row, */
+/*	#block-views-places-block-1 	 .views-row , */
 	#block-views-places-block-2 	 .views-row {
 		border-bottom:1px dotted #666;
 		padding:10px 0 15px;
 	}
+
 	.container-16 .grid-8 #block-views-places-block-1 .view-places .views-row {
 		padding:33px 0 34px;
 	}
@@ -628,13 +659,8 @@
 		float: left;		
 		width: 50%;
 	}
-	#block-views-interactions-block-2  .views-row,
-	#block-views-interactions-block-4  .views-row,
-	#block-views-interactions-block-3  .views-row{
-		overflow:hidden;
-		border-bottom:1px dotted #666;
-		padding:15px 0;
-	}
+	
+
 	#block-views-interactions-block-4 .views-field-created,
 	#block-views-interactions-block-3 .views-field-created{
 		margin:0;
