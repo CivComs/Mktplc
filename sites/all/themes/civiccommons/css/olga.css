@@ -1,37 +1,40 @@
 /* Olga Stylesheet */
 
 /* -------- Main Content ------------ */
-	
+	body, a, p, ul, ol, li, td, div{
+		font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+	}
+	h1, h2, h3, h4, h5, h6{
+		font-family:'PT Sans', 'Helvetica', Arial, sans-serif;
+	}
 	.container-16 {
 		margin-left: auto;
 		margin-right: auto;
 		width: 960px;
 	}
-	.container-16 .cc-org-content  h1.title {    
+	.container-16 .cc-org-content  h1.title {   
+		top: 0; 
 		left: 0;
 		margin: 0;
-		padding: 0 0 0 100px;
-		position: relative;
-		top: 0;
 		color: #000;	
 		font-size:28px;
+		position: relative;
+		padding: 0 0 0 100px;
 		text-transform:capitalize;
-		font-family: 'PT Sans', helvetica, arial, sans-serif;
 	}
 	.container-16 .region-content h1.title {    
 		color: #000;	
 		font-size:28px;
 		line-height:32px;
 		text-transform:capitalize;
-		font-family: 'PT Sans', helvetica, arial, sans-serif;
 	}
 	.cc-org-content{
 		position:relative;
 	}
 	.cc-org-content .block-system-main  .field-name-field-organization-logo .field-item img{
-		position:absolute;
 		top:0;
 		left:0;
+		position:absolute;
 	}
 	#page .grid-11 {
 		margin-left: 15px;
@@ -40,6 +43,7 @@
 	}
 	#block-cc-flag-block-flag-block li{
 		list-style:none;
+		float: right;
 	}
 	.block-system-main .field-name-field-organization-logo{
 		float:left;
@@ -53,7 +57,7 @@
 		display:inline;
 	}
 	.region-content .field-name-field-application-description p{
-		font:normal 14px Helvetica, Arial, sans-serif;
+		font:normal 14px 'Helvetica Neue', 'Helvetica', Arial, sans-serif;;
 	}
 	.region-content .group_basic_info {
 		clear:both;
@@ -76,25 +80,25 @@
 	.region-content .field-name-field-application-softfunction .field-items .field-item,
 	.region-content .field-name-field-application-civfunction .field-items .field-item{
 		float:left;
-		padding:5px 8px;
 		color:#216240;
+		padding:5px 8px;
 		margin:0 10px 0 0;
 		background:#a4dac0;
 		border-top:1px solid #b9cec5;
 		border-bottom:1px solid #b9cec5;
-		font:normal 1em/1.2em  'PT Sans', helvetica, arial, sans-serif;
+		font:normal 1em/1.2em 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 	}
 	.region-content .field-name-field-application-softfunction .field-items .field-item a,
 	.region-content .field-name-field-application-civfunction .field-items .field-item a{	
 		color:#216240;
 		text-decoration:none;
-		font:normal 1em/1.2em 'PT Sans', helvetica, arial, sans-serif;
+		font:normal 1em/1.2em  'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 	}
 	.region-content .field-name-field-application-softfunction .field-items .field-item a:hover,
 	.region-content .field-name-field-application-civfunction .field-items .field-item a:hover{	
 		color:#216240;
 		text-decoration:underline;
-		font:normal 1em/1.2em 'PT Sans', helvetica, arial, sans-serif;
+		font:normal 1em/1.2em  'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 	}
 
 	.field .field-label,
@@ -105,7 +109,7 @@
 	  padding:0 0 5px;
 	  text-transform: uppercase;
 	  border-bottom: 1px dotted #666666;
-	  font:bold 14px/16px 'PT Sans', helvetica, arial, sans-serif;
+	  font:bold 14px/16px 'PT Sans', 'Helvetica', Arial, sans-serif;
 	}	
 	/* Key feautures */
 	.region-content .field-name-field-application-featurs {
@@ -114,18 +118,18 @@
 	.region-content .field-name-field-application-featurs .field-items .field-item,
 	.region-content .field-name-field-application-demourl .field-items .field-item{	
 		background: url("../images/dot.gif") no-repeat left 5px;
-		font:normal 1em/1.2em  'PT Sans', helvetica, arial, sans-serif;
+		font:normal 1em/1.2em   'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 		padding:0 0 0 10px;
 		margin:0 0 3px;
 	}
 	.region-content .field-name-field-application-featurs .field-items .field-item a:link,
 	.region-content .field-name-field-application-featurs .field-items .field-item a:visited{	
-		font:normal 1em/1.2em 'PT Sans', helvetica, arial, sans-serif;
+		font:normal 1em/1.2em 'PT Sans', 'Helvetica', Arial, sans-serif;
 		text-decoration:none;
 		color:#696969;
 	}
 	.region-content .field-name-field-application-featurs .field-items .field-item a:hover{	
-		font:normal 1em/1.2em 'PT Sans', helvetica, arial, sans-serif;
+		font:normal 1em/1.2em  'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 		text-decoration:underline;
 		color:#696969;
 	}
@@ -150,10 +154,10 @@
 	#section-content .container-16 .grid-8.region-content-rightcolumn h2.block-title{		
 		border:none;
 		color: #FFFFFF;
-		background-color: #E1C83D;
-		font:normal 18px/20px  'PT Sans', helvetica, arial, sans-serif;
 		padding: 8px 12px 7px;
+		background-color: #E1C83D;
 		text-transform: uppercase;
+		font:normal 18px/20px  'PT Sans', 'Helvetica', Arial, sans-serif;
 	}
 	#section-content .container-16 .grid-8.region-content-rightcolumn h2.block-title{		
 		margin-left:-20px;
@@ -161,6 +165,7 @@
 	}
 	.container-16 .grid-8 .block{
 		margin-bottom:20px;
+		font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 		color:#666;
 	}
 	.container-16 .grid-8 .view-applications .views-row{
@@ -176,6 +181,7 @@
 		color: #2479CC;
 		font-size: 16px;
 		font-weight: 700;
+		line-height:18px;
 		text-decoration: none;
 	}
 	.view-applications .views-field-title a:hover {
@@ -192,12 +198,14 @@
 	}
 	.container-16 .grid-8 .view-applications .views-field-count{
 		float:right;
+		height:30px;
 		font-size:14px;
 		text-align:right;
 		padding:0 5px 0 32px;
 		background: url("../images/icon_watch.gif") no-repeat left 2px;
 	}
 	.container-16 .grid-8 .view-applications .views-field-php{
+		height:30px;
 		float:right;
 		font-size:14px;
 		line-height:26px;
@@ -214,19 +222,13 @@
 		padding:0 5px;
 		margin:0;
 	}
+	.container-16 .grid-8 .block-applications-block-3 .views-field-created{
+		height:30px;
+	}
 	.container-16 .grid-8 .view-applications .views-field-php span.count{
 		font-size: 22px;
 		font-weight: bold;
 	}
-	/*#block-views-applications-block-4 .views-field-title,
-	#block-views-applications-block-4 .views-field-field-interaction-organization{
-		padding-right:150px;
-	}
-	#block-views-applications-block-4 .views-field-created{
-		margin-left: 350px; 
-		margin-top: -16px; 
-		color: #666666;
-	}*/
 	.container-16 .grid-8 .more-link {
 		padding-right:10px;
 	}
@@ -245,9 +247,13 @@
 		font-size:14px;
 		line-height:18px;
 	}
+	.container-16 .grid-8 .view-display-id-block_3{
+		line-height:18px;
+	}
 	.addapp .button-add1,
 	.spotapp .button-add2{
 	  box-shadow: 0 1px 8px 1px #A2A7AA;
+	  font-family:'PT Sans', 'Helvetica', Arial, sans-serif;
 	  height: 35px;
 	  margin-right: 10px; 
 	  margin-top: 30px;
@@ -269,13 +275,16 @@
 	  font-size:16px;
 	  color: #fff;
 	}
+	.region-content-rightcolumn .block-applications-block-3 .view-applications .views-row {
+		padding-bottom:9px;
+	}
 	/*Browse by*/
 	.container-16 #block-block-21 h2.block-title,
 	.container-16 #block-block-22 h2.block-title{		
 		border:none;
 		color: #FFFFFF;
 		background-color: #E1C83D;
-		font:normal 18px/20px  'PT Sans', helvetica, arial, sans-serif;
+		font:normal 18px/20px 'PT Sans', 'Helvetica', Arial, sans-serif;
 		padding: 8px 15px 7px;
 		text-transform: uppercase;
 		margin-bottom:0;
@@ -300,17 +309,17 @@
 		margin:0;
 	}	
 	#block-views-apps-browse-by-block-2 h2.block-title{
-		background:url("../images/place.gif") no-repeat center top;
+		background:url("../images/place2.gif") no-repeat center top;
 		padding-top:80px;
 		color:#eead11;
 	}	
 	#block-views-apps-browse-by-block-1 h2.block-title{
-		background:url("../images/software.gif") no-repeat center top;
+		background:url("../images/soft.gif") no-repeat center top;
 		padding-top:80px;
 		color:#eead11;
 	}		
 	#block-views-apps-browse-by-block h2.block-title{
-		background:url("../images/civic.gif") no-repeat center top;
+		background:url("../images/civic2.gif") no-repeat center top;
 		padding-top:80px;
 		color:#eead11;
 	}	
@@ -408,7 +417,7 @@
 	/* Block Views Organizations */
 	.view-cc-organizations table.views-view-grid {
 		margin-top:10px;
-		font-family: Arial, Helvetica,sans-serif;
+		font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 	}
 	.view-cc-organizations table.views-view-grid td {
 		width:50%;
@@ -424,9 +433,50 @@
 	.container-16 .grid-8 #block-views-places-block-2 .views-field-title,
 	.container-16 .grid-8 #block-views-places-block-2 .views-field-field-organization-address,
 	.container-16 .grid-8 #block-views-places-block-1 .views-field-title,
-	.container-16 .grid-8 #block-views-places-block-1 .views-field-field-organization-address	{
+	.container-16 .grid-8 #block-views-places-block-1 .views-field-field-organization-address,
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .views-field-title,
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .views-field-field-application-sdesc{
 		width:60%;
-		font-family: 'PT Sans', helvetica, arial, sans-serif;
+		font-family: 'PT Sans', 'Helvetica', Arial, sans-serif;
+	}
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .places-flags{
+		float:right;
+		overflow:hidden;
+		margin-top:-30px;
+		width:40%;
+	}	
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .flags{
+		background: url("../images/icon_watch.gif") no-repeat left 4px;
+		padding:3px 0 0 32px;
+		float:right;
+	}
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .views-field-title a,
+	.view-apps-this-organization-has-used .views-field-title a	{
+		color: #2479CC;
+		font-size: 16px;
+		font-weight: 700;
+		text-decoration: none;
+	}
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .views-field-title a:hover,
+	.view-apps-this-organization-has-used .views-field-title a:hover {
+		text-decoration: underline;
+	}
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .places{
+		background: url("../images/icon_place_mini.gif") no-repeat left top;
+		padding:0 30px;
+		float:left;
+	}
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .places span {
+		font-size: 22px;
+		font-weight: bold;
+		line-height:26px;
+	}
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .places-flags .places,
+	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .places-flags .flags{
+		color:#666;
+		font-size:14px;
+		text-align:right;
+		line-height:26px;
 	}
 	.view-cc-organizations .views-field-php,
 	#block-views-places-block-2 .views-field-php,
@@ -466,7 +516,7 @@
 		font-size: 16px;
 		font-weight: 700;
 		text-decoration: none;
-		font-family: 'PT Sans', helvetica, arial, sans-serif;
+		font-family:  'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 	}
 	.view-cc-organizations .views-field-title a:hover,
 	#block-views-places-block-1 	 .views-field-php a:hover,
@@ -479,12 +529,13 @@
 	/* Place Detail */
 	.zone-content .region-content .block{
 		margin-bottom:20px;
+		font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 	}
 	.zone-content .region-content .block h2.block-title{
 		border:none;
 		color: #FFFFFF;
 		background-color: #E1C83D;
-		font:normal 18px/20px  Helvetica, Arial, sans-serif;
+		font:normal 18px/20px 'PT Sans', 'Helvetica', Arial, sans-serif;
 		padding: 8px 15px 7px;
 		text-transform: uppercase;
 	}
@@ -494,6 +545,12 @@
 	#block-views-places-block-2 	 .views-row {
 		border-bottom:1px dotted #666;
 		padding:10px 0 15px;
+	}
+	.container-16 .grid-8 #block-views-places-block-1 .view-places .views-row {
+		padding:33px 0 34px;
+	}
+	.container-16 .grid-8 #block-views-places-block-1 .view-places .views-row-1 {
+		display:none;
 	}
 	/*.contextual-links-region #block-views-cc-organizations-block-1,
 	.contextual-links-region #block-views-interactions-block{
@@ -510,7 +567,6 @@
 	}
 	.view-interactions .views-field-field-interaction-application .field-content a{
 		text-transform: none;
-		font-family:'PT Sans', helvetica, arial, sans-serif;
 	}
 	.views-field-field-interaction-organization a,
 	.views-field-field-interaction-application a	{
@@ -537,7 +593,7 @@
 	}
 	.openlayers-views-map h2.point-title a,
 	.openlayers-views-map h2.point-title{
-		font-family:'PT Sans', helvetica, arial, sans-serif;
+		font-family: 'PT Sans', 'Helvetica', Arial, sans-serif;
 		font-size:18px;
 		line-height:20px
 	}
@@ -561,7 +617,7 @@
 	  background:none;
 	  text-transform: uppercase;
 	  border-bottom: 1px dotted #666666;
-	  font:bold 14px/16px 'PT Sans', helvetica, arial, sans-serif;
+	  font:bold 14px/16px 'PT Sans', 'Helvetica', Arial, sans-serif;
 	}	
 	#block-block-23 .content form div.has-you-tried{
 		font-weight: bold;
@@ -582,6 +638,43 @@
 	#block-views-interactions-block-4 .views-field-created,
 	#block-views-interactions-block-3 .views-field-created{
 		margin:0;
+	}	
+	
+	/* tracking 99 apps in 5 cities */
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid td {
+		border-bottom:1px dotted #8a9093;
+		padding:10px 0;
+	}
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .field-content a {
+		color: #2479CC;
+		font-size: 16px;
+		font-weight: 700;
+		line-height:18px;
+		text-decoration: none;
+	}
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .field-content a:hover {
+		text-decoration: underline;
+	}
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php{
+		float: left;
+		display:block;
+		padding:15px 5px 15px 15px;
+		width:55%;
+	}
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3{
+		float: right;
+		overflow: hidden;
+		width: 40%;
+		color:#808080;
+	}
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3 .cc-org-count {
+		color:#808080;
+	}
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3 .cc-org-postfix{
+		display:none;
+	}
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3 .cc-org-apps {   
+		margin-bottom: 0;
 	}
 /* --------- Sidebar Second ------------ */
 	.region-sidebar-second-inner .block{
@@ -589,7 +682,7 @@
 		-webkit-box-shadow: 0 1px 8px 1px #DED8D8;
 		box-shadow: 0 1px 8px 1px #DED8D8;
 		color: #666666;
-		font-family: 'PT Sans', helvetica, arial, sans-serif;
+		font-family:  'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 		padding: 0 5px;
 		margin-bottom: 10px;
 		margin-top:0;
@@ -598,11 +691,10 @@
 		border:none;
 		color: #FFFFFF;
 		background-color: #E1C83D;
-		font-family: 'PT Sans', helvetica, arial, sans-serif;
-		font-size: 9.5pt;
+		font-size: 16px;
 		font-weight: 600;
 		margin: -4px -7px 5px;
-		padding: 9px 15px 6px;
+		padding: 8px 15px 7px;
 		text-transform: uppercase;
 	}
 	.region-sidebar-second-inner .block li.views-row{
@@ -621,7 +713,8 @@
 	  margin: 0 0 10px;
 	  text-transform: uppercase;
 	  border-bottom: 1px dotted;
-	  font:normal 12px Helvetica, Arial, sans-serif;
+	  font:normal 12px 'PT Sans', 'Helvetica', Arial, sans-serif;
+	  padding-bottom: 7px;
 	}
 	.region-sidebar-second-inner  table.views-view-grid{
 		border:none;
@@ -645,7 +738,7 @@
 		cursor:pointer;
 	}
 	.region-sidebar-second-inner  .item-list .views-field-title a {
-		font:bold 16px Helvetica, Arial, sans-serif;
+		font:bold 16px  'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 		text-decoration: none;
 	}
 	.region-sidebar-second-inner  .block-views-at-a-glance-block .view-content{
@@ -701,13 +794,13 @@
 		float:left;
 	}
 	.view-at-a-glance-application-  .cc-app-places .cc-places-count{
-		font: bold 30px/32px "PT Sans", helvetica, arial, sans-serif;
-		background: url("../images/icon_place.gif") no-repeat left top;
+		font: bold 30px/32px 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+		background: url("../images/icon_place2.gif") no-repeat left top;
 		padding:5px 5px 5px 35px;
 		
 	}
 	.view-at-a-glance-application-  .cc-app-places .cc-places-postfix{
-		font: normal 18px/20px 'PT Sans', helvetica, arial, sans-serif;
+		font: normal 18px/20px 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 		padding-top:15px;
 	}
 	.view-at-a-glance-application-  .cc-app-places .cc-places-list-link{
@@ -725,7 +818,8 @@
 		float:left;
 	}
 	.view-at-a-glance-application-  .views-field-edit-node,
-	.view-vendors-who-service-this-app-blo .view-footer{
+	.view-vendors-who-service-this-app-blo .view-footer,
+	#block-views-cc-organizations-block .view-footer{
 		width:100%;
 		clear:both;
 		text-align:right;
@@ -733,7 +827,8 @@
 	}
 	.view-at-a-glance-application-  .views-field-edit-node span a,
 	.view-at-a-glance-application-  .views-field-edit-node span a:hover,
-	.view-vendors-who-service-this-app-blo .view-footer a{
+	.view-vendors-who-service-this-app-blo .view-footer a,
+	#block-views-cc-organizations-block .view-footer a{
 		text-decoration:none;
 		background:#d6e6f6;
 		display:block;
@@ -743,5 +838,25 @@
 	.cc-org-content  .view-footer a{
 		text-decoration:none;
 	}
-/* ---------Footer-------- */
+	.container-16  .grid-11 .node-application .field-name-field-application-description .field-items{
+		padding-top:15px;
+	}
+/* --------- Footer -------- */	
+#zone-footer-wrapper .block-block-7 .content{
+	 height: 207px;
+}
+#zone-footer-wrapper .block-block-6 .content{
+	 height: 206px;
+}
+
+/* --------- Tanya Stylesheet -------- */
+
+#block-views-cc-organizations-block h2.block-title, 
+#block-views-ec4dedca467f7a3362801868ff73408d h2.block-title, 
+#block-views-f180557b90e1950dc78c1a58bbf318df h2.block-title, 
+#block-views-interactions-block h2.block-title, 
+#block-views-interactions-block-3 h2.block-title{
+	border-color:#8a9093;
+}
+
 

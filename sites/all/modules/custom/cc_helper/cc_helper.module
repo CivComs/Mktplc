@@ -220,7 +220,7 @@ function _cc_helper_creators_info($appid) {
 	foreach($node->field_application_creator[$lng] as $row){
 		$creator_node = node_load($row['nid']);
 		$link = drupal_get_path_alias("node/".$creator_node->vid);
-		$title = '<a href="'.$link.'">'.$creator_node->title.'</a>';
+		$title = '<a href="/'.$link.'">'.$creator_node->title.'</a>';
 		$creator = node_view($creator_node, 'cc_business_card');
 		$image_uri = $creator['field_organization_logo'][0]['#item'][uri];
 		$image_style = $creator['field_organization_logo'][0]['#image_style'];

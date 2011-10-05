@@ -1,1 +1,6 @@
 /* Sheldon Stylesheet */
+#block-cc-flag-block-flag-block li.flag-watching_app:after {
+  content: ' / ';
+  margin-right: 8px;
+}
+

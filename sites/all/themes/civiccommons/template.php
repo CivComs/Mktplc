@@ -32,6 +32,14 @@ function civiccommons_preprocess_page(&$vars, $hook) {
 
 }
 
+/* Search */
+function civiccommons_preprocess_search_result (&$vars) {
+  $vars['nodetype'] = $vars['result']['type'];
+}
+
+
+
+
 
 function civiccommons_preprocess_region(&$vars) {
   if (isset($vars['elements']['#page']['node']) && $vars['elements']['#region'] == 'content') {
