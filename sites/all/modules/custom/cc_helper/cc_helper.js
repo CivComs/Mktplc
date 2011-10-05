@@ -13,7 +13,9 @@ var $_GET = {};
 $j(function(){
 if(document.location.pathname=='/node/add/interaction'){
 	//alert($_GET);
+	if(($_GET["interaction_id"]!=undefined)/*&&($_GET["app_id"]!=undefined)*/){
 	$j('#edit-field-interaction-type-und').val(""+$_GET["interaction_id"]+"");
 	$j('#edit-field-interaction-application-und').val(""+$_GET["app_id"]+"");
+	}
 }
 });
