@@ -48,13 +48,19 @@ css[olga.css][name] = Olga custom global styles
 css[olga.css][description] = This file holds all the olga's active custom CSS of your theme.
 css[olga.css][options][weight] = 10
 
+css[tatiana.css][name] = Tanya custom global styles
+css[tatiana.css][description] = This file holds all the Tatiana's active custom CSS of your theme.
+css[tatiana.css][options][weight] = 11
+
 css[sheldon.css][name] = sheldon custom global styles
 css[sheldon.css][description] = This file holds all sheldon's active custom CSS of your theme.
-css[sheldon.css][options][weight] = 11
+css[sheldon.css][options][weight] = 12
 
 css[global.css][name] = Your custom global styles
 css[global.css][description] = This file holds all the globally active custom CSS of your theme.
-css[global.css][options][weight] = 12
+css[global.css][options][weight] = 13
+
+
 
 ; THEME SETTINGS (DEFAULTS)
 
@@ -95,6 +101,7 @@ settings[alpha_css][omega-forms.css] = 'omega-forms.css'
 settings[alpha_css][omega-visuals.css] = 'omega-visuals.css'
 settings[alpha_css][global.css] = 'global.css'
 settings[alpha_css][olga.css] = 'olga.css'
+settings[alpha_css][tatiana.css] = 'tatiana.css'
 settings[alpha_css][sheldon.css] = 'sheldon.css'
 settings[alpha_debug_block_toggle] = '1'
 settings[alpha_debug_block_active] = '1'

@@ -17,6 +17,19 @@ body {
   padding-top: 2px;
 }
 
+#block-cc-flag-block-flag-block {  /* Watching */
+  clear: both;
+  float: right;
+  height: 0;
+  margin-right: 90px;
+  margin-top: -16px;
+}
+#block-cc-flag-block-flag-block li a{
+  text-decoration: none;
+  font-size: 14px;
+}
+
+
 .logo-img {
     float: left;
     margin-right: 20px;
@@ -175,8 +188,13 @@ a:link, a:visited {
   float: right;
   overflow: hidden;
   padding-left: 27px;
-  padding-top: 1px;
+  padding-top: 3px;
   height: 20px;
+}
+
+.block-addtoany a{
+  text-decoration: none;
+  font-size:14px;
 }
 
 .view-application-releases{
@@ -506,15 +524,15 @@ ul.nice-menu li a:visited  {
 .block-custom-search-blocks-1 input.custom-search-box {
     color: #999999;
     font-size: 15px;
-    height: 42px;
+    height: 36px;
     padding: 5px;
-    width: 96%;
+    width: 97%;
 }
 
 .block-custom-search-blocks-1 .form-item-custom-search-types {
     background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/search_arrow3.png") no-repeat scroll right center #FFFFFF;
     float: left;
-    margin-left: -10px;
+    margin-left: -2px;
     margin-right: 0;
     overflow: hidden;
     width: 27%;
@@ -525,8 +543,8 @@ ul.nice-menu li a:visited  {
   color: #999999;
   float: left;
   font-size: 15px;
-  height: 42px;
-  padding: 11px;
+  height: 36px;
+  padding: 8px;
   width: 126%;
   background: rgb(255,255,255); /* Old browsers */
   background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%); /* FF3.6+ */
@@ -540,10 +558,9 @@ ul.nice-menu li a:visited  {
 }
 
 .block-custom-search-blocks-1 input.custom-search-button {
-    height: 42px;
-    margin-left: 15px;
-    margin-right: 0;
-    margin-top: 12px;
+  margin-left: 15px;
+  margin-right: 0;
+  margin-top: 12px;
 }
 
 /* Fivestar Module */
@@ -604,12 +621,25 @@ div.fivestar-widget-static .star span.off {
 
 
 /* APPS */
-.addapp img, .spotapp img{
+.addapp, .spotapp {
+  width: 120px;
+}
+
+.button-add { 
   box-shadow: 0 1px 8px 1px #A2A7AA;
   height: 35px;
   margin-right: 10px; 
   margin-top: 30px;
-  width: 120px;
+  padding: 10px;
+  color: #ffffff;
+}
+
+.yellow{
+  background-color: #E49A2F; 
+}
+
+.blue{
+  background-color: #2479CC; 
 }
 
 .block-block-13 {
@@ -725,13 +755,16 @@ div.fivestar-widget-static .star span.off {
 }
 
 
-.block-views-watching-app-block h2.block-title {
-  margin: 5px -20px 5px 0px;
-  background-color: #E1C83D;
-  color: #FFFFFF;
-  font-family: 'PT Sans';
-  padding: 7px 9px 4px 15px;
-  text-transform: uppercase;
+#block-views-watching-app-block h2.block-title {
+    background-color: #E1C83D;
+    border: medium none;
+    color: #FFFFFF;
+    font-family: 'PT Sans',helvetica,arial,sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin: -4px -7px 5px;
+    padding: 9px 15px 6px;
+    text-transform: uppercase;
 }
 
 .block-views-watching-orgs-block .views-row,
@@ -767,28 +800,36 @@ div.fivestar-widget-static .star span.off {
   text-transform: capitalize;
 }
 
-.block-block-16 h2.block-title, 
-.block-block-17 h2.block-title {  /* Manage You account & add to marketplace blocks  */
-  background-color: #C4C4C4;
-  color: #FFFFFF;
-  font-family: 'PT Sans';
-  font-size: 14px;
-  font-weight: 500;
-  padding: 5px 20px;
-  text-transform: uppercase;
+
+#block-block-16 h2.block-title, 
+#block-block-17 h2.block-title {/* Manage You account & add to marketplace blocks  */
+    background-color: #C4C4C4;
+    border: medium none;
+    color: #FFFFFF;
+    font: 14px/16px PT Sans,Helvetica,Arial,sans-serif;
+    margin: 0;
+    padding: 10px 20px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-.block-block-16 .content, 
-.block-block-17 .content {
+#block-block-16 .content, 
+#block-block-17 .content {
   background-color: #EDEDED;
   padding: 15px;
 }
 
-.block-block-17 .content a{
+#block-block-17 .content a,
+#block-block-16 .content p{
   color: #666666;
+  text-decoration: none;
 }
 
-.block-block-17{
+#block-block-16{
+ margin: -20px 0px 30px 0;
+}
+
+#block-block-17{
   margin-top: 12px;
 }
 
@@ -805,7 +846,8 @@ div.fivestar-widget-static .star span.off {
 #block-views-cc-organizations-block h2.block-title,
 #block-views-ec4dedca467f7a3362801868ff73408d h2.block-title,
 #block-views-f180557b90e1950dc78c1a58bbf318df h2.block-title,
-#block-views-interactions-block h2.block-title{
+#block-views-interactions-block h2.block-title,
+#block-views-interactions-block-3 h2.block-title{
   background-color: transparent;
   border-bottom: 1px dotted;
   color: #8A9093;
@@ -859,7 +901,7 @@ div.fivestar-widget-static .star span.off {
 .cc-org-apps{
   width: 50%; 
   float:left;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .cc-org-prefix-using,
@@ -871,13 +913,15 @@ div.fivestar-widget-static .star span.off {
 }
 
 .cc-org-prefix-using{
-  background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/usingapps.png") no-repeat scroll 0pt 0pt transparent; 
-  padding-top: 24px;
+  background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/deployment_icon.png") no-repeat scroll 0pt 0pt transparent; 
+  padding-top: 30px;
+  width: 33px;
 }
 
 .cc-org-prefix-sharing{
   background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/sharingapps.png") no-repeat scroll 0pt 0pt transparent; 
-  padding-top: 24px;
+  padding-top: 30px;
+  
 }
 
 .cc-org-count{
@@ -891,20 +935,27 @@ div.fivestar-widget-static .star span.off {
   text-transform: uppercase;
 }
 
-.cc-org-contact-title{
-  border-bottom: 1px dotted;
-  font-weight: 600;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
+.cc-org-contact-title,
 .cc-org-details-title{
   border-bottom: 1px dotted;
   font-weight: 600;
-  margin-bottom: 10px;
-  margin-top: 10px;
+  margin-bottom: 7px;
+  padding-bottom: 7px;
+  margin-top: 15px;
   text-transform: uppercase;
 }
+
+
+#block-views-at-a-glance-block .cc-org-contact .field-content a {
+  text-decoration: none;
+}
+
+#block-views-at-a-glance-block .views-label-field-organization-pbudget,
+#block-views-at-a-glance-block .views-label-field-organization-abudget{
+  float:left; 
+  margin-right: 5px;
+}
+
 
 .block-views-commercial-services-block .view-header p {
   color: #666666;
@@ -993,7 +1044,22 @@ div.fivestar-widget-static .star span.off {
   border: none;
 }
 
+.view-applications .view-header {
+  color: #666666;
+ }
+
 /* Home */
+
+.homeintro{
+  text-align: center;
+}
+
+.homeintro .field-name-body {
+  color: #000000;
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 
 #block-block-24 {
   background-color: #E6E7E9;
@@ -1048,3 +1114,108 @@ div.fivestar-widget-static .star span.off {
   text-decoration: none;
   font-size:13px;
 }
+
+/* Custom Search 2 */
+
+
+#block-custom-search-blocks-2 label {
+  color: #000000;
+}
+
+#block-custom-search-blocks-2 .form-actions input{
+  border: 2px solid #FFFFFF;
+  color: #ffffff;
+  font-family: 'Helvetica Neue','Helvetica',Arial,sans-serif;
+  margin-bottom: 10px;
+  margin-top: 0;
+  padding: 0 5px;
+  background: none repeat scroll 0 0 #2479CC;
+  border-radius: 0;
+  border-color: transparent;
+  padding: 8px;
+}
+
+button, input[type="reset"], input[type="submit"], input[type="button"],
+button:hover, input[type="reset"]:hover, input[type="submit"]:hover, input[type="button"]:hover,
+button:link, input[type="reset"]:link, input[type="submit"]:link, input[type="button"]:link,
+button:active, input[type="reset"]:active, input[type="submit"]:active, input[type="button"]:active,
+button:visited, input[type="reset"]:visited, input[type="submit"]:visited, input[type="button"]:visited{
+  border: 2px solid #FFFFFF;
+  color: #ffffff;
+  font-family: 'Helvetica Neue','Helvetica',Arial,sans-serif;
+  margin-bottom: 10px;
+  margin-top: 0;
+  padding: 0 5px;
+  background: none repeat scroll 0 0 #2479CC;
+  border-radius: 0;
+  border-color: transparent;
+  padding: 8px;
+}
+
+#block-custom-search-blocks-2 .form-item-custom-search-blocks-form-2 {
+  background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/advsearch6.png") no-repeat scroll left bottom transparent;
+  padding-bottom: 41px;
+  margin-bottom: -7px
+}
+
+#block-custom-search-blocks-2 .form-item-custom-search-criteria-or{
+  border-top: 1px dotted #999999;
+  padding-top: 7px;
+}
+
+.search-nodetype{
+  float: right;
+  margin-top: 10px;
+  color: #666666;
+}
+
+.search-results p {
+    margin-top: 0;
+    width: 75%;
+}
+
+.search-results .title a{
+  text-decoration: none; 
+}
+
+.search-results .title {
+  font-size: 1.2em;
+  margin-bottom: 0;
+}
+
+.search-results li {
+    border-bottom: 1px dotted;
+    margin-bottom: 1em;
+}
+
+#block-system-main .search-form {
+    display: none;
+    margin-bottom: 1em;
+}
+
+#block-custom-search-blocks-3{
+  background-color: #DADADA;
+  height: 53px;
+  margin-left: 12px;
+  margin-top: -16px;
+}
+
+#block-custom-search-blocks-3 .form-item-custom-search-blocks-form-3{
+  float: left;
+  margin-left: 30px;
+}
+
+#block-custom-search-blocks-3 input.form-text{
+  font-size: 16px;
+  height: 35px;
+  margin-top: -6px;
+  padding: 5px;
+  vertical-align: middle;
+}    
+#block-custom-search-blocks-3 input.custom-search-button{
+  height: 35px;
+  margin-left: 10px;
+  margin-top: 5px;
+  width: 54px;
+}
+

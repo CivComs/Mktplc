@@ -1,9 +1,7 @@
 <?php
 
 function cc_places_views_pre_render(&$view) {
-	if(!($view->name == 'cc_organizations' && $view->current_display == 'block')) {
-		return FALSE;
-	}
+	if($view->name == 'cc_organizations' && $view->current_display == 'block') {
 	$v = views_get_view('cc_organizations');
 	$v->set_display('openlayers_1');
 	$v->execute();
@@ -14,6 +12,8 @@ function cc_places_views_pre_render(&$view) {
 			? ' (' . $c . ')'
 			: '';
 	}
+	}
+	
 }
 
 function cc_places_menu(){
