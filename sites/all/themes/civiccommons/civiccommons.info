@@ -24,6 +24,9 @@ regions[content_top3] = Content Top3
 regions[content_leftcolumn] = Left Column Content 
 regions[content_rightcolumn] = Right Column Content
 regions[content_main] = Main Column Content
+regions[content_region_spacer] = Region Spacer
+regions[content_leftcolumn_lower] = Left Column Content, 2nd stack 
+regions[content_rightcolumn_lower] = Right Column Content, 2nd stack
 
 regions[content_doormat] = Content Doormat
 
@@ -69,6 +72,9 @@ css[global.css][description] = This file holds all the globally active custom CS
 css[global.css][options][weight] = 13
 
 
+; SCRIPTS
+
+scripts[] = js/civiccommons.js
 
 ; THEME SETTINGS (DEFAULTS)
 
