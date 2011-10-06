@@ -46,9 +46,9 @@ function civiccommons_preprocess_region(&$vars) {
 }
 
 function civiccommons_menu_local_tasks(&$variables) {
-  if($GLOBALS['user']->uid != 1) {
+/*  if($GLOBALS['user']->uid != 1) {
     return '';
-  }
+  }*/
   $output = '';
   if (!empty($variables['primary'])) {
     $variables['primary']['#prefix'] = '<h2 class="element-invisible">' . t('Primary tabs') . '</h2>';
