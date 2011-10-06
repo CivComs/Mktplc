@@ -41,9 +41,12 @@ function _cc_places_place_page($place_type = 'city', $place = 'test'){
 }
 
 function _cc_places_wkt($place, $wkt_type = 'point'){
-	$geometry = geocode('google', $place, $wkt_type);
-	$geo_array = geofield_get_values_from_geometry($geometry);
-	return $geo_array['wkt'];
+	if($place){
+		$geometry = geocode('google', $place, $wkt_type);
+		$geo_array = geofield_get_values_from_geometry($geometry);
+		return $geo_array['wkt'];
+	}
+	return FALSE;
 }
 
 // Function to validate place received from URL against existing places in the system.
