@@ -42,10 +42,9 @@
  * @see theme_field()
  */
 ?>
-
 <div class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
   <?php if (!$label_hidden) : ?>
-    <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>:&nbsp;</div>
+    <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>&nbsp;</div>
   <?php endif; ?>
   <div class="field-items"<?php print $content_attributes; ?>>
     <?php foreach ($items as $delta => $item) : ?>
@@ -53,9 +52,3 @@
     <?php endforeach; ?>
   </div>
 </div>
-<?php
-dsm($items);
-if($element['#field_name']=='field_application_tutors'){?>
-		<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ add a photo or video</a></div> <?php
-}
-?>

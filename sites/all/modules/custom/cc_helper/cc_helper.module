@@ -50,8 +50,8 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
  */
 function _cc_helper_using_sharing($using = 0, $sharing = 0) {
 	$o = '';
-	$o .= $using ? '<div class="cc-org-apps"><div class="cc-org-prefix-using">Using</div><div class="cc-org-count">' . $using . '</div><div class="cc-org-postfix">apps</div></div>' : '';
-	$o .= $sharing ? '<div class="cc-org-apps"><div class="cc-org-prefix-sharing">Sharing</div><div class="cc-org-count">' . $sharing . '</div><div class="cc-org-postfix">apps</div></div>' : '';
+	$o .= $using ? '<div class="cc-org-apps"><div class="cc-org-prefix-using">Using</div><div class="cc-org-count">' . $using . '</div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>' : '';
+	$o .= $sharing ? '<div class="cc-org-apps"><div class="cc-org-prefix-sharing">Sharing</div><div class="cc-org-count">' . $sharing . '</div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>' : '';
 	return $o;
 }
 
