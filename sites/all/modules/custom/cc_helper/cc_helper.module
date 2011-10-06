@@ -247,3 +247,14 @@ function cc_helper_block_view_alter(&$data, $block){
 	
 }
 
+function cc_helper_form_alter(&$form, &$form_state, $form_id) {
+	if(($form_id=='interaction_node_form')&&(is_null($form_state['redirect']))){
+		$url = parse_url($_SERVER['HTTP_REFERER']);
+		$form_state['redirect'] = $url['path'];
+		//$form_state['redirect']='apps/drupal';
+		//drupal_redirect_form($form_state);
+	}
+	//dsm($form_state);
+	//dsm($form);
+}
+
