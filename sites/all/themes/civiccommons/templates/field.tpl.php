@@ -52,3 +52,7 @@
     <?php endforeach; ?>
   </div>
 </div>
+<?php if($element['#field_name']=='field_application_tutors'){?>
+<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ add a photo or video</a></div>
+<?php } ?>
+
