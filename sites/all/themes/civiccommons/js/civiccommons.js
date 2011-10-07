@@ -27,3 +27,15 @@ function evenizeRowHeights(selector) {
   }  
   	
 }
+
+
+/*jQuery(document).ready(function() {	
+	setTimeout(function(){
+		var t = $('#popup_FrameDecorationDiv_0').css('top');
+		console.log(t);
+		var k = parseInt(t.slice(0,t.length-2));
+		k = k+1;
+		console.log(k);
+		$('#popup_FrameDecorationDiv_0').css('top', k);
+	 }, 10000);
+});*/

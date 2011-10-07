@@ -13,10 +13,13 @@
 #  view-rows.  Hopefully this approach will make it easy to
 #  extend the site in new ways in the future.
 #
+#  For any changes that deviate from the MVP mockups
+#  (here: https://civiccommons.notableapp.com/sets/4d38c618236e34738f1b2ab9ed8b581831d7ad9e)
+#  please assume that changes in the doc override the design
+#  shown in the mockups.
+#
 #  Feel free to copy style rules out of this file and into another
-#  file (olga.css or one of the others) and erase from here.
-#  Many of the rules here are written as overrides and will ultimately
-#  need to be re-integrated into somewhere else.
+#  files.  
 #
 #  Thanks!  I'll be around --- you can find me on skype at nickygskype
 #  and on IRC at nickyg on irc.freenode.net.
@@ -26,126 +29,31 @@
 */
 
 
-
-/* General elements
---------------------*/
-/* give the user msg some breathing room */
-#messages {
-  margin-bottom: 1.5em; 
-}
-
-/* Header
----------------------*/
-/* bit of space below the search bar */
-.region-search-bar-inner {
-  margin-bottom: 3px;  
-}
-
-/* Homepage
----------------------*/
-/* hide editing tabs */
-body.front .tabs {
-  display: none;
-}
-
-/* give intro some breathing room below breadcrumb */
-.homeintro {
-  padding-top: 20px;
-}
-
-/* bigger heading font; PT Sans */
-body.front h1#page-title {
-  font-family: 'PT Sans';
-  font-size: 36px;
-  margin-bottom: 0;
-  text-transform: none;
-}
-
-/* slightly bigger subhead, reduce bottom padding */
-.homeintro article p {
-  font-size: 18px !important;
-  margin-bottom: 0;
-}
-
-/* use different place icon -- matches orig mockup */
-#block-views-apps-browse-by-block-2 h2.block-title {
-  background-image: url('../images/place3.png') !important; 
-}
-
 /* Lists of things
----------------------*/
+------------------- */
 
-/* generic class for all lists of content */
-
-.views-row {
-  position: relative; /* be a container for the right-aligned content */
-  height: auto !important;  /* remove pre-defined height so long titles fit */
-  /* ^ instead, we're using JS to match heights */
-  border-bottom: 1px dotted #8A9093;
-  padding: 10px 0 !important;
+/* Move viewing / sharing to top of row, from bottom */
+.view-applications .views-field-php,
+.view-places .views-field-php,
+.view-places .views-field-php-3,
+.view-applications .views-field-created {
+  top: 8px !important; 
 }
 
-/* Right-aligned row content (sharing/using, watching counts, etc.) */
-.views-row .views-field-php,
-.views-view-grid .views-field-php-3, /* homepage places */
-.views-row .views-field-created {
-  position: absolute;
-  top: 12px;
-  right: 0;
-  margin-top: 0 !important;
+/* for lists of apps on places page, keep icons flush right */
+.view-places .views-field-php,
+.view-places .views-field-php-3,
+.view-apps-browse-by .views-view-grid .views-field-php-3
+ {
+  min-width: 0 !important; /* don't specify a width -- keep them right aligned */
+  width: 150px !important;
 }
 
-/*
-.views-row .views-field-created {
-  top: 8px; /* this one should be a bit tighter to the top */
-}
-
-/* APPLICATIONS lists*/
-
-/* don't want margin below one-line description for apps */
-.view-applications .field-content p {
-  margin-bottom: 0 !important; 
-}
-
-/* INTERACTIONS lists (aka activity feeds) */
-
-.view-interactions .views-row .views-field-created {
-  position: static; /* this one goes under, not on the right */
-}
-
-/* PLACES / ORG lists */
-
-.views-view-grid td {
-  position: relative;
-}
-
-/* list of cities by name */
-.views-view-grid .views-field-php {
-  padding: 0 !important;
-}
-
-/* Homepage Grid sharing/using icons */
-.views-view-grid .views-field-php-3 {
-  top: 2px; /* homepage grid needs to be tighter */
-}
-
-body.front .cc-org-prefix-using,
-body.front .cc-org-prefix-sharing {
-  text-indent: -9999px; /* hide "using" and "sharing" text on front page */
-  /* we may decide to do this in all lists -- it looks nice */
+/* Activity feed AKA interactions list */
+.view-interactions .views-row {
+  min-height: 0 !important;
 }
 
 
-/* Search page
----------------------*/
-body.page-search #zone-content .tabs {
-  display: none;
-} 
 
 
-
-/* Sidebar
----------------------*/
-.region-sidebar-second-inner .block {
-  margin-bottom: 35px !important;
-}
