@@ -1,29 +1,44 @@
 #block-views-cc-organizations-block h2.block-title, #block-views-ec4dedca467f7a3362801868ff73408d h2.block-title, #block-views-f180557b90e1950dc78c1a58bbf318df h2.block-title, #block-views-interactions-block h2.block-title, #block-views-interactions-block-3 h2.block-title{
 	border-color:#8a9093;
 }
+/*Map*/
+
+/*.olPopup{
+	height:84px !important;
+}*/
 
 #popup_contentDiv{
-	height: 36px !important;
-    top: 36px !important;
+	/*height: 44px !important;*/
+	padding-top:0px;
+	padding-bottom:0px;
+	display:block;
 }
 
 #popup_contentDiv .openlayers-popup a:link, #popup_contentDiv .openlayers-popup a:visited {
 }
 
+#popup_GroupDiv .openlayers-popup {display:block;}
+
 #popup_contentDiv  .cc-org-apps {
     width: 80%;
+	clear:both;
+	display:block;
 }
 
 #popup_contentDiv  .openlayers-popup .cc-org-apps .cc-org-prefix-using,
+#popup_contentDiv  .openlayers-popup .cc-org-apps .cc-org-prefix-sharing,
 #popup_contentDiv  .openlayers-popup .cc-org-apps .cc-org-count,
 #popup_contentDiv  .openlayers-popup .cc-org-apps .cc-org-postfix{
-	margin-top:0px ;
-	font-size:10px ;
-	margin-right:0px ;
+	margin-top:0px;
+	font-size:10px;
+	margin-right:0px;
 	text-transform:none;
+	margin-bottom:0px;
+	line-height:11px;
 }
 
-#popup_contentDiv  .openlayers-popup  .cc-org-prefix-using{
+#popup_contentDiv  .openlayers-popup  .cc-org-prefix-using,
+#popup_contentDiv  .openlayers-popup  .cc-org-prefix-sharing{
 	background-image:none;
 	padding-top:0px;
 	margin-left:0px;
@@ -33,4 +48,13 @@
 
 #popup_contentDiv  .openlayers-popup  .cc-org-postfix{
 	padding-top:0px;
+}
+
+#popup_FrameDecorationDiv_0, #popup_FrameDecorationDiv_1{
+	/*height: 35px !important;*/
+}
+
+
+.view-dom-id-4 .views-field-php li{
+	list-style-type:none;
 }

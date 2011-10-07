@@ -39,3 +39,12 @@ function evenizeRowHeights(selector) {
 		$('#popup_FrameDecorationDiv_0').css('top', k);
 	 }, 10000);
 });*/
+
+/*jQuery(document).ready(function() {
+	document.getElementById('#page-title').innerHTML = "Hello";
+	$('#page-title').css('color','#ff00ff');
+	console.log("hello");
+	console.log($('#popup_FrameDecorationDiv_4').css('bottom'));
+	
+});*/
+
