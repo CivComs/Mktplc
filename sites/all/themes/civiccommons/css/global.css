@@ -62,11 +62,13 @@ body.front h1#page-title {
   margin-right: 90px;
   margin-top: -16px;
 }
-#block-cc-flag-block-flag-block li a{
-  text-decoration: none;
-  font-size: 14px;
-}
 
+#block-cc-flag-block-flag-block li a {
+    background: url("../images/watcheye2.png") no-repeat scroll left center transparent;
+    font-size: 14px;
+    padding-left: 41px;
+    text-decoration: none;
+}
 
 .logo-img {
     float: left;
@@ -965,6 +967,13 @@ div.fivestar-widget-static .star span.off {
   padding-left: 35px;
   padding-top: 3px;
 }
+
+#block-views-at-a-glance-block .views-field-php {
+    margin-top: 0 !important;
+    position: inherit;
+    right: 0;
+    top: 8px;
+}
     
 .cc-org-apps{
   width: 50%; 
@@ -1569,7 +1578,9 @@ body.front .cc-org-prefix-sharing {
 	.container-16 .grid-8 .more-link {
 		padding-right:10px;
 	}
-	.container-16 .grid-8 .more-link a:link{
+	.container-16 .grid-8 .more-link a:link,
+	.container-16 .grid-8 .more-link a
+	{
 		color:#000;
 		text-decoration:none;
 		font-size:14px;
