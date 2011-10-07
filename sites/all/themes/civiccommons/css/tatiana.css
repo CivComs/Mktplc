@@ -1,3 +1,36 @@
 #block-views-cc-organizations-block h2.block-title, #block-views-ec4dedca467f7a3362801868ff73408d h2.block-title, #block-views-f180557b90e1950dc78c1a58bbf318df h2.block-title, #block-views-interactions-block h2.block-title, #block-views-interactions-block-3 h2.block-title{
 	border-color:#8a9093;
 }
+
+#popup_contentDiv{
+	height: 36px !important;
+    top: 36px !important;
+}
+
+#popup_contentDiv .openlayers-popup a:link, #popup_contentDiv .openlayers-popup a:visited {
+}
+
+#popup_contentDiv  .cc-org-apps {
+    width: 80%;
+}
+
+#popup_contentDiv  .openlayers-popup .cc-org-apps .cc-org-prefix-using,
+#popup_contentDiv  .openlayers-popup .cc-org-apps .cc-org-count,
+#popup_contentDiv  .openlayers-popup .cc-org-apps .cc-org-postfix{
+	margin-top:0px ;
+	font-size:10px ;
+	margin-right:0px ;
+	text-transform:none;
+}
+
+#popup_contentDiv  .openlayers-popup  .cc-org-prefix-using{
+	background-image:none;
+	padding-top:0px;
+	margin-left:0px;
+	width: auto;
+	
+}
+
+#popup_contentDiv  .openlayers-popup  .cc-org-postfix{
+	padding-top:0px;
+}
