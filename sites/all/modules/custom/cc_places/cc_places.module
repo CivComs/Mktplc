@@ -64,3 +64,36 @@ function _cc_places_validate_place($place, $place_type = 'locality', $node_type 
 	
 	return FALSE;
 }
+
+function _cc_places_address_by_nid($nid, $city = TRUE, $state = TRUE, $country = TRUE){
+	//TODO: add addressfield module check
+
+	$result = db_select('field_data_field_organization_address', 'addr')
+		->fields('addr')
+		->condition('entity_id', $nid, '=')
+		->execute()
+		->fetchAssoc();
+	
+	if(empty($result)){
+		return FALSE;
+	}
+	
+	//dpm($result);
+	
+	if($city && !empty($result['field_organization_address_locality'])){
+		$address['city'] = $result['field_organization_address_locality'];
+	}
+	if($state && !empty($result['field_organization_address_administrative_area'])){
+		$address['state'] = $result['field_organization_address_administrative_area'];
+	}
+	if($country && !empty($result['field_organization_address_administrative_area'])){
+		$address['country'] = $result['field_organization_address_country'];
+	}
+	
+	$address['full'] = '';
+	$address['full'] .= $address['city'] ? $address['city'] : '';
+	$address['full'] .= $address['state'] ? ', '. $address['state'] : '';
+	$address['full'] .= $address['country'] ? ', '. $address['country'] : '';
+	
+	return $address;
+}
