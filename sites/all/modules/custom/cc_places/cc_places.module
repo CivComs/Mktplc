@@ -42,9 +42,22 @@ function _cc_places_place_page($place_type = 'city', $place = 'test'){
 
 function _cc_places_wkt($place, $wkt_type = 'point'){
 	if($place){
-		$geometry = geocode('google', $place, $wkt_type);
+		$query = db_select('zipcodes', 'z')
+			->fields('z', array('latitude', 'longitude'))
+			->condition('city', $place, '=');
+		$r = $query->execute()->fetchAssoc();
+		if(isset($r['latitude']) && isset($r['longitude'])) {
+			return 
+				'POINT ('
+				. $r['longitude']
+				. ' '
+				. $r['latitude']
+				. ')';
+		}
+		return FALSE;
+/*		$geometry = geocode('google', $place, $wkt_type);
 		$geo_array = geofield_get_values_from_geometry($geometry);
-		return $geo_array['wkt'];
+		return $geo_array['wkt'];*/
 	}
 	return FALSE;
 }
