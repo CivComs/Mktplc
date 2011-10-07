@@ -1960,6 +1960,12 @@ body.front .cc-org-prefix-sharing {
 		font-size:18px;
 		line-height:20px
 	}
+	
+	img.setmap{       /* map image */
+	    width: 100%;
+	    height: 400px;
+	}
+	
 	#block-views-cc-organizations-block .openlayers-views-map .openlayers-tooltip-name{
 		display:none;
 	}
