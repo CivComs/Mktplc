@@ -27,7 +27,10 @@ function civiccommons_form_alter(&$form, &$form_state, $form_id) {
  * Preprocessor for page.tpl.php template file.
  */
 function civiccommons_preprocess_page(&$vars, $hook) {
+ //drupal_add_js('https://getsatisfaction.com/civiccommons/widgets/javascripts/7f68acfc31/widgets.js', 'external',  array('weight' => 100));
+ //drupal_add_js('https://getsatisfaction.com/civiccommons/topics.widget?callback=gsfnTopicsCallback&amp;style=idea', 'external', array('weight' => 100));
 }
+
 
 /* Search */
 function civiccommons_preprocess_search_result (&$vars) {
