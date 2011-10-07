@@ -41,18 +41,34 @@
  * @see template_preprocess_field()
  * @see theme_field()
  */
+
 ?>
 <div class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
   <?php if (!$label_hidden) : ?>
     <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>&nbsp;</div>
-  <?php endif; ?>
+  <?php endif; 
+  if(($element['#field_name']=='field_application_description')&&isset($items[0])&&empty($items[0]['#markup'])){
+	$items[0]['#markup']=t('No Description added yet.').'<span class="add-data-button"><a href="/node/'.arg(1).'/edit">'.t('Add one').'</a></span>';
+  }
+  
+  ?>
+  
   <div class="field-items"<?php print $content_attributes; ?>>
     <?php foreach ($items as $delta => $item) : ?>
       <div class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print $item_attributes[$delta]; ?>><?php print render($item); ?></div>
     <?php endforeach; ?>
   </div>
 </div>
-<?php if($element['#field_name']=='field_application_tutors'){?>
+<?php 
+if(($element['#field_name']=='field_application_screenshots')||($element['#field_name']=='field_application_tutors')&&empty($items)){?>
+	<span class="add-data-button">No screenshots or screencasts added yet.<a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ Add some</a></span>
+<?php }
+if($element['#field_name']=='field_application_description'){ ?>
+<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-description">+ edit description</a></div>
+<?php }
+if($element['#field_name']=='field_application_tutors'){?>
 <div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ add a photo or video</a></div>
-<?php } ?>
+<?php }  
+
+kpr($element);?>
 
