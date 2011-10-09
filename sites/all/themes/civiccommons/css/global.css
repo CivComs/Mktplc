@@ -1,8 +1,8 @@
 /* This file will hold the main styles for your website. */
 
 body {
-  background-image: url('../images/bg3.png');
-  background-repeat: repeat;
+  /*background-image: url('../images/bg3.png');
+  background-repeat: repeat;*/
   font-family: 'PT Sans', 'Helvetica', Arial, sans-serif;
   font-size: 12px;
 }
@@ -28,11 +28,6 @@ body {
 /* General Styles 
 --------------------*/
 
-#admin-menu a {
-  color: #ddd !important;
-  font-size: 13px;
-}
-
 a:link, a:visited {
   color: #436889 !important;
   text-decoration: underline;
@@ -40,6 +35,10 @@ a:link, a:visited {
 
 a:hover {
   text-decoration: none;
+}
+
+#admin-menu a {
+  color: #ddd !important;
 }
 
 
@@ -81,6 +80,31 @@ body.node-type-application article .field-label  {
 #region-content span.fieldset-legend {
   width: 600px; /* this is a hack */
 }
+
+/* Splash page
+-----------------*/
+body.page-beta .breadcrumb {
+  display: none; 
+}
+
+body.page-beta #region-content {
+  text-align: center;
+  width:960px;
+  color: #555;
+}
+
+body.page-beta #region-content .content 
+body.context-beta-welcome #region-content {
+  font-size: 18px;
+}
+
+body.page-beta input[type="submit"] {
+  margin: 0 0 0 15px;
+  padding: 4px 12px;
+} 
+
+
+
 
 /* Header
 ------------*/
@@ -152,9 +176,9 @@ body.node-type-application article .field-label  {
 }
 
 #block-cc-flag-block-flag-block li a {
-    background: url("../images/watcheye2.png") no-repeat scroll left center transparent;
+    /* NG background: url("../images/watcheye2.png") no-repeat scroll left center transparent;*/
     font-size: 14px;
-    padding-left: 41px;
+    /* NG padding-left: 41px; */
     text-decoration: none;
 }
 
@@ -880,6 +904,10 @@ body.node-type-application .tabs {
   background-color: #2479CC; 
 }
 
+.view-related-apps-block .view-empty .relatedapp{ 
+  float: left;
+}
+
 .block-block-13 {
   margin-top: 10px;
 }
@@ -890,6 +918,14 @@ body.node-type-application .tabs {
 }
 .block-block-13 p {
   color: #666666;
+}
+
+#block-views-applications-block-2 h2.block-title,
+#block-views-applications-block-4 h2.block-title,
+#block-views-applications-block-3 h2.block-title,
+#block-views-interactions-block-1 h2.block-title
+{
+  /*margin-left: -20px;*/
 }
 
 .block-views-dashboard-block-2 h2.block-title,
@@ -1445,6 +1481,10 @@ button:visited, input[type="reset"]:visited, input[type="submit"]:visited, input
   border-radius: 0;
   border-color: transparent;
   padding: 8px;
+  text-shadow: none;
+  
+   margin: 0 0 0 15px;
+  padding: 4px 12px;
 }
 
 #block-custom-search-blocks-2 .form-item-custom-search-blocks-form-2 {
@@ -1604,13 +1644,13 @@ body.front .cc-org-prefix-sharing {
 		font-size:28px;
 		position: relative;
 		padding: 0 0 0 100px;
-		text-transform:capitalize;
+		/*text-transform:capitalize;*/
 	}
 	.container-16 .region-content h1.title {    
 		color: #000;	
 		font-size:28px;
 		line-height:32px;
-		text-transform:capitalize;
+		/*text-transform:capitalize;*/
 	}
 	.cc-org-content{
 		position:relative;
@@ -1855,10 +1895,10 @@ body.front .cc-org-prefix-sharing {
 
 	.addapp .button-add1 { /*gold*/
 	  padding: 10px 15px;
-	  background-color: #E49A2F;   
+	  background-color: #2479CC;
 	  text-decoration:none;
 	  font-size:16px;
-	  color: #fff;
+	  color: #fff !important;
 	}
 
 	.spotapp .button-add2 {   /* Blue */
@@ -1866,7 +1906,7 @@ body.front .cc-org-prefix-sharing {
 	  background-color: #2479CC;  
 	  text-decoration:none;
 	  font-size:16px;
-	  color: #fff;
+	  color: #fff !important;
 	}
 
 
@@ -2221,7 +2261,7 @@ body.front .cc-org-prefix-sharing {
 	
 	img.setmap{       /* map image */
 	    width: 100%;
-	    height: 400px;
+	    height: 300px;
 	}
 	
 	#block-views-cc-organizations-block .openlayers-views-map .openlayers-tooltip-name{
@@ -2486,7 +2526,6 @@ body.front .cc-org-prefix-sharing {
 	.views-field-edit-node a,
 	.add-media-button a,
 	.add-deployment-button a,
-	.view-apps-this-organization-has-used .view-footer, 
 	.view-apps-this-organization-has-creat .view-footer,
 	#block-views-at-a-glance-application-block .view-footer a,
 	.region-sidebar-second-inner .view-at-a-glance-application- a:hover
