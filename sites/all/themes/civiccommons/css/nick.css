@@ -1,1 +1,5 @@
 /* Nicks CSS */
+
+.region-content .field-name-field-application-screenshots .field-items .field-item img {
+  margin: 10px 0;
+}
