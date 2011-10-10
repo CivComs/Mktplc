@@ -1,0 +1,5 @@
+name = Node Title help
+description = Add help text to title field in organization edit form
+core = 7.x
+files[] = cc_node_title.module
+package = Warecorp
