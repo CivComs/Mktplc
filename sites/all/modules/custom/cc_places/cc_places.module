@@ -99,7 +99,7 @@ function _cc_places_address_by_nid($nid, $city = TRUE, $state = TRUE, $country =
 	if($state && !empty($result['field_organization_address_administrative_area'])){
 		$address['state'] = $result['field_organization_address_administrative_area'];
 	}
-	if($country && !empty($result['field_organization_address_administrative_area'])){
+	if($country && !empty($result['field_organization_address_country'])){
 		$address['country'] = $result['field_organization_address_country'];
 	}
 	
