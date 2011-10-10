@@ -255,15 +255,16 @@ function cc_helper_form_alter(&$form, &$form_state, $form_id) {
 	$dest_url = parse_url($_SERVER['HTTP_REFERER']);
 	switch($form_id){
 	case 'interaction_node_form' :
-		array_unshift($form['actions']['submit']['#submit'], '_cc_helper_redirect');
+		$form['#submit'][] = '_cc_helper_redirect';
 		break;
 	}
 }
 
 function _cc_helper_redirect(&$form, &$form_state) {
 	global $dest_url;
+	print('ololo');
 	//$form_state['rebuild']=TRUE; 
-	$form_state['redirect'] = url($dest_url['path'], array('absolute' => true)); dsm($form_state);
+	$form_state['redirect'] = url($dest_url['path'], array('absolute' => true)); //dsm($form_state);
 	
 }
 
@@ -273,6 +274,8 @@ function cc_helper_node_view_alter(&$build) {
 		$addr['locality'] = $build['field_organization_address'][0]['#address']['locality'];
 		$addr['administrative_area'] = $build['field_organization_address'][0]['#address']['administrative_area'];
 		$build['field_organization_address'][0]['#address'] = $addr;
+		//dsm($build);
+		
 	}
 }
 
