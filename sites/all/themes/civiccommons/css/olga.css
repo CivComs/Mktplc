@@ -103,3 +103,19 @@
 #block-block-23 .content form div.has-you-tried {
     text-align:left;
 }
+#block-views-places-block-1 .views-field-php{
+	width:60%;
+}
+.view-applications .views-field-title {
+    padding-right: 150px;
+}
+.container-16 .grid-8 .more-link {
+    padding: 10px !important;
+}
+.cc-places-list-link a, .cc-places-list-link a:hover {    
+    background: #D3DEEC;
+    display: block;
+    float: right;
+    margin:5px 0 0;
+    padding: 5px 20px;
+}

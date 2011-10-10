@@ -272,17 +272,6 @@ function _cc_helper_redirect(&$form, &$form_state) {
 	
 }
 
-function cc_helper_node_view_alter(&$build) {
-	if(($build['#bundle']=='organization')&&($build['#view_mode']=='full')){
-		$addr = array();
-		$addr['locality'] = $build['field_organization_address'][0]['#address']['locality'];
-		$addr['administrative_area'] = $build['field_organization_address'][0]['#address']['administrative_area'];
-		$build['field_organization_address'][0]['#address'] = $addr;
-		//dsm($build);
-		
-	}
-}
-
 function cc_helper_init() {
 	drupal_add_js('jQuery(document).ready(function(){jQuery("a[href^=http:]").each(function(){if(jQuery(this).host!="'.$_SERVER['HTTP_HOST'].'"){jQuery(this).attr("target","_blank");}});});', 'inline');
 }
