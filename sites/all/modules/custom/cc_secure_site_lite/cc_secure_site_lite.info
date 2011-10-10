@@ -1,0 +1,5 @@
+name = CC Secure Site Lite
+description = Require users enter a code before viewing the site
+core = 7.x
+files[] = cc_secure_site_lite.module
+package = Warecorp
