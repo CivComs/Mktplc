@@ -46,5 +46,29 @@ function evenizeRowHeights(selector) {
 	console.log("hello");
 	console.log($('#popup_FrameDecorationDiv_4').css('bottom'));
 	
-});*/
+});
 
+jQuery(document).ready(function() {	
+	console.log("hello");
+	/*jQuery('#page-title').text('hello');*/
+	
+	/*console.log('t=');
+	 jQuery("#OpenLayers.Geometry.Point_34").click(function(){
+			setTimeout(function(){
+				var t = jQuery('#popup_FrameDecorationDiv_0').css('top');
+				console.log(t);
+			 }, 1000);
+	 });
+			  jQuery("#popup_close").click(function(){
+				alert("CLICK");
+				console.log(jQuery('#popup_FrameDecorationDiv_0').css('bottom'));
+				jQuery('#popup_FrameDecorationDiv_0').css('padding-left','8px');
+				
+		   });
+		   
+		  jQuery('#popup').css('height','90px'); 
+	 
+		
+	
+});
+*/

@@ -1,21 +1,40 @@
 <?php
 function cc_formatters_field_formatter_info() {
-	return array(
-		'image_content_ref' => array(
-			'label' => t('Image Content Reference'),
-			'description' => t('Output of a field referencing to Image content type node.'),
-			'field types' => array('node_reference')
-		)
-	);
+  return array(
+    'image_content_ref' => array(
+      'label' => t('Image Content Reference'),
+      'description' => t('Output of a field referencing to Image content type node.'),
+      'field types' => array('node_reference'),
+    ),
+    'addressfield_city_only' => array(
+      'label' => t('City only'),
+      'description' => t('Output just the city, state and country part of an address field as a single line of comma-separated text.'),
+      'field types' => array('addressfield'),
+    ),
+  );
 }
 function cc_formatters_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-	module_load_include('inc', 'cc_formatters', 'cc_formatters');
-	if($display['type'] == 'image_content_ref'){
-		$galleries = array();
-		drupal_add_js(drupal_get_path('module', 'cc_formatters') . '/cc_formatters.js', 'file');
-		foreach($items as $delta => $item) {
-			$galleries = array_merge($galleries, _cc_formatters_shadowbox_gallery(node_load($item['nid'])));
-		}
-		return $galleries;
-	}
+  module_load_include('inc', 'cc_formatters', 'cc_formatters');
+  if($display['type'] == 'image_content_ref') {
+    $galleries = array();
+    drupal_add_js(drupal_get_path('module', 'cc_formatters') . '/cc_formatters.js', 'file');
+    foreach($items as $delta => $item) {
+      $galleries = array_merge($galleries, _cc_formatters_shadowbox_gallery(node_load($item['nid'])));
+    }
+    return $galleries;
+  }
+  else if ($display['type'] == 'addressfield_city_only') {
+    $element = array();
+    $includes = array('dependent_locality', 'locality', 'sub_administrative_area', 'administrative_area', 'country');
+    foreach ($items as $delta => $item) {
+      $pieces = array();
+      foreach ($includes as $include) {
+        if (!empty($item[$include])) {
+          $pieces[] = $item[$include];
+        }
+      }
+      $element[$delta]['#markup'] = implode(', ', $pieces);
+      return $element;
+    }
+  }
 }

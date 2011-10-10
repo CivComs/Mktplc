@@ -55,19 +55,14 @@
   <div class="field-items"<?php print $content_attributes; ?>>
     <?php foreach ($items as $delta => $item) : ?>
       <div class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print $item_attributes[$delta]; ?>><?php 
-		if($element['#bundle']=='organization' && $element['#field_name']=='field_organization_address' && $element['#view_mode']='full'){
-			print('<div class="addressfield-container-inline locality-block"><span class="locality">'.
-			$item['#address']['locality'].'</span>, <span class="state">'.$item['#address']['administrative_area'].'</span></div>');
-		}else{
 		print render($item); 
-		}
 	  ?></div>
     <?php endforeach; ?>
   </div>
 </div>
 <?php 
 if(($element['#field_name']=='field_application_screenshots')||($element['#field_name']=='field_application_tutors')&&empty($items)){?>
-	<span class="add-data-button">No screenshots or screencasts added yet.<a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ Add some</a></span>
+	<span class="add-data-button"><?php print t('No screenshots or screencasts added yet.<a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ Add some</a></span>'); ?>
 <?php }
 if($element['#field_name']=='field_application_description'){ ?>
 <div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-description">+ edit description</a></div>

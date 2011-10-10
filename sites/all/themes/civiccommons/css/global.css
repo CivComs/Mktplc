@@ -269,7 +269,7 @@ a:link, a:visited {
 /* BREADCRUMBS */
 
 .breadcrumb {
-  margin-top: -45px;
+  margin-top: -36px;
   padding-bottom: 0.5em;
   width: 70%;
 }
@@ -432,32 +432,39 @@ a:link, a:visited {
 /* Navigation 
 ---------------*/
 /* Main nav */
+/* NG */
 #region-top-menu #nice-menu-2 a:link, 
-#region-top-menu #nice-menu-2 a:visited {
+#region-top-menu #nice-menu-2 a:visited,
+#region-search-bar .menu a:link, 
+#region-search-bar .menu a:visited {
 color: #559efc !important;
 background-image: url('../images/nav-bg.png');
 background-position: center left;
 background-repeat: repeat-x;
-text-decoration: none !important;
-padding: 6px 1em !important;
+text-decoration: none;
+padding: 6px 1em;
 font-size: 15px;
 font-weight: 700;
 border: 1px solid #dcdcdc;
 border-right: none;
 text-transform: uppercase;
+display: block;
 }
 
 #region-top-menu #nice-menu-2 {
 border-right: 1px solid #dcdcdc;
 }
 
-#region-top-menu #nice-menu-2 a:hover {
+/* NG */
+#region-top-menu #nice-menu-2 a:hover,
+#region-search-bar .menu a:hover {
   background-image: url('../images/nav-bg-hover.png');
 }
 
 /* set the "marketplace" tab to selected */
 #region-top-menu #nice-menu-2 li a.active,
-#region-top-menu #nice-menu-2 li.menu-815 a {
+#region-top-menu #nice-menu-2 li.menu-899 a,
+#region-search-bar .menu a.active {
   background-image: url('../images/nav-bg-selected.png');
 }
 
@@ -539,7 +546,6 @@ ul.nice-menu li a:visited  {
     display: block;
 }
  
- 
 .block-nice-menus-2 .block-inner .content ul.nice-menu li a:link, 
 .block-nice-menus-2 .block-inner .content ul.nice-menu li a:visited  { 
     color:#3399ff; 
@@ -549,7 +555,6 @@ ul.nice-menu li a:visited  {
     font-size: 15px;
     font-weight: 700;
 }
-
 
 .block-nice-menus-2 .block-inner .content ul.nice-menu li a:hover,
 .block-nice-menus-2 .block-inner .content ul.nice-menu li a.active {
@@ -655,28 +660,65 @@ ul.nice-menu li a:visited  {
 
 /* SEARCH BAR */
 
+.block-custom-search-blocks-1 input.custom-search-button {
+  margin-left: 0 !important;
+}
+
+#block-block-25 {
+  padding: 12px 12px 15px;
+}
+
+#block-menu-menu-mktplc-section-nav {
+height: 35px;
+padding: 12px 14px 15px;
+}
+
+#region-search-bar .menu {
+  padding: 0;
+  margin: 0;
+  border-right: 1px solid #dcdcdc;
+  float:left;
+}
+
+#region-search-bar .menu li {
+  float:left;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+#region-search-bar .menu a {
+  padding: 4px 15px !important;
+  text-transform: none !important;
+} 
+
+#region-search-bar {
+  position: relative;
+} 
+
+#block-custom-search-blocks-1 {
+  position: absolute;
+  top: 12px;
+  left: 250px;
+  width: 780px;
+}
+#region-search-bar .form-item, #region-search-bar .form-item-custom-search-blocks-form-1 {
+width: 617px;
+}
+
 .region-search-bar-inner {
   margin-bottom: 3px;  
+  background: url('../images/search-bg.png') top center no-repeat;
 }
 
 .region-search-bar {
   margin-top: -12px
   padding-bottom: 10px;
   margin-bottom: 15px;
+  position: relative;
 }
 body.front .region-search-bar {
   padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-#block-custom-search-blocks-1 .content {
-  background: url('../images/search-bg.png') top center no-repeat;
-  margin-bottom: 5px;
-  padding: 
-}
-
-form#custom-search-blocks-form-1 {
-  padding: 10px 0 15px;
   margin-bottom: 0;
 }
 
@@ -761,7 +803,7 @@ form#custom-search-blocks-form-1 {
 
 
 .block-custom-search-blocks-1 .content {
-  background-color: #297FD1;
+  /* NG background-color: #297FD1; */
   padding-left: 15px;
   padding-right: 5px;
 }
@@ -772,13 +814,13 @@ form#custom-search-blocks-form-1 {
   width: 65%;
 }
 
-
 .block-custom-search-blocks-1 input.custom-search-box {
     color: #999999;
     font-size: 15px;
-    height: 36px;
+    height: 32px;
     padding: 5px;
-    width: 97%;
+    /* NG */
+    width: 605px;
 }
 
 .block-custom-search-blocks-1 .form-item-custom-search-types {
@@ -813,6 +855,7 @@ form#custom-search-blocks-form-1 {
   margin-left: 15px;
   margin-right: 0;
   margin-top: 0;
+  height: 32px;
 }
 
 /* Fivestar Module */
@@ -2060,17 +2103,17 @@ body.front .cc-org-prefix-sharing {
 		line-height: 0;
 	}
 	.region-content .field-name-field-application-screenshots .field-items .field-item{
-		float:left;
+		/* NG float:left;
 		width:307px;
-		height:202px;
+		height:202px;*/
 		text-align:left;
 		margin:0 0 15px;
 	}
 	.region-content .field-name-field-application-screenshots .field-items .field-item img{
-		border:1px solid #8e9396;
+		/* NG border:1px solid #8e9396; */
 	}
 	.region-content .field-name-field-application-screenshots .field-items .field-item.odd{
-		text-align:right;
+		/* NG text-align:right;*/
 	}
 		
 	/* Block Views Organizations */
