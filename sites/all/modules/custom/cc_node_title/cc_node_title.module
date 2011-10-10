@@ -1,0 +1,12 @@
+<?php
+
+/**
+*  Adding help text to node title and body fields
+*/
+
+function cc_node_title_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'organization_node_form') {
+    $form['title']['#description'] = t("Use long formal name, including place name, when applicable, e.g.: 'New York City Department of Transportation' or 'Metropolitan Transit Authority,' <i>not</i> 'Dept of Transportation', 'DoT', or MTA.'");
+  }
+}
+
