@@ -250,13 +250,31 @@ function cc_helper_block_view_alter(&$data, $block){
 }
 
 function cc_helper_form_alter(&$form, &$form_state, $form_id) {
-	if(($form_id=='interaction_node_form')&&(is_null($form_state['redirect']))){
-		$url = parse_url($_SERVER['HTTP_REFERER']);
-		$form_state['redirect'] = $url['path'];
-		//$form_state['redirect']='apps/drupal';
-		//drupal_redirect_form($form_state);
+	global $dest_url; 
+	$dest_url = parse_url($_SERVER['HTTP_REFERER']);
+	switch($form_id){
+	case 'interaction_node_form' :
+		array_unshift($form['actions']['submit']['#submit'], '_cc_helper_redirect');
+		break;
 	}
-	//dsm($form_state);
-	//dsm($form);
 }
 
+function _cc_helper_redirect(&$form, &$form_state) {
+	global $dest_url;
+	//$form_state['rebuild']=TRUE; 
+	$form_state['redirect'] = url($dest_url['path'], array('absolute' => true)); dsm($form_state);
+	
+}
+
+function cc_helper_node_view_alter(&$build) {
+	if(($build['#bundle']=='organization')&&($build['#view_mode']=='full')){
+		$addr = array();
+		$addr['locality'] = $build['field_organization_address'][0]['#address']['locality'];
+		$addr['administrative_area'] = $build['field_organization_address'][0]['#address']['administrative_area'];
+		$build['field_organization_address'][0]['#address'] = $addr;
+	}
+}
+
+function cc_helper_init() {
+	drupal_add_js('jQuery(document).ready(function(){jQuery("a[href^=http:]").each(function(){if(jQuery(this).host!="'.$_SERVER['HTTP_HOST'].'"){jQuery(this).attr("target","_blank");}});});', 'inline');
+}
