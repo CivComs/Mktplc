@@ -1,0 +1,62 @@
+<?php
+// $Id: custom_breadcrumbs.install,v 1.4.2.2 2011/01/09 00:44:53 mgn Exp $
+
+/**
+ * @file
+ * Install file for the custom_breadcrumbs module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function custom_breadcrumbs_schema() {
+  $schema['custom_breadcrumb'] = array(
+    'description' => 'Stores custom breadcrumb trail overrides.',
+    'fields' => array(
+      'bid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Unique identifier for the {custom_breadcrumb}.',
+      ),
+      'titles' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'A return-delimited list of titles for the breadcrumb links.',
+      ),
+      'paths' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'A return-delimited list of url paths for the breadcrumb links.',
+      ),
+      'visibility_php' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'medium',
+        'description' => 'An optional PHP snippet to control the {custom_breadcrumb} visibility.',
+      ),
+      'node_type' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'default' => 'AND',
+        'description' => 'Node types the {custom_breadcrumb} should apply to.',
+      ),
+    ),
+    'primary key' => array('bid'),
+  );
+  return $schema;
+}
+
+// Add the menu flag.
+function custom_breadcrumbs_update_6001() {
+  db_add_field('custom_breadcrumb', 'set_active_menu', array('type' => 'int', 'default' => 1, 'NOT NULL' => TRUE));
+}
+
+// Remove the menu flag.
+function custom_breadcrumbs_update_6101() {
+  db_drop_field('custom_breadcrumb', 'set_active_menu');
+}
