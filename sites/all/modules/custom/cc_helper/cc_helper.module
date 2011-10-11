@@ -190,8 +190,7 @@ function _cc_helper_interactions_in_the_locality($locality, $types = array()) {
 
 array(
 'locality' => city name
-'sub_administrative_area' => county name
-'state' => state (2-letter abbreviation)
+'administrative_area' => state (2-letter abbreviation)
 'country' => country (2-letter abbreviation)
 ) */
 function _cc_helper_interactions_in_the_place($place = array(), $types = array()) {
