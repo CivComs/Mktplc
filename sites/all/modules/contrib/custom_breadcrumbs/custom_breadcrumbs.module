@@ -1,0 +1,237 @@
+<?php
+// $Id: custom_breadcrumbs.module,v 1.10.2.4 2011/01/09 18:11:58 mgn Exp $
+
+/**
+ * @file
+ * Provide custom breadcrumbs for node-type pages.
+ */
+
+
+/**
+ * Implements hook_help().
+ */
+function custom_breadcrumbs_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#custom_breadcrumbs':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t("This module allows you to create and modify breadcrumbs based on node type.") . '</p>';
+      $output .= '<h3>' . t('Directions') . '</h3>';
+      $output .= '<p>' . t('Create and edit custom breadcrumbs from the <a href="@link">Custom Breadcrumb Administration Page</a>. Select the node type the breadcrumb will apply to. There are two text fields below-- <em>Titles</em> and <em>Paths</em>. When creating  a breadcrumb, you are simply creating a link. In the custom breadcrumbs interface <em>Titles</em> describes the text of the breadcrumb while <em>Paths</em> describes the Drupal path the breadcrumb links to. Each Title must have a corresponding Path.', array('@link' => url('admin/structure/custom_breadcrumbs'))) . '</p>';
+      $output .= '<h3>' . t('Examples') . '</h3>';
+      $output .= '<p>' . t("To give a very simple example of how to use this module, let's say I have a blog on my web site called 'Deep Thoughts.' To create this, I use the Views module to create a page at /blog that displays all the node types 'blog post.' Whenever a user views a blog post I want the breadcrumb to show Home > Deep Thoughts instead of simply Home. To do this I would simply type 'Deep Thoughts' in the 'Titles' field and and 'blog' in the 'Paths' field and save my breadcrumb.") . '</p>';
+      $output .= '<p>' . t("Using tokens, the Custom breadcrumbs module becomes much more flexible because breadcrumbs can become dynamic. You can create a breadcrumb like Home > Deep Thoughts > [Month of Blog Post] [Year of Blog Post], where 'Deep Thoughts' links to my main blog page and '[Month of Blog Post] [Year of Blog Post]' links to a view that shows only blog posts from the month and year the blog post was created (e.g. June 2007). For this, you would do the following:") . '</p>';
+      $output .= '<p>' . t("Node Type:<br />Blog Post<br /><br />Titles:<br />Deep Thoughts<br />[node:created:custom:M] [node:created:custom:Y]<br /><br />Paths:<br />blog<br />blog/[node:created:custom:m_Y]<br />(where of course, blog/[node:created:custom:m_Y] is the path to the view of blog posts from that month and year). So if you created a blog post on June 13, 2007 your breadcrumb would show Home > Deep Thoughts > June 2007 and 'June 2007' links to 'blog/06_2007' which is a view of all blog posts from June 2007.") . '</p>';
+      $output .= '<p>' . t("Also, note that Custom Breadcrumbs doesn't actually check to be sure that a particular path exists, so you'll have to check yourself to avoid 404 errors.") . '</p>';
+      $output .= '<h3>' . t("Breadcrumb Visibility") . '</h3>';
+      $output .= '<p>' . t("Users given 'use php in custom breadcrumbs' permission can include php code snippet that returns TRUE or FALSE to control whether or not the breadcrumb is displayed. Note that this code has access to the %node variable, and can check its type or any other property.", array('%node' => '$node')) . '</p>';
+      $output .= '<h3>' . t("Special Identifiers") . '</h3>';
+      $output .= '<p>' . t("Special identifiers are provided to achieve a special behavior:") . '</p>';
+      $output .= '<p>' .  t("The following identifiers can be used to achieve a special behavior. Identifiers should be added to the paths area in the following format:  identifier|path.<br />For example: %pathauto_id|[ogname-raw]", array('%pathauto_id' => '<pathauto>')) . '</p>';
+      $output .= theme('custom_breadcrumbs_help_identifiers');
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function custom_breadcrumbs_menu() {
+  $items = array();
+
+  $items['admin/structure/custom_breadcrumbs'] = array(
+    'title' => 'Custom breadcrumbs',
+    'description' => 'Add custom breadcrumb trails for content types.',
+    'page callback' => 'custom_breadcrumbs_page',
+    'access arguments' => array('administer custom breadcrumbs'),
+    'file' => 'custom_breadcrumbs.admin.inc',
+  );
+
+  $items['admin/structure/custom_breadcrumbs/add'] = array(
+    'title' => 'Add custom breadcrumb',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_breadcrumbs_form'),
+    'access arguments' => array('administer custom breadcrumbs'),
+    'file' => 'custom_breadcrumbs.admin.inc',
+  );
+
+  $items['admin/structure/custom_breadcrumbs/edit'] = array(
+    'title' => 'Edit custom breadcrumb',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_breadcrumbs_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer custom breadcrumbs'),
+    'file' => 'custom_breadcrumbs.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implement hook_permission().
+ */
+function custom_breadcrumbs_permission() {
+  return array('administer custom breadcrumbs' => array(
+                 'title' => 'Administer Custom Breadcrumbs', 
+                 'description' => 'Configure the Custom Breadcrumbs Modules'),
+               'use php in custom breadcrumbs' => array(
+                 'title' => 'Use PHP in Custom Breadcrumbs', 
+                 'description' => 'Control Breadcrumb Visibility with PHP code'),
+              );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function custom_breadcrumbs_theme() {
+  return array('custom_breadcrumbs_help_identifiers' => array('arguments' => array()));
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function custom_breadcrumbs_node_view($node, $build_mode) {
+  if ($build_mode == 'full' && ($breadcrumb = _custom_breadcrumbs_load_for_type($node))) {
+    $titles = preg_split("/[\n]+/", $breadcrumb->titles);
+    $paths = preg_split("/[\n]+/", $breadcrumb->paths);
+
+    $trail = array(l(t('Home'), '<front>'));
+    for ($i = 0; $i < count($titles); $i++) {
+      $data = array('node' => $node);
+      $title = token_replace(trim($titles[$i]), $data, array('clear'=>TRUE));
+      if (($title != '') && ($title != '<none>')) {
+        $path = token_replace(trim($paths[$i]), $data, array('clear'=>TRUE));
+        // Create breadcrumb only if there is a title.
+        $trail[] = _custom_breadcrumbs_create_crumb($title, $path);
+      }
+    }
+    drupal_set_breadcrumb($trail);
+  }
+}
+
+function _custom_breadcrumbs_load_breadcrumb($bid) {
+  $result = db_query('SELECT * FROM {custom_breadcrumb} WHERE bid = :bid', array(':bid' => $bid));
+  $breadcrumb = $result->fetchObject();
+  return $breadcrumb;
+}
+
+function _custom_breadcrumbs_load_for_type($node) {
+  $result = db_query('SELECT * FROM {custom_breadcrumb} WHERE node_type = :node_type', array(':node_type' => $node->type));
+  while ($breadcrumb = $result->fetchObject()) {
+    if (!empty($breadcrumb->visibility_php)) {
+      // Use PHP code to check the visibility.
+      ob_start();
+      $visibility = eval(trim($breadcrumb->visibility_php));
+      ob_end_clean();
+      if ($visibility == TRUE) {
+        return $breadcrumb;
+      }
+    }
+    else {
+      return $breadcrumb;
+    }
+  }
+}
+
+function _custom_breadcrumbs_load_all_breadcrumbs($refresh = FALSE) {
+  static $breadcrumbs;
+  if ($refresh || !isset($breadcrumbs)) {
+    $result = db_query('SELECT * FROM {custom_breadcrumb}');
+    $breadcrumbs = $result->fetchAll();
+  }
+  return $breadcrumbs;
+}
+
+function custom_breadcrumbs_save_breadcrumb($breadcrumb = NULL) {
+  if (is_array($breadcrumb->paths)) {
+    $breadcrumb->paths = implode("\n", $breadcrumb->paths);
+  }
+  if (is_array($breadcrumb->titles)) {
+    $breadcrumb->titles = implode("\n", $breadcrumb->titles);
+  }
+
+  if (isset($breadcrumb->bid)) {
+    drupal_write_record('custom_breadcrumb', $breadcrumb, 'bid');
+  }
+  else {
+    drupal_write_record('custom_breadcrumb', $breadcrumb);
+  }
+}
+
+function _custom_breadcrumbs_delete_breadcrumb($bid) {
+  db_delete('custom_breadcrumb')->condition('bid', $bid)->execute();
+}
+/**
+ * Private function for custom breadcrumb to create a crumb item
+ *
+ * @param $title
+ *   The human readable title to be rendered by the browser
+ * @param $original_path
+ *   The desired URI and/or special identifier
+ */
+function _custom_breadcrumbs_create_crumb($title, $original_path) {
+  // Collapse double slashes to one.
+  $original_path = preg_replace('/\/+/', '/', $original_path);
+  // Removing leading and trailing slashes.
+  $original_path = preg_replace('/^\/|\/+$/', '', $original_path);
+  // Supress "Undefined Offset" error.
+  @list($identifier, $path) = explode("|", $original_path, 2);
+
+  if ($path) {
+    switch ($identifier) {
+      case '<pathauto>':
+        if (module_exists('pathauto')) {
+          module_load_include('inc', 'pathauto', 'pathauto');
+          $patharray = explode('/', $path);
+          foreach ($patharray as $k => $v) {
+            $patharray[$k] = pathauto_cleanstring($v);
+          }
+          $path = implode('/', $patharray);
+          $crumb = l($title, $path);
+        }
+        else {
+          $crumb = l($title, $path);
+        }
+        break;
+      default:
+        $crumb = l($title, $original_path);
+    }
+  }
+  else {
+    // This may be just be a single identifier.
+    switch ($identifier) {
+      case '<none>':
+        $crumb = check_plain($title);
+        break;
+      default:
+        $crumb = l($title, $original_path);
+    }
+  }
+
+  return $crumb;
+}
+
+/**
+ * Builds a table of identifiers and their behaviors
+ */
+function theme_custom_breadcrumbs_help_identifiers() {
+  $headers = array(t('Identifier'), t('Behaviour'));
+  $rows = array();
+
+  // <none> identifier
+  $row = array();
+  $row[] = check_plain('<none>');
+  $row[] = 'This will result in a plain text crumb. This identifier should not be used with the pipe (|) symbol.';
+  $rows[] = $row;
+
+  // <pathauto> identifier
+  if (module_exists('pathauto')) {
+    $row = array();
+    $row[] = check_plain('<pathauto>');
+    $row[] = 'Cleans the given path using your pathauto replacement rules.';
+    $rows[] = $row;
+  }
+
+  return theme('table', array('header' => $headers, 'rows' => $rows));
+}
