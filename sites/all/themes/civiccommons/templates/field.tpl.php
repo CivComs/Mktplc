@@ -61,14 +61,15 @@
   </div>
 </div>
 <?php 
-if(($element['#field_name']=='field_application_screenshots')||($element['#field_name']=='field_application_tutors')&&empty($items)){?>
+global $app_in_act;
+if($element['#field_name']=='field_application_tutors' && $app_in_act==0){?>
 	<span class="add-data-button"><?php print t('No screenshots or screencasts added yet.<a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ Add some</a></span>'); ?>
 <?php }
 if($element['#field_name']=='field_application_description'){ ?>
-<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-description">+ edit description</a></div>
+<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-description"><?php print t('+ edit description');?></a></div>
 <?php }
 if($element['#field_name']=='field_application_tutors'){?>
-<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ add a photo or video</a></div>
+<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table"><?php print t('+ add a photo or video');?></a></div>
 <?php }  
 
 ?>
