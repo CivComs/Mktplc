@@ -94,7 +94,7 @@
     text-transform: uppercase;
 }
 /*places page*/
-#block-views-places-block-1 .views-field-php {
+/*#block-views-places-block-1 .views-field-php {
     width: 40% !important;
 	float:left;
 }
@@ -109,7 +109,7 @@
 #region-content-leftcolumn .views-field-php-1 .cc-org-count{
     color: #808080;
     font-weight: bold;
-}
+}*/
 
 /*end*/
 
