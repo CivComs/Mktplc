@@ -1236,7 +1236,6 @@ body.node-type-application .tabs {
   float: left;
   margin: 3px;
 }
-
 .cc-org-prefix-using{
   background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/deployment_icon.png") no-repeat scroll 0pt 0pt transparent; 
   padding-top: 30px;
@@ -1248,6 +1247,8 @@ body.node-type-application .tabs {
   padding-top: 30px;
   
 }
+
+
 
 .cc-org-count{
   color: #000000;
@@ -1649,12 +1650,26 @@ aside .cc-org-prefix-sharing {
 }
 
 
+body.front .cc-org-prefix-using{
+  background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/deployment_icon-24.png") no-repeat scroll left bottom transparent; 
+  padding-top: 30px;
+  width: 33px;
+  height: 26px !important;
+}
+
+body.front .cc-org-prefix-sharing{
+  background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/sharing_icon-24.png") no-repeat scroll left bottom transparent; 
+  padding-top: 30px;
+  height: 26px !important;
+}
 
 body.front .cc-org-prefix-using,
 body.front .cc-org-prefix-sharing {
   /*text-indent: -9999px;*/ /* hide "using" and "sharing" text on front page */
   /* we may decide to do this in all lists -- it looks nice */
 }
+
+
 
 
 /* Sidebar
@@ -1991,10 +2006,15 @@ body.front .cc-org-prefix-sharing {
 		margin-bottom:0;
 		*/
 	}	
-	#block-views-apps-browse-by-block-2,
+
 	#block-views-apps-browse-by-block-1{
 		border-bottom:1px dotted #666;
 		padding:20px 0;
+	}
+	
+	#block-views-apps-browse-by-block-2{
+	    border-bottom:1px dotted #666;
+		padding: 0;
 	}
 	#block-views-apps-browse-by-block{
 		margin-bottom:10px;
@@ -2356,14 +2376,24 @@ body.front .cc-org-prefix-sharing {
 	
 	/* tracking 99 apps in 5 cities */
 	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid td {
-		border-bottom:1px dotted #8a9093;
-		padding:10px 0;
+		border-bottom: 1px dotted #8a9093;
+		padding: 3px 0;
 	}
+	
+	
+	body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .field-content a {
+		color: #2479CC;
+		font-size: 16px;
+		font-weight: 700;
+		line-height: 34px;
+		text-decoration: none;
+	}
+	
 	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .field-content a {
 		color: #2479CC;
 		font-size: 16px;
 		font-weight: 700;
-		line-height:18px;
+		line-height: 18px;
 		text-decoration: none;
 	}
 	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .field-content a:hover {
