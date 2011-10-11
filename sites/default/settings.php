@@ -182,7 +182,7 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'cc_iovchuk',
+      'database' => 'cc_zakashanski',
       'username' => 'root',
       'password' => 'nownthen',
       'host' => 'localhost',

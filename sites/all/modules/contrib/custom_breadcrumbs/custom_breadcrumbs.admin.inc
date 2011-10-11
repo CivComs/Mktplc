@@ -1,10 +1,39 @@
 <?php
+<<<<<<< HEAD
+// $Id: custom_breadcrumbs.admin.inc,v 1.3.2.2 2011/01/09 00:44:53 mgn Exp $
+
+=======
+>>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
 /**
  * @file
  * Admin page callback file for the custom_breadcrumbs module.
  */
 
 /**
+<<<<<<< HEAD
+ * Lists all current custom breadcrumbs, and provides a link to the edit page.
+ */
+function custom_breadcrumbs_page() {
+  $breadcrumbs = _custom_breadcrumbs_load_all_breadcrumbs(TRUE);
+
+  $header = array(t('Node type'), '');
+
+  $rows = array();
+  foreach ($breadcrumbs as $breadcrumb) {
+    $row = array();
+    $row[] = $breadcrumb->node_type . (!empty($breadcrumb->visibility_php) ? ' ' . t('with PHP snippet') : '');
+    $row[] = l(t('edit'), 'admin/structure/custom_breadcrumbs/edit/' . $breadcrumb->bid);
+    $rows[] = $row;
+  }
+  if (count($rows) == 0) {
+    $rows[] = array(array('data' => t('No custom breadcrumbs have been defined.'), 'colspan' => 2));
+  }
+
+  $rows[] = array(array('data' => l(t('Add a new custom breadcrumb'), 'admin/structure/custom_breadcrumbs/add'), 'colspan' => 2));
+
+  $build = array();
+  $build['breadcrumb_table'] = array('#markup' => theme('table', array('header' => $header, 'rows' => $rows)));
+=======
  * Lists all current custom breadcrumbs and provides a link to the edit page.
  */
 function custom_breadcrumbs_page() {
@@ -102,11 +131,32 @@ function custom_breadcrumbs_page() {
   $build['help_text'] = array('#markup' => $output);
   $build['filter_form'] = drupal_get_form('custom_breadcrumbs_filter_form');
   $build['breadcrumb_table'] =  array('#markup' => theme('table', array('header' => $headers,  'rows' => $rows)));
+>>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
 
   return $build;
 }
 
 /**
+<<<<<<< HEAD
+ * Displays an edit form for a custom breadcrumb record.
+ */
+function custom_breadcrumbs_form($form, &$form_state) {
+  $bid = arg(4);
+  if (isset($bid)) {
+    $breadcrumb = _custom_breadcrumbs_load_breadcrumb($bid);
+    $form['bid'] = array(
+      '#type' => 'hidden',
+      '#value' => $bid,
+    );
+  }
+
+  $options = array();
+  $types = node_type_get_names();
+  foreach ($types as $type => $name) {
+    $options[$type] = $name;
+  }
+
+=======
  * Sorts two custom_breadcrumbs objects by name, type, or language.
  *
  * Each column can be independently sorted as asc or desc.
@@ -178,6 +228,7 @@ function custom_breadcrumbs_form($form, &$form_state, $type) {
   foreach (node_type_get_names() as $type => $name) {
     $options[$type] = $name;
   }
+>>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
   $form['node_type'] = array(
     '#type' => 'select',
     '#title' => t('Node type'),
@@ -185,6 +236,10 @@ function custom_breadcrumbs_form($form, &$form_state, $type) {
     '#options' => $options,
     '#description' => t('The node type this custom breadcrumb trail will apply to.'),
     '#default_value' => isset($breadcrumb->node_type) ? $breadcrumb->node_type : NULL,
+<<<<<<< HEAD
+  );
+
+=======
     '#weight' => -10,
   );
   // Store information needed to save this breadcrumb.
@@ -304,10 +359,17 @@ function custom_breadcrumbs_common_form_elements($bid, $breadcrumb) {
       '#value' => '',
     );
   }
+>>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
   $form['visibility_php'] = array(
     '#type' => 'textarea',
     '#title' => t('Breadcrumb visibility'),
     '#access' => user_access('use php in custom breadcrumbs'),
+<<<<<<< HEAD
+    '#description' => t('Determine whether this breadcrumb should be displayed by using a snippet of PHP to return TRUE or FALSE. Note that this code has access to the $node variable, and can check its type or any other property.'),
+    '#default_value' => isset($breadcrumb->visibility_php) ? $breadcrumb->visibility_php : '',
+  );
+
+=======
     '#description' => t('Determine whether this breadcrumb should be displayed by using a PHP snippet to return TRUE or FALSE. Note that this code has access to the $node variable, and can check its type or any other property. Do not use opening and closing php tags.'),
     '#default_value' => isset($breadcrumb->visibility_php) ? $breadcrumb->visibility_php : '',
   );
@@ -317,10 +379,38 @@ function custom_breadcrumbs_common_form_elements($bid, $breadcrumb) {
     $description .= ' ' . t("Or, you can enter a small PHP code snippet (less than 250 characters) returning either an array of text strings for the breadcrumb titles, with one title per array element, or an associative array with elements 'titles' and 'paths' each containing an array of text strings for the breadcrumb titles and paths, respectively. Include the snippet between %php. Use with caution since incorrect PHP code can break your Drupal site. Token replacement will occur after any PHP is evaluated.", array('%php' => '<?php ?>'));
   }
 
+>>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
   $form['titles'] = array(
     '#type' => 'textarea',
     '#title' => t('Titles'),
     '#required' => TRUE,
+<<<<<<< HEAD
+    '#description' => t('A list of titles for the breadcrumb links, one on each line.'),
+    '#default_value' => isset($breadcrumb->titles) ? $breadcrumb->titles : NULL,
+  );
+
+  $form['paths'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Paths'),
+    '#required' => TRUE,
+    '#description' => t('A list of Drupal paths for the breadcrumb links, one on each line.'),
+    '#default_value' => isset($breadcrumb->paths) ? $breadcrumb->paths : NULL,
+  );
+
+  if (module_exists('token')) {
+    $form['help'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('Placeholder tokens'),
+      '#description' => t("The following placeholder tokens can be used in both paths and titles. When used in a path or title, they will be replaced with the appropriate values."),
+    );
+
+    $form['help']['tokens'] = array(
+      '#markup' => theme('token_tree', array('token_types' => 'all', 'click_insert' => FALSE)),
+    );
+  }
+=======
     '#description' => $description,
     '#default_value' => isset($breadcrumb->titles) ? $breadcrumb->titles : NULL,
   );
@@ -355,11 +445,24 @@ function custom_breadcrumbs_common_form_elements($bid, $breadcrumb) {
     $form['help']['#collapsed'] = FALSE;
   }
 
+>>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
   $form['help2'] = array(
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
     '#title' => t('Special identifiers'),
+<<<<<<< HEAD
+    '#description' => t("The following identifiers can be used to achieve a special behavior. Identifiers should be added to the paths area in the following format:  identifier|path.<br />For example: %pathauto_id|[ogname-raw]", array('%pathauto_id' => '<pathauto>')),
+  );
+  $form['help2']['tokens'] = array('#markup' => theme('custom_breadcrumbs_help_identifiers'));
+
+  $form['buttons']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  if ($bid) {
+    $form['buttons']['delete'] = array(
+=======
     '#description' => t("The following identifiers can be used to achieve a special behavior. Identifiers should be added to the paths area in the following format: identifier|path.<br />For example: %pathauto_id|[ogname-raw]", array('%pathauto_id' => '<pathauto>')),
   );
   $form['help2']['tokens'] = array('#markup' => theme('custom_breadcrumbs_help_identifiers'));
@@ -370,11 +473,36 @@ function custom_breadcrumbs_common_form_elements($bid, $breadcrumb) {
   );
   if (isset($bid)) {
     $form['actions']['delete'] = array(
+>>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
       '#type' => 'submit',
       '#value' => t('Delete'),
       '#submit' => array('custom_breadcrumbs_form_delete'),
     );
   }
+<<<<<<< HEAD
+
+  return $form;
+}
+
+function custom_breadcrumbs_form_validate($form, &$form_state) {
+  $path_count = count(explode("\n", trim($form_state['values']['paths'])));
+  $title_count = count(explode("\n", trim($form_state['values']['titles'])));
+  if ($title_count != $path_count) {
+    $error_field = ($title_count < $path_count) ? 'titles' : 'paths';
+    form_set_error($error_field, t('Every link path must have a matching title. There are !paths paths, and !titles titles.', array('!paths' => $path_count, '!titles' => $title_count)));
+  }
+}
+
+function custom_breadcrumbs_form_submit($form, &$form_state) {
+  $breadcrumb = (object)$form_state['values'];
+  custom_breadcrumbs_save_breadcrumb($breadcrumb);
+  $form_state['redirect'] = 'admin/structure/custom_breadcrumbs';
+}
+
+function custom_breadcrumbs_form_delete($form, &$form_state) {
+  _custom_breadcrumbs_delete_breadcrumb($form_state['values']['bid']);
+  $form_state['redirect'] = 'admin/structure/custom_breadcrumbs';
+=======
   $form['actions']['cancel'] = array(
     '#type' => 'submit',
     '#value' => t('Cancel'),
@@ -867,4 +995,5 @@ function custom_breadcrumbs_simple_breadcrumb_table($breadcrumbs) {
       ));
   }
   return theme('table', array('header' => $header, 'rows' => $rows));
+>>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
 }
