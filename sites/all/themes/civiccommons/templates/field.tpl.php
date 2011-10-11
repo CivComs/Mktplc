@@ -62,7 +62,7 @@
 </div>
 <?php 
 if(($element['#field_name']=='field_application_screenshots')||($element['#field_name']=='field_application_tutors')&&empty($items)){?>
-	<span class="add-data-button"><?php print t('No screenshots or screencasts added yet.<a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ Add some</a></span>'); ?>
+	<!--<span class="add-data-button"><?php print t('No screenshots or screencasts added yet.<a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ Add some</a></span>'); ?>-->
 <?php }
 if($element['#field_name']=='field_application_description'){ ?>
 <div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-description">+ edit description</a></div>
@@ -70,6 +70,5 @@ if($element['#field_name']=='field_application_description'){ ?>
 if($element['#field_name']=='field_application_tutors'){?>
 <div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table">+ add a photo or video</a></div>
 <?php }  
-
-?>
-
+if($element['#field_name']=='field_application_featurs'){?>
+<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-featurs">+ edit key featurs</a></div><?php } ?>
