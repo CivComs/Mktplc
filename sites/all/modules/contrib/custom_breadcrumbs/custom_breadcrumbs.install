@@ -1,8 +1,4 @@
 <?php
-<<<<<<< HEAD
-// $Id: custom_breadcrumbs.install,v 1.4.2.2 2011/01/09 00:44:53 mgn Exp $
-=======
->>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
 
 /**
  * @file
@@ -22,15 +18,12 @@ function custom_breadcrumbs_schema() {
         'not null' => TRUE,
         'description' => 'Unique identifier for the {custom_breadcrumb}.',
       ),
-<<<<<<< HEAD
-=======
       'name' => array(
         'type' => 'varchar',
         'length' => 128,
         'not null' => FALSE,
         'description' => 'An optional name for the custom breadcrumb.',
       ),
->>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
       'titles' => array(
         'type' => 'varchar',
         'length' => 255,
@@ -57,8 +50,6 @@ function custom_breadcrumbs_schema() {
         'default' => 'AND',
         'description' => 'Node types the {custom_breadcrumb} should apply to.',
       ),
-<<<<<<< HEAD
-=======
       'language' => array(
         'type' => 'varchar',
         'length' => 12,
@@ -70,23 +61,12 @@ function custom_breadcrumbs_schema() {
     'indexes' => array(
       'language' => array('language'),
       'node_language' => array('node_type', 'language'),
->>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
     ),
     'primary key' => array('bid'),
   );
   return $schema;
 }
 
-<<<<<<< HEAD
-// Add the menu flag.
-function custom_breadcrumbs_update_6001() {
-  db_add_field('custom_breadcrumb', 'set_active_menu', array('type' => 'int', 'default' => 1, 'NOT NULL' => TRUE));
-}
-
-// Remove the menu flag.
-function custom_breadcrumbs_update_6101() {
-  db_drop_field('custom_breadcrumb', 'set_active_menu');
-=======
 /**
  * Implements hook_uninstall().
  */
@@ -218,5 +198,4 @@ function custom_breadcrumbs_update_6202() {
 function custom_breadcrumbs_update_6203() {
   module_enable(array('custom_breadcrumbs_identifiers'));
   return t('Custom_breadcrumbs_identifiers was enabled for legacy reasons. Please disable it if you do not need special identifiers in your breadcrumb settings.');
->>>>>>> 355f9381d0a3a0fbe4683b51c2fff00b01554ff4
 }
