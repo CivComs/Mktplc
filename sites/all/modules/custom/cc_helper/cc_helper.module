@@ -278,6 +278,7 @@ function cc_helper_init() {
 
 function cc_helper_node_view_alter(&$build) {
 	global $app_in_act;
+	$app_in_act = 0;
 	if($build['#bundle']=='application' && $build['#view_mode']=='full'){
 		$app_in_act += count($build['field_application_screenshots']['#items']);
 		$app_in_act += count($build['field_application_tutors']['#items']);
