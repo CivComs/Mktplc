@@ -158,7 +158,7 @@ function _cc_helper_org_localities($org_id) {
 	return $ls;
 }
 
-/* $locality - a locality (i.e. city) textual name. */
+/* Deprecated. If sure the function is not in use, remove it. */
 function _cc_helper_interactions_in_the_locality($locality, $types = array()) {
 	$query = new EntityFieldQuery();
 	$entities = $query
@@ -171,6 +171,44 @@ function _cc_helper_interactions_in_the_locality($locality, $types = array()) {
 		)
 		->propertyCondition('status', 1)
 		->execute();
+	if(isset($entities['node'])) {
+		$orgs = array_keys($entities['node']);
+	}
+	$counts = array();
+	foreach($orgs as $org) {
+		$counts[] = _cc_helper_get_references_count(
+			$org,
+			'interaction',
+			'field_interaction_organization',
+			$types
+		);
+	}
+	return array_sum($counts);
+}
+
+/* Count of interactions in the $place (city). $place - a structured array that could contain any of the following keys:
+
+array(
+'locality' => city name
+'administrative_area' => state (2-letter abbreviation)
+'country' => country (2-letter abbreviation)
+) */
+function _cc_helper_interactions_in_the_place($place = array(), $types = array()) {
+	$fplace = array_filter($place);
+	$query = new EntityFieldQuery();
+	$query
+		->entityCondition('entity_type', 'node')
+		->entityCondition('bundle', 'organization')
+		->propertyCondition('status', 1);
+	foreach($fplace as $column => $value) {
+		$query->fieldCondition(
+			'field_organization_address',
+			$column,
+			$value
+		);
+	}
+	$entities = $query->execute();
+	$orgs = array();
 	if(isset($entities['node'])) {
 		$orgs = array_keys($entities['node']);
 	}
