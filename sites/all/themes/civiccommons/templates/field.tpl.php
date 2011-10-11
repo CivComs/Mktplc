@@ -72,7 +72,7 @@ if($element['#field_name']=='field_application_tutors'){?>
 <div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table"><?php print t('+ add a photo or video');?></a></div>
 <?php }  
 if($element['#field_name']=='field_application_featurs'){?>
-<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-featurs"><?php print t('+ edit key features');?></a></div><?php } ?>
+<div class="add-media-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-featurs"><?php print t('+ edit key features');?></a></div><?php }
 
 ?>
 
