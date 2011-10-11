@@ -59,3 +59,26 @@
 .view-dom-id-4 .views-field-php li{
 	list-style-type:none;
 }
+
+
+	
+.region-sidebar-second-inner #block-views-at-a-glance-application-block .view-at-a-glance-application- a:hover{
+		text-decoration: none !important;
+		background: none !important;
+		display: inline !important;
+		padding: 0 !important;
+		float: none !important;
+		margin: 0 !important;
+	}
+	
+.region-sidebar-second-inner #block-views-at-a-glance-application-block .cc-places-list-link a:hover,
+.region-sidebar-second-inner #block-views-at-a-glance-application-block  .view-at-a-glance-application- .view-footer  a:hover{
+		text-decoration: none !important;
+		background: #d3deec !important;
+		display: block !important;
+		padding: 5px 20px !important;
+		float: right !important;
+		margin: 5px 0 0 0!important;
+
+}
+
