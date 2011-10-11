@@ -111,6 +111,20 @@
     font-weight: bold;
 }*/
 
+/*.view-cc-organizations .views-field-php .cc-org-apps, #block-views-places-block-1 .views-field .cc-org-apps, #block-views-places-block-2 .views-field .cc-org-apps, .view-places .views-field-php-1{
+    margin-top: 0 !important;
+    position: absolute;
+    right: 0;
+    top: 8px;
+}*/
+
+.view-places .views-field-php-1{
+    margin-top: 0 !important;
+    position: absolute;
+    right: 0;
+    top: 8px;	
+}
+
 /*end*/
 
 .view-at-a-glance-application- .views-field-field-application-deliverymeth,
