@@ -284,3 +284,26 @@ function cc_helper_node_view_alter(&$build) {
 		$app_in_act += count($build['field_application_tutors']['#items']);
 	}
 }
+
+function _cc_helper_taxonomy_node_get_terms($nid, $key = 'tid') {
+$terms = array();
+$node = node_load($nid);
+  if (!isset($terms[$node->vid][$key])) {
+    $query = db_select('taxonomy_index', 'r');
+    $t_alias = $query->join('taxonomy_term_data', 't', 'r.tid = t.tid');
+    $v_alias = $query->join('taxonomy_vocabulary', 'v', 't.vid = v.vid');
+    $query->fields( $t_alias );
+    $query->condition("r.nid", $node->nid);
+    $result = $query->execute();
+    foreach ($result as $term) {
+      $terms[] = $term->tid;
+      }
+  } 
+return $terms;
+}
+
+function _cc_helper_is_term_in_node($nid, $tid){
+	$trms=_cc_helper_taxonomy_node_get_terms($nid);
+	if(in_array($tid, $trms)){ return FALSE;}
+	else{ return TRUE;}
+}
