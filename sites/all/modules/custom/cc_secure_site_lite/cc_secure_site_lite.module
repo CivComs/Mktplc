@@ -34,7 +34,7 @@ function cc_secure_site_lite_display_page() {
   // Check to see if the form has been submitted
 
   if (isset($_POST['password'])) {
-    if ($_POST['password'] == variable_get('secure_site_lite_password')) {
+    if (strtolower($_POST['password']) == strtolower(variable_get('secure_site_lite_password'))) {
       $_SESSION['secure-site-lite-login-ok'] = true;
       if (variable_get('secure_site_lite_login_successful'))
         //drupal_set_message(variable_get('secure_site_lite_login_successful'));
