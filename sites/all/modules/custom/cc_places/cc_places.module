@@ -110,3 +110,5 @@ function _cc_places_address_by_nid($nid, $city = TRUE, $state = TRUE, $country =
 	
 	return $address;
 }
+
+

@@ -30,7 +30,12 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
       $pieces = array();
       foreach ($includes as $include) {
         if (!empty($item[$include])) {
-          $pieces[] = $item[$include];
+          if ($include == 'sub_administrative_area') {
+            $pieces[] = t("@county County", array('@county' => $item[$include]));
+          }
+          else {
+            $pieces[] = $item[$include];
+          }
         }
       }
       $element[$delta]['#markup'] = implode(', ', $pieces);
