@@ -194,21 +194,21 @@ array(
 'state' => state (2-letter abbreviation)
 'country' => country (2-letter abbreviation)
 ) */
-function _cc_helper_interactions_in_the_place($place, $types = array()) {
-	$fplaces = array_filter($place);
+function _cc_helper_interactions_in_the_place($place = array(), $types = array()) {
+	$fplace = array_filter($place);
 	$query = new EntityFieldQuery();
 	$query
 		->entityCondition('entity_type', 'node')
 		->entityCondition('bundle', 'organization')
 		->propertyCondition('status', 1);
-	foreach($place as $column => $value) {
+	foreach($fplace as $column => $value) {
 		$query->fieldCondition(
 			'field_organization_address',
 			$column,
 			$value
 		);
 	}
-	$result = $query->execute();
+	$entities = $query->execute();
 	$orgs = array();
 	if(isset($entities['node'])) {
 		$orgs = array_keys($entities['node']);
