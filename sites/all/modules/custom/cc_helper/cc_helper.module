@@ -294,15 +294,17 @@ function cc_helper_block_view_alter(&$data, $block){
 
 function cc_helper_form_alter(&$form, &$form_state, $form_id) {
 	$dest_url = parse_url($_SERVER['HTTP_REFERER']);
+	//if(!is_empty($dest_url['path'])){
 	switch($form_id){
 	case 'interaction_node_form' :
 		$form['#action'].='&destination='.$dest_url['path'];
 		break;
 	}
+	//}
 }
 
 function cc_helper_init() {
-	drupal_add_js('jQuery(document).ready(function(){jQuery("a[href^=http:]").each(function(){if(jQuery(this).host!="'.$_SERVER['HTTP_HOST'].'"){jQuery(this).attr("target","_blank");}});});', 'inline');
+	drupal_add_js('jQuery(document).ready(function(){jQuery("a[href^=http:]").each(function(){if(this.host!="'.$_SERVER['HTTP_HOST'].'"){jQuery(this).attr("target","_blank");}});});', 'inline');
 }
 
 function cc_helper_node_view_alter(&$build) {
