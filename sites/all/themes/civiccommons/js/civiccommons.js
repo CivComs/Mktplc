@@ -73,31 +73,11 @@ jQuery(document).ready(function() {
 });
 */
 
-/*jQuery(document).ready(function() {	
+jQuery(document).ready(function() {	
 	console.log("hello");
-	jQuery('#page-title').text('hello');
- });*/
+	/*jQuery('#page-title').text('hello');*/
+	jQuery('#popup').css('height','90px');
+ });
  
-    function initialize() {
-        var map;
-        if (GBrowserIsCompatible()) {
-          var mapOptions = {
-            googleBarOptions : {
-              style : "new",
-              adsOptions : {
-                client: "partner-google-maps-api",
-                channel: "16a7d456",
-                adsafe: "high",
-                language: "en"
-              }
-            }
-          }
-		  
-            map = new GMap2(document.getElementById("openlayers-container-openlayers-map-16a7d456"), mapOptions);
-			console.log(map);
-			
-			map.getElementById("popup_FrameDecorationDiv_0").style.padding="20px";
-
-		}
-      }
+ 
 
