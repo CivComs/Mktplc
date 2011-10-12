@@ -1436,7 +1436,7 @@ body.front #block-views-interactions-block h2.block-title {
 #block-block-24 {
     /* NG background-color: #D6E6F5;*/
     /* NG border: 2px solid #D6E6F5;*/
-    box-shadow: none;
+    /* NG box-shadow: none; */
     color: #666666;
     font-family: 'PT Sans',helvetica,arial,sans-serif;
     margin-bottom: 10px;
@@ -2530,8 +2530,6 @@ body.front .cc-org-prefix-sharing {
 		text-decoration: none !important;
 		background-color: #5786BC !important;
 		display: inline !important;
-		padding-left: 2px !important;
-		padding-right: 2px !important;
 		float: none !important;
 		margin: 0 !important;
 		color: #ffffff !important;
