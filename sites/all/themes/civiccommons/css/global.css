@@ -83,22 +83,21 @@ body.node-type-application article .field-label  {
 
 /* Splash page
 -----------------*/
-body.page-beta .breadcrumb {
+body.page-preview .breadcrumb {
   display: none; 
 }
 
-body.page-beta #region-content {
+body.page-preview #region-content {
   text-align: center;
   width:960px;
   color: #555;
 }
 
-body.page-beta #region-content .content 
-body.context-beta-welcome #region-content {
+body.page-preview #region-content .content  {
   font-size: 18px;
 }
 
-body.page-beta input[type="submit"] {
+body.page-preview input[type="submit"] {
   margin: 0 0 0 15px;
   padding: 4px 12px;
 } 

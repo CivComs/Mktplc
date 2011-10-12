@@ -118,7 +118,7 @@
 }
 
 /*end*/
-
+/*At a glance*/
 .view-at-a-glance-application- .views-field-field-application-deliverymeth,
 .view-at-a-glance-application- .views-field-field-application-license,
 .view-at-a-glance-application- .views-field-field-application-rlss {
@@ -126,7 +126,8 @@
     width: 50%;
 }
 
-.view-at-a-glance-application- .views-field-nothing{
+.view-at-a-glance-application- .views-field-nothing,
+.view-at-a-glance-application- .views-field-field-application-civfunction{
 	clear:both;
 }
 
@@ -146,10 +147,15 @@
 .view-at-a-glance-application- .views-field-nothing .item-list ul li a:visited{
 	color:#436889 !important;
 	font-weight:bold;
+	padding:0 2px !important;
 }
 
 .view-at-a-glance-application- .views-field-nothing .item-list ul li a:hover{
 	font-size:normal;
 	color:#ffffff;
 	background-color:#bdd2ec;
+	padding:0 3px !important;
 }
+
+
+/*end At a glance*/
