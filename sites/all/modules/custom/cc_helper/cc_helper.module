@@ -262,7 +262,7 @@ function _cc_helper_creators_info($appid) {
 	foreach($node->field_application_creator[$lng] as $row){
 		$creator_node = node_load($row['nid']);
 		if($creator_node){
-		$link = drupal_get_path_alias("node/".$creator_node->vid);
+		$link = drupal_get_path_alias("node/".$creator_node->nid);
 		$title = '<a href="/'.$link.'">'.$creator_node->title.'</a>';
 		$creator = node_view($creator_node, 'cc_business_card');
 		//$image_uri = $creator['field_organization_logo'][0]['#item'][uri];    //removed $logo as per ticket https://secure.warecorp.com/redmine/issues/14985
