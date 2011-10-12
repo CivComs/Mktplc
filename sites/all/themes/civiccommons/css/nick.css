@@ -3,3 +3,9 @@
 .region-content .field-name-field-application-screenshots .field-items .field-item img {
   margin: 10px 0;
 }
+
+
+#zone-header .block-addtoany {
+text-indent: -9999px !important;
+background: none !important;
+}
