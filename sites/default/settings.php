@@ -182,10 +182,10 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'cc_zakashanski',
-      'username' => 'root',
-      'password' => 'nownthen',
-      'host' => 'localhost',
+      'database' => 'production',
+      'username' => 'production',
+      'password' => 'veb9otNuoshy',
+      'host' => 'production.cb12y65nf9aj.us-east-1.rds.amazonaws.com',
       'port' => '',
       'driver' => 'mysql',
       'prefix' => '',
