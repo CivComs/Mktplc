@@ -50,7 +50,7 @@ function cc_secure_site_lite_display_page() {
   // Could add a check to see if the default password is not blank here
   $val = variable_get('secure_site_lite_welcome_message', '[FORM]');
   $form_html = <<<EOT
-  <form action="/secure-site" method="post" class="secure-site-lite-form">
+  <form action="/beta" method="post" class="secure-site-lite-form">
     <input type="text" class="secure-site-lite-password" name="password">
     <input type="submit" value="Go" />
   </form>
