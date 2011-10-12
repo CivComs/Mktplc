@@ -269,7 +269,14 @@ function _cc_helper_creators_info($appid) {
 		//$image_style = $creator['field_organization_logo'][0]['#image_style'];
 		//$logo = theme('image_style', array('style_name'=>$image_style, 'path'=>$image_uri));
 		$addr = $creator['field_organization_address']['#items'][0];
-		$address = '('.$addr['locality'].','.$addr['administrative_area'].','.$addr['country'].')';
+		$separator=',';
+		$addr['country']=='' ? $separator='' : $separator=', ';
+		$addr['country']=='' ? $address='' : $address=$addr['country']; ;
+		$addr['administrative_area']=='' ? $address.='' : $address=$addr['administrative_area'].$separator.$address;
+		$addr['administrative_area']=='' ? $separator='' : $separator=', ';
+		$addr['locality']=='' ? $address.='' : $address=$addr['locality'].$separator.$address;
+		$address=='' ? $address.='' : $address='('.$address.')';
+		//$address = '('.$addr['locality'].','.$addr['administrative_area'].','.$addr['country'].')';
 		//$out .= '<li>'.$logo.'<div>'.$title.'</div>'.'<div>'.$address.'</div>'.'</li>';
 		$out .= '<li><div>'.$title.'</div>'.'<div>'.$address.'</div>'.'</li>';
 		}
