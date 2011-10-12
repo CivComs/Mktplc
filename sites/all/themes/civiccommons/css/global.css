@@ -1271,7 +1271,6 @@ body.node-type-application .tabs {
   text-transform: uppercase;
 }
 
-
 #block-views-at-a-glance-block .cc-org-contact .field-content a {
   text-decoration: none;
 }
@@ -1652,16 +1651,35 @@ aside .cc-org-prefix-sharing {
 
 body.front .cc-org-prefix-using{
   background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/deployment_icon-24.png") no-repeat scroll left bottom transparent; 
-  padding-top: 30px;
+  padding-top: 1px;
   width: 33px;
   height: 26px !important;
+  text-indent: 0;
+  font-size: 14px;
+  color: #999999;
+  padding-left: 30px !important;
 }
 
 body.front .cc-org-prefix-sharing{
   background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/sharing_icon-24.png") no-repeat scroll left bottom transparent; 
-  padding-top: 30px;
+  padding-top: 1px;
   height: 26px !important;
+  text-indent: 0;
+  font-size: 14px;
+  color: #999999;
+  padding-left: 30px !important;
 }
+
+body.front .cc-org-count {
+  font-size: 22px;
+  padding-left: 3px;
+  width: 50px;
+}
+
+body.front .cc-org-apps {
+  width: 151px;
+}
+
 
 body.front .cc-org-prefix-using,
 body.front .cc-org-prefix-sharing {
@@ -2008,12 +2026,12 @@ body.front .cc-org-prefix-sharing {
 	}	
 
 	#block-views-apps-browse-by-block-1{
-		border-bottom:1px dotted #666;
+		/*border-bottom:1px dotted #666;*/
 		padding:20px 0;
 	}
 	
 	#block-views-apps-browse-by-block-2{
-	    border-bottom:1px dotted #666;
+	    /*border-bottom:1px dotted #666;*/
 		padding: 0;
 	}
 	#block-views-apps-browse-by-block{
@@ -2158,14 +2176,14 @@ body.front .cc-org-prefix-sharing {
 	.container-16 .grid-8 #block-views-places-block-1 .views-field-field-organization-address,
 	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .views-field-title,
 	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .views-field-field-application-sdesc{
-		width:60%;
+		width:55%;
 		font-family: 'PT Sans', 'Helvetica', Arial, sans-serif;
 	}
 	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .places-flags{
 		float:right;
 		overflow:hidden;
-		margin-top:-30px;
-		width:40%;
+		margin-top:-45px;
+		width:37%;
 	}	
 	.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .flags{
 		background: url("../images/icon_watch.gif") no-repeat left 4px;
@@ -2506,6 +2524,19 @@ body.front .cc-org-prefix-sharing {
 		clear:both;
 	}
 	/* At A Glance */	
+	
+	/* Tags */
+	.region-sidebar-second-inner #block-views-at-a-glance-application-block .views-field-nothing a:hover{
+		text-decoration: none !important;
+		background-color: #5786BC !important;
+		display: inline !important;
+		padding-left: 2px !important;
+		padding-right: 2px !important;
+		float: none !important;
+		margin: 0 !important;
+		color: #ffffff !important;
+	}
+	
 	.region-sidebar-second-inner .view-at-a-glance-application- a:link {
 		text-decoration:none;		
 	}
