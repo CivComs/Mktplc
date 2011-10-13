@@ -4,3 +4,15 @@
   margin-right: 8px;
 }
 
+.view-taxonomy-term-listing .views-field-title a {
+	color: #2479CC;
+	font-size: 16px;
+	font-weight: 700;
+	line-height:18px;
+	text-decoration: none;
+}
+
+.view-taxonomy-term-listing .views-field-field-organization-logo {
+  float: left;
+  margin-right: 10px;
+}
