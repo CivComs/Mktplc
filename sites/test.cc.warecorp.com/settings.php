@@ -323,6 +323,7 @@ ini_set('session.cookie_lifetime', 2000000);
 # $conf['site_name'] = 'My Drupal site';
 # $conf['theme_default'] = 'garland';
 # $conf['anonymous'] = 'Visitor';
+conf['openlayers_layers_google_api'] = 'ABQIAAAAsYZOsqH3tabJ2KSo9Uqh3RS_IMEavb-WDwvS8RC8gddQvlMBChQNHDt4ygzheuQDovD8SOWzHdDVAg';
 
 /**
  * A custom theme can be set for the offline page. This applies when the site
