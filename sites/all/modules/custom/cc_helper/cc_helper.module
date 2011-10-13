@@ -50,14 +50,18 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
  */
 function _cc_helper_using_sharing($using = 0, $sharing = 0) {
   $o = '';
-  
-  if(arg(0) == 'places' AND ($using OR $sharing)){
-    $o .= $using ? '<div class="cc-org-apps"><div class="cc-org-prefix-using">Using</div><div class="cc-org-count cc-using">' . $using . '</div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>' : '<div class="cc-org-apps"><div class="cc-org-prefix-no-using">Using</div><div class="cc-org-no-count cc-using"></div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>';
-    $o .= $sharing ? '<div class="cc-org-apps"><div class="cc-org-prefix-sharing">Sharing</div><div class="cc-org-count cc-sharing">' . $sharing . '</div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>' : '<div class="cc-org-apps"><div class="cc-org-prefix-no-sharing">Sharing</div><div class="cc-org-no-count cc-sharing"></div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>';
-  }else{  
-    $o .= $using ? '<div class="cc-org-apps"><div class="cc-org-prefix-using">Using</div><div class="cc-org-count cc-using">' . $using . '</div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>' : '';
-    $o .= $sharing ? '<div class="cc-org-apps"><div class="cc-org-prefix-sharing">Sharing</div><div class="cc-org-count cc-sharing">' . $sharing . '</div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>' : '';
-   }
+  if ($using) {
+    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-using">Using</div><div class="cc-org-count cc-using">' . $using . '</div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>';
+  }
+  else {
+    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-no-using">Using</div><div class="cc-org-no-count cc-using"></div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>';
+  }
+  if ($sharing) {
+    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-sharing">Sharing</div><div class="cc-org-count cc-sharing">' . $sharing . '</div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>';
+  }
+  else {
+    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-no-sharing">Sharing</div><div class="cc-org-no-count cc-sharing"></div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>';
+  }
   return $o;
   
   //modification as per ticket https://secure.warecorp.com/redmine/issues/15003
