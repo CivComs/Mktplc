@@ -39,3 +39,6 @@ body.front .cc-org-prefix-no-using, body.front .cc-org-prefix-no-sharing {
     width: 57px !important;
 }
 
+#zone-branding ul {
+  list-style: none;
+}
