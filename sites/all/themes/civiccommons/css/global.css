@@ -1648,6 +1648,38 @@ aside .cc-org-prefix-sharing {
 }
 
 
+body.page-places .cc-org-prefix-no-using{
+    background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/deployment_icon-25.png") no-repeat scroll 0 0 transparent;
+    padding-top: 30px;
+    width: 33px;
+    color: #ffffff !important;
+}
+
+body.page-places .cc-org-prefix-no-sharing{
+    background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/sharing_icon-25.png") no-repeat scroll 0 0 transparent;
+    padding-top: 30px;
+    width: 33px;
+    color: #ffffff !important;
+}
+
+body.page-places .cc-org-prefix-no-using, body.page-places .cc-org-prefix-no-sharing {
+    height: 30px !important;
+    padding: 0 !important;
+    text-indent: -9999px;
+    text-transform: lowercase;
+    width: 57px !important;
+}
+
+body.page-places .cc-org-prefix-using, body.page-places .cc-org-prefix-sharing, body.page-places .cc-org-count, .cc-org-postfix {
+    margin: 0 3px !important;
+    float: left;
+}
+
+body.page-places .cc-org-no-count{
+    color: #ffffff;
+}
+
+
 body.front .cc-org-prefix-using{
   background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/deployment_icon-24.png") no-repeat scroll left bottom transparent; 
   padding-top: 1px;
@@ -1672,22 +1704,30 @@ body.front .cc-org-prefix-sharing{
 body.front .cc-org-count {
   font-size: 22px;
   padding-left: 3px;
-  width: 50px;
+  width: 0px;
 }
 
 body.front .cc-org-apps {
-  width: 151px;
+  width: 129px;
 }
 
-
-body.front .cc-org-prefix-using,
-body.front .cc-org-prefix-sharing {
-  /*text-indent: -9999px;*/ /* hide "using" and "sharing" text on front page */
-  /* we may decide to do this in all lists -- it looks nice */
+body.front .cc-sharing {
+  padding-left: 15px;
 }
 
+body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php{
+  float: left;
+  display:block;
+  min-height:60px;
+  width:45%;
+}
 
-
+body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3{
+  color: #808080;
+  float: right;
+  overflow: hidden;
+  width: 260px;
+}
 
 /* Sidebar
 ---------------------*/
