@@ -21,3 +21,31 @@
 	padding-left:0;
 	text-indent:7px;
 }
+.block-custom-search-blocks-1 input.custom-search-box {
+    line-height: 28px;
+    padding: 0 !important;
+	text-indent:5px;
+	height:30px !important;
+}
+
+/* Menu top fix */
+ul.nice-menu, ul.nice-menu ul {
+    position: relative;
+    z-index: 5;
+}
+ul.nice-menu:after {
+	content: '.'; 
+	display: block; 
+	clear: both; 
+	visibility: hidden;
+	height: 0; 
+	line-height: 0;
+}
+ul.nice-menu li{
+    display:block;
+	float:left;
+}
+#block-nice-menus-2,
+#block-nice-menus-1{
+    width: 100% !important;
+}
