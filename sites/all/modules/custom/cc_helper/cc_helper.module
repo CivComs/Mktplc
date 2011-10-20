@@ -325,6 +325,11 @@ function cc_helper_block_view_alter(&$data, $block){
 }
 
 function cc_helper_form_alter(&$form, &$form_state, $form_id) {
+  if(isset($form['#entity_type'])) {
+    if($form['#entity_type'] == 'node') {
+      $form['additional_settings']['#access'] = FALSE;
+    }
+  }
   $dest_url = parse_url($_SERVER['HTTP_REFERER']);
   //if(!is_empty($dest_url['path'])){
   switch($form_id){
