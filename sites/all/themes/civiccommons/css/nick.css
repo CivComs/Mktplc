@@ -9,3 +9,35 @@
 text-indent: -9999px !important;
 background: none !important;
 }
+
+/* activity feed */
+
+.view-interactions .interaction {
+  text-transform: lowercase;
+  padding: 1px 3px;
+}
+
+.view-interactions .interaction.Evaluated {
+  background: #ffffcc;
+  color: black;
+}
+
+.view-interactions .interaction.Deployed {
+  background: green;
+  color: white;
+}
+
+.view-interactions .interaction.Created {
+  background: yellow;
+  color: black;
+}
+
+.view-interactions .interaction.Contributed.to {
+  background: lightblue;
+  color: #333;
+}
+
+.view-interactions .org-name,
+.view-interactions .app-name {
+  font-weight: bold;
+}
