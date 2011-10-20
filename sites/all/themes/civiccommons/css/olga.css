@@ -65,10 +65,10 @@
 	min-height:0;
 	color:#666;
 }
-#block-views-at-a-glance-application-block .view-footer {
+#block-views-at-a-glance-application-block .view-footer,
+.block-related-apps-block-block .relatedapp {
     clear: both;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: hidden;
     text-align: right;
     width: 100%;
 }
@@ -193,3 +193,24 @@
 }
 
 /* Footer fix finish */
+
+
+.field-type-text-with-summary ul{
+	padding-left:20px;
+}
+
+.field-name-field-application-featurs .field-label{
+	color:#fff !important;
+	font:normal 16px/18px 'PT Sans' !important;
+}
+.group-app-media legend {
+	padding-bottom:10px;
+}
+.group-app-media legend  span{
+	margin-bottom:0;
+}
+.fieldset-wrapper .group_app_screenshots,
+#node_application_full_group_app_media .fieldset-wrapper .group_app_screenshots,
+.group_app_tutorials .field-name-field-application-tutors{
+	margin-bottom:0 !important;
+}

@@ -204,7 +204,7 @@
 	_width:500px;
 }
 #region-content-doormat table.views-view-grid td{
- _padding: 0 10px !important;
+	_padding: 0 10px !important;
 }
 
 body.front .cc-org-prefix-using,
@@ -220,9 +220,30 @@ body.front .cc-org-prefix-sharing{
 .view-applications .views-field-field-application-sdesc {
     _padding-right: 140px;
 }
-
-/*.container-16 .grid-8 .view-applications  .views-row-last .views-field-php{
-	_right:0px !important;
-}*/
+#block-nice-menus-2, #block-nice-menus-1{
 	
+	_position:static !important;
+}
+
+#nice-menu-1, #nice-menu-1  li,
+#nice-menu-2, #nice-menu-2  li{
+	_position:static;
+}
+
+html #block-custom-search-blocks-1,
+.block-1.block-custom-search-blocks-1{
+	_zoom:1 !important;
+}
+
+.region-sidebar-second-inner{
+	_width:275px;
+}
+
+#region-content-bottom, #region-content-bottom2, #region-content-bottom3{
+	_margin: 15px 0 0 0;
+}
+
+#region-content-bottom3{
+	_margin: 10px 0 0 0;
+}
 /* End IE6*/
