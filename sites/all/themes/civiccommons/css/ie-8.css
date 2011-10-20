@@ -14,3 +14,16 @@
 	margin-bottom: 10px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DED8D8')";
 }
+
+.field-type-text-with-summary ol li {
+	list-style:decimal !important;
+	list-style-position:inside !important;
+}
+
+
+/* Using and sharing fix start => */
+.block-at-a-glance-block .cc-org-prefix-using, .block-at-a-glance-block .cc-org-prefix-sharing {
+    padding-top: 30px !important;
+    text-indent: 0;
+}
+/* <
