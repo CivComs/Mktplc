@@ -5,17 +5,17 @@ function cc_secure_site_lite_init() {
 if ($user->uid == 0 && 
       !isset($_SESSION['secure-site-lite-login-ok']) &&
       !in_array(request_uri(), array(
-        '/beta',
+        '/preview',
         '/user',
         '/user/password'
       )))
-    drupal_goto('beta',array(), 307);
+    drupal_goto('preview',array(), 307);
 }
 
 function cc_secure_site_lite_menu() {
     $items = array();
-    $items['beta'] = array(
-      'title' => variable_get('secure_site_lite_page_title','Civic Commons Beta'),
+    $items['preview'] = array(
+      'title' => variable_get('secure_site_lite_page_title','Civic Commons Marketplace Preview'),
       'access callback' => TRUE,
       'page callback' => 'cc_secure_site_lite_display_page',
     );
@@ -37,7 +37,7 @@ function cc_secure_site_lite_display_page() {
     if (strtolower($_POST['password']) == strtolower(variable_get('secure_site_lite_password'))) {
       $_SESSION['secure-site-lite-login-ok'] = true;
       if (variable_get('secure_site_lite_login_successful'))
-        //drupal_set_message(variable_get('secure_site_lite_login_successful'));
+        drupal_set_message(variable_get('secure_site_lite_login_successful'));
       drupal_goto(variable_get('secure_site_lite_redirect_path'), array(), 301);  
     } else {
       if (variable_get('secure_site_lite_login_not_successful'))
@@ -50,7 +50,7 @@ function cc_secure_site_lite_display_page() {
   // Could add a check to see if the default password is not blank here
   $val = variable_get('secure_site_lite_welcome_message', '[FORM]');
   $form_html = <<<EOT
-  <form action="/secure-site" method="post" class="secure-site-lite-form">
+  <form action="/preview" method="post" class="secure-site-lite-form">
     <input type="text" class="secure-site-lite-password" name="password">
     <input type="submit" value="Go" />
   </form>

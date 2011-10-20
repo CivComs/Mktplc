@@ -21,10 +21,6 @@
     float: left;
     margin-right: 10px;
 }
-.container-16 .grid-8 #block-views-applications-block-4 .views-field-title,
-.container-16 .grid-8 #block-views-applications-block-4 .views-field-field-organization-address{
-	width:75%;
-}
 
 /* Tatsiana Stylesheet */
 
@@ -69,10 +65,10 @@
 	min-height:0;
 	color:#666;
 }
-#block-views-at-a-glance-application-block .view-footer {
+#block-views-at-a-glance-application-block .view-footer,
+.block-related-apps-block-block .relatedapp {
     clear: both;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: hidden;
     text-align: right;
     width: 100%;
 }
@@ -118,4 +114,103 @@
     float: right;
     margin:5px 0 0;
     padding: 5px 20px;
+}
+.container-16 .grid-8 #block-views-applications-block-4 .views-field-title, 
+.container-16 .grid-8 #block-views-applications-block-4 .views-field-field-organization-address {
+    width: auto !important;
+	padding-right:150px !important;
+}
+.view-applications .views-field-field-application-sdesc {
+    float: none !important;
+    padding-right: 150px;
+    width: auto !important;
+}
+.views-exposed-form .views-submit-button {
+    clear:left;
+}
+.views-exposed-form .views-widget-sort-order{
+   padding-right:80px;
+}
+
+.views-exposed-form .form-item select option {
+    padding: 0;
+}
+
+/* Footer fix start */
+.zone-footer .block-title{+zoom:1;}
+.zone-footer .content.clearfix{+zoom:1;}
+
+.container-16 #region-content-bottom .block-title {
+    border: 3px #solid DADADA;
+    margin-left: 0;
+    margin-right: 0;
+	position:relative;
+	right:-1px;
+    padding-left: 0;
+    padding-right: 0;
+	padding-bottom:4px;
+	margin-bottom:0;
+    text-indent: 19px;
+    width: 362px;
+}
+.container-16 #region-content-bottom .content.clearfix{
+    margin: 0 !important;
+	position:relative;
+    width: 342px;
+	height:236px !important;
+	right:-1px;
+}
+.container-16 #region-content-bottom2 .block-title {
+    left: 4px;
+    margin-left: 0;
+    margin-right: 0;
+	margin-bottom:0;
+    position: relative;
+	padding-bottom:4px;
+    width: 285px;
+}
+.container-16 #region-content-bottom2 .content.clearfix{
+    margin: 0 !important;
+    position: relative;
+    width: 282px;
+	height:236px !important;
+    left: 4px;
+}
+.container-16 #region-content-bottom3 .block-title{
+	float:right;
+	margin-left:0;
+	margin-right:0;
+	margin-bottom:0;
+	padding-bottom:4px;
+	width:246px;
+	clear:both;
+}
+.container-16 #region-content-bottom3 .content.clearfix{
+    float: right;
+    margin: 0 !important;
+    width: 248px;
+	height:236px !important;
+}
+
+/* Footer fix finish */
+
+
+.field-type-text-with-summary ul{
+	padding-left:20px;
+}
+
+.field-name-field-application-featurs .field-label{
+	color:#fff !important;
+	font:normal 16px/18px 'PT Sans' !important;
+}
+.group-app-media legend {
+	padding-bottom:10px;
+}
+.group-app-media legend  span{
+	margin-bottom:0;
+}
+.fieldset-wrapper .group_app_screenshots,
+#node_application_full_group_app_media .fieldset-wrapper .group_app_screenshots,
+.group_app_tutorials .field-name-field-application-tutors{
+	margin-bottom:0 !important;
 }

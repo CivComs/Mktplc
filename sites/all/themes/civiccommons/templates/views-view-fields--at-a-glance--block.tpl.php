@@ -37,7 +37,7 @@
 <?php endforeach; ?>
 </div><div class="cc-org-details"><div class="cc-org-details-title">Details</div>
 <?php foreach ($fields as $id => $field): ?>
- <?php if(in_array($id, array('term_node_tid', 'php', 'field_organization_abudget', 'field_organization_members', 'field_organization_pbudget'))): ?>
+ <?php if(in_array($id, array('term_node_tid', 'php', 'field_organization_abudget', 'field_organization_employees', 'field_organization_members', 'field_organization_pbudget'))): ?>
   <?php if (!empty($field->separator)): ?>
     <?php print $field->separator; ?>
   <?php endif; ?>
