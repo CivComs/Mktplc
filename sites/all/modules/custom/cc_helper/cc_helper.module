@@ -325,7 +325,8 @@ function cc_helper_block_view_alter(&$data, $block){
 }
 
 function cc_helper_form_alter(&$form, &$form_state, $form_id) {
-  if(isset($form['#entity_type'])) {
+  $c_editor = in_array('content editor', $GLOBALS['user']->roles);
+  if(isset($form['#entity_type']) && $c_editor) {
     if($form['#entity_type'] == 'node') {
       $form['additional_settings']['#access'] = FALSE;
     }
