@@ -13,6 +13,7 @@
 	border: 1px solid #DED8D8;
 	margin-bottom: 10px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DED8D8')";
+	background-color: #ffffff !important;
 }
 
 .field-type-text-with-summary ol li {
@@ -26,4 +27,18 @@
     padding-top: 30px !important;
     text-indent: 0;
 }
-/* <
+
+/*#zone-content .region-sidebar-second h2.block-title{
+  background-color: #E1C83D !important;
+}
+
+#block-views-at-a-glance-application-block{
+	background-color: #ffffff !important;
+}*/
+
+#block-block-26,
+#block-views-at-a-glance-application-block{
+	background-color: #ffffff !important;
+}
+
+/* 
