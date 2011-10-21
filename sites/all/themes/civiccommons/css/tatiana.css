@@ -247,3 +247,5 @@ html #block-custom-search-blocks-1,
 	_margin: 10px 0 0 0;
 }
 /* End IE6*/
+
+html>/**/body #zone-content .region-sidebar-second h2.block-title{  background-color: #E1C83D !important; }

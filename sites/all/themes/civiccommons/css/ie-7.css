@@ -78,7 +78,7 @@ a#fdbk_tab {
 .block-custom-search-blocks-1 .content {
     padding-left: 7px !important;
 }
-/* Search field fix finish => */
+/* <= Search field fix finish  */
 
 .group-app-media legend{
 	margin-bottom:0 !important;position: relative; left: -7px !important;
@@ -87,3 +87,40 @@ a#fdbk_tab {
 .fieldset-wrapper  .group_app_screenshots{
 	line-height:0;
 }
+
+/* Cursor fix start => */
+#zone-content-wrapper {
+	cursor:default;
+}
+#zone-content-wrapper div,
+#zone-content-wrapper p {
+	cursor:text;
+}
+#zone-content-wrapper a{
+	cursor:pointer;
+}
+#zone-content-wrapper .view-apps-browse-by .views-view-grid,
+#zone-content-wrapper div.cc-org-apps,
+#zone-content-wrapper div.cc-org-count,
+#zone-content-wrapper div.cc-org-prefix-using,
+#zone-content-wrapper div.cc-org-prefix-sharing{
+	cursor:pointer !important;
+}
+/* <= Cursor fix finish  */
+
+/* 'Add a new App' and 'Spot an App' buttons fix start => */
+.addapp .button-add1,
+.spotapp .button-add2{
+	+zoom:1;
+	width:auto !important;
+	height:auto !important;
+	line-height:20px;
+	margin-top: 0 !important;	
+}
+/* <= 'Add a new App' and 'Spot an App' buttons fix finish */
+
+/* Breadcrumb fix start => */
+.breadcrumb a, .breadcrumb a:link, .breadcrumb a:active {
+    text-decoration: none !important;
+}
+/* => Breadcrumb fix finish  */
