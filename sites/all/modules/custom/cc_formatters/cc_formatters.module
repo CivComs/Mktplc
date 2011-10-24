@@ -33,6 +33,12 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
           if ($include == 'sub_administrative_area') {
             $pieces[] = t("@county County", array('@county' => $item[$include]));
           }
+          else if (
+            $include == 'administrative_area'
+            && !in_array($item['country'], array('US', 'CA'))
+          ) {
+            $pieces[] = _cc_awe_region($item[$include], $item['country']);
+          }
           else {
             $pieces[] = $item[$include];
           }
