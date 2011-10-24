@@ -40,26 +40,34 @@ function _cc_places_place_page($place_type = 'city', $place = 'test'){
 	return $output;
 }
 
-function _cc_places_wkt($place, $wkt_type = 'point'){
-	if($place){
-		$query = db_select('zipcodes', 'z')
-			->fields('z', array('latitude', 'longitude'))
-			->condition('city', $place, '=');
-		$r = $query->execute()->fetchAssoc();
-		if(isset($r['latitude']) && isset($r['longitude'])) {
-			return 
-				'POINT ('
-				. $r['longitude']
-				. ' '
-				. $r['latitude']
-				. ')';
-		}
+function _cc_places_wkt(
+	$city, $country_code, $region_code, $wkt_type = 'point'
+){
+	if(empty($country_code) || empty($region_code) || empty($city)) {
 		return FALSE;
-/*		$geometry = geocode('google', $place, $wkt_type);
-		$geo_array = geofield_get_values_from_geometry($geometry);
-		return $geo_array['wkt'];*/
 	}
-	return FALSE;
+	$q = db_select('cities')
+		->fields('cities', array('latitude', 'longitude'));
+	foreach(array(
+		'accent' => $city,
+		'country' => $country_code,
+		'region' => $region_code
+	) as $col => $val) {
+		if(!empty($val)) {
+			$q->condition('cities.' . $col, $val, '=');
+		}
+	}
+	$r = $q->execute()->fetchAll();
+	if(count($r) > 1) {
+		return FALSE;
+	}
+	$la = isset($r[0]->latitude) ? $r[0]->latitude : 0;
+	$lo = isset($r[0]->longitude) ? $r[0]->longitude : 0;
+	if(empty($la) || empty($lo)) {
+		return FALSE;
+	}else{
+		return 'POINT (' . $lo . ' ' . $la . ')';
+	}
 }
 
 // Function to validate place received from URL against existing places in the system.
@@ -91,7 +99,6 @@ function _cc_places_address_by_nid($nid, $city = TRUE, $state = TRUE, $country =
 		return FALSE;
 	}
 	
-	//dpm($result);
 	
 	if($city && !empty($result['field_organization_address_locality'])){
 		$address['city'] = $result['field_organization_address_locality'];
@@ -102,10 +109,15 @@ function _cc_places_address_by_nid($nid, $city = TRUE, $state = TRUE, $country =
 	if($country && !empty($result['field_organization_address_country'])){
 		$address['country'] = $result['field_organization_address_country'];
 	}
-	
+	$region = 
+			$address['state']
+			&& $address['country'] != 'US'
+			&& $address['country'] != 'CA'
+		? _cc_awe_region($address['state'], $address['country'])
+		: $address['state'];
 	$address['full'] = '';
 	$address['full'] .= $address['city'] ? $address['city'] : '';
-	$address['full'] .= $address['state'] ? ', '. $address['state'] : '';
+	$address['full'] .= $region ? ', '. $region : '';
 	$address['full'] .= $address['country'] ? ', '. $address['country'] : '';
 	
 	return $address;

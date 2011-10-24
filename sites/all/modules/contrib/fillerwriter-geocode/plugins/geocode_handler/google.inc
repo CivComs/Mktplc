@@ -27,6 +27,7 @@ function geocode_google($address, $return = 'point') {
 }
 
 function geocode_google_field($field, $field_item) {
+  dpm($field_item);
   if ($field['type'] == 'text' || $field['type'] == 'text_long' || $field['type'] == 'text_with_summary' || $field['type'] == 'computed') {
     return geocode_google($field_item['value']);
   }
