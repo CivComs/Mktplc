@@ -343,6 +343,10 @@ function cc_helper_form_alter(&$form, &$form_state, $form_id) {
 
 function cc_helper_init() {
   drupal_add_js('jQuery(document).ready(function(){jQuery("a[href^=http:]").each(function(){if(this.host!="'.$_SERVER['HTTP_HOST'].'"){jQuery(this).attr("target","_blank");}});});', 'inline');
+  if ( stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0') ) {
+	drupal_set_message(t("This site is in beta, and we do not currently support Internet Explorer 6. So it may look funny! Please use a modern browser (IE7+, Chrome, Firefox, or Safari) to see the site the way it's meant to look"), 'warning');
+  }
+  
 }
 
 function cc_helper_node_view_alter(&$build) {
