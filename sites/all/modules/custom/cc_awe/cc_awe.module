@@ -24,7 +24,7 @@ function _cc_awe_unquote($string) {
   return trim($string, '"');
 }
 
-//Is options list separator (double dash).
+//Is not options list separator (double dash).
 function _cc_awe_is_not_separator($string) {
   return $string != '--';
 }

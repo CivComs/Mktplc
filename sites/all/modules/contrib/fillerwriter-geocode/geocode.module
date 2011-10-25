@@ -266,8 +266,13 @@ function geocode_widget_parse_addressfield($field_item) {
   if (!empty($field_item['premise']))                 $address .= $field_item['premise'].',';
   if (!empty($field_item['thoroughfare']))            $address .= $field_item['thoroughfare'].',';
   if (!empty($field_item['locality']))                $address .= $field_item['locality'].',';
-  if (!empty($field_item['administrative_area']))     $address .=
-    (!empty($field_item['country']) ? _cc_awe_region($field_item['administrative_area'], $field_item['country']) : '').',';
+  if (!empty($field_item['administrative_area'])) {
+    require_once DRUPAL_ROOT . '/sites/all/modules/custom/cc_awe/cc_awe.module';
+    $address .=
+      (!empty($field_item['country'])
+      ? _cc_awe_region($field_item['administrative_area'], $field_item['country'])
+      : '').',';
+  };
   if (!empty($field_item['sub_administrative_area'])) $address .= $field_item['sub_administrative_area'].',';
   if (!empty($field_item['country']))                 $address .= $field_item['country'].',';
   if (!empty($field_item['postal_code']))             $address .= $field_item['postal_code'].',';

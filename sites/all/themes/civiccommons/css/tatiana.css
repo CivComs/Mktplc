@@ -1,14 +1,8 @@
 #block-views-cc-organizations-block h2.block-title, #block-views-ec4dedca467f7a3362801868ff73408d h2.block-title, #block-views-f180557b90e1950dc78c1a58bbf318df h2.block-title, #block-views-interactions-block h2.block-title, #block-views-interactions-block-3 h2.block-title{
 	border-color:#8a9093;
 }
-/*Map*/
-
-/*.olPopup{
-	height:84px !important;
-}*/
 
 #popup_contentDiv{
-	/*height: 44px !important;*/
 	padding-top:0px;
 	padding-bottom:0px;
 	display:block;
@@ -50,11 +44,6 @@
 #popup_contentDiv  .openlayers-popup  .cc-org-postfix{
 	padding-top:0px;
 }
-
-#popup_FrameDecorationDiv_0, #popup_FrameDecorationDiv_1{
-	/*height: 35px !important;*/
-}
-
 
 .view-dom-id-4 .views-field-php li{
 	list-style-type:none;
@@ -249,3 +238,15 @@ html #block-custom-search-blocks-1,
 /* End IE6*/
 
 html>/**/body #zone-content .region-sidebar-second h2.block-title{  background-color: #E1C83D !important; }
+
+/*Login in/ Register*/
+#block-user-login{
+	float:right;
+	font-size:14px;
+	padding-top:3px;
+}
+/*End Login in/ Register*/
+
+#block-views-at-a-glance-application-block .view-content .views-row{
+	border-bottom:0px;
+}
