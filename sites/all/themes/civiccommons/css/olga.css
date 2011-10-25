@@ -225,3 +225,28 @@
 .breadcrumb a:hover {
     text-decoration: underline !important;
 }
+
+.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .places-flags {
+    float: none !important;
+    margin-top: 0 !important;
+	line-height:40px !important;
+    position: absolute;
+    overflow: hidden;
+    width: 37%;
+    right: 0;
+    top: 8px;
+}
+
+.block-system-main ul li{
+	margin-left:15px;
+}
+
+#zone-content-wrapper .container-16 .view-places .views-row {
+    min-height: 67px;
+	height: auto !important;
+}
+
+.homeintro .field-item p {margin-bottom:0;}
+.homeintro .content .field {
+    margin-bottom: 0 !important;
+}

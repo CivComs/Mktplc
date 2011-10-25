@@ -124,3 +124,18 @@ a#fdbk_tab {
     text-decoration: none !important;
 }
 /* => Breadcrumb fix finish  */
+
+.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .flags {
+	padding:0 !important;
+	text-indent:32px;
+}
+.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .places-flags .places{
+    line-height:30px !important;
+}
+.container-16 .grid-11 .block-ec4dedca467f7a3362801868ff73408d .flags {
+    padding-top: 6px !important;
+	background-position: left 8px !important;
+}
+input[type="submit"]{
+	border:none !important;
+}
