@@ -29,13 +29,9 @@ function cc_places_menu(){
 function _cc_places_place_page($place_type = 'city', $place = 'test'){
 	
 	$geometry = geocode('google',  $place, 'point');
-	dpm($geometry);
 	$geo_array = geofield_get_values_from_geometry($geometry);
-	dpm($geo_array);
 	$place_wkt = $geo_array['wkt'];
-	dpm($place_wkt);
 	$map_preset = openlayers_preset_load('cc_places_map');
-	dpm($map_preset);
 	$output = openlayers_render_map($map_preset->data, $map_preset->name);
 	return $output;
 }
