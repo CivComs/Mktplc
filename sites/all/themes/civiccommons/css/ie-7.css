@@ -139,3 +139,6 @@ a#fdbk_tab {
 input[type="submit"]{
 	border:none !important;
 }
+body{
+	cursor:pointer;
+}
