@@ -31,6 +31,7 @@ function civiccommons_preprocess_page(&$vars, $hook) {
   //drupal_add_js('https://getsatisfaction.com/civiccommons/topics.widget?callback=gsfnTopicsCallback&amp;style=idea', 'external', array('weight' => 100));
   drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction1.js', 'file');
   drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction2.js', 'file');
+  drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/googleanalytics.js', 'file');
 }
 
 
