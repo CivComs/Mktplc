@@ -92,8 +92,9 @@ a#fdbk_tab {
 #zone-content-wrapper {
 	cursor:default;
 }
-#zone-content-wrapper div,
-#zone-content-wrapper p {
+/*#zone-content-wrapper div,*/
+#zone-content-wrapper p,
+span.field-content, em, p, h2 {
 	cursor:text;
 }
 #zone-content-wrapper a{
@@ -139,6 +140,6 @@ a#fdbk_tab {
 input[type="submit"]{
 	border:none !important;
 }
-body{
-	cursor:pointer;
+body, .block-inner, .region {
+	cursor:default;
 }

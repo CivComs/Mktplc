@@ -250,3 +250,15 @@ html>/**/body #zone-content .region-sidebar-second h2.block-title{  background-c
 #block-views-at-a-glance-application-block .view-content .views-row{
 	border-bottom:0px;
 }
+
+.zone-header-wrapper, .zone-branding-wrapper{
+	cursor:default;
+}
+
+.zone-header, .zone-branding{
+	cursor:pointer;
+}
+
+#block-block-26 img{
+	//margin-left:-8px !important;
+}
