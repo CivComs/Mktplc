@@ -151,7 +151,7 @@ function _cc_helper_get_references($nid = NULL, $ref_content_type = 'interaction
   if($entities) {
     return array_keys($entities['node']);
   }
-  return FALSE;
+  return array();
 }
 
 function _cc_helper_app_locs($app_id) {
