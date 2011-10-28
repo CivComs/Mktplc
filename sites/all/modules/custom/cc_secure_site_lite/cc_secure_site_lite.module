@@ -35,9 +35,9 @@ function cc_secure_site_lite_menu() {
   }
 
 function cc_secure_site_lite_display_page() {
+  // This shoudl be using Drupal Form API properly.
 
   // Check to see if the form has been submitted
-
   if (isset($_POST['password'])) {
     if (strtolower($_POST['password']) == strtolower(variable_get('secure_site_lite_password'))) {
       $_SESSION['secure-site-lite-login-ok'] = true;
@@ -53,9 +53,10 @@ function cc_secure_site_lite_display_page() {
   
   // If not, draw the form
   // Could add a check to see if the default password is not blank here
+  $path = url('preview', array('absolute' => TRUE));
   $val = variable_get('secure_site_lite_welcome_message', '[FORM]');
   $form_html = <<<EOT
-  <form action="/preview" method="post" class="secure-site-lite-form">
+  <form action="{$path}" method="post" class="secure-site-lite-form">
     <input type="text" class="secure-site-lite-password" name="password">
     <input type="submit" value="Go" />
   </form>
