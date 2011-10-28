@@ -1,6 +1,76 @@
 <?php
 // $Id: cc_helper.module,v 0.1 2011/09/21 Paul de Paula Exp $
 
+/* Applications. $query - boolean, whether we need nodes array or EntityFieldQuery object. */
+function _cc_helper_apps($query) {
+  $fquery = new EntityFieldQuery();
+  $fquery
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'application')
+    ->propertyCondition('status', 1);
+  if($query) {
+    return $fquery;
+  }else{
+    return $fquery->execute();
+  }
+}
+
+/* Organizations. $query - boolean, whether we need nodes array or EntityFieldQuery object. */
+function _cc_helper_orgs($query) {
+  $fquery = new EntityFieldQuery();
+  $fquery
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'organization')
+    ->propertyCondition('status', 1);
+  if($query) {
+    return $fquery;
+  }else{
+    return $fquery->execute();
+  }
+}
+
+
+/* Amount of sharing applications. $org - organization node object, ID or it's city array(
+'locality' => city name
+'administrative_area' => state (2-letter abbreviation)
+'country' => country (2-letter abbreviation)
+). */
+function _cc_helper_sharing($org = 0, $query = FALSE) {
+  $is_id = ctype_digit($org);
+  $is_place =
+    is_array($org)
+    && array_keys($org) == array('locality', 'country', 'administrative_area');
+  $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
+  if(!$is_id && !$is_place && !$is_node) {
+    return FALSE;
+  }
+  $fquery = _cc_helper_apps(TRUE)->count();
+  if(!$org) {
+    return $fquery->execute();
+  }elseif($is_id) {
+    return $fquery
+      ->fieldCondition('field_application_creator', 'nid', $org)
+      ->execute();
+  }elseif($is_node) {
+    return $fquery
+      ->fieldCondition('field_application_creator', 'nid', $org->nid)
+      ->execute();
+  }
+  $orgs = _cc_helper_orgs(TRUE)
+    ->fieldCondition('field_organization_address', 'locality', $org['locality'])
+    ->fieldCondition('field_organization_address', 'administrative_area', $org['administrative_area'])
+    ->fieldCondition('field_organization_address', 'country', $org['country'])
+    ->execute();
+  $nids = array_keys($orgs['node']);
+  $c = 0;
+  foreach($nids as $nid) {
+    $c += $fquery
+      ->fieldCondition('field_application_creator', 'nid', $nid)
+      ->execute();
+  }
+  return $c;
+}
+
 function cc_helper_views_pre_render(&$view) {
   if(!(
     (
@@ -30,6 +100,9 @@ function cc_helper_views_pre_render(&$view) {
  * Count a view results. $view - unexecuted view object.
  */
 function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
+  if(!is_object($view)) {
+    return FALSE;
+  }
   if(!empty($custom_arguments)) {
     $view->args = $custom_arguments;
   }
