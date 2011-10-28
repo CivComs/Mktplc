@@ -11,7 +11,7 @@ function cc_secure_site_lite_init() {
     'user',
     'user/password',
   );
-  if ($user->uid == 0 && !isset($_SESSION['secure-site-lite-login-ok']) &&
+  if ($user->uid != 0 && !isset($_SESSION['secure-site-lite-login-ok']) &&
     !in_array($_GET['q'], $allowed_pages)) {
     drupal_goto('preview', array(), 307);
   }
@@ -35,7 +35,8 @@ function cc_secure_site_lite_menu() {
   }
 
 function cc_secure_site_lite_display_page() {
-  // This shoudl be using Drupal Form API properly.
+  // This shoudl be using Drupal Form API properly and the 
+  // Session API properly.
 
   // Check to see if the form has been submitted
   if (isset($_POST['password'])) {
