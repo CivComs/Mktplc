@@ -2,14 +2,19 @@
 
 function cc_secure_site_lite_init() {
   global $user;
-if ($user->uid == 0 && 
-      !isset($_SESSION['secure-site-lite-login-ok']) &&
-      !in_array(request_uri(), array(
-        '/preview',
-        '/user',
-        '/user/password'
-      )))
-    drupal_goto('preview',array(), 307);
+  
+  // This is a hack way of ensuring that only certain
+  // pages are available to anonymous users for
+  // beta invite testing.
+  $allowed_pages = array(
+    'preview',
+    'user',
+    'user/password',
+  );
+  if ($user->uid == 0 && !isset($_SESSION['secure-site-lite-login-ok']) &&
+    !in_array($_GET['q'], $allowed_pages)) {
+    drupal_goto('preview', array(), 307);
+  }
 }
 
 function cc_secure_site_lite_menu() {
