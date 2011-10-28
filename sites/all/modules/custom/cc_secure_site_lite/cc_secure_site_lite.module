@@ -5,13 +5,23 @@ function cc_secure_site_lite_init() {
   
   // This is a hack way of ensuring that only certain
   // pages are available to anonymous users for
-  // beta invite testing.
+  // beta invite testing.  Check that user is not
+  // logged in, the form has been submitted (ie session),
+  // and that we are not on these specific pages.
+  //
+  // For some reasons drush does not appreciate the
+  // user check and the goto.  The following is a
+  // work around.
+  if (function_exists('drush_verify_cli') && drush_verify_cli()) {
+    return;
+  }
+  
   $allowed_pages = array(
     'preview',
     'user',
     'user/password',
   );
-  if ($user->uid != 0 && !isset($_SESSION['secure-site-lite-login-ok']) &&
+  if (!$user->uid && !isset($_SESSION['secure-site-lite-login-ok']) &&
     !in_array($_GET['q'], $allowed_pages)) {
     drupal_goto('preview', array(), 307);
   }
