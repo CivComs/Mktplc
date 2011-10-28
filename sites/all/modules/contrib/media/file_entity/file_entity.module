@@ -117,13 +117,14 @@ function file_entity_theme() {
 function file_entity_entity_info_alter(&$entity_info) {
   $entity_info['file']['fieldable'] = TRUE;
   $entity_info['file']['entity keys']['bundle'] = 'type';
+  $entity_info['file']['bundle keys']['bundle'] = 'type';
   $entity_info['file']['bundles'] = array();
   foreach (file_info_file_types() as $type => $info) {
     $info += array(
       // Provide a default administration path for Field UI, but not if 'admin'
       // has been explicitly set to NULL.
       'admin' => array(
-        'path' => 'admin/config/media/file-types/manage/%',
+        'path' => 'admin/config/media/file-types/manage/%file_type',
         'real path' => 'admin/config/media/file-types/manage/' . $type,
         'bundle argument' => 5,
       ),
@@ -171,11 +172,11 @@ function file_entity_file_presave($file) {
   // ensures that it isn't NULL after a file_load(). However, file_save() can be
   // called on a new file object, so we apply the default here as well.
   if (!isset($file->type)) {
-    $file->type = '';
+    $file->type = FILE_TYPE_NONE;
   }
 
   // If the file doesn't already have a real type, attempt to assign it one.
-  if ($file->type === '' && ($type = file_get_type($file))) {
+  if ($file->type == FILE_TYPE_NONE && ($type = file_get_type($file))) {
     $file->type = $type;
   }
 
@@ -367,9 +368,10 @@ function file_entity_file_formatter_file_image_settings($form, &$form_state, $se
  * Based on _field_ui_view_mode_menu_access(), but the Field UI module might not
  * be enabled.
  */
-function _file_entity_view_mode_menu_access($file_type, $view_mode, $access_callback) {
+function _file_entity_view_mode_menu_access($bundle, $view_mode, $access_callback) {
   // Deny access if the view mode isn't configured to use custom display
   // settings.
+  $file_type = field_extract_bundle('file', $bundle);
   $view_mode_settings = field_view_mode_settings('file', $file_type);
   $visibility = ($view_mode == 'default') || !empty($view_mode_settings[$view_mode]['custom_settings']);
   if (!$visibility) {
@@ -399,4 +401,33 @@ function file_entity_modules_enabled($modules) {
  */
 function file_entity_modules_disabled($modules) {
   file_info_cache_clear();
+}
+
+/**
+ * Implements hook_file_mimetype_mapping_alter().
+ */
+function file_entity_file_mimetype_mapping_alter(&$mapping) {
+  // Fix the mime type mapping for ogg.
+  // @todo Remove when http://drupal.org/node/1239376 is fixed in core.
+  $new_mappings['ogg'] = 'audio/ogg';
+
+  // Add support for m4v.
+  // @todo Remove when http://drupal.org/node/1290486 is fixed in core.
+  $new_mappings['m4v'] = 'video/x-m4v';
+
+  // Add support for mka and mkv.
+  // @todo Remove when http://drupal.org/node/1293140 is fixed in core.
+  $new_mappings['mka'] = 'audio/x-matroska';
+  $new_mappings['mkv'] = 'video/x-matroska';
+
+  foreach ($new_mappings as $extension => $mime_type) {
+    if (!in_array($mime_type, $mapping['mimetypes'])) {
+      // If the mime type does not already exist, add it.
+      $mapping['mimetypes'][] = $mime_type;
+    }
+
+    // Get the index of the mime type and assign the extension to that key.
+    $index = array_search($mime_type, $mapping['mimetypes']);
+    $mapping['extensions'][$extension] = $index;
+  }
 }

@@ -42,7 +42,8 @@ function file_entity_list_types_page() {
 /**
  * Form callback; presents file display settings for a given view mode.
  */
-function file_entity_file_display_form($form, &$form_state, $file_type, $view_mode) {
+function file_entity_file_display_form($form, &$form_state, $bundle, $view_mode) {
+  $file_type = field_extract_bundle('file', $bundle);
   $form['#file_type'] = $file_type;
   $form['#view_mode'] = $view_mode;
   $form['#tree'] = TRUE;

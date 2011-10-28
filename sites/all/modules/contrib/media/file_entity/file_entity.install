@@ -14,7 +14,11 @@ function file_entity_schema_alter(&$schema) {
     'type' => 'varchar',
     'length' => 50,
     'not null' => TRUE,
-    'default' => '',
+    // If the FILE_TYPE_NONE constant ever changes, then change the value here
+    // too, and add an update function to deal with existing records. The
+    // constant isn't used here, because there may be cases where this function
+    // runs without the module file loaded.
+    'default' => 'undefined',
   );
   $schema['file_managed']['indexes']['file_type'] = array('type');
 }
@@ -160,6 +164,19 @@ function file_entity_update_7001() {
     }
   }
   variable_del('file_displays');
+}
+
+/**
+ * Drupal 7.8 disallows empty string as the value for a bundle key, so update
+ * empty {file_managed}.type records to 'undefined' instead.
+ */
+function file_entity_update_7002() {
+  db_update('file_managed')
+    // Using 'undefined' instead of FILE_TYPE_NONE, because update functions can
+    // run for disabled modules.
+    ->fields(array('type' => 'undefined'))
+    ->condition('type', '')
+    ->execute();
 }
 
 /**
