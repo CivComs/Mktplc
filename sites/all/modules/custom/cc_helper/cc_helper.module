@@ -123,21 +123,7 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
  */
 function _cc_helper_using_sharing($using = 0, $sharing = 0) {
   $o = '';
-  if ($using) {
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-using">Using</div><div class="cc-org-count cc-using">' . $using . '</div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>';
-  }
-  else {
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-no-using">Using</div><div class="cc-org-no-count cc-using"></div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>';
-  }
-  if ($sharing) {
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-sharing">Sharing</div><div class="cc-org-count cc-sharing">' . $sharing . '</div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>';
-  }
-  else {
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-no-sharing">Sharing</div><div class="cc-org-no-count cc-sharing"></div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>';
-  }
   return $o;
-  
-  //modification as per ticket https://secure.warecorp.com/redmine/issues/15003
 }
 
 /*
@@ -353,9 +339,9 @@ function cc_helper_entity_info_alter(&$entity_info) {
 
 function _cc_helper_creators_info($appid) {
   $node = node_load($appid);
+  isset($node->language) ? $lng = $node->language : $lng = 'und';
   $empty = !is_array($node->field_application_creator[$lng]);
   $out=!$empty ? '<ul>' : '';
-  $lng = $node->language;
   if(isset($node->field_application_creator[$lng])){
   foreach($node->field_application_creator[$lng] as $row){
     $creator_node = node_load($row['nid']);
@@ -452,4 +438,72 @@ function _cc_helper_is_term_in_node($nid, $tid){
   $trms=_cc_helper_taxonomy_node_get_terms($nid);
   if(in_array($tid, $trms)){ return FALSE;}
   else{ return TRUE;}
+}
+
+function cc_helper_token_info(){
+  $info['tokens']['node']['sub-content-type'] = array(
+    'name' => t('Sub content type'),
+    'description' => t('URL path change depending on the sub content type (within orgs, specifically)'),
+  );
+  return $info;
+}
+
+function cc_helper_tokens($type, $tokens, array $data = array(), array $options = array()){
+	$replacements = array();
+	$sanitize = !empty($options['sanitize']);
+	
+	if ($type == 'node' && !empty($data['node'])) {
+        $node = $data['node'];
+		if($node->type == 'organization'){
+			$lng = $node->language;
+			$tid = $node->field_organization_type[$lng][0]['tid'];
+			$term = taxonomy_term_load($tid);
+			$org_type='organizations';
+			if(is_object($term)) {
+			switch($term->name){
+				case 'Government' 				: $org_type='government-entities'; break;
+				case 'Multinational' 			: $org_type='government-entities'; break;
+				case 'National' 				: $org_type='government-entities'; break;
+				case 'Regional' 				: $org_type='government-entities'; break;
+				case 'State' 					: $org_type='government-entities'; break;
+				case 'County' 					: $org_type='government-entities'; break;
+				case 'Municipal' 				: $org_type='government-entities'; break;
+				case 'Company' 					: $org_type='companies'; break;
+				case 'Nonprofit/Foundation/NGO' : $org_type='organizations'; break;
+				case 'Person' 					: $org_type='people'; break;
+			}
+			}
+			
+			foreach ($tokens as $name => $original) {
+				switch ($name) {
+					case 'sub-content-type':
+						$replacements[$original] = $org_type;
+						break;
+				}
+			}
+		}
+    }
+
+    return $replacements;
+}
+
+function cc_helper_theme($existing, $type, $theme, $path) {
+  return array('using_sharing' => array(
+    'variables' => array('using' => 0, 'sharing' => 0, 'setting' => 'full')
+  ));
+}
+
+function theme_using_sharing($variables) {
+  $o = '';
+  $u = $variables['using'] ? '' : 'no-';
+  $s = $variables['sharing'] ? '' : 'no-';
+  foreach(array('using' => t('Using'), 'sharing' => t('Sharing')) as $key => $name) {
+    $c = $variables[$key] ? $variables[$key] : '';
+    $n = $c ? '' : 'no-';
+    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-' . $n . $key . '">' . $name . '</div>';
+    $o .= '<div class="cc-org-' . $n . 'count cc-' . $key . '">' . $c . '</div>';
+    $o .= $variables['setting'] == 'full' ? '<div class="cc-org-postfix">' . format_plural($variables[$key], 'app', 'apps') . '</div>' : '';
+    $o .= '</div>';
+  }
+  return $o;
 }
