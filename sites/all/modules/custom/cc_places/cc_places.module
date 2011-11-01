@@ -94,17 +94,9 @@ function _cc_places_address_by_nid($nid, $city = TRUE, $state = TRUE, $country =
 	if(empty($result)){
 		return FALSE;
 	}
-	
-	
-	if($city && !empty($result['field_organization_address_locality'])){
-		$address['city'] = $result['field_organization_address_locality'];
-	}
-	if($state && !empty($result['field_organization_address_administrative_area'])){
-		$address['state'] = $result['field_organization_address_administrative_area'];
-	}
-	if($country && !empty($result['field_organization_address_country'])){
-		$address['country'] = $result['field_organization_address_country'];
-	}
+	$address['city'] = $city && !empty($result['field_organization_address_locality']) ? $result['field_organization_address_locality'] : NULL;
+	$address['state'] = $state && !empty($result['field_organization_address_administrative_area']) ? $result['field_organization_address_administrative_area'] : NULL;
+	$address['country'] = $country && !empty($result['field_organization_address_country']) ? $result['field_organization_address_country'] : NULL;
 	$region = 
 			$address['state']
 			&& $address['country'] != 'US'
