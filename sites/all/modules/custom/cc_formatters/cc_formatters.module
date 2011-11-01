@@ -24,7 +24,18 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
     return $galleries;
   }
   else if ($display['type'] == 'addressfield_city_only') {
-    $element = array();
+    $e = array();
+    foreach($items as $delta => $item) {
+      $c = $item['sub_administrative_area'];
+      $item['sub_administrative_area'] = !empty($c) && empty($item['city']) ? t('@county County', array('@county' => $c)) : NULL;
+      $r = $item['administrative_area'];
+      $c = $item['country'];
+      $item['administrative_area'] = !in_array($c, array('US', 'CA')) ? _cc_awe_region($r, $c) : $r;
+      $a = array_filter($item);
+      $e[$delta]['#markup'] = implode(', ', $a);
+    }
+  return $e;
+/*    $element = array();
     $includes = array('dependent_locality', 'locality', 'sub_administrative_area', 'administrative_area', 'country');
     foreach ($items as $delta => $item) {
       $pieces = array();
@@ -46,6 +57,6 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
       }
       $element[$delta]['#markup'] = implode(', ', $pieces);
       return $element;
-    }
+    }*/
   }
 }
