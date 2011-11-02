@@ -29,6 +29,14 @@ function _cc_helper_orgs($query) {
   }
 }
 
+function _cc_helper_is_place($var) {
+  if(is_array($var)) {
+    return array_keys($var) == array('locality', 'country', 'administrative_area');
+  }else{
+    return FALSE;
+  }
+}
+
 
 /* Amount of sharing applications. $org - organization node object, ID or it's city array(
 'locality' => city name
@@ -37,9 +45,7 @@ function _cc_helper_orgs($query) {
 ). */
 function _cc_helper_sharing($org = 0, $query = FALSE) {
   $is_id = ctype_digit($org);
-  $is_place =
-    is_array($org)
-    && array_keys($org) == array('locality', 'country', 'administrative_area');
+  $is_place = _cc_helper_is_place($org);
   $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
   if(!$is_id && !$is_place && !$is_node) {
     return FALSE;
@@ -69,6 +75,23 @@ function _cc_helper_sharing($org = 0, $query = FALSE) {
       ->execute();
   }
   return $c;
+}
+
+function _cc_helper_using($org = 0, $query = FALSE) {
+  $is_id = ctype_digit($org);
+  $is_place = _cc_helper_is_place($org);
+  $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
+  if(!$is_id && !$is_place && !$is_node) {
+    return FALSE;
+  }
+  if(!$org) {
+    return _cc_helper_apps(TRUE)->count()->execute();
+  }elseif($is_id) {
+    return _cc_helper_get_references_count($org, 'interaction', 'field_interaction_organization', array(156));
+  }elseif($is_node) {
+    return _cc_helper_get_references_count($org->nid, 'interaction', 'field_interaction_organization', array(156));
+  }
+  return _cc_helper_interactions_in_the_place($org, array(156));
 }
 
 function cc_helper_views_pre_render(&$view) {
@@ -119,11 +142,12 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
 }
 
 /*
- * "Using / Sharing" HTML.
+ * Using / Sharing.
  */
-function _cc_helper_using_sharing($using = 0, $sharing = 0) {
-  $o = '';
-  return $o;
+function _cc_helper_using_sharing($org, $setting) {
+  $s = _cc_helper_sharing($org);
+  $u = _cc_helper_using($org);
+  return theme('using_sharing', array('using' => $u, 'sharing' => $s, 'setting' => $setting));
 }
 
 /*
@@ -495,8 +519,6 @@ function cc_helper_theme($existing, $type, $theme, $path) {
 
 function theme_using_sharing($variables) {
   $o = '';
-  $u = $variables['using'] ? '' : 'no-';
-  $s = $variables['sharing'] ? '' : 'no-';
   foreach(array('using' => t('Using'), 'sharing' => t('Sharing')) as $key => $name) {
     $c = $variables[$key] ? $variables[$key] : '';
     $n = $c ? '' : 'no-';
