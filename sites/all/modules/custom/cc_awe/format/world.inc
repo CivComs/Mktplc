@@ -11,10 +11,11 @@ $plugin = array(
 
 //Output region name instead of it's code.
 function _cc_awe_pre_render($format) {
-  $format['#address']['administrative_area'] = _cc_awe_region(
-    $format['#address']['administrative_area'],
-    $format['#address']['country']
-  );
+  $a = isset($format['#address']['administrative_area']) ? $format['#address']['administrative_area'] : NULL;
+  $c = isset($format['#address']['administrative_area']) ? $format['#address']['administrative_area'] : NULL;
+  if($a && $c) {
+    $format['#address']['administrative_area'] = _cc_awe_region($a, $c);
+  }
   return $format;
 }
 
@@ -22,20 +23,21 @@ function _cc_awe_pre_render($format) {
 //$address - address itself.
 //$context - additional data.
 function cc_awe_format_world_generate(&$format, $address, $context = array()) {
+  $c = isset($address['country']) ? $address['country'] : NULL;
   if($context['mode'] == 'render') {
-    if($address['country'] == 'US' || $address['country'] == 'CA') {
+    if($c == 'US' || $c == 'CA') {
       return FALSE;
     }
     $format['#pre_render'][] = '_cc_awe_pre_render';
     return FALSE;
   }
-  if($address['country'] == 'US' || $address['country'] == 'CA') {
+  if($c == 'US' || $c == 'CA') {
     $regs = array_filter(
       $format['locality_block']['administrative_area']['#options'],
       '_cc_awe_is_not_separator'
     );
   }else{
-    $regs = _cc_awe_regions($address['country']);
+    $regs = _cc_awe_regions($c);
   }
   unset($format['locality_block']['administrative_area']);
   $format['locality_block']['administrative_area'] = array(
