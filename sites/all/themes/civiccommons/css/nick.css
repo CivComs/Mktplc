@@ -4,7 +4,6 @@
   margin: 10px 0;
 }
 
-
 #zone-header .block-addtoany {
 text-indent: -9999px !important;
 background: none !important;
@@ -40,4 +39,42 @@ background: none !important;
 .view-interactions .org-name,
 .view-interactions .app-name {
   font-weight: bold;
+}
+
+
+/* Janrain Engage (LinkedIn)
+-----------------------------*/
+
+#user-login {
+  padding: 20px;
+}
+
+/* hide login bar links */
+#region-search-bar .rpx-links {
+  display: none;
+}
+
+/* make linkedin link big on user login */
+#user-login li.rpx-link {
+  margin-left: 0; /* overrides system style */
+  font-size: 1.3em;
+  display: block;
+  padding: 10px 0;
+}
+
+/* weird that this is there */
+#user-login li.rpx-link br {
+  display: none;
+}
+
+#user-login a.rpxnow {
+  /* linkedin icon */
+  margin-left: 20px;
+}
+
+
+/* Flags 
+--------------------*/
+#block-cc-flag-block-flag-block li {
+  margin-left: 10px;
 }
