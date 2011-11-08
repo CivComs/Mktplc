@@ -1,0 +1,48 @@
+<?php
+/**
+ * @file
+ * The main module file for CC Interactions.
+ *
+ * This module aims to make the creation of Interactions,
+ * a content type that ties together Apps and Organizations,
+ * easier to create from either of the respective content
+ * types.
+ *
+ * Note that the first iteration of this may be
+ * pretty hackish.  Apologies up front.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function cc_interactions_block_info($delta) {
+  $blocks['cc_interactions_apps'] = array(
+    'info' => t('Interactions for Apps'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cc_interactions_block_view($delta) {
+  $block = array();
+
+  switch ($delta) {
+    case 'cc_interactions_apps':
+      $block['subject'] = t('Interactions');
+      $block['content'] = cc_interactions_apps_block();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Interactions for Apps Block content
+ *
+ * This should be a theme function.
+ */
+function cc_interactions_apps_block() {
+  return t('Placeholder');
+}
