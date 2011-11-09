@@ -2,14 +2,29 @@
 
 function cc_secure_site_lite_init() {
   global $user;
-if ($user->uid == 0 && 
-      !isset($_SESSION['secure-site-lite-login-ok']) &&
-      !in_array(request_uri(), array(
-        '/preview',
-        '/user',
-        '/user/password'
-      )))
-    drupal_goto('preview',array(), 307);
+  
+  // This is a hack way of ensuring that only certain
+  // pages are available to anonymous users for
+  // beta invite testing.  Check that user is not
+  // logged in, the form has been submitted (ie session),
+  // and that we are not on these specific pages.
+  //
+  // For some reasons drush does not appreciate the
+  // user check and the goto.  The following is a
+  // work around.
+  if (function_exists('drush_verify_cli') && drush_verify_cli()) {
+    return;
+  }
+  
+  $allowed_pages = array(
+    'preview',
+    'user',
+    'user/password',
+  );
+  if (!$user->uid && !isset($_SESSION['secure-site-lite-login-ok']) &&
+    !in_array($_GET['q'], $allowed_pages)) {
+    drupal_goto('preview', array(), 307);
+  }
 }
 
 function cc_secure_site_lite_menu() {
@@ -30,9 +45,10 @@ function cc_secure_site_lite_menu() {
   }
 
 function cc_secure_site_lite_display_page() {
+  // This shoudl be using Drupal Form API properly and the 
+  // Session API properly.
 
   // Check to see if the form has been submitted
-
   if (isset($_POST['password'])) {
     if (strtolower($_POST['password']) == strtolower(variable_get('secure_site_lite_password'))) {
       $_SESSION['secure-site-lite-login-ok'] = true;
@@ -48,9 +64,10 @@ function cc_secure_site_lite_display_page() {
   
   // If not, draw the form
   // Could add a check to see if the default password is not blank here
+  $path = url('preview', array('absolute' => TRUE));
   $val = variable_get('secure_site_lite_welcome_message', '[FORM]');
   $form_html = <<<EOT
-  <form action="/preview" method="post" class="secure-site-lite-form">
+  <form action="{$path}" method="post" class="secure-site-lite-form">
     <input type="text" class="secure-site-lite-password" name="password">
     <input type="submit" value="Go" />
   </form>

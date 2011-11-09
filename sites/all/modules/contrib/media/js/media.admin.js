@@ -19,14 +19,14 @@ Drupal.behaviors.mediaAdmin = {
         return confirm(Drupal.t('If you switch views, you will lose your selection.'));
       }
     }
-    
+
     $('.media-display-switch a').bind('click', show_confirm_if_existing_selections)
     // Configure the "Add file" link to fire the media browser popup.
-    $('ul.action-links li', context).remove();
+    $('ul.action-links li', context).hide();
     if ($('form.media-list-operation', context).length != 0) {
-      return;  
+      return;
     }
-    var $launcherLink = $('<a class="media-launcher" href="#"></a>').html('Add file');
+    var $launcherLink = $('<a class="media-launcher" href="#"></a>').html(Drupal.t('Add file'));
     $launcherLink.bind('click', function () {
       // This option format needs *serious* work.
       // Not even bothering documenting it because it needs to be thrown.
@@ -78,14 +78,14 @@ Drupal.behaviors.mediaAdmin = {
           checkbox.attr('checked', true).change();
         }
       });
-  
+
       // Add an extra class to selected thumbnails.
       $('.media-display-thumbnails :checkbox').each(function () {
         var checkbox = $(this);
         if (checkbox.is(':checked')) {
           $(checkbox.parents('li').find('.media-item')).addClass('selected');
         }
-  
+
         checkbox.bind('change.media', function () {
           if (checkbox.is(':checked')) {
             $(checkbox.parents('li').find('.media-item')).addClass('selected');
@@ -144,6 +144,6 @@ Drupal.behaviors.mediaTypesAdmin = {
 };
 
 
-  
+
 })(jQuery);
 
