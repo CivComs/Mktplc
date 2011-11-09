@@ -15,7 +15,7 @@
 /**
  * Implements hook_block_info().
  */
-function cc_interactions_block_info($delta) {
+function cc_interactions_block_info() {
   $blocks['cc_interactions_apps'] = array(
     'info' => t('Interactions for Apps'),
   );
@@ -41,7 +41,7 @@ function cc_interactions_block_view($delta) {
 /**
  * Interactions for Apps Block content
  *
- * This should be a theme function.
+ * This should be a theme function (or rather parts).
  */
 function cc_interactions_apps_block() {
   $output = '';
