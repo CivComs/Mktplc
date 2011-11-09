@@ -13,8 +13,8 @@ if($block->module == 'block' && $block->delta == 24){
 // After all classes are generated, add them to block attributes
 $vars['attributes_array']['class'] = $vars['classes_array'];
 
-// Uncomment below to debug/output all available block variables for each block on the page. 
-// Note: will be generated for each block on the page. Comment before pushing to PROD, otherwise site will crash.
+// Uncomment below to debug/output all available block variables for each block on the page.
+// Note: will be generated for each block on the page. Rewuires DEVEL module enabled - so comment before pushing to PROD, otherwise site will crash.
 
 //dpm($vars);
 
