@@ -17,7 +17,7 @@ function media_install() {
 
   // Define the default type to be used if no other type is found. Give it a
   // high weight to ensure it runs last.
-  $types['default'] = new StdClass();
+  $types['default'] = new stdClass();
   $types['default']->name = 'default';
   $types['default']->label = "Other";
   $types['default']->base = TRUE;
@@ -28,7 +28,7 @@ function media_install() {
   );
 
   // Define the common media types: image, audio, and video.
-  $types['image'] = new StdClass();
+  $types['image'] = new stdClass();
   $types['image']->name = 'image';
   $types['image']->label = "Image";
   $types['image']->base = TRUE;
@@ -39,7 +39,7 @@ function media_install() {
     'streams' => array('public', 'private'),
   );
 
-  $types['audio'] = new StdClass();
+  $types['audio'] = new stdClass();
   $types['audio']->name = 'audio';
   $types['audio']->label = "Audio";
   $types['audio']->base = TRUE;
@@ -50,7 +50,7 @@ function media_install() {
     'streams' => array('public', 'private'),
   );
 
-  $types['video'] = new StdClass();
+  $types['video'] = new stdClass();
   $types['video']->name = 'video';
   $types['video']->label = "Video";
   $types['video']->base = TRUE;
@@ -97,6 +97,9 @@ function media_install() {
  * Implement hook_uninstall().
  */
 function media_uninstall() {
+  // #1169472: Manually load media.module for media_variable_default().
+  drupal_load('module', 'media');
+
   drupal_uninstall_schema('media_list_type');
   drupal_uninstall_schema('media_type');
   drupal_uninstall_schema('cache_media_xml');
@@ -287,7 +290,7 @@ function media_update_7003() {
  * Removed /media from the menu.
  */
 function media_update_7004() {
-  menu_rebuild();
+  // Do nothing. Running an update function will trigger a menu rebuild.
 }
 
 /**
@@ -362,7 +365,7 @@ function media_update_7010() {
  * Allows video as a type of media in the WYSIWYG
  */
 function media_update_7011() {
-  media_variable_set('wysiwyg_allowed_types', array('image','video'));
+  // Do nothing - default variables automatically update.
 }
 
 /**
@@ -439,7 +442,7 @@ function media_update_7014() {
  * Rebuild the registry to locate class files in new location.
  */
 function media_update_7015() {
-  registry_rebuild();
+  // Do nothing. Running an update function will trigger a registry rebuild.
 }
 
 /**
@@ -578,7 +581,7 @@ function media_update_7017() {
  * Rebuild the menu to fix access for WYSIWYG.
  */
 function media_update_7018() {
-  menu_rebuild();
+  // Do nothing. Running an update function will trigger a menu rebuild.
 }
 
 /**
@@ -602,5 +605,14 @@ function media_update_7019() {
     if ($update_instance) {
       field_update_instance($instance);
     }
+  }
+}
+
+/**
+ * Delete the wysiwyg_allowed_types variable if it is the same as default.
+ */
+function media_update_7020() {
+  if (variable_get('media__wysiwyg_allowed_types') == array('image', 'video')) {
+    variable_del('media__wysiwyg_allowed_types');
   }
 }

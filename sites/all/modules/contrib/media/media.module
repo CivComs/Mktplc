@@ -6,7 +6,6 @@
  *
  * The core Media API.
  * See http://drupal.org/project/media for more details.
- *
  */
 
 /* ***************************************** */
@@ -14,41 +13,40 @@
 /* ***************************************** */
 
 // A registry of variable_get defaults.
-require_once ( dirname(__FILE__) . '/includes/media.variables.inc');
+require_once (dirname(__FILE__) . '/includes/media.variables.inc');
 
 // Define media related file types and how to display them.
-require_once ( dirname(__FILE__) . '/includes/media.types.inc');
+require_once (dirname(__FILE__) . '/includes/media.types.inc');
 
 // Code relating to using media as a field.
-require_once ( dirname(__FILE__) . '/includes/media.fields.inc');
+require_once (dirname(__FILE__) . '/includes/media.fields.inc');
 
  // Functions for working with [[inline tags]] and wysiwyg editors.
-require_once ( dirname(__FILE__) . '/includes/media.filter.inc');
+require_once (dirname(__FILE__) . '/includes/media.filter.inc');
 
 /* ***************************************** */
 /* Hook Implementations                      */
 /* ***************************************** */
 
 /**
- * Implementation of hook_help()
+ * Implements hook_help().
  */
-
-function media_help($path,$arg) {
-  switch($path) {
+function media_help($path, $arg) {
+  switch ($path) {
     case 'admin/help#media':
       $output = '';
-      $output .= '<h3>' .t('About') .'</h3>';
-      $output .= '<p>' .t('The Media module is a File Browser to the Internet, media provides a framework for managing files and multimedia assets, regardless of whether they are hosted on your own site or a 3rd party site. It replaces the Drupal core upload field with a unified User Interface where editors and administrators can upload, manage, and reuse files and multimedia assets. Media module also provides rich integration with WYSIWYG module to let content creators access media assets in rich text editor. For more information check <a href="@media_faq">Media Module page</a>',array('@media_faq' => 'http://drupal.org/project/media')) .'</p>';
-      $output .= '<h3>' .t('Uses') .'</h3>';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Media module is a File Browser to the Internet, media provides a framework for managing files and multimedia assets, regardless of whether they are hosted on your own site or a 3rd party site. It replaces the Drupal core upload field with a unified User Interface where editors and administrators can upload, manage, and reuse files and multimedia assets. Media module also provides rich integration with WYSIWYG module to let content creators access media assets in rich text editor. Javascript is required to use the Media module.  For more information check <a href="@media_faq">Media Module page</a>', array('@media_faq' => 'http://drupal.org/project/media')) . '.</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
       $output .= '<dl>';
-      $output .= '<dt>' .t('Media Repository') .'</dt>';
-      $output .= '<dd>' .t('Media module allows you to maintain a <a href="@mediarepo">media asset repository</a> where in you can add, remove, reuse your media assets. You can add the media file using upload form or from a url and also do bulk operations on the media assets.', array('@mediarepo' => url('admin/content/media'))) .'</dd>';
-      $output .= '<dt>' .t('Attaching media assets to content types') .'</dt>';
-      $output .= '<dd>' .t('Media assets can be attached to content types as fields. To add a media field to a <a href="@content-type">content type</a>, go to the content type\'s <em>manage fields</em> page, and add a new field of type <em>Multimedia Asset</em>.', array('@content-type' => url('admin/structure/types'))) .'</dd>';
-      $output .= '<dt>' .t('Using media assets in WYSIWYG') .'</dt>';
-      $output .= '<dd>' .t('Media module provides rich integration with WYSIWYG editors, using Media Browser plugin you can select media asset from library to add to the rich text editor moreover you can add media asset from the media browser itself using either upload method or add from url method. To configure media with WYSIWYG you need two steps of configuration:');
-      $output .= '<ul><li>' .t('Enable WYSIWYG plugin on your desired <a href="@wysiwyg-profile">WYSIWYG profile</a>. Please note that you will need to have <a href="@wysiwyg">WYSIWYG</a> module enabled.', array('@wysiwyg-profile' => url('admin/config/content/wysiwyg'),'@wysiwyg' => 'http://drupal.org/project/wysiwyg')) .'</li>';
-      $output .= '<li>' .t('Add Media Filter to the WYSIWYG enabled <a href="@input-format">Input format</a>', array('@input-format' => url('admin/config/content/formats'))) .'</li></ul></dd>';
+      $output .= '<dt>' . t('Media Repository') . '</dt>';
+      $output .= '<dd>' . t('Media module allows you to maintain a <a href="@mediarepo">media asset repository</a> where in you can add, remove, reuse your media assets. You can add the media file using upload form or from a url and also do bulk operations on the media assets.', array('@mediarepo' => url('admin/content/media'))) . '</dd>';
+      $output .= '<dt>' . t('Attaching media assets to content types') . '</dt>';
+      $output .= '<dd>' . t('Media assets can be attached to content types as fields. To add a media field to a <a href="@content-type">content type</a>, go to the content type\'s <em>manage fields</em> page, and add a new field of type <em>Multimedia Asset</em>.', array('@content-type' => url('admin/structure/types'))) . '</dd>';
+      $output .= '<dt>' . t('Using media assets in WYSIWYG') . '</dt>';
+      $output .= '<dd>' . t('Media module provides rich integration with WYSIWYG editors, using Media Browser plugin you can select media asset from library to add to the rich text editor moreover you can add media asset from the media browser itself using either upload method or add from url method. To configure media with WYSIWYG you need two steps of configuration:');
+      $output .= '<ul><li>' . t('Enable WYSIWYG plugin on your desired <a href="@wysiwyg-profile">WYSIWYG profile</a>. Please note that you will need to have <a href="@wysiwyg">WYSIWYG</a> module enabled.', array('@wysiwyg-profile' => url('admin/config/content/wysiwyg'), '@wysiwyg' => 'http://drupal.org/project/wysiwyg')) . '</li>';
+      $output .= '<li>' . t('Add Media Filter to the WYSIWYG enabled <a href="@input-format">Input format</a>', array('@input-format' => url('admin/config/content/formats'))) . '</li></ul></dd>';
       return $output;
   }
 }
@@ -114,7 +112,7 @@ function media_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('media_admin'),
     'access arguments' => array('administer media'),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
     'file' => 'includes/media.admin.inc',
   );
 
@@ -124,9 +122,9 @@ function media_menu() {
     'description' => 'Import files into your media library.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('media_import'),
-    'file' => 'includes/media.admin.inc',
     'access arguments' => array('import media'),
     'type' => MENU_LOCAL_ACTION,
+    'file' => 'includes/media.admin.inc',
   );
 
   $items['media/browser'] = array(
@@ -146,9 +144,9 @@ function media_menu() {
     'description' => 'Make it easier to test media browser',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('media_browser_testbed'),
-    'file' => 'includes/media.browser.inc',
     'access arguments' => array('administer media'),
     'type' => MENU_CALLBACK,
+    'file' => 'includes/media.browser.inc',
   );
 
 
@@ -212,8 +210,6 @@ function media_menu() {
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     'file' => 'includes/media.pages.inc',
-     // Use the same setting as node module
-    'theme callback' => '_node_custom_theme',
   );
 
   $items['media/%media_multi/multiedit'] = array(
@@ -224,8 +220,6 @@ function media_menu() {
     'access arguments' => array('edit'),
     'weight' => 0,
     'file' => 'includes/media.pages.inc',
-     // Use the same setting as node module
-    'theme callback' => '_node_custom_theme',
   );
 
   $items['media/%file/delete'] = array(
@@ -237,19 +231,6 @@ function media_menu() {
     'weight' => 1,
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-    'file' => 'includes/media.pages.inc',
-     // Use the same setting as node module
-    'theme callback' => '_node_custom_theme',
-  );
-
-  $items['admin/content/media/browser'] = $items['media/browser'];
-  $items['admin/content/media/browser']['type'] = MENU_LOCAL_ACTION;
-
-  $items['media/js'] = array(
-    'page callback' => 'media_preview_ajax',
-    'access callback' => 'media_access',
-    'access arguments' => array('view'),
-    'type' => MENU_CALLBACK,
     'file' => 'includes/media.pages.inc',
   );
 
@@ -293,7 +274,8 @@ function media_permission() {
 }
 
 /**
- * Implement hook_theme().
+ * Implements hook_theme().
+ *
  * @TODO: Needs a major cleanup.
  */
 function media_theme() {
@@ -354,7 +336,7 @@ function media_theme() {
 }
 
 /**
- * Implement hook_image_default_styles().
+ * Implements hook_image_default_styles().
  */
 function media_image_default_styles() {
   $styles = array();
@@ -371,7 +353,7 @@ function media_image_default_styles() {
 }
 
 /**
- * Implement hook_file_update().
+ * Implements hook_file_update().
  */
 function media_file_update($file) {
   media_filter_invalidate_caches($file->fid);
@@ -423,7 +405,7 @@ function media_styles_style_flush($style) {
 }
 
 /**
- * Implement hook_page_alter().
+ * Implements hook_page_alter().
  *
  * This is used to use our alternate template when ?render=media-popup is passed
  * in the URL.
@@ -460,7 +442,7 @@ function media_element_info_alter(&$types) {
 }
 
 /**
- * Implement hook_media_display_types().
+ * Implements hook_media_display_types().
  *
  * This is used to display media in different ways on the admin section.
  * Perhaps should be merged in with the browser display.
@@ -491,7 +473,7 @@ function media_media_display_types() {
 }
 
 /**
- * Implement hook_media_operations().
+ * Implements hook_media_operations().
  */
 function media_media_operations() {
   $operations = array(
@@ -514,19 +496,57 @@ function media_media_operations() {
 }
 
 /**
- * Implementation of hook_forms()
+ * Implements hook_forms().
  */
 function media_forms($form_id, $args) {
   $forms = array();
   // To support the multiedit form, each form has to have a unique ID.
   // So we name all the forms media_edit_N where the first requested form is
   // media_edit_0, 2nd is media_edit_1, etc.
-  if ($form_id != 'media_edit' && (strpos($form_id, 'media_edit') === 0)){
+  if ($form_id != 'media_edit' && (strpos($form_id, 'media_edit') === 0)) {
     $forms[$form_id] = array(
       'callback' => 'media_edit',
     );
   }
   return $forms;
+}
+
+/**
+ * Implements hook_form_FIELD_UI_FIELD_SETTINGS_FORM_alter().
+ *
+ * @todo: Respect field settings in 7.x-2.x and handle them in the media widget UI
+ */
+function media_form_field_ui_field_settings_form_alter(&$form, &$form_state) {
+  // On file fields that use the media widget we need remove specific fields
+  if ($form['field']['type']['#value'] == 'file') {
+    $fields = field_info_instances($form['#entity_type'], $form['#bundle']);
+    if ($fields[$form['field']['field_name']['#value']]['widget']['type'] == 'media_generic') {
+      $form['field']['settings']['display_field']['#access'] = FALSE;
+      $form['field']['settings']['display_default']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FIELD_UI_FIELD_EDIT_FORM_alter().
+ *
+ * @todo: Respect field settings in 7.x-2.x and handle them in the media widget UI
+ */
+function media_form_field_ui_field_edit_form_alter(&$form, &$form_state) {
+  // On file fields that use the media widget we need remove specific fields
+  if ($form['#field']['type'] == 'file' && $form['instance']['widget']['type']['#value'] == 'media_generic') {
+    $form['field']['settings']['display_field']['#access'] = FALSE;
+    $form['field']['settings']['display_default']['#access'] = FALSE;
+    $form['instance']['settings']['description_field']['#access'] = FALSE;
+    $form['instance']['settings']['file_extensions']['#title'] = t('Allowed file extensions for uploaded files');
+  }
+
+  // On image fields using the media widget we remove the alt/title fields
+  if ($form['#field']['type'] == 'image' && $form['instance']['widget']['type']['#value'] == 'media_generic') {
+    $form['instance']['settings']['alt_field']['#access'] = FALSE;
+    $form['instance']['settings']['title_field']['#access'] = FALSE;
+    $form['instance']['settings']['file_extensions']['#title'] = t('Allowed file extensions for uploaded files');
+  }
 }
 
 /* ***************************************** */
@@ -653,10 +673,10 @@ if (!function_exists('file_uri_to_object')) {
 }
 
 /**
- * Implement hook_library().
+ * Implements hook_library().
  */
 function media_library() {
-  $path = drupal_get_path('module','media');
+  $path = drupal_get_path('module', 'media');
 
   $common = array(
     'website' => 'http://drupal.org/project/media',
@@ -733,18 +753,18 @@ function media_dialog_get_theme_name() {
 }
 
 /**
- *  A wrapper around simplexml to retrieve a given XML file.
+ * A wrapper around simplexml to retrieve a given XML file.
  *
- *  @param $url
- *    The URL to the XML to retrieve.
- *  @param $display_errors
- *    Optional; if TRUE, then we'll display errors to the end user. They'll be
- *    logged to the watchdog in any case.
- *  @param $refresh
- *    Optional; if TRUE, then we'll force a new load of the XML. Otherwise,
- *    a cached version will be retrieved if possible.
- *  @return
- *    A fully populated object, or FALSE on an error.
+ * @param $url
+ *   The URL to the XML to retrieve.
+ * @param $display_errors
+ *   Optional; if TRUE, then we'll display errors to the end user. They'll be
+ *   logged to the watchdog in any case.
+ * @param $refresh
+ *   Optional; if TRUE, then we'll force a new load of the XML. Otherwise,
+ *   a cached version will be retrieved if possible.
+ * @return
+ *   A fully populated object, or FALSE on an error.
  */
 function media_retrieve_xml($url, $display_errors = FALSE, $refresh = FALSE) {
   module_load_include('inc', 'media', 'includes/media.xml');
@@ -752,46 +772,46 @@ function media_retrieve_xml($url, $display_errors = FALSE, $refresh = FALSE) {
 }
 
 /**
- *  This will parse a url or embedded code into a unique URI.
+ * This will parse a url or embedded code into a unique URI.
  *
- *  The function will call all modules implementing hook_media_parse($url),
- *  which should return either a string containing a parsed URI or NULL.
+ * The function will call all modules implementing hook_media_parse($url),
+ * which should return either a string containing a parsed URI or NULL.
  *
- *  @NOTE The implementing modules may throw an error, which will not be caught
- *  here; it's up to the calling function to catch any thrown errors.
+ * @NOTE The implementing modules may throw an error, which will not be caught
+ * here; it's up to the calling function to catch any thrown errors.
  *
- *  @NOTE In emfield, we originally also accepted an array of regex patterns
- *  to match against. However, that module used a registration for providers,
- *  and simply stored the match in the database keyed to the provider object.
- *  However, other than the stream wrappers, there is currently no formal
- *  registration for media handling. Additionally, few, if any, stream wrappers
- *  will choose to store a straight match from the parsed URL directly into
- *  the URI. Thus, we leave both the matching and the final URI result to the
- *  implementing module in this implementation.
+ * @NOTE In emfield, we originally also accepted an array of regex patterns
+ * to match against. However, that module used a registration for providers,
+ * and simply stored the match in the database keyed to the provider object.
+ * However, other than the stream wrappers, there is currently no formal
+ * registration for media handling. Additionally, few, if any, stream wrappers
+ * will choose to store a straight match from the parsed URL directly into
+ * the URI. Thus, we leave both the matching and the final URI result to the
+ * implementing module in this implementation.
  *
- *  An alternative might be to do the regex pattern matching here, and pass a
- *  successful match back to the implementing module. However, that would
- *  require either an overloaded function or a new hook, which seems like more
- *  overhead than it's worth at this point.
+ * An alternative might be to do the regex pattern matching here, and pass a
+ * successful match back to the implementing module. However, that would
+ * require either an overloaded function or a new hook, which seems like more
+ * overhead than it's worth at this point.
  *
- *  @TODO Once hook_module_implements_alter() is in core (see the issue at
- *  http://drupal.org/node/692950) we may want to implement media_media_parse()
- *  to ensure we were passed a valid URL, rather than an unsupported or
- *  malformed embed code that wasn't caught earlier. It will needed to be
- *  weighted so it's called after all other streams have a go, as the fallback,
- *  and will need to throw an error.
+ * @TODO Once hook_module_implements_alter() is in core (see the issue at
+ * http://drupal.org/node/692950) we may want to implement media_media_parse()
+ * to ensure we were passed a valid URL, rather than an unsupported or
+ * malformed embed code that wasn't caught earlier. It will needed to be
+ * weighted so it's called after all other streams have a go, as the fallback,
+ * and will need to throw an error.
  *
- *  @param string $url
- *    The original URL or embed code to parse.
- *  @param optional string $form_field
- *    The field from FAPI when being validated, suitable for
- *    form_set_error(). If this is set, then a particular implementation
- *    may throw an error if it believes the URL to be malformed.
- *  @return
- *    The unique URI for the file, based on its stream wrapper, or NULL.
+ * @param string $url
+ *   The original URL or embed code to parse.
+ * @param optional string $form_field
+ *   The field from FAPI when being validated, suitable for
+ *   form_set_error(). If this is set, then a particular implementation
+ *   may throw an error if it believes the URL to be malformed.
+ * @return
+ *   The unique URI for the file, based on its stream wrapper, or NULL.
  *
- *  @see media_parse_to_file().
- *  @see media_add_from_url_validate().
+ * @see media_parse_to_file()
+ * @see media_add_from_url_validate()
  */
 function media_parse_to_uri($url) {
   // Trim any whitespace before parsing.
@@ -805,16 +825,16 @@ function media_parse_to_uri($url) {
 }
 
 /**
- *  Parse a URL or embed code and return a file object.
+ * Parse a URL or embed code and return a file object.
  *
- *  If a remote stream doesn't claim the parsed URL in media_parse_to_uri(),
- *  then we'll copy the file locally.
+ * If a remote stream doesn't claim the parsed URL in media_parse_to_uri(),
+ * then we'll copy the file locally.
  *
- *  @NOTE The implementing modules may throw an error, which will not be caught
- *  here; it's up to the calling function to catch any thrown errors.
+ * @NOTE The implementing modules may throw an error, which will not be caught
+ * here; it's up to the calling function to catch any thrown errors.
  *
- *  @see media_parse_to_uri().
- *  @see media_add_from_url_submit().
+ * @see media_parse_to_uri()
+ * @see media_add_from_url_submit()
  */
 function media_parse_to_file($url) {
   try {
@@ -1018,6 +1038,7 @@ function media_filter_info() {
     'title' => t('Converts Media tags to Markup'),
     'description' => t('This filter will convert [[{type:media... ]] tags into markup.'),
     'process callback' => 'media_filter',
+    'weight' => 2,
     'tips callback' => 'media_filter_tips', // @TODO not implemented
   );
 
@@ -1109,4 +1130,24 @@ function media_ctools_plugin_api($owner, $api) {
   if (isset($api_versions[$owner][$api])) {
     return array('version' => $api_versions[$owner][$api]);
   }
+}
+
+/**
+ * Helper function to get a list of hidden stream wrappers.
+ *
+ * This is used in several places to filter queries for media so that files in
+ * temporary:// don't show up.
+ */
+function media_get_hidden_stream_wrappers() {
+  return array_diff_key(file_get_stream_wrappers(STREAM_WRAPPERS_ALL), file_get_stream_wrappers(STREAM_WRAPPERS_VISIBLE));
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function media_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'media') . '/includes',
+  );
 }
