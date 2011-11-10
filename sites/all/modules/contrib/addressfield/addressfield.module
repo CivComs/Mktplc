@@ -475,15 +475,11 @@ function addressfield_standard_country_validate($element, &$form_state) {
     $form_state['rebuild'] = TRUE;
   }
 
-  // Search through the form values to find the current address.
-  $address = $form_state['values'];
-
   $parents = $element['#parents'];
   array_pop($parents);
 
-  foreach ($parents as $key) {
-    $address = $address[$key];
-  }
+  // Search through the form values to find the current address.
+  $address = drupal_array_get_nested_value($form_state['values'], $parents);
 
   // Store the present address values in the form state for retrieval by the
   // widget form regardless of where the widget sits in the $form array.

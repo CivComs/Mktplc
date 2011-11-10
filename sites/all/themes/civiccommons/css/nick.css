@@ -70,4 +70,26 @@ background: none !important;
 #user-login a.rpxnow {
   /* linkedin icon */
   margin-left: 20px;
+<<<<<<< HEAD
 }
+
+/*
+ *
+ * Content-type specific layouts
+ *
+ */
+body.front #region-content,
+body.page-places #region-content {
+  width: 940px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+body.front #region-content {
+  text-align: center;
+}
+
+
+
+=======
+}
+>>>>>>> faa6007... added styles to support janrain engage

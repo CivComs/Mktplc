@@ -1,5 +1,6 @@
 <?php
 // $Id: cc_helper.module,v 0.1 2011/09/21 Paul de Paula Exp $
+require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'cc_helper') . '/cc_helper.inc';
 
 /* Applications. $query - boolean, whether we need nodes array or EntityFieldQuery object. */
 function _cc_helper_apps($query) {
@@ -67,7 +68,7 @@ function _cc_helper_sharing($org = 0, $query = FALSE) {
     ->fieldCondition('field_organization_address', 'administrative_area', $org['administrative_area'])
     ->fieldCondition('field_organization_address', 'country', $org['country'])
     ->execute();
-  $nids = array_keys($orgs['node']);
+  $nids = array_keys(isset($orgs['node']) ? $orgs['node'] : array());
   $c = 0;
   foreach($nids as $nid) {
     $c += $fquery
@@ -143,10 +144,30 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
 
 /*
  * Using / Sharing.
+ * $org - nid, node object or place array.
  */
 function _cc_helper_using_sharing($org, $setting) {
+  $node = is_numeric($org) ? node_load($org) : NULL;
+  if(isset($node->type)){
+    if($node->type == 'organization'){
+      $lng = $node->language;
+      $tid = $node->field_organization_type[$lng][0]['tid'];
+      if ($tid == 229) {
+        $u = 0;
+        $setting .= '+person';
+      }
+      else{
+        $u = _cc_helper_using($org);
+      }
+    }
+    else {
+      $u = _cc_helper_using($org);
+    }
+  }
+  else {
+    $u = _cc_helper_using($org);
+  }
   $s = _cc_helper_sharing($org);
-  $u = _cc_helper_using($org);
   return theme('using_sharing', array('using' => $u, 'sharing' => $s, 'setting' => $setting));
 }
 
@@ -481,21 +502,18 @@ function cc_helper_tokens($type, $tokens, array $data = array(), array $options 
 		if($node->type == 'organization'){
 			$lng = $node->language;
 			$tid = $node->field_organization_type[$lng][0]['tid'];
-			$term = taxonomy_term_load($tid);
 			$org_type='organizations';
-			if(is_object($term)) {
-			switch($term->name){
-				case 'Government' 				: $org_type='government-entities'; break;
-				case 'Multinational' 			: $org_type='government-entities'; break;
-				case 'National' 				: $org_type='government-entities'; break;
-				case 'Regional' 				: $org_type='government-entities'; break;
-				case 'State' 					: $org_type='government-entities'; break;
-				case 'County' 					: $org_type='government-entities'; break;
-				case 'Municipal' 				: $org_type='government-entities'; break;
-				case 'Company' 					: $org_type='companies'; break;
-				case 'Nonprofit/Foundation/NGO' : $org_type='organizations'; break;
-				case 'Person' 					: $org_type='people'; break;
-			}
+			switch($tid){
+				case '124'	: $org_type='government-entities'; break; 	//government
+				case '125' 	: $org_type='organizations'; break; 		//nonprofit
+				case '126' 	: $org_type='companies'; break; 			//company
+				case '127' 	: $org_type='government-entities'; break; 	//municipal
+				case '128' 	: $org_type='government-entities'; break; 	//regional
+				case '129' 	: $org_type='government-entities'; break; 	//county
+				case '130' 	: $org_type='government-entities'; break; 	//state
+				case '131' 	: $org_type='government-entities'; break; 	//national
+				case '132' 	: $org_type='government-entities'; break; 	//multinational
+				case '229' 	: $org_type='people'; break; 				//person
 			}
 			
 			foreach ($tokens as $name => $original) {
@@ -519,13 +537,17 @@ function cc_helper_theme($existing, $type, $theme, $path) {
 
 function theme_using_sharing($variables) {
   $o = '';
+  $variables['setting']=='full+person' ? $p=1 : $p=0;
+  $variables['setting']=='full+person' ? $variables['setting']='full' : $variables['setting']=$variables['setting'];
   foreach(array('using' => t('Using'), 'sharing' => t('Sharing')) as $key => $name) {
     $c = $variables[$key] ? $variables[$key] : '';
     $n = $c ? '' : 'no-';
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-' . $n . $key . '">' . $name . '</div>';
-    $o .= '<div class="cc-org-' . $n . 'count cc-' . $key . '">' . $c . '</div>';
-    $o .= $variables['setting'] == 'full' ? '<div class="cc-org-postfix">' . format_plural($variables[$key], 'app', 'apps') . '</div>' : '';
-    $o .= '</div>';
+      if(!($p==1 && $key=='using') && $c){
+	 $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-' . $key . '">' . $name . '</div>';
+        $o .= '<div class="cc-org-count cc-' . $key . '">' . $c . '</div>';
+        $o .= $variables['setting'] == 'full' || $variables['setting'] == 'full+person' ? '<div class="cc-org-postfix">' . format_plural($variables[$key], 'app', 'apps') . '</div>' : '';
+        $o .= '</div>';
+      }
   }
   return $o;
 }
