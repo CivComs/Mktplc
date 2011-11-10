@@ -147,7 +147,7 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
  * $org - nid, node object or place array.
  */
 function _cc_helper_using_sharing($org, $setting) {
-  $node = is_integer($org) ? node_load($org) : NULL;
+  $node = is_numeric($org) ? node_load($org) : NULL;
   if(isset($node->type)){
     if($node->type == 'organization'){
       $lng = $node->language;
