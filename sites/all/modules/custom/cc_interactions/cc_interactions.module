@@ -54,6 +54,9 @@ function cc_interactions_apps_block() {
     $field = field_info_field('field_interaction_type');
     $values = taxonomy_allowed_values($field);
     
+    // Prepopulate format is similar to:
+    // http://localhost/Mktplc/node/add/interaction?edit[field_interaction_organization][und][0][nid]=[nid:%209999]
+    
     // Create list
     $items = array();
     foreach ($values as $tid => $action) {
@@ -68,4 +71,29 @@ function cc_interactions_apps_block() {
   }
   
   return $output;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cc_interactions_form_interaction_node_form_alter(&$form, &$form_state, $form_id) {
+  
+  // Get list of users organizations to send over to JS.
+  global $user;
+  $current_user = user_load($user->uid);
+  $lang = field_language('user', $current_user, 'field_interaction_organization');
+  $organizations = array();
+  foreach ($current_user->field_interaction_organization[$lang] as $value) {
+    $node = node_load($value['nid']);
+    $organizations[$value['nid']] = check_plain($node->title);
+  }
+  $js_data = array(
+    'cc_interactions' => array(
+      'user_orgs' => $organizations,
+    ),
+  );
+  
+  drupal_add_js($js_data, 'setting');
+  drupal_add_js(drupal_get_path('module', 'cc_interactions') . '/js/cc_interactions.js');
+  drupal_add_css(drupal_get_path('module', 'cc_interactions') . '/css/cc_interactions.css');
 }
