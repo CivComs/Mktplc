@@ -1,11 +1,7 @@
 <?php
 
-function _cc_helper_is_person($nid) {
-	return false;
-}
-
 function cc_helper_field_attach_form($entity_type, $entity, &$form, &$form_state, $langcode) {
-  if(!isset($form['field_organization_address']) || !isset($form['field_organization_address'])) {
+  if(!isset($form['field_organization_address'])) {
     return FALSE;
   }
   $form['field_organization_address'][$langcode]['#element_validate'][] = '_cc_helper_address_validate';
@@ -19,7 +15,7 @@ function _cc_helper_address_validate($element, $form_state) {
   $tid = isset($tids[0]['tid']) ? $tids[0]['tid'] : 0;
   $m = array();
   foreach ($items as $delta => $item) {
-    $m[] = _cc_helper_org_address_error(
+		$ms = _cc_helper_org_address_error(
       isset($item['thoroughfare']) ? $item['thoroughfare'] : FALSE,
       isset($item['premise']) ? $item['premise'] : FALSE,
       isset($item['locality']) ? $item['locality'] : FALSE,
@@ -28,6 +24,9 @@ function _cc_helper_address_validate($element, $form_state) {
       isset($item['country']) ? $item['country'] : FALSE,
       $tid
     );
+		if($ms!='') {
+			$m[]=$ms;
+		};
   }
   if (!empty($m)) {
     form_error($element, implode(' ', $m));
