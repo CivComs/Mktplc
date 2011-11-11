@@ -1,6 +1,9 @@
 /**
  * @file
  * JS for interaction usability improvements.
+ *
+ * We have to override Drupal.jsAC.prototype.found so that
+ * it fires an event.
  */
 
 
@@ -14,7 +17,8 @@ Drupal.behaviors.cc_interactions = {
   attach: function(context, settings) {
     
     // Check if user has any orgs.
-    if (Drupal.settings.hasOwnProperty('cc_interactions') && Drupal.settings.cc_interactions.hasOwnProperty('user_orgs')) {
+    if (Drupal.settings.hasOwnProperty('cc_interactions') && 
+      Drupal.settings.cc_interactions.hasOwnProperty('user_orgs')) {
       
       // Create drop down
       var userOrgs = Drupal.settings.cc_interactions.user_orgs;
@@ -23,6 +27,10 @@ Drupal.behaviors.cc_interactions = {
       var $input = $('#edit-field-interaction-organization-und-0-nid');
       var $innerWrapper = $('#edit-field-interaction-organization');
       var $dialogLinks = $wrapper.find('.dialog-links');
+      var dialogHrefOrig = $dialogLinks.find('a').attr('href');
+      
+      // Temporary hide description
+      $('.form-item-field-interaction-organization-und-0-nid .description').hide();
       
       // Add title and custom dropdown
       $wrapper.before('<h3>Which Organization</h3>');
@@ -43,19 +51,33 @@ Drupal.behaviors.cc_interactions = {
       })
       .trigger('change');
       
+      // Add container for input value and hide by default
+      $dialogLinks.prepend('<div class="dialog-input-value"></div>');
+      $dialogLinks.hide();
       
-      // TODO
-      // MAke input red until something found!  then green;
+      // Events for autocomplete
+      $input.bind('autocomplete_notfound', function() {
+        $dialogLinks.slideDown();
+      });
+      $input.bind('autocomplete_found', function() {
+        $dialogLinks.slideUp();
+      });
       
       // Make the automcplete search more usable;
-      //$input.css('border-color', 'red').css('border-width', '10px');
-      $dialogLinks.prepend('<strong>' + Drupal.t('We cant find your organization.') + '</strong>');
-      $dialogLinks.hide();
+      //$dialogLinks.hide();
+      $('body').bind('dialog_closed', function() {
+        // Hack to get around the fact that this does not seem to
+        // get fired at the right time.
+        var t = setTimeout(function(){
+          Drupal.behaviors.cc_interactions.checkValue($input, $dialogLinks, dialogHrefOrig);
+        }, 1000);
+        
+      });
       $input.keyup(function(e) {
-        Drupal.behaviors.cc_interactions.checkValue($(this), $dialogLinks);
+        Drupal.behaviors.cc_interactions.checkValue($(this), $dialogLinks, dialogHrefOrig);
       });
       $input.blur(function(e) {
-        Drupal.behaviors.cc_interactions.checkValue($(this), $dialogLinks);
+        Drupal.behaviors.cc_interactions.checkValue($(this), $dialogLinks, dialogHrefOrig);
       });
     }
   },
@@ -75,17 +97,158 @@ Drupal.behaviors.cc_interactions = {
     return $(dropdown);
   },
   
-  checkValue: function($input, $links) {
+  checkValue: function($input, $links, href) {
+    console.log($input.val());
+    if ($input.val() == '') {
+      return;
+    }
+    
+    $('.dialog-input-value').html(Drupal.t('Could not find: ') + $input.val());
+    $links.find('a').attr('href', 
+      Drupal.addQueryString(href, 'edit[title]', $input.val()));
+    
+    // Did we choose something?
     if ($input.val().indexOf('[nid:') <= 0) {
-      $links.slideDown();
-      $input.css('border-color', 'red');
+      $input.css('border-color', 'red')
+        .css('border-width', '1px');
     }
     else {
-      $links.slideUp();
-      $input.css('border-color', 'green');
+      $input.css('border-color', 'green')
+        .css('border-width', '4px');
+      $links.hide();
+    }
+    
+  }
+};
+
+/**
+ * Utility function for object length
+ */
+Drupal.objectLength = function(object) {
+  var count = 0;
+  for (i in object) {
+    if (object.hasOwnProperty(i)) {
+        count++;
     }
   }
 };
+
+/**
+ * Add query string to url
+ *
+ */
+Drupal.addQueryString = function(url, key, value) {
+  console.log(url);
+  
+  url += ((url.indexOf('?') > 0) ? '&' : '?') + 
+    key + '=' + value;
+    
+  console.log(url);
+  return url;
+};
+
+/**
+ * OVERRIDE Fills the suggestion popup with any matches received.
+ */
+Drupal.jsAC = Drupal.jsAC || {};
+Drupal.jsAC.prototype.found = function (matches) {
+  if ($.isArray(matches) || Drupal.objectLength(matches) > 0) {
+    $(this.input).trigger('autocomplete_notfound');
+  }
+  else {
+    $(this.input).trigger('autocomplete_found');
+  }
+
+  // If no value in the textfield, do not show the popup.
+  if (!this.input.value.length) {
+    return false;
+  }
+
+  // Prepare matches.
+  var ul = $('<ul></ul>');
+  var ac = this;
+  for (key in matches) {
+    $('<li></li>')
+      .html($('<div></div>').html(matches[key]))
+      .mousedown(function () { ac.select(this); })
+      .mouseover(function () { ac.highlight(this); })
+      .mouseout(function () { ac.unhighlight(this); })
+      .data('autocompleteValue', key)
+      .appendTo(ul);
+  }
+
+  // Show popup with matches, if any.
+  if (this.popup) {
+    if (ul.children().size()) {
+      $(this.popup).empty().append(ul).show();
+      $(this.ariaLive).html(Drupal.t('Autocomplete popup'));
+    }
+    else {
+      $(this.popup).css({ visibility: 'hidden' });
+      this.hidePopup();
+    }
+  }
+};
+
+/**
+ * OVERRIDE! To add event trigger when closing.
+ * 
+ * Close the dialog and provide an entity id and a title
+ * that we can use in various ways.
+ */
+Drupal.ReferencesDialog = Drupal.ReferencesDialog || {};
+Drupal.ReferencesDialog.close = function(entity_id, title) {
+  this.open_dialog.dialog('close');
+  this.open_dialog.dialog('destroy');
+  this.open_dialog = null;
+  this.dialog_open = false;
+  // Call our entityIdReceived function if we have one.
+  // this is used as an event.
+  
+  $('body').trigger('dialog_closed');
+  
+  if (typeof this.entityIdReceived == "function") {
+    this.entityIdReceived(entity_id, title);
+  }
+}
+
+
+/**
+ * OVERRIDE!  To better make HREF
+ *
+ * Open a dialog window.
+ * @param string href the link to point to.
+ */
+Drupal.ReferencesDialog = Drupal.ReferencesDialog || {};
+Drupal.ReferencesDialog.open = function(href, title) {
+  if (!this.dialog_open) {
+    // Add render references dialog, so that we know that we should be in a
+    // dialog.
+    href = Drupal.addQueryString(href, 'render', 'references-dialog');
+    // Get the current window size and do 75% of the width and 90% of the height.
+    // @todo Add settings for this so that users can configure this by themselves.
+    var window_width = $(window).width() / 100*75;
+    var window_height = $(window).height() / 100*90;
+    this.open_dialog = $('<iframe class="references-dialog-iframe" src="' + href + '"></iframe>').dialog({
+      width: window_width,
+      height: window_height,
+      modal: true,
+      resizable: false,
+      position: ["center", 50],
+      title: title,
+      close: function() { Drupal.ReferencesDialog.dialog_open = false; }
+    }).width(window_width-10).height(window_height)
+    $(window).bind("resize scroll", function() {
+      // Move the dialog the main window moves.
+      if (typeof Drupal.ReferencesDialog == "object") {
+        Drupal.ReferencesDialog.open_dialog.
+          dialog("option", "position", ["center", 10]);
+        Drupal.ReferencesDialog.setDimensions();
+      }
+    });
+    this.dialog_open = true;
+  }
+}
 
 
 })(jQuery);
