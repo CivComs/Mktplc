@@ -94,6 +94,8 @@ function cc_interactions_form_interaction_node_form_alter(&$form, &$form_state, 
   );
   
   drupal_add_js($js_data, 'setting');
-  drupal_add_js(drupal_get_path('module', 'cc_interactions') . '/js/cc_interactions.js');
+  drupal_add_js(drupal_get_path('module', 'cc_interactions') . '/js/cc_interactions.js', array(
+    'weight' => 99999,
+  ));
   drupal_add_css(drupal_get_path('module', 'cc_interactions') . '/css/cc_interactions.css');
 }

@@ -2,3 +2,9 @@
  * @file
  * CSS for interaction usability improvements.
  */
+
+.dialog-links {
+  background-color: #EEEEEE;
+  border: 1px solid #AAAAAA;
+  margin-top: -20px;
+}
