@@ -435,14 +435,15 @@ function cc_helper_form_alter(&$form, &$form_state, $form_id) {
       $form['additional_settings']['#access'] = FALSE;
     }
   }
-  $dest_url = parse_url($_SERVER['HTTP_REFERER']);
-  //if(!is_empty($dest_url['path'])){
-  switch($form_id){
-  case 'interaction_node_form' :
-    $form['#action'].='&destination='.$dest_url['path'];
-    break;
+}
+
+function cc_helper_form_interaction_node_form_alter(&$form, &$form_state) {
+  // Redirect form to referrer if there is already one not
+  // set.
+  if ($_SERVER['HTTP_REFERER']) {
+  $form_state['redirect'] = (isset($form_state['redirect'])) ? $form_state['redirect'] :
+    parse_url($_SERVER['HTTP_REFERER']);
   }
-  //}
 }
 
 function cc_helper_init() {
