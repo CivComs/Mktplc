@@ -8,3 +8,7 @@
   border: 1px solid #AAAAAA;
   margin-top: -20px;
 }
+
+input.form-autocomplete.interaction-node-reference-found {
+  border: 2px solid green;
+}

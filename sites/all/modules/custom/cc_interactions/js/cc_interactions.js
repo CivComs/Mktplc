@@ -10,10 +10,14 @@
 // Scope $ for jQuery
 (function($){
 
+
 /**
- * Drupal behavior for cc_interactions
+ * Drupal behavior for cc_interactions, specifically
+ * for organization reference.  This hides the node
+ * reference field and allows user to choose from 
+ * their own first.
  */
-Drupal.behaviors.cc_interactions = {
+Drupal.behaviors.cc_interactions_organizations = {
   attach: function(context, settings) {
     
     // Check if user has any orgs.
@@ -22,18 +26,13 @@ Drupal.behaviors.cc_interactions = {
       
       // Create drop down
       var userOrgs = Drupal.settings.cc_interactions.user_orgs;
-      var $dropdown = Drupal.behaviors.cc_interactions.orgDropdown(userOrgs);
+      var $dropdown = Drupal.behaviors.cc_interactions_organizations.orgDropdown(userOrgs);
       var $wrapper = $('.field-name-field-interaction-organization');
       var $input = $('#edit-field-interaction-organization-und-0-nid');
       var $innerWrapper = $('#edit-field-interaction-organization');
-      var $dialogLinks = $wrapper.find('.dialog-links');
-      var dialogHrefOrig = $dialogLinks.find('a').attr('href');
-      
-      // Temporary hide description
-      $('.form-item-field-interaction-organization-und-0-nid .description').hide();
       
       // Add title and custom dropdown
-      $wrapper.before('<h3>Which Organization</h3>');
+      $wrapper.before('<h3 class="organiation-input-improvement">Which Organization</h3>');
       $wrapper.before($dropdown);
       $innerWrapper.hide();
       
@@ -50,6 +49,45 @@ Drupal.behaviors.cc_interactions = {
         }
       })
       .trigger('change');
+    }
+  },
+  
+  /**
+   * Create dropdown for choosing own organizations.
+   */
+  orgDropdown: function(orgs) {
+    var dropdown =
+      '<div class="field-widget-options-select form-wrapper" id="edit-cc-interaction-user-orgs-id">' +
+        '<div class="form-item form-type-select">' +
+          '<label for="cc-interaction-user-orgs-id">' + Drupal.t('Your Organizations') + '</label>' +
+            '<select id="cc-interaction-user-orgs-id class="cc-interactions-user-orgs form-select">';
+    for (var o in orgs) {
+      dropdown += '<option value="' + o + '">' + orgs[o] + '</option>'
+    }
+    dropdown += '<option value="search">' + Drupal.t('-Search for other Organizations-') + '</option>'
+    dropdown += '</div></div></select>';
+    
+    return $(dropdown);
+  },
+}
+
+/**
+ * Drupal behavior for cc_interactions
+ */
+Drupal.behaviors.cc_interactions = {
+  attach: function(context, settings) {
+    
+    $('input.form-autocomplete').each(function() {
+
+      // Create drop down
+      var $input = $(this);
+      var $wrapper = $input.parent().parent();
+      var $innerWrapper = $input.find('.form-item');
+      var $dialogLinks = $wrapper.find('.dialog-links');
+      var dialogHrefOrig = $dialogLinks.find('a').attr('href');
+      
+      // Temporary hide description
+      $wrapper.find('.description').hide();
       
       // Add container for input value and hide by default
       $dialogLinks.prepend('<div class="dialog-input-value"></div>');
@@ -79,22 +117,8 @@ Drupal.behaviors.cc_interactions = {
       $input.blur(function(e) {
         Drupal.behaviors.cc_interactions.checkValue($(this), $dialogLinks, dialogHrefOrig);
       });
-    }
-  },
-  
-  orgDropdown: function(orgs) {
-    var dropdown =
-      '<div class="field-widget-options-select form-wrapper" id="edit-cc-interaction-user-orgs-id">' +
-        '<div class="form-item form-type-select">' +
-          '<label for="cc-interaction-user-orgs-id">' + Drupal.t('Your Organizations') + '</label>' +
-            '<select id="cc-interaction-user-orgs-id class="cc-interactions-user-orgs form-select">';
-    for (var o in orgs) {
-      dropdown += '<option value="' + o + '">' + orgs[o] + '</option>'
-    }
-    dropdown += '<option value="search">' + Drupal.t('-Search for other Organizations-') + '</option>'
-    dropdown += '</div></div></select>';
-    
-    return $(dropdown);
+      
+    });
   },
   
   checkValue: function($input, $links, href) {
@@ -109,12 +133,12 @@ Drupal.behaviors.cc_interactions = {
     
     // Did we choose something?
     if ($input.val().indexOf('[nid:') <= 0) {
-      $input.css('border-color', 'red')
-        .css('border-width', '1px');
+      $input.addClass('error interaction-node-reference-notfound')
+        .removeClass('interaction-node-reference-found');
     }
     else {
-      $input.css('border-color', 'green')
-        .css('border-width', '4px');
+      $input.addClass('interaction-node-reference-found')
+        .removeClass('error interaction-node-reference-notfound');
       $links.hide();
     }
     
