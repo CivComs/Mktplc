@@ -89,28 +89,31 @@ Drupal.behaviors.cc_interactions = {
       // Temporary hide description
       $wrapper.find('.description').hide();
       
-      // Add container for input value and hide by default
-      $dialogLinks.prepend('<div class="dialog-input-value"></div>');
-      $dialogLinks.hide();
-      
-      // Events for autocomplete
-      $input.bind('autocomplete_notfound', function() {
-        $dialogLinks.slideDown();
-      });
-      $input.bind('autocomplete_found', function() {
-        $dialogLinks.slideUp();
-      });
-      
-      // Make the automcplete search more usable;
-      //$dialogLinks.hide();
-      $('body').bind('dialog_closed', function() {
-        // Hack to get around the fact that this does not seem to
-        // get fired at the right time.
-        var t = setTimeout(function(){
-          Drupal.behaviors.cc_interactions.checkValue($input, $dialogLinks, dialogHrefOrig);
-        }, 1000);
+      // Hand dialog links
+      if ($dialogLinks.size() > 0) {
+        // Add container for input value and hide by default
+        $dialogLinks.prepend('<div class="dialog-input-value"></div>');
+        $dialogLinks.hide();
+        $input.before($dialogLinks);
         
-      });
+        // Events for autocomplete
+        $input.bind('autocomplete_notfound', function() {
+          $dialogLinks.fadeIn();
+        });
+        $input.bind('autocomplete_found', function() {
+          $dialogLinks.fadeOut();
+        });
+        
+        // Make the automcplete search more usable;
+        //$dialogLinks.hide();
+        $('body').bind('dialog_closed', function() {
+          // Hack to get around the fact that this does not seem to
+          // get fired at the right time.
+          var t = setTimeout(function(){
+            Drupal.behaviors.cc_interactions.checkValue($input, $dialogLinks, dialogHrefOrig);
+          }, 1000);
+        });
+      }
       $input.keyup(function(e) {
         Drupal.behaviors.cc_interactions.checkValue($(this), $dialogLinks, dialogHrefOrig);
       });
@@ -121,15 +124,20 @@ Drupal.behaviors.cc_interactions = {
     });
   },
   
+  /**
+   * Checks input value for correct format for node references.
+   */
   checkValue: function($input, $links, href) {
-    console.log($input.val());
     if ($input.val() == '') {
       return;
     }
     
-    $('.dialog-input-value').html(Drupal.t('Could not find: ') + $input.val());
-    $links.find('a').attr('href', 
-      Drupal.addQueryString(href, 'edit[title]', $input.val()));
+    // Check links
+    if ($links.size() > 0) {
+      $links.find('.dialog-input-value').html(Drupal.t('Could not find: ') + 
+        '<span class="input-value">' + $input.val() + '</span>');
+      $links.find('a').attr('href', Drupal.addQueryString(href, 'edit[title]', $input.val()));
+    }
     
     // Did we choose something?
     if ($input.val().indexOf('[nid:') <= 0) {
@@ -162,12 +170,8 @@ Drupal.objectLength = function(object) {
  *
  */
 Drupal.addQueryString = function(url, key, value) {
-  console.log(url);
-  
   url += ((url.indexOf('?') > 0) ? '&' : '?') + 
     key + '=' + value;
-    
-  console.log(url);
   return url;
 };
 
