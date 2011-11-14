@@ -1,0 +1,466 @@
+/*
+Author: Andy Cochran 
+Author URI: http://www.openplans.org/team#andy-cochran
+*/
+
+/* html5doctor.com Reset Stylesheet \\v1.6.1 \\ Last Updated: 2010-09-17 \\ http://richclarkdesign.com \\ @rich_clark */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
+  font-size:100%;
+  vertical-align:baseline;
+  background:transparent;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section { display:block; }
+nav ul { list-style:none; }
+blockquote, q { quotes:none; }
+blockquote:before, blockquote:after,
+q:before, q:after { content:''; content:none; }
+a { margin:0; padding:0; font-size:100%; vertical-align:baseline; background:transparent; }
+ins { background-color:#ff9; color:#000; text-decoration:none; }
+mark { background-color:#ff9; color:#000; font-style:italic; font-weight:bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom:1px dotted; cursor:help; }
+/* tables still need cellspacing="0" in the markup */
+table { border-collapse:collapse; border-spacing:0; }
+hr { display:block; height:1px; border:0; border-top:1px solid #ccc; margin:1em 0; padding:0; }
+input, select { vertical-align:middle; }
+
+/*
+ *
+ * Base Typography 
+ *
+ */
+body { 
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  *font-size:small; 
+}
+select, input, textarea, button { font:99% sans-serif; }
+pre, code, kbd, samp { font-family: monospace, sans-serif; }
+
+/*
+ *
+ * Base Styles 
+ *
+ */
+body, select, input, textarea { 
+  color: #444; 
+  font-family: Helvetica, Arial, sans-serif;
+}
+h1,h2,h3,h4,h5,h6 { 
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+  font-weight: bold; 
+  letter-spacing: 0;
+}
+/* always force a scrollbar in non-IE */ 
+html { overflow-y: scroll; }
+/* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
+a:hover, a:active { outline: none; }
+a, a:active, a:visited { color: #225f97; }
+a:hover { color: #c03d1d; text-decoration: underline; }
+ul, ol { margin-left: 1.8em; }
+ol { list-style-type: decimal; }
+/* Remove margins for navigation lists */
+nav ul, nav li { margin: 0; } 
+p { margin-bottom: 1.5em; }
+small { font-size: 85%; }
+strong, th { font-weight: bold; }
+td, td img { vertical-align: top; } 
+sub { vertical-align: sub; font-size: smaller; }
+sup { vertical-align: super; font-size: smaller; }
+pre { 
+  padding: 15px; 
+  /* www.pathf.com/blogs/2008/05/formatting-quoted-code-in-blog-posts-css21-white-space-pre-wrap/ */
+  white-space: pre; /* CSS2 */
+  white-space: pre-wrap; /* CSS 2.1 */
+  white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+  word-wrap: break-word; /* IE */
+}
+textarea { overflow: auto; } /* thnx ivannikolic! www.sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/ */
+.ie6 legend, .ie7 legend { margin-left: -7px; } /* thnx ivannikolic! */
+/* align checkboxes, radios, text inputs with their label
+   by: Thierry Koblentz tjkdesign.com/ez-css/css/base.css  */
+input[type="radio"] { vertical-align: text-bottom; }
+input[type="checkbox"] { vertical-align: bottom; }
+.ie7 input[type="checkbox"] { vertical-align: baseline; }
+.ie6 input { vertical-align: text-bottom; }
+/* hand cursor on clickable input elements */
+label, input[type=button], input[type=submit], button { cursor: pointer; }
+/* webkit browsers add a 2px margin outside the chrome of form elements */  
+button, input, select, textarea { margin: 0; }
+/* colors for form validity */
+input:valid, textarea:valid   {  }
+input:invalid, textarea:invalid { 
+      border-radius: 1px;
+    -moz-box-shadow: 0px 0px 5px red; 
+ -webkit-box-shadow: 0px 0px 5px red; 
+         box-shadow: 0px 0px 5px red;
+}
+.no-boxshadow input:invalid, 
+.no-boxshadow textarea:invalid { background-color: #f0dddd; }
+button {width: auto; overflow: visible;}
+/* bicubic resizing for non-native sized IMG: 
+   code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
+.ie7 img {-ms-interpolation-mode: bicubic;}
+
+/*
+ *
+ * Structure / Layout
+ *
+ */
+#page {
+  width: auto;
+  padding: 0;
+}
+aside .content {
+  font-size: 12px;
+  padding: 9px;
+}
+
+/*
+ *
+ * Header
+ *
+ */
+#section-header {
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/body-bg.png') 0 0 repeat-x;
+}
+#zone-branding-wrapper {
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/header-bg.png') center top no-repeat;
+}
+#zone-branding {
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/tagline.png') 248px 29px no-repeat;
+}
+#zone-branding .logo-img {
+  float: left;
+  margin: 0 0 3px -10px !important;
+  padding: 16px 10px 0 0 !important;
+}
+#region-top-menu {
+  margin-right: 0;
+  float: right;
+}
+.block-nice-menus ul.nice-menu {
+  margin-top: 14px;
+  float: right;
+  border-top: 1px solid #d9d9d9;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #fff;
+}
+.block-nice-menus ul.nice-menu li {
+  border: 0;
+  border-right: 1px solid #dbdbdb;
+  border-bottom: 1px solid #ddd;
+}
+ul.nice-menu a {
+  display: block;
+  height: 31px;
+  color: #559efc;
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
+  text-decoration: none;
+  padding: 0 19px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 34px;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 #F5F5F5;
+  border-top: 1px solid #fafafa;
+  border-left: 1px solid #fafafa;
+}
+ul.nice-menu a.active,
+ul.nice-menu a:hover,
+ul.nice-menu:hover a.active:hover {
+  background-image: none;
+  background-color : #e6e6e6;
+  border-color :  #b4b4b4;
+  color : #006fff;
+  box-shadow: inset 0 0 5px 0 #a2a2a2;
+  -moz-box-shadow: inset 0 0 5px 0 #a2a2a2;
+  -webkit-box-shadow: inset 0 0 5px 0 #a2a2a2;
+}
+ul.nice-menu:hover a.active {
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
+  border-top: 1px solid #fafafa;
+  border-left: 1px solid #fafafa;
+  color: #559efc;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+/* 1st menu needs overrides so to not match 2nd */
+.block-nice-menus:first-child ul.nice-menu {
+  border: 0;
+  margin-top: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.block-nice-menus:first-child ul.nice-menu li {
+  border-right: 0;
+  border-bottom: 0;
+  background-color: transparent;
+  padding-left: 42px;
+}
+.block-nice-menus:first-child ul.nice-menu a,
+.block-nice-menus:first-child ul.nice-menu a:visited {
+  display: block;
+  height: auto;
+  color: #ff8700;
+  background-color: none;
+  background-image: none;
+  padding: 0;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.5;
+  text-shadow: none;
+  border-top: 0;
+  border-left: 0;
+}
+.block-nice-menus:first-child ul.nice-menu a:hover {
+  color: #ffa137;
+  background-color: transparent;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+/* Navigation */
+#region-search-bar {
+  position: relative;
+} 
+#region-search-bar .region-search-bar-inner {
+  margin-bottom: 3px;  
+  background: url('../images/search-bg.png') center top no-repeat;
+}
+#region-search-bar .form-item,
+#region-search-bar .form-actions {
+  margin: 0;
+  padding: 0;
+}
+#block-menu-menu-mktplc-section-nav {
+  height: 35px;
+  padding: 12px 14px;
+}
+#block-menu-menu-mktplc-section-nav {
+  padding: 12px 14px;
+  margin-bottom: 20px;
+}
+#region-search-bar .menu {
+  float:left;
+  border-right: 1px solid #dcdcdc;
+  padding: 0;
+  margin: 0;
+}
+#region-search-bar .menu li {
+  float:left;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#region-search-bar .menu a,
+#region-search-bar .menu a:visited {
+  height: 32px;
+  padding: 0 15px;
+  line-height: 32px;
+  font-sizE: 15px;
+  font-weight: bold;
+  color: #559efc;
+  background: url('../images/nav-bg.png') 0 0 repeat-x;
+  text-decoration: none;
+  border-left: 1px solid #dcdcdc;
+  text-transform: none;
+  display: block;
+} 
+#region-search-bar .menu a:hover {
+  background-image: url('../images/nav-bg-hover.png');
+}
+#region-search-bar .menu a.active {
+  background-image: url("../images/nav-bg-selected.png");
+}
+#region-search-bar .search-form {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+#region-search-bar input {
+  margin: 0;
+}
+#region-search-bar .search-form div {
+  display: inline;
+}
+#region-search-bar .custom-search-box {
+  color: #999;
+  height: 30px;
+  line-height: 30px;
+  font-size: 15px;
+  padding: 0 5px;
+  width: 400px;
+  margin: 0 14px 0 0;
+}
+#region-search-bar .form-submit {
+  height: 32px;
+  width: auto;
+}
+#block-user-login,
+#block-addtoany-addtoany-button {
+  float: right;
+  font-size: 15px;
+  margin-left: 1em;
+}
+
+/*
+ *
+ * Content-type specific layouts
+ *
+ */
+
+/* override .grid-16 for apps and orgs */
+body.node-type-application #region-content,
+body.node-type-organization #region-content,
+body.node-type-project #region-content,
+body.node-type-standard #region-content,
+body.node-type-page #region-content
+ {
+  width: 630px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+
+/*
+ *
+ * Content
+ *
+ */
+#section-content {
+  font-size: 15px;
+}
+body.front #page-title {
+  font-size: 50px;
+  font-style: italic;
+  text-align: center;
+}
+h2.block-title {
+  color: #fff;
+  background: #669fe9;
+  font-size: 16px;
+  font-weight: normal;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  line-height: 2;
+  margin-bottom: 10px;
+  padding: 0 0.8em;
+  border-top: 1px solid #99c5ff;
+  border-right: 1px solid #5684bf;
+  border-bottom: 1px solid #5684bf;
+  border-left: 1px solid #99c5ff;
+}
+
+/* List: By Place */
+.places-list-container {
+  margin-bottom: 20px;
+}
+.places-list-container h2.block-title {
+  color: #FF8700;
+  background: transparent;
+  font-size: 15px;
+	background: url('../images/place2.gif') center top no-repeat;
+	padding: 80px 0 0;
+  float: left;
+  text-align: center;
+  width: 110px;
+  border: 0;
+}
+.places-list-container .content {
+  width: auto;
+  margin-left: 120px;
+}
+.places-list-container .view-content {
+  margin-bottom: 10px;
+}
+.places-list-container table {
+  font-weight: bold;
+}
+.places-list-container td {
+  border-bottom: 1px dotted #8A9093;
+  padding: 3px 0;
+}
+.places-list-container td div {
+  display: inline;
+}
+
+/* Block: Preview Intro */
+.preview-intro {
+  margin-bottom: 20px;
+     -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+    -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
+ -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
+         box-shadow: 0 1px 8px 1px #DED8D8;
+}
+
+/* Block: Add to the Marketplace */
+.add-to-marketplace {
+  background-color: #fbfbfb;
+  margin-bottom: 20px;
+     -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+    -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
+ -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
+         box-shadow: 0 1px 8px 1px #DED8D8;
+}
+.add-to-marketplace h2.block-title {
+  margin: 0 9px 18px;
+  position: relative;
+  top: 9px;
+  background-color: #ed8309;
+  border-color: #dc7b0f;
+  border-top: 1px solid #ff8700;
+  border-left: 1px solid #ff8700;
+  text-align: center;
+     -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+}
+
+/*
+ *
+ * Footer
+ *
+ */
+footer {
+  color: #a5a5a5;
+  background: #44484F url('http://civiccommons.org/wp-content/themes/biznizz/images/dark-noise.png') 0 0 repeat scroll;
+  margin: 40px 0 0;
+  padding: 20px 0;
+}
+footer h2.block-title {
+  color: #fff;
+  background: transparent;
+  font-size: 18px;
+  text-transform: none;
+  padding: 0;
+  border: 0;
+}
+footer a:link,
+footer a:visited {
+  color: #a5a5a5;
+}
+footer a:hover {
+  color: #cacaca;
+}
