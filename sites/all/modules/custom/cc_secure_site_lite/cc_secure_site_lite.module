@@ -50,7 +50,9 @@ function cc_secure_site_lite_display_page() {
 
   // Check to see if the form has been submitted
   if (isset($_POST['password'])) {
-    if (strtolower($_POST['password']) == strtolower(variable_get('secure_site_lite_password'))) {
+		$passcodes = explode(' ', strtolower(variable_get('secure_site_lite_password')));
+		if (in_array(strtolower($_POST['password']), $passcodes)) {
+    //if (strtolower($_POST['password']) == strtolower(variable_get('secure_site_lite_password'))) {
       $_SESSION['secure-site-lite-login-ok'] = true;
       if (variable_get('secure_site_lite_login_successful'))
         drupal_set_message(variable_get('secure_site_lite_login_successful'));
@@ -97,7 +99,7 @@ function cc_secure_site_lite_admin_menu() {
   );
   $form['secure_site_lite_password'] = array(
     '#type' => 'textfield',
-    '#title' => t('Passcode'),
+    '#title' => t('Passcodes (separated by "Space")'),
     '#default_value' => variable_get('secure_site_lite_password', ''),
     '#required' => true
   );

@@ -21,7 +21,6 @@ function addressfield_format_address_generate(&$format, $address, $context = arr
   // We start with a reasonable default: a simple block format suitable
   // for international shipping. We extend it with country-specific heuristics
   // below.
-
   // The street block.
   $format['street_block'] = array(
     '#type' => 'addressfield_container',
@@ -54,6 +53,13 @@ function addressfield_format_address_generate(&$format, $address, $context = arr
     '#required' => TRUE,
     '#attributes' => array('class' => array('postal-code')),
   );
+	$format['locality_block']['sub_administrative_area'] = array(
+		'#title' => t('County'),
+		'#size' => 30,
+		'#required' => TRUE,
+    '#attributes' => array('class' => array('sub-administrative-area')),
+	);
+
   $format['locality_block']['locality'] = array(
     '#title' => t('City'),
     '#size' => 30,
@@ -337,7 +343,6 @@ function addressfield_format_address_generate(&$format, $address, $context = arr
       'WA' => t('Western Australia'),
     );
   }
-
   // Those countries tend to put the postal code after the locality.
   if (in_array($address['country'], array('AU', 'BD', 'BF', 'BH', 'BM', 'BN', 'BT', 'CA', 'FM', 'GB', 'ID', 'IN', 'JM', 'JO', 'KH', 'LB', 'LS', 'LV', 'MM', 'MN', 'MV', 'MW', 'NG', 'NP', 'NZ', 'PE', 'PK', 'PR', 'PW', 'SA', 'SG', 'SO', 'TH', 'US', 'VI', 'VG', 'VN'))) {
     // Take the widget out of the array.
@@ -388,4 +393,5 @@ function addressfield_format_address_generate(&$format, $address, $context = arr
       $format['country']['#empty_value'] = '';
     }
   }
+
 }
