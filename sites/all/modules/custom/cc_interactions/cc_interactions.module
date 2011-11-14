@@ -60,10 +60,17 @@ function cc_interactions_apps_block() {
     // Create list
     $items = array();
     foreach ($values as $tid => $action) {
-      $items[] = l(t('I <strong>@action</strong> @title', array(
+      $items[] = l(t('We <strong>@action</strong> @title', array(
         '@action' => $action,
         '@title' => $node->title,
-      )), '<front>', array('html' => TRUE));
+      )), 'node/add/interaction', array(
+        'html' => TRUE,
+        'query' => array(
+          'edit[field_interaction_type][und]' => check_plain($tid),
+          'edit[field_interaction_application][und][0][nid]' => 
+            check_plain($node->title) . ' [nid: ' . check_plain($node->nid) . ']',
+        ),
+      ));
     }
     $output .= theme('item_list', array(
       'items' => $items,
