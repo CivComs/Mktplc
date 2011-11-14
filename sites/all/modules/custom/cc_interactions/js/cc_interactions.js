@@ -106,11 +106,12 @@ Drupal.behaviors.cc_interactions = {
         $('body').bind('dialog_closed', function() {
           // Hack to get around the fact that this does not seem to
           // get fired at the right time.
-          var t = setTimeout(function(){
+          var t = setTimeout(function() {
             Drupal.behaviors.cc_interactions.checkValue($input, $dialogLinks, dialogHrefOrig);
           }, 1000);
         });
       }
+
       $input.keyup(function(e) {
         Drupal.behaviors.cc_interactions.checkValue($(this), $dialogLinks, dialogHrefOrig);
       });
