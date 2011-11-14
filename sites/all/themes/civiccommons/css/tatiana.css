@@ -52,13 +52,13 @@
 
 	
 .region-sidebar-second-inner #block-views-at-a-glance-application-block .view-at-a-glance-application- a:hover{
-	text-decoration: none !important;
-	background: none !important;
-	display: inline !important;
-	padding: 0 !important;
-	float: none !important;
-	margin: 0 !important;
-}
+		text-decoration: none !important;
+		background: none !important;
+		display: inline !important;
+		padding: 0 !important;
+		float: none !important;
+		margin: 0 !important;
+	}
 	
 .region-sidebar-second-inner #block-views-at-a-glance-application-block .cc-places-list-link a:hover,
 .region-sidebar-second-inner #block-views-at-a-glance-application-block  .view-at-a-glance-application- .view-footer  a:hover{
@@ -150,20 +150,6 @@
 	padding:0 3px !important;
 }
 
-
-.view-at-a-glance .views-row{
-	padding-top:0px !important;
-}
-
-.view-at-a-glance .views-row .cc-org-contact-title{
-	margin-top:0px;
-	clear:both;
-}
-
-.view-at-a-glance .view-header{
-	width:100%;
-	clear:both;
-}
 
 /*end At a glance*/
 
@@ -276,4 +262,3 @@ html>/**/body #zone-content .region-sidebar-second h2.block-title{  background-c
 #block-block-26 img{
 	//margin-left:-8px !important;
 }
-

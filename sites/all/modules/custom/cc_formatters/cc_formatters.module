@@ -27,7 +27,7 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
     $e = array();
     foreach($items as $delta => $item) {
       $c = isset($item['sub_administrative_area']) ? $item['sub_administrative_area'] : NULL;
-      $item['sub_administrative_area'] = !empty($c) && empty($item['city']) ? t('@county County', array('@county' => $c)) : NULL;
+      $item['sub_administrative_area'] = (!empty($c) && empty($item['locality'])) ? t('@county County', array('@county' => $c)) : NULL;
       $r = isset($item['administrative_area']) ? $item['administrative_area'] : NULL;
       $c = isset($item['country']) ? $item['country'] : NULL;
       $item['administrative_area'] = !in_array($c, array('US', 'CA')) ? _cc_awe_region($r, $c) : $r;
