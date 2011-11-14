@@ -13,7 +13,9 @@ function media_field_info() {
       'label' => t('Multimedia asset'),
       'description' => t('This field stores a reference to a multimedia asset.'),
       'settings' => array(),
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'file_extensions' => media_variable_get('file_extensions'),
+      ),
       'default_widget' => 'media_generic',
       'default_formatter' => 'media_large',
     ),
@@ -178,6 +180,21 @@ function media_field_widget_settings_form($field, $instance) {
   $settings = $widget['settings'];
   $form = array();
 
+  if ($field['type'] == 'media') {
+    // Make the extension list a little more human-friendly by comma-separation.
+    $extensions = str_replace(' ', ', ', $instance['settings']['file_extensions']);
+    $form['file_extensions'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Allowed file extensions for uploaded files'),
+      '#default_value' => $extensions,
+      '#description' => t('Separate extensions with a space or comma and do not include the leading dot.'),
+      '#element_validate' => array('_file_generic_settings_extensions'),
+      // By making this field required, we prevent a potential security issue
+      // that would allow files of any type to be uploaded.
+      '#required' => TRUE,
+    );
+  }
+
   // Setup type selection form
   $types = media_type_get_types();
   $options = array();
@@ -185,16 +202,18 @@ function media_field_widget_settings_form($field, $instance) {
     $options[$key] = $definition->label;
   }
 
-  $form['allowed_types'] = array (
+  $streams = file_get_stream_wrappers();
+
+  $form['allowed_types'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Allowed media types'),
+    '#title' => t('Allowed remote media types'),
     '#options' => $options,
     '#default_value' => $settings['allowed_types'],
-    '#description' => t('Media types which are allowed for this field'),
+    '#description' => t('Media types which are allowed for this field when using remote streams.'),
     '#weight' => 1,
+    '#access' => count(file_get_stream_wrappers(STREAM_WRAPPERS_LOCAL)) != count($streams),
   );
 
-  $streams = file_get_stream_wrappers();
   $options = array();
   unset($streams['temporary']);
   foreach ($streams as $scheme => $data) {
@@ -215,6 +234,7 @@ function media_field_widget_settings_form($field, $instance) {
  * Implements hook_field_widget_form().
  */
 function media_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $field_settings = $instance['settings'];
   $widget_settings = $instance['widget']['settings'];
 
   $permission = user_access('edit media');
@@ -245,13 +265,14 @@ function media_field_widget_form(&$form, &$form_state, $field, $instance, $langc
     '#collapsed' => TRUE,
     '#default_value' => $current_value,
     '#required' => $instance['required'],
-    //'#media_file_extensions' => $instance['settings']['file_extensions'],
-    // @TODO: Not implemented yet.
     '#media_options' => array(
       'global' => array(
-        'types' => array_filter($instance['widget']['settings']['allowed_types']),
-        // @todo: Not implemented
-        'schemes' => $instance['widget']['settings']['allowed_schemes'],
+        'types' => array_filter($widget_settings['allowed_types']),
+        'schemes' => $widget_settings['allowed_schemes'],
+        'file_directory' => isset($field_settings['file_directory']) ? $field_settings['file_directory'] : NULL,
+        'file_extensions' => isset($field_settings['file_extensions']) ? $field_settings['file_extensions'] : media_variable_get('file_extensions'),
+        'max_filesize' => isset($field_settings['max_filesize']) ? $field_settings['max_filesize'] : NULL,
+        'uri_scheme' => !empty($field_settings['uri_scheme']) ? $field_settings['uri_scheme'] : file_default_scheme(),
       ),
     ),
   );
@@ -261,6 +282,14 @@ function media_field_widget_form(&$form, &$form_state, $field, $instance, $langc
       '#type' => 'value',
       '#value' => 1,
     );
+  }
+
+  // Add image field specific validators.
+  if ($field['type'] == 'image') {
+    if ($field_settings['min_resolution'] || $field_settings['max_resolution']) {
+      $element['#media_options']['global']['min_resolution'] = $field_settings['min_resolution'];
+      $element['#media_options']['global']['max_resolution'] = $field_settings['max_resolution'];
+    }
   }
 
   return $element;

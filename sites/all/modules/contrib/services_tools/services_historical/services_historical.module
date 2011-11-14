@@ -1,0 +1,157 @@
+<?php
+/**
+ * @file
+ * Provides primary Drupal hook implementations.
+ *
+ * @author Jimmy Berry ("boombatower", http://drupal.org/user/214218)
+ */
+
+/**
+ * Implements hook_services_resources().
+ */
+function services_historical_services_resources() {
+  $services = conduit_historical_services_generate();
+  return $services['resources'];
+}
+
+/**
+ * Implements hook_default_services_endpoint().
+ */
+function services_historical_default_services_endpoint() {
+  $services = conduit_historical_services_generate();
+  return $services['endpoints'];
+}
+
+/**
+ * Implements hook_default_services_endpoint_alter().
+ */
+function services_historical_default_services_endpoint_alter(&$endpoints) {
+  // Alter the current versions of the endpoints to reflect the current version
+  // provided by the historical info hook.
+  foreach (services_historical_info() as $info) {
+    $endpoint = &$endpoints[$info['endpoint']];
+    $endpoint->title .= ' ' . $info['version'];
+    $endpoint->path .= '/' . $info['version'];
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function services_historical_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array('version' => 3);
+  }
+}
+
+/**
+ * Get historical services information.
+ *
+ * @return
+ *   An associative array of historical services information.
+ * @see hook_services_historical_info()
+ */
+function services_historical_info() {
+  $historical_info = &drupal_static(__FUNCTION__, array());
+  if (!$historical_info) {
+    foreach (module_implements('services_historical_info') as $module) {
+      foreach (module_invoke($module, 'services_historical_info') as $key => $info) {
+        $info += array(
+          'module' => $module,
+          'levels' => 2,
+          'suffix' => '',
+        );
+        if (!isset($info['format'])) $info['format'] = implode('.', array_fill(0, $info['levels'], '%d'));
+        $historical_info[$key] = $info;
+      }
+    }
+    drupal_alter('services_historical_info', $historical_info);
+  }
+  return $historical_info;
+}
+
+/**
+ * Generate historical services endpoints and resources.
+ *
+ * @return
+ *   Associative array with key 'endpoints' and 'resources' each containing an
+ *   array of their respective type to be given to services.
+ */
+function conduit_historical_services_generate() {
+  // Cache and statically cache since it is expensive to generate.
+  if (!($services = &drupal_static(__FUNCTION__))) {
+    $services = ($cache = cache_get(__FUNCTION__)) ? $cache->data : array('endpoints' => array(), 'resources' => array());
+  }
+
+  // Generate the historical endpoints and resources.
+  if (!$services['endpoints']) {
+    // Get a list of functions sorted to ensure that the number functions run
+    // from smallest to largest so that the $previous parameter is correct.
+    $functions = get_defined_functions();
+    $functions = $functions['user'];
+    sort($functions);
+
+    // Cycle through each historical set.
+    foreach (services_historical_info() as $info) {
+      // Generate the base function name which does not include the suffix so
+      // that it can be used when determine the version number and generate the
+      // suffixed function name to match against.
+      $suffix = ($info['suffix'] ? '_' . $info['suffix'] : '');
+      $base = $info['module'] . '_services_historical_update';
+      $match = $base . $suffix;
+
+      // Retreive the base endpoint from which the versioned endpoints will be
+      // generated using the resources as a "diff".
+      $endpoint_base = module_invoke($info['module'], 'services_historical_endpoint' . $suffix);
+      $resources = array();
+      foreach ($functions as $function) {
+        // Check if the function matches.
+        if (strpos($function, $match) === 0) {
+          // Grab the numbers on the end of the function and format them into a
+          // version string. Generate a machine version string for keys.
+          $parts = explode('_', str_replace($base . '_', '', $function));
+          $version = vsprintf($info['format'], $parts);
+          $version_machine = implode('_', $parts);
+
+          // Call the update function to receive the resources for the version.
+          $function($resources, $version);
+
+          // Clone the endpoint and add the version information.
+          $endpoint = clone $endpoint_base;
+          $endpoint->name .= '_' . $version_machine;
+          $endpoint->path .= "/$version";
+
+          // Cycle through the resources enabling them in the endpoint and
+          // adding the version suffix to each key.
+          foreach ($resources as $key => $resource) {
+            $key_old = $key;
+            $key .=  '_' . $version_machine;
+
+            // Alias the new resource with the same name as the old so that it
+            // will appear identical form the outside.
+            $endpoint->resources[$key]['alias'] = $key_old;
+            foreach ($resource as $operation => $methods) {
+              // Cycle through 'operations' methods or simply add an entry if
+              // a standard key.
+              if ($operation == 'operations') {
+                foreach (array_keys($methods) as $method) {
+                  $endpoint->resources[$key][$operation][$method]['enabled'] = (int) TRUE;
+                }
+              }
+              else {
+                $endpoint->resources[$key]['operations'][$operation]['enabled'] = (int) TRUE;
+              }
+            }
+            $services['resources'][$key] = $resource;
+
+            // Remove references to old (current) resources from endpoint.
+            unset($endpoint->resources[$key_old]);
+          }
+          $services['endpoints'][$endpoint->name] = $endpoint;
+        }
+      }
+    }
+    cache_set(__FUNCTION__, $services);
+  }
+  return $services;
+}

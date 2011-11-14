@@ -1,0 +1,85 @@
+<?php
+/**
+ * @file
+ * Provides primary Drupal hook implementations.
+ *
+ * @author Jimmy Berry ("boombatower", http://drupal.org/user/214218)
+ */
+
+/**
+ * Implements hook_services_historical_info().
+ */
+function services_tools_example_historical_services_historical_info() {
+  return array(
+    'services_tools_example' => array(
+      'endpoint' => 'services_tools_example',
+      'version' => '1.2',
+    ),
+  );
+}
+
+/**
+ * Implements hook_services_historical_endpoint().
+ */
+function services_tools_example_historical_services_historical_endpoint() {
+  $endpoint = new stdClass;
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'services_tools_example';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'example';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = '';
+  $endpoint->resources = array(
+    'paste' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+  return $endpoint;
+}
+
+/**
+ * Implements services_historical_update_N().
+ */
+function services_tools_example_historical_services_historical_update_1_0(&$resources, $version) {
+  $resources = array(
+    'paste' => array(
+      'create' => array(
+        'help' => 'Create a paste.',
+        'callback' => 'services_tools_example_paste_create',
+        'access arguments' => array('create paste'),
+        'args' => array(
+          array(
+            'name' => 'text',
+            'type' => 'string',
+            'description' => 'The text to paste.',
+            'source' => 'data',
+            'optional' => FALSE,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements services_historical_update_N().
+ */
+function services_tools_example_historical_services_historical_update_1_1(&$resources, $version) {
+  $resources['paste']['create']['help'] = 'Create a paste (with optional title).';
+  $resources['paste']['create']['args'][0]['source'] = array('data' => 'text');
+  $resources['paste']['create']['args'][] = array(
+    'name' => 'title',
+    'type' => 'string',
+    'description' => 'Title to associate with the paste.',
+    'source' => array('data' => 'title'),
+    'optional' => TRUE,
+  );
+}
