@@ -5,6 +5,8 @@ function cc_helper_field_attach_form($entity_type, $entity, &$form, &$form_state
     return FALSE;
   }
   $form['field_organization_address'][$langcode]['#element_validate'][] = '_cc_helper_address_validate';
+	$arr = array(''=>t('--None--'))+$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options'];
+	$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options']= $arr;
 }
 
 function _cc_helper_address_validate($element, $form_state) {
