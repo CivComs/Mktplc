@@ -86,9 +86,6 @@ Drupal.behaviors.cc_interactions = {
       var $dialogLinks = $wrapper.find('.dialog-links');
       var dialogHrefOrig = $dialogLinks.find('a').attr('href');
       
-      // Temporary hide description
-      $wrapper.find('.description').hide();
-      
       // Hand dialog links
       if ($dialogLinks.size() > 0) {
         // Add container for input value and hide by default
