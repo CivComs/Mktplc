@@ -58,7 +58,7 @@ Drupal.behaviors.cc_interactions_organizations = {
     var dropdown =
       '<div class="field-widget-options-select form-wrapper" id="edit-cc-interaction-user-orgs-id">' +
         '<div class="form-item form-type-select">' +
-          '<label for="cc-interaction-user-orgs-id">' + Drupal.t('Your Organizations') + '</label>' +
+          '<label for="cc-interaction-user-orgs-id">' + Drupal.t('Who (Your Organizations)') + '</label>' +
             '<select id="cc-interaction-user-orgs-id class="cc-interactions-user-orgs form-select">';
     for (var o in orgs) {
       dropdown += '<option value="' + o + '">' + orgs[o] + '</option>'
