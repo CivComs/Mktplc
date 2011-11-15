@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC Places feature.
+ */
+
+include_once('cc_places_feature.features.inc');
