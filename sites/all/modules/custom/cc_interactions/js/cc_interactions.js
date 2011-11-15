@@ -32,7 +32,6 @@ Drupal.behaviors.cc_interactions_organizations = {
       var $innerWrapper = $('#edit-field-interaction-organization');
       
       // Add title and custom dropdown
-      $wrapper.before('<h3 class="organiation-input-improvement">Which Organization</h3>');
       $wrapper.before($dropdown);
       $innerWrapper.hide();
       
