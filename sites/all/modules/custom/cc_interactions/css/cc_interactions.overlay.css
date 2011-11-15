@@ -1,0 +1,24 @@
+/**
+ * @file
+ * CSS for compacting the overlay.
+ */
+
+#overlay {
+  width: 66%;
+}
+
+#overlay #branding {
+  display: none;
+}
+
+#overlay div.vertical-tabs .vertical-tabs-list {
+  display: none;
+}
+
+#overlay div.vertical-tabs .vertical-tabs-panes {
+  margin-left: 0;
+}
+
+#overlay div.vertical-tabs {
+  background-image: none;
+}

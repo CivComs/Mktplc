@@ -13,6 +13,16 @@
  */
 
 /**
+ * Implements hook_init().
+ */
+function cc_interactions_init() {
+  if ($_GET['compact-overlay'] == true) {
+    drupal_add_css(drupal_get_path('module', 'cc_interactions') . 
+      '/css/cc_interactions.overlay.css');
+  }
+}
+
+/**
  * Implements hook_block_info().
  */
 function cc_interactions_block_info() {
@@ -69,6 +79,7 @@ function cc_interactions_apps_block() {
           'edit[field_interaction_type][und]' => check_plain($tid),
           'edit[field_interaction_application][und][0][nid]' => 
             check_plain($node->title) . ' [nid: ' . check_plain($node->nid) . ']',
+          'compact-overlay' => 'true',
         ),
       ));
     }
