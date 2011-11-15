@@ -348,5 +348,34 @@ function cc_application_field_group_info() {
   );
   $export['group_application_sfthosted|node|application|form'] = $field_group;
 
+  $field_group = new stdClass;
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_basic_info|node|application|default';
+  $field_group->group_name = 'group_basic_info';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'application';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Basic info',
+    'weight' => '0',
+    'children' => array(
+      0 => 'field_application_logo',
+      1 => 'field_application_description',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Basic info',
+      'instance_settings' => array(
+        'classes' => '',
+        'description' => '',
+        'effect' => 'none',
+        'speed' => 'none',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_basic_info|node|application|default'] = $field_group;
+
   return $export;
 }
