@@ -80,6 +80,7 @@ function cc_interactions_apps_block() {
           'edit[field_interaction_application][und][0][nid]' => 
             check_plain($node->title) . ' [nid: ' . check_plain($node->nid) . ']',
           'compact-overlay' => 'true',
+          'destination' => current_path(),
         ),
       ));
     }
