@@ -1,0 +1,15 @@
+name = Adv Jump Menu (via CTools) API
+description = Enables creating custom jump menus programmatically via CTools module.
+dependencies[] = ctools
+dependencies[] = block
+dependencies[] = menu
+package = Chaos tool suite
+version = "7.x-1.1"
+core = 7.x
+project = "ctools"
+; Information added by drupal.org packaging script on 2011-09-16
+version = "7.x-1.1"
+core = "7.x"
+project = "jump_menu"
+datestamp = "1316137902"
+
