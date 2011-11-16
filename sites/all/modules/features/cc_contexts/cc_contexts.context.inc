@@ -279,22 +279,22 @@ function cc_contexts_context_default_contexts() {
   $context->conditions = array(
     'path' => array(
       'values' => array(
-        'node/222' => 'node/222',
+        '<front>' => '<front>',
       ),
     ),
   );
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'block-28' => array(
-          'module' => 'block',
-          'delta' => 28,
-          'region' => 'sidebar_second',
-          'weight' => '-52',
-        ),
         'block-24' => array(
           'module' => 'block',
           'delta' => 24,
+          'region' => 'sidebar_second',
+          'weight' => '-52',
+        ),
+        'block-28' => array(
+          'module' => 'block',
+          'delta' => 28,
           'region' => 'sidebar_second',
           'weight' => '-52',
         ),
