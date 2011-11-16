@@ -580,6 +580,10 @@ print _cc_places_wkt($place[\'locality\'], $place[\'country\'], $place[\'adminis
     ),
   );
   $handler->display->display_options['fields']['field_organization_address']['group_column'] = 'locality';
+  $handler->display->display_options['fields']['field_organization_address']['group_columns'] = array(
+    'country' => 'country',
+    'administrative_area' => 'administrative_area',
+  );
   $handler->display->display_options['fields']['field_organization_address']['field_api_classes'] = 0;
   /* Field: Place URL */
   $handler->display->display_options['fields']['field_organization_address_1']['id'] = 'field_organization_address_1';
@@ -607,11 +611,16 @@ print _cc_places_wkt($place[\'locality\'], $place[\'country\'], $place[\'adminis
   $handler->display->display_options['fields']['field_organization_address_1']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_organization_address_1']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_organization_address_1']['click_sort_column'] = 'locality';
+  $handler->display->display_options['fields']['field_organization_address_1']['type'] = 'addressfield_city_only';
   $handler->display->display_options['fields']['field_organization_address_1']['settings'] = array(
     'use_widget_handlers' => 0,
     'format_handlers' => array(),
   );
   $handler->display->display_options['fields']['field_organization_address_1']['group_column'] = 'locality';
+  $handler->display->display_options['fields']['field_organization_address_1']['group_columns'] = array(
+    'country' => 'country',
+    'administrative_area' => 'administrative_area',
+  );
   $handler->display->display_options['fields']['field_organization_address_1']['field_api_classes'] = 0;
   /* Field: Using / Sharing Output */
   $handler->display->display_options['fields']['php']['id'] = 'php';

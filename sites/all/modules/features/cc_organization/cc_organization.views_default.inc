@@ -1619,8 +1619,11 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['footer']['area']['content'] = '<?php
  echo(l(
   t(\'+add a vendor\'),
-  \'node/add/interaction\',
-  array(\'attributes\' => array(\'class\' => \'button\'))
+  \'node/\' . arg(1) . \'/edit\',
+  array(
+   \'attributes\' => array(\'class\' => \'button\'),
+   \'fragment\' => \'edit-field-application-vendors\'
+  )
  ));
 ?>';
   $handler->display->display_options['footer']['area']['format'] = 'php_code';
