@@ -365,9 +365,20 @@ function cc_contexts_context_default_contexts() {
         'node_form' => '0',
       ),
     ),
-    'path' => array(
+    'node_taxonomy' => array(
       'values' => array(
-        '~people/*' => '~people/*',
+        124 => 124,
+        125 => 125,
+        126 => 126,
+        127 => 127,
+        128 => 128,
+        129 => 129,
+        130 => 130,
+        131 => 131,
+        132 => 132,
+      ),
+      'options' => array(
+        'node_form' => '0',
       ),
     ),
   );
@@ -392,15 +403,15 @@ function cc_contexts_context_default_contexts() {
           'region' => 'content',
           'weight' => '-7',
         ),
-        'views-commercial_services-block' => array(
-          'module' => 'views',
-          'delta' => 'commercial_services-block',
-          'region' => 'sidebar_second',
-          'weight' => '-52',
-        ),
         'views-at_a_glance-block' => array(
           'module' => 'views',
           'delta' => 'at_a_glance-block',
+          'region' => 'sidebar_second',
+          'weight' => '-52',
+        ),
+        'views-commercial_services-block' => array(
+          'module' => 'views',
+          'delta' => 'commercial_services-block',
           'region' => 'sidebar_second',
           'weight' => '-52',
         ),
@@ -422,9 +433,20 @@ function cc_contexts_context_default_contexts() {
   $context->description = 'person organization context';
   $context->tag = 'theme';
   $context->conditions = array(
-    'path' => array(
+    'node' => array(
       'values' => array(
-        'people/*' => 'people/*',
+        'organization' => 'organization',
+      ),
+      'options' => array(
+        'node_form' => '0',
+      ),
+    ),
+    'node_taxonomy' => array(
+      'values' => array(
+        229 => 229,
+      ),
+      'options' => array(
+        'node_form' => '0',
       ),
     ),
   );
@@ -443,15 +465,15 @@ function cc_contexts_context_default_contexts() {
           'region' => 'content',
           'weight' => '-8',
         ),
-        'views-at_a_glance-block' => array(
-          'module' => 'views',
-          'delta' => 'at_a_glance-block',
-          'region' => 'sidebar_second',
-          'weight' => '-52',
-        ),
         'views-commercial_services-block' => array(
           'module' => 'views',
           'delta' => 'commercial_services-block',
+          'region' => 'sidebar_second',
+          'weight' => '-52',
+        ),
+        'views-at_a_glance-block' => array(
+          'module' => 'views',
+          'delta' => 'at_a_glance-block',
           'region' => 'sidebar_second',
           'weight' => '-52',
         ),
