@@ -2361,7 +2361,7 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['fields']['field_organization_address']['table'] = 'field_data_field_organization_address';
   $handler->display->display_options['fields']['field_organization_address']['field'] = 'field_organization_address';
   $handler->display->display_options['fields']['field_organization_address']['label'] = '';
-  $handler->display->display_options['fields']['field_organization_address']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['field_organization_address']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_organization_address']['alter']['text'] = '[field_organization_address-locality]';
   $handler->display->display_options['fields']['field_organization_address']['alter']['make_link'] = 1;
   $handler->display->display_options['fields']['field_organization_address']['alter']['path'] = 'places/[field_organization_address-locality]';
