@@ -71,3 +71,27 @@ background: none !important;
   /* linkedin icon */
   margin-left: 20px;
 }
+
+
+/* 
+ * 
+ * Node edit forms
+ *
+*/
+
+/*
+ THIS NEEDS TO BE MOVED TO 
+ a new CHILD ADMIN THEME of SEVEN
+ so we can customize stuff in the admin forms.
+
+.field-name-field-application-civfunction .form-type-checkbox {
+  float: left;
+  width: 200px;
+  margin-bottom: 5px;
+}
+
+.node-type-application.overlay .form-wrapper {
+  clear: both;
+}
+
+*/ 

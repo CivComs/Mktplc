@@ -244,6 +244,7 @@ ul.nice-menu:hover a.active {
 #region-search-bar .region-search-bar-inner {
   margin-bottom: 3px;  
   background: url('../images/search-bg.png') center top no-repeat;
+  height: 60px;
 }
 #region-search-bar .form-item,
 #region-search-bar .form-actions {
@@ -251,27 +252,45 @@ ul.nice-menu:hover a.active {
   padding: 0;
 }
 #block-menu-menu-mktplc-section-nav {
-  height: 35px;
+  padding: 12px 14px;
+  margin-bottom: 5px;
+  float: left;
+}
+.add-content-menu{
+  float: left;
   padding: 12px 14px;
 }
-#block-menu-menu-mktplc-section-nav {
-  padding: 12px 14px;
-  margin-bottom: 20px;
+.add-content-menu select#edit-jump {
+  color: #999;
+  height: 30px;
+  line-height: 30px;
+  font-size: 15px;
+  padding: 0 5px;
+  margin: 1px 14px 0 0;
 }
-#region-search-bar .menu {
+input#edit-go { 
+  /* this button is hidden via JS but there's a flicker */
+  display: none;
+}
+.block-custom-search-blocks {
+  float:right;
+  width: 390px;
+}
+
+#region-search-bar .section-nav .menu {
   float:left;
   border-right: 1px solid #dcdcdc;
   padding: 0;
   margin: 0;
 }
-#region-search-bar .menu li {
+#region-search-bar .section-nav .menu li {
   float:left;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-#region-search-bar .menu a,
-#region-search-bar .menu a:visited {
+#region-search-bar .section-nav .menu a,
+#region-search-bar .section-nav .menu a:visited {
   height: 32px;
   padding: 0 15px;
   line-height: 32px;
@@ -284,10 +303,10 @@ ul.nice-menu:hover a.active {
   text-transform: none;
   display: block;
 } 
-#region-search-bar .menu a:hover {
+#region-search-bar .section-nav .menu a:hover {
   background-image: url('../images/nav-bg-hover.png');
 }
-#region-search-bar .menu a.active {
+#region-search-bar .section-nav .menu a.active {
   background-image: url("../images/nav-bg-selected.png");
 }
 #region-search-bar .search-form {
@@ -307,18 +326,33 @@ ul.nice-menu:hover a.active {
   line-height: 30px;
   font-size: 15px;
   padding: 0 5px;
-  width: 400px;
+  width: 300px;
   margin: 0 14px 0 0;
 }
 #region-search-bar .form-submit {
   height: 32px;
   width: auto;
 }
+
+#block-system-user-menu {
+  clear: both;
+  float: right;
+}
+#block-system-user-menu li {
+  display: inline;
+}
 #block-user-login,
 #block-addtoany-addtoany-button {
   float: right;
   font-size: 15px;
   margin-left: 1em;
+}
+
+#block-cc-flag-block-flag-block {
+  float: right;
+}
+#block-cc-flag-block-flag-block li {
+  display: inline;
 }
 
 /*
@@ -348,10 +382,19 @@ body.node-type-page #region-content
 #section-content {
   font-size: 15px;
 }
+body.front #region-content {
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+  font-size: 20px;
+  text-align: center;
+}
+#section-content .tabs {
+  /* editing tabs hide via JS but w/ a flicker */
+  display: none;
+}
 body.front #page-title {
   font-size: 50px;
-  font-style: italic;
-  text-align: center;
 }
 h2.block-title {
   color: #fff;
@@ -377,8 +420,8 @@ h2.block-title {
   color: #FF8700;
   background: transparent;
   font-size: 15px;
-	background: url('../images/place2.gif') center top no-repeat;
-	padding: 80px 0 0;
+  background: url('../images/place2.gif') center top no-repeat;
+  padding: 80px 0 0;
   float: left;
   text-align: center;
   width: 110px;
@@ -396,10 +439,109 @@ h2.block-title {
 }
 .places-list-container td {
   border-bottom: 1px dotted #8A9093;
-  padding: 3px 0;
+  padding: 10px 0;
+}
+.places-list-container td > div {
+  float: left;
+  width: 50%;
 }
 .places-list-container td div {
   display: inline;
+}
+.views-field-field-organization-address a {
+  font-size: 16px;
+  text-decoration: none;
+}
+.cc-org-apps {
+  float: left;
+  width: 50%;
+}
+.cc-org-apps > div {
+  margin-right: 0.3em;
+}
+.cc-org-prefix-using,
+.cc-org-prefix-sharing {
+}
+.cc-org-count {
+}
+.cc-using,
+.cc-sharing {
+}
+.cc-org-postfix { 
+  display: none;
+}
+
+/* List: By Function */
+.functions-list-container {
+  margin-bottom: 20px;
+}
+.functions-list-container h2.block-title {
+  color: #FF8700;
+  background: transparent;
+  font-size: 15px;
+  background: url('../images/civic2.gif') center top no-repeat;
+  padding: 80px 0 0;
+  float: left;
+  text-align: center;
+  width: 110px;
+  border: 0;
+}
+.functions-list-container .content {
+  width: auto;
+  margin-left: 120px;
+}
+
+/* List: Apps */
+.apps-list {
+  margin-bottom: 20px;
+}
+.views-row {
+  border-bottom: 1px dotted #8A9093;
+  padding: 5px 0 10px;
+  margin: 0 0 5px;
+  font-size: 12px;
+  color: #666666;
+  position: relative;
+  }
+  .views-row:before, .views-row:after { content: "\0020"; display: block; height: 0; visibility: hidden; } 
+  .views-row:after { clear: both; }
+  .views-row { zoom: 1; 
+}
+.views-field-field-application-logo {
+  float: left;
+  width: 60px;
+  margin-right: -60px;
+}
+.views-field-title,
+.views-field-field-application-sdesc {
+  float: left;
+  clear: none;
+  margin-left: 70px;
+  margin-right: 110px;
+}
+.views-field-title a {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.views-field-php {
+  float: right;
+  margin-left: -110px;
+}
+.cc-places-count {
+  background: url(../images/icon_place_mini.gif) left center no-repeat scroll;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  padding: 10px 0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.cc-places-count .count {
+  margin-left: 25px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 /* Block: Preview Intro */
