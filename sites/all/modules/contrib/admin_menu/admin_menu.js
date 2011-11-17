@@ -16,6 +16,7 @@ Drupal.behaviors.adminMenu = {
     // Initialize settings.
     settings.admin_menu = $.extend({
       suppress: false,
+      overlay_child: false,
       margin_top: false,
       position_fixed: false,
       tweak_modules: false,
@@ -33,7 +34,7 @@ Drupal.behaviors.adminMenu = {
     var $adminMenu = $('#admin-menu:not(.admin-menu-processed)', context);
     // Client-side caching; if administration menu is not in the output, it is
     // fetched from the server and cached in the browser.
-    if (!$adminMenu.length && settings.admin_menu.hash) {
+    if (!$adminMenu.length && settings.admin_menu.hash && !settings.admin_menu.overlay_child) {
       Drupal.admin.getCache(settings.admin_menu.hash, function (response) {
           if (typeof response == 'string' && response.length > 0) {
             $('body', context).prepend(response);
