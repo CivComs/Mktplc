@@ -19,15 +19,16 @@ function cc_project_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_project_main';
   $field_group->data = array(
-    'label' => 'Related Apps',
+    'label' => 'Related Technologies',
     'weight' => '44',
     'children' => array(
       0 => 'field_apps_used',
       1 => 'field_apps_result',
+      2 => 'field_project_stds',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Related Apps',
+      'label' => 'Related Technologies',
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => '',
