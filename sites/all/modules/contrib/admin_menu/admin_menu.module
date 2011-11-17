@@ -139,6 +139,11 @@ function admin_menu_init() {
   // Destination query strings are applied via JS.
   $settings['destination'] = drupal_http_build_query(drupal_get_destination());
 
+  // Tell JS if we're an overlay child so it won't create a duplicate menu
+  if (module_exists('overlay') && overlay_get_mode() == 'child') {
+    $settings['overlay_child'] = TRUE;
+  }
+
   // Hash for client-side HTTP/AJAX caching.
   $cid = 'admin_menu:' . $user->uid . ':' . $language->language;
   if (!empty($_COOKIE['has_js']) && ($hash = admin_menu_cache_get($cid))) {
