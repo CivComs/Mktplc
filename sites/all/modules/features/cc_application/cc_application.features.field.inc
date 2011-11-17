@@ -813,7 +813,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '10',
+        'weight' => '13',
       ),
     ),
   );
@@ -890,7 +890,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -1700,6 +1700,101 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
     ),
   );
 
+  // Exported field: 'node-application-field_application_stds'
+  $fields['node-application-field_application_stds'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_application_stds',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'application' => 0,
+          'application_release' => 0,
+          'article' => 0,
+          'image' => 0,
+          'interaction' => 0,
+          'organization' => 0,
+          'page' => 0,
+          'project' => 0,
+          'standard' => 'standard',
+          'video' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'application',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'cc_business_card' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 27,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_application_stds',
+      'label' => 'Standards Implemented',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '13',
+      ),
+    ),
+  );
+
   // Exported field: 'node-application-field_application_tutors'
   $fields['node-application-field_application_tutors'] = array(
     'field_config' => array(
@@ -2077,6 +2172,7 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   t('Software Function');
   t('Software Requirements');
   t('Software Type');
+  t('Standards Implemented');
   t('Technology Type');
   t('Tutorials');
   t('What do you think of the application? Is it easy to use? Is it easy to implement? (Your rating will be aggregated with others).');

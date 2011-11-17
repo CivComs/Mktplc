@@ -301,20 +301,23 @@ function cc_application_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_application_main';
   $field_group->data = array(
-    'label' => 'Related Apps & Project',
+    'label' => 'Related Technologies',
     'weight' => '4',
     'children' => array(
       0 => 'field_application_relapps',
       1 => 'field_application_projects',
       2 => 'field_project_resulted',
+      3 => 'field_application_stds',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Related Technologies',
       'instance_settings' => array(
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_application_relations|node|application|form'] = $field_group;
