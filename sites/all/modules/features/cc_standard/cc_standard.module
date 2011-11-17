@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC Standard feature.
+ */
+
+include_once('cc_standard.features.inc');
