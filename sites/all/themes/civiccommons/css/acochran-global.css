@@ -495,8 +495,8 @@ h2.block-title {
 .apps-list {
   margin-bottom: 20px;
 }
-.views-row {
-  border-bottom: 1px dotted #8A9093;
+.apps-list .views-row {
+  /* border-bottom: 1px dotted #8A9093;*/
   padding: 5px 0 10px;
   margin: 0 0 5px;
   font-size: 12px;
@@ -507,41 +507,72 @@ h2.block-title {
   .views-row:after { clear: both; }
   .views-row { zoom: 1; 
 }
+
 .views-field-field-application-logo {
   float: left;
   width: 60px;
   margin-right: -60px;
 }
+
 .views-field-title,
-.views-field-field-application-sdesc {
-  float: left;
-  clear: none;
+.views-field-field-application-sdesc,
+.views-field-field-interaction-organization {
   margin-left: 70px;
-  margin-right: 110px;
+  /*margin-right: 110px;*/
 }
 .views-field-title a {
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
 }
-.views-field-php {
-  float: right;
+
+/* ANDY: What if we just forget all this floating stuff
+and put the App meta data on a second line, like a mini-footer? */
+
+.apps-list .meta {
+/*  float: right;
   margin-left: -110px;
+*/
+ background: #eee;
+ text-align: center;
+ color: #555;
+ display: block;
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+ margin-left: 70px;
+ padding: 2px 5px;
+ margin-top: 5px;
 }
+.apps-list .meta span.civic-function {
+  padding: 0 5px;
+}
+.apps-list span.places-count {
+  padding: 0 5px;
+  font-weight: bold;
+}
+.apps-list span.date-updated {
+  padding: 0 5px;
+}
+
 .cc-places-count {
   background: url(../images/icon_place_mini.gif) left center no-repeat scroll;
-  position: absolute;
+  /*position: absolute;
   top: 0;
   right: 0;
   width: 100px;
-  padding: 10px 0;
-  font-size: 14px;
+  padding: 10px 0;*/
+  /*font-size: 14px;*/
   white-space: nowrap;
 }
 .cc-places-count .count {
-  margin-left: 25px;
+  /* margin-left: 25px;
   font-size: 22px;
   font-weight: bold;
+  */
 }
 
 /* Block: Preview Intro */
