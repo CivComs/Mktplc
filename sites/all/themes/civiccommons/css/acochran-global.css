@@ -132,6 +132,9 @@ aside .content {
   font-size: 12px;
   padding: 9px;
 }
+.block-views {
+  margin-bottom: 20px;
+}
 
 /*
  *
@@ -245,6 +248,7 @@ ul.nice-menu:hover a.active {
   margin-bottom: 3px;  
   background: url('../images/search-bg.png') center top no-repeat;
   height: 60px;
+  font-size: 12px;
 }
 #region-search-bar .form-item,
 #region-search-bar .form-actions {
@@ -344,7 +348,7 @@ input#edit-go {
 #block-user-login,
 #block-addtoany-addtoany-button {
   float: right;
-  font-size: 15px;
+  clear: both;
   margin-left: 1em;
 }
 
@@ -372,13 +376,19 @@ body.node-type-page #region-content
   margin-left: 15px;
   margin-right: 15px;
 }
-
+.page-places #region-content {
+  width: 940px;
+  margin-bottom: 20px;
+}
 
 /*
  *
  * Content
  *
  */
+.breadcrumb {
+  font-size: 12px;
+}
 #section-content {
   font-size: 15px;
 }
@@ -392,6 +402,10 @@ body.front #region-content {
 #section-content .tabs {
   /* editing tabs hide via JS but w/ a flicker */
   display: none;
+}
+#page-title {
+  font-size: 40px;
+  margin-bottom: 20px;
 }
 body.front #page-title {
   font-size: 50px;
@@ -410,6 +424,12 @@ h2.block-title {
   border-right: 1px solid #5684bf;
   border-bottom: 1px solid #5684bf;
   border-left: 1px solid #99c5ff;
+}
+
+.item-list ul li {
+  border-bottom: 1px solid #eee;
+  padding: 0 0 10px;
+  margin: 0 0 10px;
 }
 
 /* List: By Place */
@@ -438,12 +458,13 @@ h2.block-title {
   font-weight: bold;
 }
 .places-list-container td {
-  border-bottom: 1px dotted #8A9093;
+  border-bottom: 1px dashed #eee;
   padding: 10px 0;
 }
 .places-list-container td > div {
   float: left;
-  width: 50%;
+  width: 48%;
+  margin-right: 2%;
 }
 .places-list-container td div {
   display: inline;
@@ -454,7 +475,8 @@ h2.block-title {
 }
 .cc-org-apps {
   float: left;
-  width: 50%;
+  width: 48%;
+  margin-right: 2%;
 }
 .cc-org-apps > div {
   margin-right: 0.3em;
@@ -473,12 +495,17 @@ h2.block-title {
 
 /* List: By Function */
 .functions-list-container {
-  margin-bottom: 20px;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+  padding-top: 20px;
+  width: 940px;
+  clear: both;
 }
 .functions-list-container h2.block-title {
   color: #FF8700;
   background: transparent;
   font-size: 15px;
+  line-height: 1.5;
   background: url('../images/civic2.gif') center top no-repeat;
   padding: 80px 0 0;
   float: left;
@@ -490,17 +517,25 @@ h2.block-title {
   width: auto;
   margin-left: 120px;
 }
-
-/* List: Apps */
-.apps-list {
-  margin-bottom: 20px;
-}
-.apps-list .views-row {
-  /* border-bottom: 1px dotted #8A9093;*/
-  padding: 5px 0 10px;
-  margin: 0 0 5px;
+.browse-by-grid {
+  padding-top: 10px;
   font-size: 12px;
-  color: #666666;
+  color: #666;
+}
+.browse-by-grid a {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 13px;
+}
+.browse-by-grid td {
+  background: #fff !important;
+  padding: 0 10px 20px 0;
+}
+
+/* Views Rows */
+.views-row {
+  margin: 0 0 20px;
+  color: #666;
   position: relative;
   }
   .views-row:before, .views-row:after { content: "\0020"; display: block; height: 0; visibility: hidden; } 
@@ -508,71 +543,72 @@ h2.block-title {
   .views-row { zoom: 1; 
 }
 
+/* List: Apps */
+.apps-list {
+  margin: 20px 0;
+}
 .views-field-field-application-logo {
   float: left;
   width: 60px;
   margin-right: -60px;
 }
 
-.views-field-title,
-.views-field-field-application-sdesc,
-.views-field-field-interaction-organization {
+.apps-list .views-field-title,
+.apps-list .views-field-field-application-sdesc,
+.apps-list .views-field-field-interaction-organization {
   margin-left: 70px;
-  /*margin-right: 110px;*/
 }
-.views-field-title a {
+.apps-list .views-field-title {
+  padding-top: 5px;
+}
+.apps-list .views-field-title a {
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
 }
-
-/* ANDY: What if we just forget all this floating stuff
-and put the App meta data on a second line, like a mini-footer? */
-
+.apps-list .views-field-field-application-sdesc {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
 .apps-list .meta {
-/*  float: right;
-  margin-left: -110px;
-*/
- background: #eee;
- text-align: center;
- color: #555;
- display: block;
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+  line-height: 2;
+  display: block;
+  margin-left: 0;
+  clear: left;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
+  background: #f7f7f7;
   -webkit-border-bottom-right-radius: 5px;
-  -webkit-border-bottom-left-radius: 5px;
-  -moz-border-radius-bottomright: 5px;
-  -moz-border-radius-bottomleft: 5px;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
- margin-left: 70px;
- padding: 2px 5px;
- margin-top: 5px;
+   -webkit-border-bottom-left-radius: 5px;
+      -moz-border-radius-bottomright: 5px;
+       -moz-border-radius-bottomleft: 5px;
+          border-bottom-right-radius: 5px;
+           border-bottom-left-radius: 5px;
+}
+.apps-list .meta a {
+  text-decoration: none;
+}
+.apps-list .meta span {
+  margin: 0 5px;
+}
+.apps-list .meta a {
 }
 .apps-list .meta span.civic-function {
-  padding: 0 5px;
 }
 .apps-list span.places-count {
-  padding: 0 5px;
   font-weight: bold;
-}
-.apps-list span.date-updated {
-  padding: 0 5px;
 }
 
-.cc-places-count {
-  background: url(../images/icon_place_mini.gif) left center no-repeat scroll;
-  /*position: absolute;
-  top: 0;
-  right: 0;
-  width: 100px;
-  padding: 10px 0;*/
-  /*font-size: 14px;*/
-  white-space: nowrap;
+/* List: Recent Activity */
+.view-interactions {
 }
-.cc-places-count .count {
-  /* margin-left: 25px;
-  font-size: 22px;
+.view-interactions .org-name a {
+  font-size: 16px;
   font-weight: bold;
-  */
+  text-decoration: none;
 }
 
 /* Block: Preview Intro */
@@ -609,6 +645,119 @@ and put the App meta data on a second line, like a mini-footer? */
      -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
           border-radius: 5px;
+}
+
+/* Apps Pages */
+.field-name-field-application-logo {
+  float: left;
+  margin: 0 20px 20px 0;
+}
+.group_basic_info {
+  border-bottom: 1px solid #eee;
+  padding: 0 0 20px;
+  margin: 0 0 20px;
+}
+
+#block-views-at-a-glance-application-block .content {
+  padding-top: 0;
+}
+.views-field-field-application-used-in {
+  color: #666;
+  font-size: 16px;
+  font-weight: bold;
+  background: url(../images/icon_place_mini.gif) left center no-repeat scroll;
+  padding: 10px 0 10px 24px;
+  margin: 0 0 5px;
+}
+.views-field-field-application-used-in .views-label {
+  font-size: 16px;
+}
+.views-field-field-application-used-in div {
+  display: inline;
+}
+#block-views-at-a-glance-application-block .view-header p {
+  font-size: 14px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  padding: 0 0 10px;
+  margin: 0 0 10px;
+}
+#block-views-at-a-glance-application-block .view-header .cc-places-count {
+  padding: 0 0.2em;
+}
+#block-views-at-a-glance-application-block .views-field-php,
+#block-views-at-a-glance-application-block .views-field-field-application-reqs,
+#block-views-at-a-glance-application-block .views-field-field-application-hosturl,
+#block-views-at-a-glance-application-block .views-field-field-application-deliverymeth,
+#block-views-at-a-glance-application-block .views-field-field-application-license,
+#block-views-at-a-glance-application-block .views-field-field-application-rlss,
+#block-views-at-a-glance-application-block .views-field-nothing {
+  border-top: 1px solid #eee;
+  margin: 0 0 10px;
+  padding: 10px 0 0;
+}
+.views-label {
+  font-size: 14px;
+  font-weight: bold;
+}
+.views-field-field-application-reqs {
+}
+.views-field-field-application-hosturl {
+}
+.views-field-field-application-deliverymeth {
+}
+.views-field-field-application-license {
+}
+.views-field-field-application-rlss {
+}
+.views-field-nothing {
+}
+#block-views-at-a-glance-application-block ul div {
+  display: inline;
+  margin-right: 0.2em;
+}
+
+/* Places Page */
+.view-id-places .view-content {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.view-id-places .views-row {
+  border-bottom: 1px dashed #eee;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+.view-id-places .views-row > div {
+  float: left;
+  width: 48%;
+  margin-right: 2%;
+}
+.view-id-places .views-row div {
+  display: inline;
+}
+.view-id-places a {
+  font-size: 16px;
+  text-decoration: none;
+}
+.view-id-places .cc-org-apps {
+  float: left;
+  width: 48%;
+  margin-right: 2%;
+}
+
+/* Applications Page */
+.page-applications #region-content {
+  width: 940px;
+}
+.page-applications #region-content-leftcolumn,
+.page-applications #region-content-leftcolumn-lower {
+  float: left;
+  clear: left;
+}
+.page-applications #region-content-rightcolumn,
+.page-applications #region-content-rightcolumn-lower {
+  float: right;
+  clear: right;
 }
 
 /*
