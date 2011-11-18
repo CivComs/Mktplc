@@ -95,3 +95,31 @@ background: none !important;
 }
 
 */ 
+
+
+
+/*
+ * 
+ * TO be merged with Andy's
+ *
+ */
+ 
+#breadcrumb {
+  margin-top: -35px;
+  margin-bottom: 35px;
+  width: 500px;
+}
+ 
+.edit-content-button {
+  text-align: right;
+}
+
+.edit-content-button a {
+  background: pink;
+  padding: 5px 8px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  text-decoration:none;
+}
+ 
