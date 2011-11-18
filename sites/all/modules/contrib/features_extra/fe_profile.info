@@ -1,0 +1,12 @@
+name = Feature Extras Profle
+description = Export profile field using features.
+package = Ideup
+dependencies[] = profile
+core = 7.x
+
+; Information added by drupal.org packaging script on 2011-06-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "features_extra"
+datestamp = "1308442976"
+
