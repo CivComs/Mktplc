@@ -552,3 +552,49 @@ function theme_using_sharing($variables) {
   }
   return $o;
 }
+
+//Perform necessary operations just before data get saved.
+function cc_helper_node_update($node) {
+  $fname =
+    $node->type == 'application'
+    ? 'field_application_creator'
+    : ($node->type == 'project' ? 'field_creators' : '');
+  if(empty($fname)) {
+    return FALSE;
+  }
+  $oldn = node_load($node->nid);
+  $newf =  field_get_items('node', $node, $fname);
+  $oldf =  field_get_items('node', $oldn, $fname);
+  $new = array_filter(array_map('_cc_helper_nid', $newf ? $newf : array()));
+  $old = array_filter(array_map('_cc_helper_nid', $oldf ? $oldf : array()));
+  foreach($new as $nid) {
+    if(!in_array($nid, $old)) {
+      _cc_helper_created($nid, ($node->type == 'application' ? $node->nid : 0), ($node->type == 'project' ? $node->nid : 0));
+    }
+  }
+}
+
+//$item - node reference field item.
+function _cc_helper_nid($item) {
+  return isset($item['nid']) ? $item['nid'] : NULL;
+}
+
+//New interaction of type "Created".
+function _cc_helper_created($org_id = 0, $app_id = 0, $proj_id=0) {
+  $i = new StdClass();
+  $i->type = 'interaction';
+  $i->language = LANGUAGE_NONE;
+  node_object_prepare($i);
+  $i->field_interaction_type[$i->language][0]['tid'] = 154;
+  if ($org_id) {
+    $i->field_interaction_organization[$i->language][0]['nid'] = $org_id;
+  }
+  if ($app_id) {
+    $i->field_interaction_application[$i->language][0]['nid'] = $app_id;
+  }
+  if ($proj_id) {
+    $i->field_interaction_project[$i->language][0]['nid'] = $proj_id;
+  }
+  node_save($i);
+  return $i;
+}
