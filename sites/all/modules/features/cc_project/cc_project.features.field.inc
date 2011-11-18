@@ -808,12 +808,15 @@ function cc_project_field_default_fields() {
         ),
         'default' => array(
           'label' => 'above',
-          'module' => 'image',
+          'module' => 'shadowbox',
           'settings' => array(
+            'compact' => 0,
+            'gallery' => 'field',
             'image_link' => '',
             'image_style' => 'app_screenshot',
+            'title' => 'node',
           ),
-          'type' => 'image',
+          'type' => 'shadowbox',
           'weight' => '10',
         ),
         'teaser' => array(
@@ -951,9 +954,11 @@ function cc_project_field_default_fields() {
         ),
         'default' => array(
           'label' => 'above',
-          'module' => 'styles',
-          'settings' => array(),
-          'type' => 'styles_media_app_tutorial_video',
+          'module' => 'media',
+          'settings' => array(
+            'file_view_mode' => 'media_large',
+          ),
+          'type' => 'media',
           'weight' => '11',
         ),
         'teaser' => array(
