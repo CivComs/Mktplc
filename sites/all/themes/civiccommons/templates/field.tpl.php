@@ -46,7 +46,7 @@
   <?php if (!$label_hidden) : ?>
     <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>&nbsp;</div>
   <?php endif; 
-  if(($element['#field_name']=='field_application_description')&&isset($items[0])&&empty($items[0]['#markup'])){
+  if((($element['#field_name']=='field_application_description')||($element['#field_name']=='field_desc'))&&isset($items[0])&&empty($items[0]['#markup'])){
 	$items[0]['#markup']=t('No Description added yet.').'<span class="add-data-button"><a href="/node/'.arg(1).'/edit">'.t('Add one').'</a></span>';
   }
   
@@ -65,11 +65,21 @@ global $app_in_act;
 if($element['#field_name']=='field_application_tutors' && $app_in_act==0){?>
 	<div class="edit-content-button"><?php print t(''); ?>
 <?php }
+if($element['#field_name']=='field_videos' && $app_in_act==0){?>
+	<div class="edit-content-button"><?php print t(''); ?>
+<?php }
 if($element['#field_name']=='field_application_description'){ ?>
 <div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-description"><?php print t('+ edit description');?></a></div>
 <?php }
+if($element['#field_name']=='field_desc'){ ?>
+<div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#field-desc-add-more-wrapper"><?php print t('+ edit description');?></a></div>
+
+<?php }
 if($element['#field_name']=='field_application_tutors'){?>
 <div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table"><?php print t('+ add a photo or video');?></a></div>
+<?php }
+if($element['#field_name']=='field_videos'){?>
+<div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-screenshots"><?php print t('+ add a photo or video');?></a></div>
 <?php }  
 if($element['#field_name']=='field_application_featurs'){?>
 <div class="region-content field"><div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-featurs"><?php print t('+ edit key features');?></a></div></div><?php }
