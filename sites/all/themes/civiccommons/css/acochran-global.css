@@ -424,6 +424,9 @@ h2.block-title {
   border-right: 1px solid #5684bf;
   border-bottom: 1px solid #5684bf;
   border-left: 1px solid #99c5ff;
+     -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
 }
 
 .item-list ul li {
@@ -439,7 +442,7 @@ h2.block-title {
 .places-list-container h2.block-title {
   color: #FF8700;
   background: transparent;
-  font-size: 15px;
+  /*font-size: 15px;*/
   background: url('../images/place2.gif') center top no-repeat;
   padding: 80px 0 0;
   float: left;
@@ -547,6 +550,7 @@ h2.block-title {
 .apps-list {
   margin: 20px 0;
 }
+
 .views-field-field-application-logo {
   float: left;
   width: 60px;
