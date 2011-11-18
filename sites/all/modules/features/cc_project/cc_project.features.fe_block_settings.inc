@@ -14,17 +14,17 @@ function cc_project_default_fe_block_settings() {
   $theme = array();
 
   $theme['views-projects-block_1'] = array(
-    'cache' => -1,
     'module' => 'views',
     'delta' => 'projects-block_1',
     'theme' => 'alpha',
-    'pages' => '',
-    'weight' => 0,
     'status' => 0,
+    'weight' => '0',
     'region' => '',
-    'custom' => 0,
-    'visibility' => 0,
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
     'title' => '',
+    'cache' => -1,
   );
 
   $theme['views-projects_use_this_app-block'] = array(
@@ -47,17 +47,17 @@ function cc_project_default_fe_block_settings() {
   $theme = array();
 
   $theme['views-projects-block_1'] = array(
-    'cache' => -1,
     'module' => 'views',
     'delta' => 'projects-block_1',
     'theme' => 'bartik',
-    'pages' => '',
-    'weight' => 0,
     'status' => 0,
+    'weight' => '0',
     'region' => '',
-    'custom' => 0,
-    'visibility' => 0,
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
     'title' => '',
+    'cache' => -1,
   );
 
   $theme['views-projects_use_this_app-block'] = array(
@@ -80,17 +80,17 @@ function cc_project_default_fe_block_settings() {
   $theme = array();
 
   $theme['views-projects-block_1'] = array(
-    'cache' => -1,
     'module' => 'views',
     'delta' => 'projects-block_1',
     'theme' => 'civiccommons',
-    'pages' => '',
-    'weight' => 0,
     'status' => 0,
+    'weight' => '0',
     'region' => '',
-    'custom' => 0,
-    'visibility' => 0,
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
     'title' => '',
+    'cache' => -1,
   );
 
   $theme['views-projects_use_this_app-block'] = array(
@@ -113,17 +113,17 @@ function cc_project_default_fe_block_settings() {
   $theme = array();
 
   $theme['views-projects-block_1'] = array(
-    'cache' => -1,
     'module' => 'views',
     'delta' => 'projects-block_1',
     'theme' => 'omega',
-    'pages' => '',
-    'weight' => 0,
     'status' => 0,
+    'weight' => '0',
     'region' => '',
-    'custom' => 0,
-    'visibility' => 0,
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
     'title' => '',
+    'cache' => -1,
   );
 
   $theme['views-projects_use_this_app-block'] = array(
