@@ -286,18 +286,6 @@ function cc_contexts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'block-24' => array(
-          'module' => 'block',
-          'delta' => 24,
-          'region' => 'sidebar_second',
-          'weight' => '-52',
-        ),
-        'block-28' => array(
-          'module' => 'block',
-          'delta' => 28,
-          'region' => 'sidebar_second',
-          'weight' => '-52',
-        ),
         'views-applications-block_2' => array(
           'module' => 'views',
           'delta' => 'applications-block_2',
@@ -308,7 +296,7 @@ function cc_contexts_context_default_contexts() {
           'module' => 'views',
           'delta' => 'interactions-block',
           'region' => 'content_leftcolumn',
-          'weight' => '-44',
+          'weight' => '-10',
         ),
         'views-applications-block_3' => array(
           'module' => 'views',
@@ -326,19 +314,19 @@ function cc_contexts_context_default_contexts() {
           'module' => 'block',
           'delta' => 22,
           'region' => 'content_main',
-          'weight' => '-45',
+          'weight' => '-10',
         ),
         'views-apps_browse_by-block_2' => array(
           'module' => 'views',
           'delta' => 'apps_browse_by-block_2',
           'region' => 'content_main',
-          'weight' => '-44',
+          'weight' => '-9',
         ),
         'views-94b2fa9ab164ade56e342b3e41a8126c' => array(
           'module' => 'views',
           'delta' => '94b2fa9ab164ade56e342b3e41a8126c',
           'region' => 'content_main',
-          'weight' => '-10',
+          'weight' => '-7',
         ),
       ),
     ),
@@ -385,23 +373,17 @@ function cc_contexts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'views-apps_org_has_created-block' => array(
-          'module' => 'views',
-          'delta' => 'apps_org_has_created-block',
-          'region' => 'content',
-          'weight' => '-9',
-        ),
         'views-f180557b90e1950dc78c1a58bbf318df' => array(
           'module' => 'views',
           'delta' => 'f180557b90e1950dc78c1a58bbf318df',
           'region' => 'content',
-          'weight' => '-8',
+          'weight' => '-9',
         ),
         'views-interactions-block_3' => array(
           'module' => 'views',
           'delta' => 'interactions-block_3',
           'region' => 'content',
-          'weight' => '-7',
+          'weight' => '-8',
         ),
         'views-at_a_glance-block' => array(
           'module' => 'views',
