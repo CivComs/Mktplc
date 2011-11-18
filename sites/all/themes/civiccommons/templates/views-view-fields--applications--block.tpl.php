@@ -59,7 +59,7 @@
 
   <?php if($id == 'changed'): ?>
     <span class="date-updated">
-    <?php print $field->content; ?>
+    updated <?php print $field->content; ?>
     </span>  
   <?php endif; ?>
   
