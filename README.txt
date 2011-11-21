@@ -1,3 +1,40 @@
+                    The Civic Commons Marketplace
+                    =============================
+
+The Civic Commons Marketplace at http://marketplace.civiccommons.org/
+is a Drupal-based web service that helps government technologists and
+vendors "find out what's working, where".  It is a cooperatively
+maintained database of information about the software used by
+government entities.  It shows:
+
+  1) What a given piece of civic software is and does,
+  2) Where it's deployed or has been deployed,
+  3) Who offers installation, support, and development services for it,
+  4) Where its development community is (if open-source or similar)
+
+This tree holds the software that powers the Marketplace itself.  By
+publishing the code under an open source license, we hope to enable
+interested Marketplace users to contribute bugfixes and improvements
+back to the central site.  Naturally, releasing the code also means
+anyone can deploy the Marketplace as an application, but assuming the
+data at http://marketplace.civiccommons.org/ is well-curated, then
+there should be no reason to deploy other instances of that data set,
+except for development purposes.
+
+For more information, see the "CC Mktplc Data Architecture" document,
+which is (as of Nov 2011) still very much in progress:
+
+  https://docs.google.com/a/nuams.co/document/d/15ThJvJ2exUJzi7rp9tVZrpbtkuzVr-EIrzLBl8xPeEI/edit?pli=1
+
+The rest of this file is just the standard Drupal 7.7 README.txt,
+since the process of deploying the Marketplace is pretty much the
+process for deploying Drupal.  We'll add Marketplace-specific
+information here as we find time and need.  Documentation patches are
+always welcome, of course.
+
+The project's master repository is: https://github.com/CivComs/Mktplc
+
+======== Standard Drupal 7.7 README.txt follows ========
 
 CONTENTS OF THIS FILE
 ---------------------
