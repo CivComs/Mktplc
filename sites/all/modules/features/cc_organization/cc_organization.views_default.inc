@@ -652,8 +652,11 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['style_plugin'] = 'openlayers_map';
   $handler->display->display_options['style_options']['map'] = 'cc_organizations_map';
   /* Footer: Global: PHP */
@@ -804,6 +807,10 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler = $view->new_display('block', 'Block: Places where this app is in use', 'block');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Places where this app is in use';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: PHP */
   $handler->display->display_options['footer']['php']['id'] = 'php';
@@ -811,8 +818,8 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['footer']['php']['field'] = 'php';
   $handler->display->display_options['footer']['php']['empty'] = FALSE;
   $handler->display->display_options['footer']['php']['php_output'] = '<?php $dest = drupal_get_destination();?>
-<div class="add-deployment-button">
-<a href="<?php echo \'/node/add/interaction?app_id=\'.arg(1).\'&interaction_id=156&destination=\'.$dest[\'destination\'];?>">+ add a place</a>
+<div class="edit-content-button">
+<a class="button" href="<?php echo \'/node/add/interaction?app_id=\'.arg(1).\'&interaction_id=156&destination=\'.$dest[\'destination\'];?>">+ add a place</a>
 </div>
 ';
   $handler->display->display_options['defaults']['empty'] = FALSE;
@@ -825,9 +832,12 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
 ';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['empty']['area']['tokenize'] = 0;
+  $handler->display->display_options['block_description'] = 'Places where this app is in use';
 
   /* Display: OpenLayers DO: Orgs for Apps */
   $handler = $view->new_display('openlayers', 'OpenLayers DO: Orgs for Apps', 'openlayers_1');
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['css_class'] = 'orgs-list';
   $handler->display->display_options['defaults']['group_by'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -1032,6 +1042,8 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler = $view->new_display('block', 'Block: Organizations by place', 'block_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Agencies and organizations in this place';
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['css_class'] = 'orgs-list';
   $handler->display->display_options['display_description'] = 'Organizations in given place';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'mini';
@@ -1214,6 +1226,8 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler = $view->new_display('block', 'Block: Organizations by place (2)', 'block_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Agencies and organizations in this place';
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['css_class'] = 'orgs-list';
   $handler->display->display_options['display_description'] = 'Organizations (not government) in given place';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'mini';
@@ -1392,6 +1406,172 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'organization_type';
   $handler->display->display_options['block_description'] = 'Agencies and organizations';
+
+  /* Display: Block: Apps Made In This Place */
+  $handler = $view->new_display('block', 'Block: Apps Made In This Place', 'block_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Apps Made In This Place';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'mini';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Related Organization */
+  $handler->display->display_options['relationships']['field_application_creator_nid']['id'] = 'field_application_creator_nid';
+  $handler->display->display_options['relationships']['field_application_creator_nid']['table'] = 'field_data_field_application_creator';
+  $handler->display->display_options['relationships']['field_application_creator_nid']['field'] = 'field_application_creator_nid';
+  $handler->display->display_options['relationships']['field_application_creator_nid']['ui_name'] = 'Related Organization';
+  $handler->display->display_options['relationships']['field_application_creator_nid']['label'] = 'Creator';
+  $handler->display->display_options['relationships']['field_application_creator_nid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_application_creator_nid']['delta'] = '-1';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Street address (field_organization_address:locality) */
+  $handler->display->display_options['arguments']['field_organization_address_locality']['id'] = 'field_organization_address_locality';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['table'] = 'field_data_field_organization_address';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['field'] = 'field_organization_address_locality';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['relationship'] = 'field_application_creator_nid';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['title_enable'] = 1;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['title'] = 'Apps made in %1';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_type'] = 'raw';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_options']['index'] = '1';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['specify_validation'] = 1;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['validate']['type'] = 'php';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['validate_options']['code'] = 'return _cc_places_validate_place($argument);';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['glossary'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['limit'] = '0';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['transform_dash'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['break_phrase'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'application' => 'application',
+  );
+  $handler->display->display_options['block_description'] = 'Apps made in this place';
+
+  /* Display: Block: Projects Made In This Place */
+  $handler = $view->new_display('block', 'Block: Projects Made In This Place', 'block_4');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Projects Made In This Place';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'mini';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Related Organization */
+  $handler->display->display_options['relationships']['field_creators_nid']['id'] = 'field_creators_nid';
+  $handler->display->display_options['relationships']['field_creators_nid']['table'] = 'field_data_field_creators';
+  $handler->display->display_options['relationships']['field_creators_nid']['field'] = 'field_creators_nid';
+  $handler->display->display_options['relationships']['field_creators_nid']['ui_name'] = 'Related Organization';
+  $handler->display->display_options['relationships']['field_creators_nid']['label'] = 'Creator';
+  $handler->display->display_options['relationships']['field_creators_nid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_creators_nid']['delta'] = '-1';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Street address (field_organization_address:locality) */
+  $handler->display->display_options['arguments']['field_organization_address_locality']['id'] = 'field_organization_address_locality';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['table'] = 'field_data_field_organization_address';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['field'] = 'field_organization_address_locality';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['relationship'] = 'field_creators_nid';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['title_enable'] = 1;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['title'] = 'Projects made in %1';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_type'] = 'raw';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_options']['index'] = '1';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['specify_validation'] = 1;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['validate']['type'] = 'php';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['validate_options']['code'] = 'return _cc_places_validate_place($argument);';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['glossary'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['limit'] = '0';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['transform_dash'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['break_phrase'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'project' => 'project',
+  );
+  $handler->display->display_options['block_description'] = 'Projects made in this place';
   $export['cc_organizations'] = $view;
 
   $view = new view;
@@ -1531,7 +1711,8 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['footer']['area']['field'] = 'area';
   $handler->display->display_options['footer']['area']['empty'] = FALSE;
   $handler->display->display_options['footer']['area']['content'] = '<?php
- echo(l(
+echo \'<div class="edit-content-button">\'; 
+echo(l(
   t(\'+add a vendor\'),
   \'node/\' . arg(1) . \'/edit\',
   array(
@@ -1539,6 +1720,7 @@ echo _cc_helper_using_sharing($data->nid, \'\');
    \'fragment\' => \'edit-field-application-vendors\'
   )
  ));
+echo \'</div>\';
 ?>';
   $handler->display->display_options['footer']['area']['format'] = 'php_code';
   $handler->display->display_options['footer']['area']['tokenize'] = 0;
