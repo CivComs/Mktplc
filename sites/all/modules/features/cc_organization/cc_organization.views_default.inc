@@ -1425,6 +1425,21 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['label'] = 'Add one';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = '<?php 
+  echo l(
+    t(\'+ add one\'),
+    \'node/add/application\',
+    array(\'arguments\' => array(\'class\' => \'button\'))
+  );
+?>';
+  $handler->display->display_options['empty']['area']['format'] = 'php_code';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Related Organization */
   $handler->display->display_options['relationships']['field_application_creator_nid']['id'] = 'field_application_creator_nid';
@@ -1508,6 +1523,21 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['label'] = 'Add one';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = '<?php 
+  echo l(
+    t(\'+ add one\'),
+    \'node/add/project\',
+    array(\'arguments\' => array(\'class\' => \'button\'))
+  );
+?>';
+  $handler->display->display_options['empty']['area']['format'] = 'php_code';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Related Organization */
   $handler->display->display_options['relationships']['field_creators_nid']['id'] = 'field_creators_nid';
