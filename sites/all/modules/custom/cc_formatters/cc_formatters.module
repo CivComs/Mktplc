@@ -31,7 +31,8 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
       $r = isset($item['administrative_area']) ? $item['administrative_area'] : NULL;
       $c = isset($item['country']) ? $item['country'] : NULL;
       $item['administrative_area'] = !in_array($c, array('US', 'CA')) ? _cc_awe_region($r, $c) : $r;
-      $a = array_filter($item);
+      $s = array($item['locality'], $item['sub_administrative_area'], $item['administrative_area'], $item['country']);
+      $a = array_filter($s);
       $e[$delta]['#markup'] = implode(', ', $a);
     }
   return $e;
