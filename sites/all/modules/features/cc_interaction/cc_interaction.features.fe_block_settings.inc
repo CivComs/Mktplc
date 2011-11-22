@@ -56,7 +56,7 @@ function cc_interaction_default_fe_block_settings() {
     'delta' => 'cc_interactions_apps',
     'theme' => 'civiccommons',
     'status' => '1',
-    'weight' => '-58',
+    'weight' => '-57',
     'region' => 'sidebar_second',
     'custom' => '0',
     'visibility' => '0',
