@@ -290,6 +290,15 @@ function cc_project_views_default_views() {
 
   /* Display: At a glance */
   $handler = $view->new_display('block', 'At a glance', 'block_1');
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['empty'] = FALSE;
+  $handler->display->display_options['footer']['area']['content'] = '<div class="edit-content-button"><a href="/node/[nid]/edit">+ edit details</a></div>';
+  $handler->display->display_options['footer']['area']['format'] = 'full_html';
+  $handler->display->display_options['footer']['area']['tokenize'] = 1;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: URL */
   $handler->display->display_options['fields']['field_project_url']['id'] = 'field_project_url';
@@ -365,7 +374,7 @@ function cc_project_views_default_views() {
   $handler->display->display_options['fields']['field_creators']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['field_creators']['alter']['html'] = 0;
   $handler->display->display_options['fields']['field_creators']['element_label_colon'] = 0;
-  $handler->display->display_options['fields']['field_creators']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_creators']['element_default_classes'] = 0;
   $handler->display->display_options['fields']['field_creators']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_creators']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_creators']['hide_alter_empty'] = 0;
@@ -393,7 +402,7 @@ function cc_project_views_default_views() {
   $handler->display->display_options['fields']['field_apps_used']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['field_apps_used']['alter']['html'] = 0;
   $handler->display->display_options['fields']['field_apps_used']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_apps_used']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_apps_used']['element_default_classes'] = 0;
   $handler->display->display_options['fields']['field_apps_used']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_apps_used']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_apps_used']['hide_alter_empty'] = 0;

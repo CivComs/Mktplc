@@ -37,7 +37,7 @@ function cc_project_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Projects that use this app',
     'cache' => -1,
   );
 
@@ -70,7 +70,7 @@ function cc_project_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Projects that use this app',
     'cache' => -1,
   );
 
@@ -98,12 +98,12 @@ function cc_project_default_fe_block_settings() {
     'delta' => 'projects_use_this_app-block',
     'theme' => 'civiccommons',
     'status' => '1',
-    'weight' => '-53',
+    'weight' => '-55',
     'region' => 'content',
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Projects that use this app',
     'cache' => -1,
   );
 
@@ -136,7 +136,7 @@ function cc_project_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Projects that use this app',
     'cache' => -1,
   );
 
@@ -169,7 +169,7 @@ function cc_project_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Projects that use this app',
     'cache' => -1,
   );
 
