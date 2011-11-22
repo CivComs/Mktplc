@@ -33,6 +33,14 @@ function cc_standard_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '"Standards" are data formats, protocols, and APIs around which applications work.   Our goal here is to keep track of "Civic Standards" -- the standards that are of specific relevance and significance to civic technology.  This is admittedly vague, but let\'s just see how it goes.  Here\'s an example: <a href="http://apps.civiccommons.org/standards/open311" target="_blank">Open311</a> is a "civic standard", but <a href="http://www.w3.org/Protocols/" target="_blank">HTTP</a> isn\'t.  Enjoy!';
+  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
