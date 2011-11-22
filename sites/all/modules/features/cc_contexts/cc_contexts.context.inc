@@ -377,13 +377,19 @@ function cc_contexts_context_default_contexts() {
           'module' => 'views',
           'delta' => 'f180557b90e1950dc78c1a58bbf318df',
           'region' => 'content',
-          'weight' => '-9',
+          'weight' => '-58',
         ),
         'views-interactions-block_3' => array(
           'module' => 'views',
           'delta' => 'interactions-block_3',
           'region' => 'content',
-          'weight' => '-8',
+          'weight' => '-57',
+        ),
+        'views-applications-block_6' => array(
+          'module' => 'views',
+          'delta' => 'applications-block_6',
+          'region' => 'content',
+          'weight' => '-56',
         ),
         'views-at_a_glance-block' => array(
           'module' => 'views',
@@ -568,6 +574,37 @@ function cc_contexts_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'project';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'project' => 'project',
+      ),
+      'options' => array(
+        'node_form' => '1',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-projects-block_1' => array(
+          'module' => 'views',
+          'delta' => 'projects-block_1',
+          'region' => 'sidebar_second',
+          'weight' => '-10',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+  $export['project'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'search';
   $context->description = 'Search page ';
   $context->tag = '';
@@ -597,6 +634,44 @@ function cc_contexts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Search page ');
   $export['search'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'taxonomy';
+  $context->description = 'Taxonomy listing pages';
+  $context->tag = '';
+  $context->conditions = array(
+    'views' => array(
+      'values' => array(
+        'taxonomy_term_listing' => 'taxonomy_term_listing',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views--exp-taxonomy_term_listing-page' => array(
+          'module' => 'views',
+          'delta' => '-exp-taxonomy_term_listing-page',
+          'region' => 'sidebar_second',
+          'weight' => '-9',
+        ),
+        'views-taxonomy_term_listing-block_1' => array(
+          'module' => 'views',
+          'delta' => 'taxonomy_term_listing-block_1',
+          'region' => 'sidebar_second',
+          'weight' => '-10',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Taxonomy listing pages');
+  $export['taxonomy'] = $context;
 
   return $export;
 }
