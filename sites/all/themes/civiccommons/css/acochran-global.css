@@ -457,7 +457,7 @@ h2.block-title {
 .places-list-container .view-content {
   margin-bottom: 10px;
 }
-.places-list-container table {
+.places-list-container .views-field-field-organization-address {
   font-weight: bold;
 }
 .places-list-container td {
