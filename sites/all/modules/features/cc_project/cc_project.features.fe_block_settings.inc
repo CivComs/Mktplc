@@ -27,20 +27,6 @@ function cc_project_default_fe_block_settings() {
     'cache' => -1,
   );
 
-  $theme['views-projects_use_this_app-block'] = array(
-    'module' => 'views',
-    'delta' => 'projects_use_this_app-block',
-    'theme' => 'alpha',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => 'Projects that use this app',
-    'cache' => -1,
-  );
-
   $export['alpha'] = $theme;
 
   // bartik
@@ -57,20 +43,6 @@ function cc_project_default_fe_block_settings() {
     'visibility' => '0',
     'pages' => '',
     'title' => '',
-    'cache' => -1,
-  );
-
-  $theme['views-projects_use_this_app-block'] = array(
-    'module' => 'views',
-    'delta' => 'projects_use_this_app-block',
-    'theme' => 'bartik',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => 'Projects that use this app',
     'cache' => -1,
   );
 
@@ -93,20 +65,6 @@ function cc_project_default_fe_block_settings() {
     'cache' => -1,
   );
 
-  $theme['views-projects_use_this_app-block'] = array(
-    'module' => 'views',
-    'delta' => 'projects_use_this_app-block',
-    'theme' => 'civiccommons',
-    'status' => '1',
-    'weight' => '-55',
-    'region' => 'content',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => 'Projects that use this app',
-    'cache' => -1,
-  );
-
   $export['civiccommons'] = $theme;
 
   // omega
@@ -126,20 +84,6 @@ function cc_project_default_fe_block_settings() {
     'cache' => -1,
   );
 
-  $theme['views-projects_use_this_app-block'] = array(
-    'module' => 'views',
-    'delta' => 'projects_use_this_app-block',
-    'theme' => 'omega',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => 'Projects that use this app',
-    'cache' => -1,
-  );
-
   $export['omega'] = $theme;
 
   // seven
@@ -156,20 +100,6 @@ function cc_project_default_fe_block_settings() {
     'visibility' => '0',
     'pages' => '',
     'title' => '',
-    'cache' => -1,
-  );
-
-  $theme['views-projects_use_this_app-block'] = array(
-    'module' => 'views',
-    'delta' => 'projects_use_this_app-block',
-    'theme' => 'seven',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => 'Projects that use this app',
     'cache' => -1,
   );
 
