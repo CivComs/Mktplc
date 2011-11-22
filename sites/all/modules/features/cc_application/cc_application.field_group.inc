@@ -19,19 +19,21 @@ function cc_application_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Application in action',
+    'label' => 'Photos and Videos',
     'weight' => '2',
     'children' => array(
       0 => 'field_application_demourl',
       1 => 'group_app_screenshots',
       2 => 'group_app_tutorials',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'div',
     'format_settings' => array(
-      'label' => 'Application in action',
+      'label' => 'Photos and Videos',
       'instance_settings' => array(
         'classes' => '',
         'description' => '',
+        'effect' => 'none',
+        'speed' => 'none',
       ),
       'formatter' => 'open',
     ),
