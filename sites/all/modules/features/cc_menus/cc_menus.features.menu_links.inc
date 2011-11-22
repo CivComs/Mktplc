@@ -135,24 +135,6 @@ function cc_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '0',
   );
-  // Exported menu link: menu-cc-main-nav:http://civiccommons.org/projects/wiki
-  $menu_links['menu-cc-main-nav:http://civiccommons.org/projects/wiki'] = array(
-    'menu_name' => 'menu-cc-main-nav',
-    'link_path' => 'http://civiccommons.org/projects/wiki',
-    'router_path' => '',
-    'link_title' => 'Projects',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-    ),
-    'module' => 'menu',
-    'hidden' => '0',
-    'external' => '1',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '0',
-  );
   // Exported menu link: menu-cc-main-nav:http://wiki.civiccommons.org
   $menu_links['menu-cc-main-nav:http://wiki.civiccommons.org'] = array(
     'menu_name' => 'menu-cc-main-nav',
