@@ -10,12 +10,6 @@
 function cc_menus_menu_default_menu_custom() {
   $menus = array();
 
-  // Exported menu: devel
-  $menus['devel'] = array(
-    'menu_name' => 'devel',
-    'title' => 'Development',
-    'description' => 'Development link',
-  );
   // Exported menu: features
   $menus['features'] = array(
     'menu_name' => 'features',
@@ -99,8 +93,6 @@ function cc_menus_menu_default_menu_custom() {
   t('Add Content');
   t('Breadcrumbs');
   t('CC Main Nav');
-  t('Development');
-  t('Development link');
   t('Features');
   t('Main menu');
   t('Management');
