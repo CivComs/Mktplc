@@ -24,25 +24,6 @@ function cc_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '0',
   );
-  // Exported menu link: menu-add-content:<front>
-  $menu_links['menu-add-content:<front>'] = array(
-    'menu_name' => 'menu-add-content',
-    'link_path' => '<front>',
-    'router_path' => '',
-    'link_title' => 'App',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'fragment' => 'overlay=node/add/application',
-    ),
-    'module' => 'menu',
-    'hidden' => '0',
-    'external' => '1',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '-50',
-  );
   // Exported menu link: menu-add-content:node/add/interaction
   $menu_links['menu-add-content:node/add/interaction'] = array(
     'menu_name' => 'menu-add-content',
@@ -460,7 +441,6 @@ function cc_menus_menu_default_menu_links() {
   // Translatables
   // Included for use with string extractors like potx.
   t('About');
-  t('App');
   t('Apps');
   t('Blog');
   t('Community');
