@@ -46,7 +46,7 @@
   <?php if (!$label_hidden) : ?>
     <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>&nbsp;</div>
   <?php endif; 
-  if((($element['#field_name']=='field_application_description')||($element['#field_name']=='field_desc'))&&isset($items[0])&&empty($items[0]['#markup'])){
+  if((($element['#field_name']=='field_application_description')||($element['#field_name']=='field_desc')||($element['#field_name']=='field_organization_decs'))&&isset($items[0])&&empty($items[0]['#markup'])){
 	$items[0]['#markup']=t('No Description added yet.').'<span class="add-data-button"><a href="/node/'.arg(1).'/edit">'.t('Add one').'</a></span>';
   }
   
@@ -73,6 +73,9 @@ if($element['#field_name']=='field_application_description'){ ?>
 <?php }
 if($element['#field_name']=='field_desc'){ ?>
 <div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#field-desc-add-more-wrapper"><?php print t('+ edit description');?></a></div>
+<?php }
+if($element['#field_name']=='field_organization_decs'){ ?>
+<div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-organization-decs"><?php print t('+ edit description');?></a></div>
 
 <?php }
 if($element['#field_name']=='field_application_tutors'){?>
