@@ -1758,10 +1758,9 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         ),
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 27,
+          'type' => 'hidden',
+          'weight' => '27',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2103,7 +2102,7 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => 26,
+          'weight' => '26',
         ),
         'teaser' => array(
           'label' => 'above',
