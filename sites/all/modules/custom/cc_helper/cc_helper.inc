@@ -17,7 +17,7 @@ function _cc_helper_address_validate($element, $form_state) {
   $tid = isset($tids[0]['tid']) ? $tids[0]['tid'] : 0;
   $m = array();
   foreach ($items as $delta => $item) {
-		$ms = _cc_helper_org_address_error(
+    $ms = _cc_helper_org_address_error(
       isset($item['thoroughfare']) ? $item['thoroughfare'] : FALSE,
       isset($item['premise']) ? $item['premise'] : FALSE,
       isset($item['locality']) ? $item['locality'] : FALSE,
@@ -26,9 +26,9 @@ function _cc_helper_address_validate($element, $form_state) {
       isset($item['country']) ? $item['country'] : FALSE,
       $tid
     );
-		if($ms!='') {
-			$m[]=$ms;
-		};
+    if($ms!='') {
+      $m[]=$ms;
+    }
   }
   if (!empty($m)) {
     form_error($element, implode(' ', $m));
@@ -43,8 +43,11 @@ function _cc_helper_org_address_error($a1, $a2, $l, $ar, $sar, $c, $tid = 0) {
   if (($a1 || $a2 || $tid == 127) && (!$l || !$ar || !$c)) {
     $m = t('Please, provide city, state and country in address field.');
   }
-  elseif (($tid == 130 || $tid == 129 || $l || $sar) && (!$ar || !$c)) {
+  elseif (($tid == 130 || $l || $sar) && (!$ar || !$c)) {
     $m = t('Please, provide state and country in address field.');
+  }
+  elseif ($tid == 129 && (!$sar || !$ar || !$c)){
+    $m = t('Please, provide county, state and country in address field.');
   }
   elseif (($tid == 131 || $ar) && !$c) {
     $m = t('Please, provide country in address field.');
