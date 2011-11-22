@@ -83,7 +83,7 @@ function cc_content_creation_default_fe_block_settings() {
     'module' => 'block',
     'theme' => 'civiccommons',
     'status' => '1',
-    'weight' => '-52',
+    'weight' => '-56',
     'region' => 'search_bar',
     'custom' => '0',
     'visibility' => '0',
