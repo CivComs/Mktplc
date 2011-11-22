@@ -4,11 +4,11 @@
 The Civic Commons Marketplace at http://marketplace.civiccommons.org/
 is a Drupal-based web service that helps government technologists and
 vendors "find out what's working, where".  It is a cooperatively
-maintained database of information about the software used by
-government entities.  It shows:
+maintained database of information about software used by government,
+showing:
 
-  1) What a given piece of civic software is and does,
-  2) Where it's deployed or has been deployed,
+  1) What a given piece of civic software does,
+  2) Where it's deployed, or has been deployed,
   3) Who offers installation, support, and development services for it,
   4) Where its development community is (if open-source or similar)
 
@@ -18,23 +18,54 @@ interested Marketplace users to contribute bugfixes and improvements
 back to the central site.  Naturally, releasing the code also means
 anyone can deploy the Marketplace as an application, but assuming the
 data at http://marketplace.civiccommons.org/ is well-curated, then
-there should be no reason to deploy other instances of that data set,
-except for development purposes.
+there should be no reason to deploy other instances except for
+development purposes.
 
-For more information, see the "CC Mktplc Data Architecture" document,
-which is (as of Nov 2011) still very much in progress:
+--------------------------------------------
+Reporting bugs, contributing to development:
+--------------------------------------------
+
+The bug tracker for the Civic Commons Marketplace is here:
+
+  http://developer.civiccommons.org/projects/mktplc
+
+Before reporting a bug, please:
+
+  * Look in the bug tracker to see if the bug has already been reported.
+
+  * Check to see if your bug can be reproduced on the staging server,
+    http://dev.cc.warecorp.com/, where the deployed code is sometimes
+    running a bit ahead of what's on the production server.
+
+If you need a staging server account in order to test for the bug,
+please register as you normally would; if for some reason that doesn't
+work, file a ticket requesting an account.  Similarly, you should be
+able to self-register for a Redmine account to file bug tickets.
+
+To talk to people at Civic Commons in real time, find us in the IRC
+channel #civiccommons on irc.freenode.net (see http://irchelp.org/ if
+you're not familiar with IRC), or use http://civiccommons.org/contact.
+
+--------------------------------------------------
+Understanding the Marketplace's data architecture:
+--------------------------------------------------
+
+The "CC Mktplc Data Architecture" document, which is (as of Nov 2011)
+still very much in progress:
 
   https://docs.google.com/a/nuams.co/document/d/15ThJvJ2exUJzi7rp9tVZrpbtkuzVr-EIrzLBl8xPeEI/edit?pli=1
+
+==========================================================================
 
 The rest of this file is just the standard Drupal 7.7 README.txt,
 since the process of deploying the Marketplace is pretty much the
 process for deploying Drupal.  We'll add Marketplace-specific
-information here as we find time and need.  Documentation patches are
+information as we find time and need.  Documentation patches are
 always welcome, of course.
 
 The project's master repository is: https://github.com/CivComs/Mktplc
 
-======== Standard Drupal 7.7 README.txt follows ========
+================= Standard Drupal 7.7 README.txt follows =================
 
 CONTENTS OF THIS FILE
 ---------------------
