@@ -635,8 +635,9 @@ function cc_organization_field_default_fields() {
         ),
         'default' => array(
           'label' => 'hidden',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'text_default',
           'weight' => '1',
         ),
         'teaser' => array(
@@ -1871,7 +1872,7 @@ function cc_organization_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => 19,
+          'weight' => '19',
         ),
         'teaser' => array(
           'label' => 'above',
