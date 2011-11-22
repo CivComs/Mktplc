@@ -13,6 +13,20 @@ function cc_content_creation_default_fe_block_settings() {
   // alpha
   $theme = array();
 
+  $theme['block-cc_jm_add_content'] = array(
+    'module' => 'block',
+    'theme' => 'alpha',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '<none>',
+    'cache' => -1,
+    'machine_name' => 'cc_jm_add_content',
+  );
+
   $theme['menu-menu-add-content'] = array(
     'module' => 'menu',
     'delta' => 'menu-add-content',
@@ -31,6 +45,20 @@ function cc_content_creation_default_fe_block_settings() {
 
   // bartik
   $theme = array();
+
+  $theme['block-cc_jm_add_content'] = array(
+    'module' => 'block',
+    'theme' => 'bartik',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '<none>',
+    'cache' => -1,
+    'machine_name' => 'cc_jm_add_content',
+  );
 
   $theme['menu-menu-add-content'] = array(
     'module' => 'menu',
@@ -51,6 +79,20 @@ function cc_content_creation_default_fe_block_settings() {
   // civiccommons
   $theme = array();
 
+  $theme['block-cc_jm_add_content'] = array(
+    'module' => 'block',
+    'theme' => 'civiccommons',
+    'status' => '1',
+    'weight' => '-52',
+    'region' => 'search_bar',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '<none>',
+    'cache' => -1,
+    'machine_name' => 'cc_jm_add_content',
+  );
+
   $theme['menu-menu-add-content'] = array(
     'module' => 'menu',
     'delta' => 'menu-add-content',
@@ -70,6 +112,20 @@ function cc_content_creation_default_fe_block_settings() {
   // omega
   $theme = array();
 
+  $theme['block-cc_jm_add_content'] = array(
+    'module' => 'block',
+    'theme' => 'omega',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '<none>',
+    'cache' => -1,
+    'machine_name' => 'cc_jm_add_content',
+  );
+
   $theme['menu-menu-add-content'] = array(
     'module' => 'menu',
     'delta' => 'menu-add-content',
@@ -88,6 +144,20 @@ function cc_content_creation_default_fe_block_settings() {
 
   // seven
   $theme = array();
+
+  $theme['block-cc_jm_add_content'] = array(
+    'module' => 'block',
+    'theme' => 'seven',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '<none>',
+    'cache' => -1,
+    'machine_name' => 'cc_jm_add_content',
+  );
 
   $theme['menu-menu-add-content'] = array(
     'module' => 'menu',
