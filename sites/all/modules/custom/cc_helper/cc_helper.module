@@ -458,8 +458,8 @@ function cc_helper_node_view_alter(&$build) {
   global $app_in_act;
   if($build['#bundle']=='application' && $build['#view_mode']=='full'){
     $app_in_act = 0;
-    $app_in_act += count($build['field_application_screenshots']['#items']);
-    $app_in_act += count($build['field_application_tutors']['#items']);
+    $app_in_act += (isset($build['field_application_screenshots']) ? count($build['field_application_screenshots']['#items']) : 0);
+    $app_in_act += (isset($build['field_application_tutors']) ? count($build['field_application_tutors']['#items']) : 0);
   }
 }
 
@@ -540,7 +540,7 @@ function theme_using_sharing($variables) {
   $o = '';
   $variables['setting']=='full+person' ? $p=1 : $p=0;
   $variables['setting']=='full+person' ? $variables['setting']='full' : $variables['setting']=$variables['setting'];
-  foreach(array('using' => t('Using'), 'sharing' => t('Sharing')) as $key => $name) {
+  foreach(array('using' => t('Using'), 'sharing' => t('Created')) as $key => $name) {
     $c = $variables[$key] ? $variables[$key] : '';
     $n = $c ? '' : 'no-';
       if(!($p==1 && $key=='using') && $c){
