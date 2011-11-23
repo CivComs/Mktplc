@@ -554,7 +554,7 @@ function theme_using_sharing($variables) {
 }
 
 //Perform necessary operations just before data get saved.
-function cc_helper_node_update($node) {
+function cc_helper_node_submit($node, $form, &$form_state) {
   $fname =
     $node->type == 'application'
     ? 'field_application_creator'
@@ -562,14 +562,16 @@ function cc_helper_node_update($node) {
   if(empty($fname)) {
     return FALSE;
   }
-  $oldn = node_load($node->nid);
+  $oldnode = node_load($node->nid);
   $newf =  field_get_items('node', $node, $fname);
-  $oldf =  field_get_items('node', $oldn, $fname);
+  $oldf =  field_get_items('node', $oldnode, $fname);
   $new = array_filter(array_map('_cc_helper_nid', $newf ? $newf : array()));
   $old = array_filter(array_map('_cc_helper_nid', $oldf ? $oldf : array()));
   foreach($new as $nid) {
     if(!in_array($nid, $old)) {
-      _cc_helper_created($nid, ($node->type == 'application' ? $node->nid : 0), ($node->type == 'project' ? $node->nid : 0));
+      $int = _cc_helper_created($nid, ($node->type == 'application' ? $node->nid : 0), ($node->type == 'project' ? $node->nid : 0));
+      node_save($org);
+      $node->field_application_interactions[$node->language][] = array('nid' => $int->nid);
     }
   }
 }
