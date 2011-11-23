@@ -4,10 +4,10 @@
 The Civic Commons Marketplace at http://marketplace.civiccommons.org/
 is a Drupal-based web service that helps government technologists and
 vendors "find out what's working, where".  It is a cooperatively
-maintained database of information about software used by government,
-showing:
+maintained database of information about software used by governments
+of all sizes.  The Marketplace shows:
 
-  1) What a given piece of civic software does,
+  1) What a given civic software package does,
   2) Where it's deployed, or has been deployed,
   3) Who offers installation, support, and development services for it,
   4) Where its development community is (if open-source or similar)
@@ -16,10 +16,10 @@ This tree holds the software that powers the Marketplace itself.  By
 publishing the code under an open source license, we hope to enable
 interested Marketplace users to contribute bugfixes and improvements
 back to the central site.  Naturally, releasing the code also means
-anyone can deploy the Marketplace as an application, but assuming the
-data at http://marketplace.civiccommons.org/ is well-curated, then
-there should be no reason to deploy other instances except for
-development purposes.
+anyone could deploy a Marketplace-like site themselves.  However, the
+data at http://marketplace.civiccommons.org/ is actively curated, so
+there should be little motivation to deploy other instances, except
+temporary ones for development purposes.
 
 --------------------------------------------
 Reporting bugs, contributing to development:
