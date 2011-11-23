@@ -550,7 +550,7 @@ function theme_using_sharing($variables) {
       if(!($p==1 && $key=='using')){
       
         if (!$c && $key == 'using') {
-          $o .= '<div class="cc-org-apps"></div>';
+          $o .= '<div class="cc-org-apps">&nbsp;</div>';
         }
       
         if ($c) {
@@ -561,7 +561,7 @@ function theme_using_sharing($variables) {
         } 
         
         if (!$c && $key == 'sharing') {
-          $o .= '<div class="cc-org-apps"></div>';
+          $o .= '<div class="cc-org-apps">&nbsp;</div>';
         }
         
 
