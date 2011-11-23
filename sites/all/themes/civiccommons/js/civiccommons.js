@@ -1,7 +1,7 @@
 
 // Fire of row evenizers on page load
-jQuery(document).ready(evenizeRowHeights(".view-applications .views-row"));
-jQuery(document).ready(evenizeRowHeights(".view-places .views-row"));
+jQuery(document).ready(evenizeRowHeights(".view-applications .views-row .views-field-field-application-sdesc"));
+jQuery(document).ready(evenizeRowHeights(".view-places .views-row .field-content"));
 
 
 
