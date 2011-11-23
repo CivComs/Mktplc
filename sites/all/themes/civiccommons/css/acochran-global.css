@@ -409,6 +409,7 @@ body.front #region-content {
 }
 body.front #page-title {
   font-size: 50px;
+  margin-bottom: 0;
 }
 h2.block-title {
   color: #fff;
