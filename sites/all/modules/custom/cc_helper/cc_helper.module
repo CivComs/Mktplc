@@ -103,7 +103,10 @@ function cc_helper_views_pre_render(&$view) {
     ) || (
       $view->name == 'apps_this_organization_has_used'
       && $view->current_display == 'block'
-    )
+    ) || (
+			$view->name == 'applications'
+			&& $view->current_display == 'block_5'
+		)
   )) {
     return FALSE;
   }
@@ -111,7 +114,7 @@ function cc_helper_views_pre_render(&$view) {
   $f = field_get_items('node', $org, 'field_organization_type');
   $term = isset($f[0]['tid']) ? taxonomy_term_load($f[0]['tid']) : FALSE;
   $org_type = isset($term->field_watchname['und'][0]['safe_value']) ? $term->field_watchname['und'][0]['safe_value'] : '';
-  $c = $view->total_rows;
+  $c = isset($view->total_rows) ? $view->total_rows : count($view->result);
   if(isset($view->build_info['title'])) {
     $view->build_info['title'] = strtr(
       $view->build_info['title'],
