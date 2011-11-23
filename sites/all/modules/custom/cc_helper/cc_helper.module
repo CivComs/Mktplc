@@ -543,6 +543,7 @@ function theme_using_sharing($variables) {
   $o = '';
   $variables['setting']=='full+person' ? $p=1 : $p=0;
   $variables['setting']=='full+person' ? $variables['setting']='full' : $variables['setting']=$variables['setting'];
+  $o .= '<div class="using-sharing">';
   foreach(array('using' => t('Using'), 'sharing' => t('Created')) as $key => $name) {
     $c = $variables[$key] ? $variables[$key] : '';
     $n = $c ? '' : 'no-';
@@ -554,8 +555,8 @@ function theme_using_sharing($variables) {
       
         if ($c) {
 	 $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-' . $key . '">' . $name . '</div>';
-        $o .= '<div class="cc-org-count cc-' . $key . '">' . $c . '</div>';
-        $o .= $variables['setting'] == 'full' || $variables['setting'] == 'full+person' ? '<div class="cc-org-postfix">' . format_plural($variables[$key], 'app', 'apps') . '</div>' : '';
+        $o .= ' <div class="cc-org-count cc-' . $key . '">' . $c . '</div>';
+        $o .= $variables['setting'] == 'full' || $variables['setting'] == 'full+person' ? ' <div class="cc-org-postfix">' . format_plural($variables[$key], 'app', 'apps') . '</div>' : '';
         $o .= '</div>';
         } 
         
@@ -566,6 +567,7 @@ function theme_using_sharing($variables) {
 
       } 
   }
+  $o .= '</div>';
   return $o;
 }
 

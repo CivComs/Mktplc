@@ -464,11 +464,13 @@ h2.block-title {
 .places-list-container td {
   border-bottom: 1px dashed #eee;
   padding: 5px 0;
+  clear:both;
 }
 .places-list-container td > div {
-  float: left;
+  /*float: left;
   width: 48%;
   margin-right: 2%;
+  */
 }
 .places-list-container td div {
   display: inline;
@@ -483,7 +485,7 @@ h2.block-title {
   margin-right: 2%;
 }
 .cc-org-apps > div {
-  margin-right: 0.3em;
+  /*margin-right: 0.3em;*/
 }
 .cc-org-prefix-using,
 .cc-org-prefix-sharing {
@@ -702,6 +704,13 @@ h2.block-title {
   margin: 0 0 10px;
   padding: 10px 0 0;
 }
+
+#block-views-cc-organizations-block{
+margin-top: 20px;
+
+}
+
+
 .views-label {
   font-size: 14px;
   font-weight: bold;
@@ -726,7 +735,6 @@ h2.block-title {
 /* Places Page */
 .view-id-places .view-content {
   margin-bottom: 10px;
-  font-weight: bold;
 }
 .view-id-places .views-row {
   border-bottom: 1px dashed #eee;
@@ -734,22 +742,36 @@ h2.block-title {
   margin-bottom: 10px;
 }
 .view-id-places .views-row > div {
-  float: left;
+  /*float: left;
   width: 48%;
-  margin-right: 2%;
+  margin-right: 2%;*/
 }
 .view-id-places .views-row div {
   display: inline;
+}
+.view-id-places .views-row div.views-field-title  {
+  display: block;
+  font-weight: bold;
 }
 .view-id-places a {
   font-size: 16px;
   text-decoration: none;
 }
-.view-id-places .cc-org-apps {
-  float: left;
-  width: 48%;
-  margin-right: 2%;
+.view-id-places .views-row div.location {
+  display: block;
 }
+
+.view-id-places .using-sharing {
+  display: block;
+}
+.view-id-places .cc-org-apps {
+  /*float: left;
+  width: 48%;
+  margin-right: 2%;*/
+  float: none;
+  display: inline;
+  margin-right: 10px;
+  }
 
 /* Applications Page */
 .page-applications #region-content {
