@@ -4287,7 +4287,7 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['footer']['php']['table'] = 'views';
   $handler->display->display_options['footer']['php']['field'] = 'php';
   $handler->display->display_options['footer']['php']['empty'] = FALSE;
-  $handler->display->display_options['footer']['php']['php_output'] = '<div class="edit-content-button"><a href="<?php echo base_path(); ?>/node/add/application" class="button">+ add an app this org has used</a></div>';
+  $handler->display->display_options['footer']['php']['php_output'] = '<div class="edit-content-button"><a href="/node/add/application" class="button">+ add an app this org has used</a></div>';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
