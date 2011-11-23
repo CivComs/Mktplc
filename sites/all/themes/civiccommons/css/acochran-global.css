@@ -462,7 +462,7 @@ h2.block-title {
 }
 .places-list-container td {
   border-bottom: 1px dashed #eee;
-  padding: 10px 0;
+  padding: 5px 0;
 }
 .places-list-container td > div {
   float: left;
@@ -570,6 +570,7 @@ h2.block-title {
   font-weight: bold;
   text-decoration: none;
 }
+
 .apps-list .views-field-field-application-sdesc {
   font-size: 12px;
   margin-bottom: 10px;
@@ -629,7 +630,7 @@ h2.block-title {
 /* Block: Add to the Marketplace */
 .add-to-marketplace {
   background-color: #fbfbfb;
-  margin-bottom: 20px;
+  margin: -10px -10px 20px -10px;
      -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
           border-radius: 5px;
