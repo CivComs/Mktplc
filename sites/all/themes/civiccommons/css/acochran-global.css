@@ -472,6 +472,18 @@ h2.block-title {
   margin-right: 2%;
   */
 }
+
+.front .places-list-container .views-field-field-organization-address {
+  float: left;
+  width: 275px;
+}
+
+.front .using-sharing {
+  float: right;
+  width: 240px;
+}
+
+
 .places-list-container td div {
   display: inline;
 }
