@@ -98,7 +98,7 @@ function cc_content_creation_default_fe_block_settings() {
     'delta' => 'menu-add-content',
     'theme' => 'civiccommons',
     'status' => 0,
-    'weight' => '-52',
+    'weight' => '-56',
     'region' => '',
     'custom' => '0',
     'visibility' => '0',
