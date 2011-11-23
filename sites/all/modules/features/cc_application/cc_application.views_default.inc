@@ -2433,7 +2433,7 @@ if ($row1->php > $row2->php) {return 1;}';
   /* Display: Block: Apps this org has created/shared (nice) */
   $handler = $view->new_display('block', 'Block: Apps this org has created/shared (nice)', 'block_5');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Apps this organization has created';
+  $handler->display->display_options['title'] = 'Apps this !org_type has created (!count)';
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['defaults']['link_display'] = FALSE;
