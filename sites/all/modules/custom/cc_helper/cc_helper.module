@@ -565,6 +565,10 @@ function cc_helper_node_submit($node, $form, &$form_state) {
   if(empty($fname)) {
     return FALSE;
   }
+  $intfieldname =
+    $node->type == 'application'
+    ? 'field_application_interactions'
+    : ($node->type == 'project' ? 'field_project_interactions' : '');
   $oldnode = node_load($node->nid);
   $newf =  field_get_items('node', $node, $fname);
   $oldf =  field_get_items('node', $oldnode, $fname);
@@ -572,9 +576,10 @@ function cc_helper_node_submit($node, $form, &$form_state) {
   $old = array_filter(array_map('_cc_helper_nid', $oldf ? $oldf : array()));
   foreach($new as $nid) {
     if(!in_array($nid, $old)) {
-      $int = _cc_helper_created($nid, ($node->type == 'application' ? $node->nid : 0), ($node->type == 'project' ? $node->nid : 0));
-      node_save($org);
-      $node->field_application_interactions[$node->language][] = array('nid' => $int->nid);
+      $app_id =  ($node->type == 'application' ? $node->nid : 0);
+      $proj_id = ($node->type == 'project' ? $node->nid : 0);
+      $int = _cc_helper_created($nid, $app_id, $proj_id);
+      $node->{$intfieldname}[$node->language][] = array('nid' => $int->nid);
     }
   }
 }
