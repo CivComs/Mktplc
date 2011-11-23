@@ -643,9 +643,10 @@ h2.block-title {
 }
 
 /* Block: Add to the Marketplace */
-.add-to-marketplace {
+.block.add-to-marketplace,
+.block.highlight {
   background-color: #fbfbfb;
-  margin: -10px -10px 20px -10px;
+  /*margin: -10px -10px 20px -10px;*/
      -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
           border-radius: 5px;
@@ -653,18 +654,22 @@ h2.block-title {
  -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
          box-shadow: 0 1px 8px 1px #DED8D8;
 }
-.add-to-marketplace h2.block-title {
-  margin: 0 9px 18px;
+
+.add-to-marketplace h2.block-title,
+.block.highlight h2.block-title {
+  /*margin: 0 9px 18px;
   position: relative;
-  top: 9px;
+  top: 9px;*/
   background-color: #ed8309;
   border-color: #dc7b0f;
   border-top: 1px solid #ff8700;
   border-left: 1px solid #ff8700;
+     -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0;
+}
+.front .add-to-marketplace h2 {    
   text-align: center;
-     -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-          border-radius: 5px;
 }
 
 /* Apps Pages */
