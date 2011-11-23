@@ -23,7 +23,7 @@ function cc_interaction_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Add Connections',
     'cache' => '1',
   );
 
@@ -42,7 +42,7 @@ function cc_interaction_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Add Connections',
     'cache' => '1',
   );
 
@@ -56,12 +56,12 @@ function cc_interaction_default_fe_block_settings() {
     'delta' => 'cc_interactions_apps',
     'theme' => 'civiccommons',
     'status' => '1',
-    'weight' => '-57',
+    'weight' => '-54',
     'region' => 'sidebar_second',
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Add Connections',
     'cache' => '1',
   );
 
@@ -80,7 +80,7 @@ function cc_interaction_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Add Connections',
     'cache' => '1',
   );
 
@@ -99,7 +99,7 @@ function cc_interaction_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '0',
     'pages' => '',
-    'title' => '',
+    'title' => 'Add Connections',
     'cache' => '1',
   );
 
