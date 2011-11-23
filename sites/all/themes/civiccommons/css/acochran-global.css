@@ -132,6 +132,9 @@ aside .content {
   font-size: 12px;
   padding: 9px;
 }
+.block {
+  clear: both;
+}
 .block-views {
   margin-bottom: 20px;
 }
@@ -352,9 +355,6 @@ input#edit-go {
   margin-left: 1em;
 }
 
-#block-cc-flag-block-flag-block {
-  float: right;
-}
 #block-cc-flag-block-flag-block li {
   display: inline;
 }
