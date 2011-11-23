@@ -546,12 +546,25 @@ function theme_using_sharing($variables) {
   foreach(array('using' => t('Using'), 'sharing' => t('Created')) as $key => $name) {
     $c = $variables[$key] ? $variables[$key] : '';
     $n = $c ? '' : 'no-';
-      if(!($p==1 && $key=='using') && $c){
+      if(!($p==1 && $key=='using')){
+      
+        if (!$c && $key == 'using') {
+          $o .= '<div class="cc-org-apps"></div>';
+        }
+      
+        if ($c) {
 	 $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-' . $key . '">' . $name . '</div>';
         $o .= '<div class="cc-org-count cc-' . $key . '">' . $c . '</div>';
         $o .= $variables['setting'] == 'full' || $variables['setting'] == 'full+person' ? '<div class="cc-org-postfix">' . format_plural($variables[$key], 'app', 'apps') . '</div>' : '';
         $o .= '</div>';
-      }
+        } 
+        
+        if (!$c && $key == 'sharing') {
+          $o .= '<div class="cc-org-apps"></div>';
+        }
+        
+
+      } 
   }
   return $o;
 }
