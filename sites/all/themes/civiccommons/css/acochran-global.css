@@ -247,6 +247,17 @@ ul.nice-menu:hover a.active {
 #region-search-bar {
   position: relative;
 } 
+body.page-preview #region-search-bar {
+  display: none;
+}
+body.page-preview #breadcrumb {
+  display: none;  
+}
+body.page-preview #region-content {
+  padding: 40px;
+  text-align: center;
+  width: 920px;
+}
 #region-search-bar .region-search-bar-inner {
   margin-bottom: 3px;  
   background: url('../images/search-bg.png') center top no-repeat;
@@ -354,7 +365,9 @@ input#edit-go {
   clear: both;
   margin-left: 1em;
 }
-
+#block-addtoany-addtoany-button {
+  display: none;
+}
 #block-cc-flag-block-flag-block li {
   display: inline;
 }
