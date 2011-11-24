@@ -301,10 +301,9 @@ function cc_organization_field_default_fields() {
         ),
         'default' => array(
           'label' => 'hidden',
-          'module' => 'cc_formatters',
           'settings' => array(),
-          'type' => 'addressfield_city_only',
-          'weight' => '1',
+          'type' => 'hidden',
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -984,7 +983,7 @@ function cc_organization_field_default_fields() {
             'image_style' => 'org_logo_small',
           ),
           'type' => 'image',
-          'weight' => '0',
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
