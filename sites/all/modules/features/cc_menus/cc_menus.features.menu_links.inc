@@ -24,6 +24,24 @@ function cc_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '0',
   );
+  // Exported menu link: menu-add-content:node/add/application
+  $menu_links['menu-add-content:node/add/application'] = array(
+    'menu_name' => 'menu-add-content',
+    'link_path' => 'node/add/application',
+    'router_path' => 'node/add/application',
+    'link_title' => 'App',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '0',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '-50',
+  );
   // Exported menu link: menu-add-content:node/add/interaction
   $menu_links['menu-add-content:node/add/interaction'] = array(
     'menu_name' => 'menu-add-content',
@@ -123,6 +141,24 @@ function cc_menus_menu_default_menu_links() {
     'link_path' => '<front>',
     'router_path' => '',
     'link_title' => 'Marketplace',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '1',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '0',
+  );
+  // Exported menu link: menu-cc-main-nav:http://civiccommons.org/projects
+  $menu_links['menu-cc-main-nav:http://civiccommons.org/projects'] = array(
+    'menu_name' => 'menu-cc-main-nav',
+    'link_path' => 'http://civiccommons.org/projects',
+    'router_path' => '',
+    'link_title' => 'Projects',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -420,6 +456,7 @@ function cc_menus_menu_default_menu_links() {
   // Translatables
   // Included for use with string extractors like potx.
   t('About');
+  t('App');
   t('Apps');
   t('Blog');
   t('Community');
