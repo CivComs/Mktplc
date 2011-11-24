@@ -13,20 +13,6 @@ function cc_places_feature_default_fe_block_settings() {
   // alpha
   $theme = array();
 
-  $theme['views-1a26b9b8dd0e99c8183d024f0a0167fc'] = array(
-    'module' => 'views',
-    'delta' => '1a26b9b8dd0e99c8183d024f0a0167fc',
-    'theme' => 'alpha',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '',
-    'cache' => -1,
-  );
-
   $theme['views-6411095ab78ed6f4a9989c94614d5403'] = array(
     'module' => 'views',
     'delta' => '6411095ab78ed6f4a9989c94614d5403',
@@ -39,34 +25,6 @@ function cc_places_feature_default_fe_block_settings() {
     'pages' => '',
     'title' => '',
     'cache' => -1,
-  );
-
-  $theme['views-apps_browse_by-block_2'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_2',
-    'theme' => 'alpha',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '1',
-    'pages' => '',
-    'title' => 'Browse By Place',
-    'cache' => '1',
-  );
-
-  $theme['views-apps_browse_by-block_3'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_3',
-    'theme' => 'alpha',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '<none>',
-    'cache' => '1',
   );
 
   $theme['views-places-block_1'] = array(
@@ -102,20 +60,6 @@ function cc_places_feature_default_fe_block_settings() {
   // bartik
   $theme = array();
 
-  $theme['views-1a26b9b8dd0e99c8183d024f0a0167fc'] = array(
-    'module' => 'views',
-    'delta' => '1a26b9b8dd0e99c8183d024f0a0167fc',
-    'theme' => 'bartik',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '',
-    'cache' => -1,
-  );
-
   $theme['views-6411095ab78ed6f4a9989c94614d5403'] = array(
     'module' => 'views',
     'delta' => '6411095ab78ed6f4a9989c94614d5403',
@@ -128,34 +72,6 @@ function cc_places_feature_default_fe_block_settings() {
     'pages' => '',
     'title' => '',
     'cache' => -1,
-  );
-
-  $theme['views-apps_browse_by-block_2'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_2',
-    'theme' => 'bartik',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '1',
-    'pages' => '',
-    'title' => 'Browse By Place',
-    'cache' => '1',
-  );
-
-  $theme['views-apps_browse_by-block_3'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_3',
-    'theme' => 'bartik',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '<none>',
-    'cache' => '1',
   );
 
   $theme['views-places-block_1'] = array(
@@ -191,20 +107,6 @@ function cc_places_feature_default_fe_block_settings() {
   // civiccommons
   $theme = array();
 
-  $theme['views-1a26b9b8dd0e99c8183d024f0a0167fc'] = array(
-    'module' => 'views',
-    'delta' => '1a26b9b8dd0e99c8183d024f0a0167fc',
-    'theme' => 'civiccommons',
-    'status' => 0,
-    'weight' => '-18',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '',
-    'cache' => -1,
-  );
-
   $theme['views-6411095ab78ed6f4a9989c94614d5403'] = array(
     'module' => 'views',
     'delta' => '6411095ab78ed6f4a9989c94614d5403',
@@ -217,34 +119,6 @@ function cc_places_feature_default_fe_block_settings() {
     'pages' => '',
     'title' => '',
     'cache' => -1,
-  );
-
-  $theme['views-apps_browse_by-block_2'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_2',
-    'theme' => 'civiccommons',
-    'status' => 0,
-    'weight' => '-16',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '1',
-    'pages' => '',
-    'title' => 'Browse By Place',
-    'cache' => '1',
-  );
-
-  $theme['views-apps_browse_by-block_3'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_3',
-    'theme' => 'civiccommons',
-    'status' => 0,
-    'weight' => '-17',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '<none>',
-    'cache' => '1',
   );
 
   $theme['views-places-block_1'] = array(
@@ -280,20 +154,6 @@ function cc_places_feature_default_fe_block_settings() {
   // omega
   $theme = array();
 
-  $theme['views-1a26b9b8dd0e99c8183d024f0a0167fc'] = array(
-    'module' => 'views',
-    'delta' => '1a26b9b8dd0e99c8183d024f0a0167fc',
-    'theme' => 'omega',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '',
-    'cache' => -1,
-  );
-
   $theme['views-6411095ab78ed6f4a9989c94614d5403'] = array(
     'module' => 'views',
     'delta' => '6411095ab78ed6f4a9989c94614d5403',
@@ -306,34 +166,6 @@ function cc_places_feature_default_fe_block_settings() {
     'pages' => '',
     'title' => '',
     'cache' => -1,
-  );
-
-  $theme['views-apps_browse_by-block_2'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_2',
-    'theme' => 'omega',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '1',
-    'pages' => '',
-    'title' => 'Browse By Place',
-    'cache' => '1',
-  );
-
-  $theme['views-apps_browse_by-block_3'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_3',
-    'theme' => 'omega',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '<none>',
-    'cache' => '1',
   );
 
   $theme['views-places-block_1'] = array(
@@ -369,20 +201,6 @@ function cc_places_feature_default_fe_block_settings() {
   // seven
   $theme = array();
 
-  $theme['views-1a26b9b8dd0e99c8183d024f0a0167fc'] = array(
-    'module' => 'views',
-    'delta' => '1a26b9b8dd0e99c8183d024f0a0167fc',
-    'theme' => 'seven',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '',
-    'cache' => -1,
-  );
-
   $theme['views-6411095ab78ed6f4a9989c94614d5403'] = array(
     'module' => 'views',
     'delta' => '6411095ab78ed6f4a9989c94614d5403',
@@ -395,34 +213,6 @@ function cc_places_feature_default_fe_block_settings() {
     'pages' => '',
     'title' => '',
     'cache' => -1,
-  );
-
-  $theme['views-apps_browse_by-block_2'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_2',
-    'theme' => 'seven',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '1',
-    'pages' => '',
-    'title' => 'Browse By Place',
-    'cache' => '1',
-  );
-
-  $theme['views-apps_browse_by-block_3'] = array(
-    'module' => 'views',
-    'delta' => 'apps_browse_by-block_3',
-    'theme' => 'seven',
-    'status' => 0,
-    'weight' => '0',
-    'region' => '',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '<none>',
-    'cache' => '1',
   );
 
   $theme['views-places-block_1'] = array(
