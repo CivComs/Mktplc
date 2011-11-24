@@ -419,7 +419,7 @@ body.front #region-content {
 }
 #page-title {
   font-size: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 body.front #page-title {
   font-size: 50px;
@@ -625,14 +625,16 @@ h2.block-title {
 .apps-list .meta a {
   text-decoration: none;
 }
-.apps-list .meta span {
+.apps-list .meta .civic-function,
+.apps-list .meta .places-used,
+.apps-list .meta .date-updated {
   margin: 0 5px;
 }
 .apps-list .meta a {
 }
 .apps-list .meta span.civic-function {
 }
-.apps-list span.places-count {
+.apps-list span.places-used {
   font-weight: bold;
 }
 
@@ -686,11 +688,16 @@ h2.block-title {
   text-align: center;
 }
 
-/* Apps Pages */
-.field-name-field-application-logo {
+/* Apps & org Pages */
+.field-name-field-application-logo,
+.field-name-field-organization-logo {
   float: left;
   margin: 0 20px 20px 0;
 }
+.node-type-organization .field-name-field-organization-address {
+  margin: 0 0 10px;w
+}
+
 .group_basic_info {
   border-bottom: 1px solid #eee;
   padding: 0 0 20px;
