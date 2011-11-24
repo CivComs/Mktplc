@@ -293,6 +293,7 @@ input#edit-go {
 .block-custom-search-blocks {
   float:right;
   width: 390px;
+  clear: none;
 }
 
 #region-search-bar .section-nav .menu {
