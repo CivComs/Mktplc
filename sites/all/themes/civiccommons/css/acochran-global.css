@@ -135,7 +135,7 @@ aside .content {
 .block {
   clear: both;
 }
-.block-views {
+.block {
   margin-bottom: 20px;
 }
 
@@ -161,6 +161,9 @@ aside .content {
 #region-top-menu {
   margin-right: 0;
   float: right;
+}
+.block-nice-menus {
+  margin-bottom: 0;
 }
 .block-nice-menus ul.nice-menu {
   margin-top: 14px;
@@ -369,6 +372,11 @@ input#edit-go {
 #block-addtoany-addtoany-button {
   display: none;
 }
+#block-cc-flag-block-flag-block {
+  background: none;
+  box-shadow: none;
+  margin-bottom: none;
+}
 #block-cc-flag-block-flag-block li {
   display: inline;
 }
@@ -425,7 +433,9 @@ body.front #page-title {
   font-size: 50px;
   margin-bottom: 0;
 }
-h2.block-title {
+h2.block-title,
+#region-content .field-label {
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   color: #fff;
   background: #669fe9;
   font-size: 16px;
@@ -443,6 +453,21 @@ h2.block-title {
   -webkit-border-radius: 5px;
           border-radius: 5px;
 }
+#region-content .field-label {
+  margin-top: 20px;
+}
+#region-content h2.block-title,
+#region-content .field-label {
+  /* maybe make the headings inside an app/org less overwhelming?*/
+  /* more of an issue when there's no content */
+  background: none;
+  border: none;
+  border-bottom: 4px solid #ddd;
+  color: #333;
+  padding-left: 0;
+  font-weight: bold;
+  text-transform: none;
+} 
 
 .item-list ul li {
   border-bottom: 1px solid #eee;
@@ -660,7 +685,8 @@ h2.block-title {
 
 /* Block: Add to the Marketplace */
 .block.add-to-marketplace,
-.block.highlight {
+.block.highlight,
+#region-sidebar-second .block {
   background-color: #fbfbfb;
   /*margin: -10px -10px 20px -10px;*/
      -moz-border-radius: 5px;
@@ -669,6 +695,12 @@ h2.block-title {
     -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
  -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
          box-shadow: 0 1px 8px 1px #DED8D8;
+}
+
+#region-sidebar-second h2.block-title {
+     -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0;
 }
 
 .add-to-marketplace h2.block-title,
@@ -680,9 +712,6 @@ h2.block-title {
   border-color: #dc7b0f;
   border-top: 1px solid #ff8700;
   border-left: 1px solid #ff8700;
-     -moz-border-radius: 5px 5px 0 0;
-  -webkit-border-radius: 5px 5px 0 0;
-          border-radius: 5px 5px 0 0;
 }
 .front .add-to-marketplace h2 {    
   text-align: center;
@@ -699,8 +728,8 @@ h2.block-title {
 }
 
 .group_basic_info {
-  border-bottom: 1px solid #eee;
-  padding: 0 0 20px;
+  /*border-bottom: 1px solid #eee;*/
+  /*padding: 0 0 20px;*/
   margin: 0 0 20px;
 }
 
