@@ -909,7 +909,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = '';
   $handler->display->display_options['fields']['created']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['text'] = '[field_organization_address] - added [created]';
+  $handler->display->display_options['fields']['created']['alter']['text'] = '<br /> added [created]';
   $handler->display->display_options['fields']['created']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['created']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['created']['alter']['external'] = 0;
@@ -1119,7 +1119,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = '';
   $handler->display->display_options['fields']['created']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['text'] = '[field_organization_address] - [created]';
+  $handler->display->display_options['fields']['created']['alter']['text'] = '<br /> [created]';
   $handler->display->display_options['fields']['created']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['created']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['created']['alter']['external'] = 0;
@@ -1338,7 +1338,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = '';
   $handler->display->display_options['fields']['created']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['text'] = '[field_organization_address] - [created]';
+  $handler->display->display_options['fields']['created']['alter']['text'] = '<br />added [created]';
   $handler->display->display_options['fields']['created']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['created']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['created']['alter']['external'] = 0;
