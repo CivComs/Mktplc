@@ -46,13 +46,13 @@
   <?php endif; ?>
 
   <?php if($id == 'php'): ?>
-    <span class="places-count">
+    <span class="places-used">
     <?php print $field->content; ?>
     </span>  
   <?php endif; ?>
   
   <?php if($id == 'count'): ?>
-    <span class="">
+    <span class="places-used">
     <?php print $field->content; ?>
     </span>  
   <?php endif; ?>
