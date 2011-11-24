@@ -168,6 +168,7 @@ function cc_application_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Recently added apps';
   $handler->display->display_options['css_class'] = 'apps-list';
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['link_display'] = 'page_5';
   $handler->display->display_options['access']['type'] = 'perm';
@@ -175,7 +176,7 @@ function cc_application_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'node';
@@ -530,7 +531,6 @@ function cc_application_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Most Widely Used';
   $handler->display->display_options['defaults']['use_more'] = FALSE;
-  $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['defaults']['link_display'] = FALSE;
   $handler->display->display_options['link_display'] = 'page_3';
   $handler->display->display_options['defaults']['query'] = FALSE;
@@ -538,9 +538,11 @@ function cc_application_views_default_views() {
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -783,16 +785,17 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Recently added apps';
   $handler->display->display_options['defaults']['use_more'] = FALSE;
-  $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['defaults']['link_display'] = FALSE;
   $handler->display->display_options['link_display'] = 'page_4';
   $handler->display->display_options['defaults']['query'] = FALSE;
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -926,6 +929,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['field_application_civfunction']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_application_civfunction']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_application_civfunction']['group_rows'] = 1;
+  $handler->display->display_options['fields']['field_application_civfunction']['delta_limit'] = '1';
   $handler->display->display_options['fields']['field_application_civfunction']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_application_civfunction']['delta_reversed'] = 0;
   $handler->display->display_options['fields']['field_application_civfunction']['delta_first_last'] = 0;
@@ -2679,6 +2683,10 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['field_organization_type']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_organization_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_organization_type']['field_api_classes'] = 0;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Global: PHP */
   $handler->display->display_options['sorts']['php']['id'] = 'php';
@@ -4272,6 +4280,7 @@ if ($total > 0) echo "($total)";
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Apps This !org_type Has Used (!count)';
+  $handler->display->display_options['css_class'] = 'apps-list';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -4309,6 +4318,10 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['relationship'] = 'field_application_interactions_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['delta'] = '-1';
+  /* Relationship: Content: Taxonomy terms on node */
+  $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
+  $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
   /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_application_logo']['id'] = 'field_application_logo';
   $handler->display->display_options['fields']['field_application_logo']['table'] = 'field_data_field_application_logo';
@@ -4483,6 +4496,45 @@ if ($total > 0) echo "($total)";
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Add Deployment, Creation, Evaluation, Support (field_application_interactions) */
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['id'] = 'field_application_interactions_nid';
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['table'] = 'field_data_field_application_interactions';
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['delta'] = '-1';
+  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
+  $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
+  $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
+  $handler->display->display_options['relationships']['field_interaction_organization_nid']['relationship'] = 'field_application_interactions_nid';
+  $handler->display->display_options['relationships']['field_interaction_organization_nid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_interaction_organization_nid']['delta'] = '-1';
+  /* Relationship: Content: Taxonomy terms on node */
+  $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
+  $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['required'] = 0;
+  $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
+    'civic_function' => 'civic_function',
+    'agency_type' => 0,
+    'app_services_provided' => 0,
+    'app_user_role' => 0,
+    'branch' => 0,
+    'country' => 0,
+    'development_status' => 0,
+    'interaction_type' => 0,
+    'level_of_government' => 0,
+    'organization_type' => 0,
+    'place_type' => 0,
+    'requirements' => 0,
+    'software_delivery_method' => 0,
+    'software_function' => 0,
+    'software_licenses' => 0,
+    'software_type' => 0,
+    'tags' => 0,
+    'vendor_services' => 0,
+  );
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_application_logo']['id'] = 'field_application_logo';
@@ -4587,31 +4639,118 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['fields']['field_application_sdesc']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_application_sdesc']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_application_sdesc']['field_api_classes'] = 0;
-  /* Field: Content: Post date */
-  $handler->display->display_options['fields']['created']['id'] = 'created';
-  $handler->display->display_options['fields']['created']['table'] = 'node';
-  $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['label'] = '';
-  $handler->display->display_options['fields']['created']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['text'] = 'added [created]';
-  $handler->display->display_options['fields']['created']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['created']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['created']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['created']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['created']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['created']['date_format'] = 'custom';
-  $handler->display->display_options['fields']['created']['custom_date_format'] = 'n/j/y';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['php']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['php']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['php']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = '$nid = $data->nid;
+$count = _cc_helper_app_locs($nid);
+return $count;
+';
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'places\') : \'\';
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '1';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: Content: Civic Function */
+  $handler->display->display_options['fields']['field_application_civfunction']['id'] = 'field_application_civfunction';
+  $handler->display->display_options['fields']['field_application_civfunction']['table'] = 'field_data_field_application_civfunction';
+  $handler->display->display_options['fields']['field_application_civfunction']['field'] = 'field_application_civfunction';
+  $handler->display->display_options['fields']['field_application_civfunction']['label'] = '';
+  $handler->display->display_options['fields']['field_application_civfunction']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_application_civfunction']['element_default_classes'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['group_rows'] = 1;
+  $handler->display->display_options['fields']['field_application_civfunction']['delta_limit'] = '1';
+  $handler->display->display_options['fields']['field_application_civfunction']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_application_civfunction']['delta_reversed'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['delta_first_last'] = 0;
+  $handler->display->display_options['fields']['field_application_civfunction']['field_api_classes'] = 0;
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = '';
+  $handler->display->display_options['fields']['changed']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['changed']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['changed']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['changed']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['changed']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['changed']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['changed']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['changed']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['changed']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['changed']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['changed']['date_format'] = 'cc_date_short';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<div class="meta">
+<span class="civic-function">[field_application_civfunction]</span> 
+<span class="places-used">[php]</span> 
+<span class="date-updated">updated [changed]</span>
+</div>';
+  $handler->display->display_options['fields']['nothing']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['nothing']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['nothing']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nothing']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['nothing']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['nothing']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['nothing']['hide_alter_empty'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -4653,7 +4792,7 @@ if ($total > 0) echo "($total)";
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'At a glance';
+  $handler->display->display_options['title'] = 'Who\'s using this app';
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -4893,6 +5032,8 @@ if ($total > 0) echo "($total)";
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'At a glance';
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
@@ -4902,22 +5043,6 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['header']['area']['content'] = '[field_application_homepage]';
   $handler->display->display_options['header']['area']['format'] = 'filtered_html';
   $handler->display->display_options['header']['area']['tokenize'] = 1;
-  /* Header: Global: PHP */
-  $handler->display->display_options['header']['php']['id'] = 'php';
-  $handler->display->display_options['header']['php']['table'] = 'views';
-  $handler->display->display_options['header']['php']['field'] = 'php';
-  $handler->display->display_options['header']['php']['empty'] = FALSE;
-  $handler->display->display_options['header']['php']['php_output'] = '<?php
-$result = 0;
-$args = $view->args;
-$nid = $args[0];
-$result = _cc_helper_app_locs($nid); //cc_helper.module
-if($result) {
-echo(\'<div class="views-field views-field-field-application-used-in"><span class="views-label">Used in</span><div class="cc-app-places"><div class="cc-places-count">\' . $result . \'</div><div class="cc-places-postfix">\'.format_plural($result, \'place\', \'places\').\'</div></div></div>\');
-} else {
- echo \'\';
-}
-?>';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: Text area */
   $handler->display->display_options['footer']['area']['id'] = 'area';
@@ -5248,6 +5373,53 @@ echo(\'<div class="views-field views-field-field-application-used-in"><span clas
   $handler->display->display_options['fields']['nothing']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nothing']['hide_alter_empty'] = 0;
   $handler->display->display_options['block_description'] = 'At a glance (Apps)';
+
+  /* Display: Places / add a place (App) */
+  $handler = $view->new_display('block', 'Places / add a place (App)', 'block_1');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: PHP */
+  $handler->display->display_options['header']['php']['id'] = 'php';
+  $handler->display->display_options['header']['php']['table'] = 'views';
+  $handler->display->display_options['header']['php']['field'] = 'php';
+  $handler->display->display_options['header']['php']['empty'] = FALSE;
+  $handler->display->display_options['header']['php']['php_output'] = '<?php
+$result = 0;
+$args = $view->args;
+$nid = $args[0];
+$result = _cc_helper_app_locs($nid); //cc_helper.module
+if($result) {
+echo(\'<div class="views-field views-field-field-application-used-in"> <span class="views-label">Used in</span> <div class="cc-app-places"> <div class="cc-places-count">\' . $result . \'</div> <div class="cc-places-postfix">\'.format_plural($result, \'place\', \'places\').\'</div></div></div><a href="#block-views-cc-organizations-block">See where &rarr;</a>\');
+} else {
+ echo \'<div class="views-field views-field-field-application-used-in">We don\\\'t know where this app is used yet.</div>\';
+}
+?>';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['text'] = '<div class="edit-content-button"><a href="/node/add/interaction/?edit%5Bfield_interaction_type%5D%5Bund%5D=156&edit%5Bfield_interaction_application%5D%5Bund%5D%5B0%5D%5Bnid%5D=%1%20%5Bnid%3A%20[nid]%5D&compact-overlay=true&destination=node/[nid]">+ add a place</a></div>';
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['nid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
+  $handler->display->display_options['block_description'] = 'Places / add a place (App)';
   $export['at_a_glance_application_'] = $view;
 
   $view = new view;
@@ -5955,34 +6127,6 @@ print $value;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Who Created the Application? */
-  $handler->display->display_options['fields']['field_application_creator']['id'] = 'field_application_creator';
-  $handler->display->display_options['fields']['field_application_creator']['table'] = 'field_data_field_application_creator';
-  $handler->display->display_options['fields']['field_application_creator']['field'] = 'field_application_creator';
-  $handler->display->display_options['fields']['field_application_creator']['label'] = '';
-  $handler->display->display_options['fields']['field_application_creator']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_application_creator']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_application_creator']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['type'] = 'node_reference_plain';
-  $handler->display->display_options['fields']['field_application_creator']['group_rows'] = 1;
-  $handler->display->display_options['fields']['field_application_creator']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_application_creator']['delta_reversed'] = 0;
-  $handler->display->display_options['fields']['field_application_creator']['separator'] = '<br />';
-  $handler->display->display_options['fields']['field_application_creator']['field_api_classes'] = 0;
   /* Field: Content: Short Description */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
