@@ -56,7 +56,7 @@ function cc_project_default_fe_block_settings() {
     'delta' => 'projects-block_1',
     'theme' => 'civiccommons',
     'status' => 0,
-    'weight' => '7',
+    'weight' => '8',
     'region' => '',
     'custom' => '0',
     'visibility' => '0',
