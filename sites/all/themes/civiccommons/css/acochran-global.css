@@ -667,9 +667,13 @@ h2.block-title,
 .view-interactions {
 }
 .view-interactions .org-name a {
-  font-size: 16px;
   font-weight: bold;
-  text-decoration: none;
+  /*font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;*/
+}
+.view-interactions .app-name a {
+  font-weight: bold;
 }
 
 /* Block: Preview Intro */

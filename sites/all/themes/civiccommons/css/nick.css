@@ -15,18 +15,18 @@ background: none !important;
 .view-interactions .interaction {
   text-transform: lowercase;
   padding: 1px 3px;
-}
+  background: #ffffcc;
+  color: black;}
 
-.view-interactions .interaction.Evaluated {
+/*.view-interactions .interaction.Evaluated {
   background: #ffffcc;
   color: black;
-}
+}*/
 
 .view-interactions .interaction.Deployed {
-  background: green;
-  color: white;
+  background: #D0E664;
 }
-
+/*
 .view-interactions .interaction.Created {
   background: yellow;
   color: black;
@@ -41,6 +41,7 @@ background: none !important;
 .view-interactions .app-name {
   font-weight: bold;
 }
+*/
 
 /* Janrain Engage (LinkedIn)
 -----------------------------*/
