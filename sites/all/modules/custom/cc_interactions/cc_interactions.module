@@ -121,45 +121,83 @@ function cc_interactions_form_interaction_node_form_alter(&$form, &$form_state, 
   drupal_add_css(drupal_get_path('module', 'cc_interactions') . '/css/cc_interactions.css');
 }
 
-function cc_interactions_node_insert($node) {
-  _cc_interactions_created_by($node);
-}
-
-function cc_interactions_node_update($node) {
-  _cc_interactions_created_by($node);
-}
-
-function _cc_interactions_created_by($node) {
-  $fname =
-    $node->type == 'application'
-    ? 'field_application_creator'
-    : ($node->type == 'project' ? 'field_creators' : '');
-  if(empty($fname)) {
+function cc_interactions_node_submit($node, $form, &$form_state) {
+  $isorg = $node->type == 'organization';
+  $isapp = $node->type == 'application';
+  $isproj = $node->type == 'project';
+  if(!$isproj && !$isapp && !$isorg) {
     return FALSE;
   }
-  $intfieldname =
-    $node->type == 'application'
-    ? 'field_application_interactions'
-    : ($node->type == 'project' ? 'field_project_interactions' : '');
   $oldnode = node_load($node->nid);
-  $newf =  field_get_items('node', $node, $fname);
-  $oldf =  field_get_items('node', $oldnode, $fname);
-  $new = array_filter(array_map('_cc_interactions_nid', $newf ? $newf : array()));
-  $old = array_filter(array_map('_cc_interactions_nid', $oldf ? $oldf : array()));
-  foreach($new as $nid) {
-    if(!in_array($nid, $old)) {
-      $app_id =  ($node->type == 'application' ? $node->nid : 0);
-      $proj_id = ($node->type == 'project' ? $node->nid : 0);
-      $int = _cc_interactions_created($nid, $app_id, $proj_id);
-      $node->{$intfieldname}[$node->language][] = array('nid' => $int->nid);
-      node_save($node);
+  $fieldname = $isorg ? 'field_organization_apps_created' : (
+    $isapp ? 'field_application_creator' : (
+      isproj ? 'field_creators' : FALSE
+    )
+  );
+  $intfieldname = $isapp ? 'field_application_interactions' : (
+    $isproj ? 'field_project_interactions' : (
+      $isorg ? 'field_organization_interactions' : NULL
+    )
+  );
+  $added = _cc_interactions_added($fieldname, $node, $oldnode);
+  $nids = array_filter(array_map('_cc_interactions_nid', $added));
+  foreach($nids as $nid) {
+    $org_id = $isorg ? $node->nid : ($isapp ? $nid : ($isproj ? $nid : FALSE));
+    $app_id = $isorg ? $nid : ($isapp ? $node->nid : ($isproj ? NULL : FALSE));
+    $proj_id = $isorg ? NULL : ($isapp ? NULL : ($isproj ? $node->nid : FALSE));
+    $int = _cc_interactions_created($org_id, $app_id, $proj_id);
+    if($int) {
+      _cc_interactions_del_created($org_id, $app_id, $proj_id);
+      node_save($int);
     }
+    $node->{$intfieldname}[$node->language][] = array('nid' => $int->nid);
+    node_save($node);
   }
 }
 
-//$item - node reference field item.
+//Array of items added to a field of the node. $field - field name, $new - updated node, $old - unchanged node.
+function _cc_interactions_added($field, $new, $old = NULL) {
+  $newf = field_get_items('node', $new, $field);
+  $oldf = $old ? field_get_items('node', $old, $field) : array();
+  $added = array();
+  foreach($newf as $delta => $item) {
+    if(!in_array($item, $oldf)) {
+      $added[] = $item;
+    }
+  }
+  return $added;
+}
+
+//$item - node reference field item or node object.
 function _cc_interactions_nid($item) {
-  return isset($item['nid']) ? $item['nid'] : NULL;
+  if (is_array($item)) {
+    return isset($item['nid']) ? $item['nid'] : FALSE;
+  }
+  elseif (is_object($item)) {
+    return isset($item->nid) ? $item->nid : FALSE;
+  }
+}
+
+//Delete interactions of type "Created" from database.
+function _cc_interactions_del_created($org_id = 0, $app_id = 0, $proj_id = 0) {
+  $q = new EntityFieldQuery();
+  $q
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'interaction')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_interaction_type', 'tid', 154, '=');
+  if($org_id) {
+    $q->fieldCondition('field_interaction_organization', 'nid', $org_id, '=');
+  }
+  if($app_id) {
+    $q->fieldCondition('field_interaction_application', 'nid', $app_id, '=');
+  }
+  if($proj_id) {
+    $q->fieldCondition('field_interaction_project', 'nid', $proj_id, '=');
+  }
+  $r = $q->execute();
+  $nids = array_map('_cc_interactions_nid', isset($r['node']) ? $r['node'] : array());
+  node_delete_multiple($nids);
 }
 
 //New interaction of type "Created".
@@ -178,6 +216,5 @@ function _cc_interactions_created($org_id = 0, $app_id = 0, $proj_id=0) {
   if ($proj_id) {
     $i->field_interaction_project[$i->language][0]['nid'] = $proj_id;
   }
-  node_save($i);
   return $i;
 }
