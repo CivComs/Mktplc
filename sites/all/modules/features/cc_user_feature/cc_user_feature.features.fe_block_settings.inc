@@ -23,7 +23,10 @@ function cc_user_feature_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '1',
     'pages' => 'user/login
-user/register',
+user/register
+user/denied
+toboggan/denied
+denied',
     'title' => '',
     'cache' => -1,
   );
@@ -43,7 +46,10 @@ user/register',
     'custom' => '0',
     'visibility' => '1',
     'pages' => 'user/login
-user/register',
+user/register
+user/denied
+toboggan/denied
+denied',
     'title' => '',
     'cache' => -1,
   );
@@ -63,7 +69,10 @@ user/register',
     'custom' => '0',
     'visibility' => '1',
     'pages' => 'user/login
-user/register',
+user/register
+user/denied
+toboggan/denied
+denied',
     'title' => '',
     'cache' => -1,
   );
@@ -83,7 +92,10 @@ user/register',
     'custom' => '0',
     'visibility' => '1',
     'pages' => 'user/login
-user/register',
+user/register
+user/denied
+toboggan/denied
+denied',
     'title' => '',
     'cache' => -1,
   );
@@ -103,7 +115,10 @@ user/register',
     'custom' => '0',
     'visibility' => '1',
     'pages' => 'user/login
-user/register',
+user/register
+user/denied
+toboggan/denied
+denied',
     'title' => '',
     'cache' => -1,
   );
