@@ -105,7 +105,7 @@ function cc_helper_views_pre_render(&$view) {
       && $view->current_display == 'block'
     ) || (
 			$view->name == 'applications'
-			&& $view->current_display == 'block_5'
+			&& ($view->current_display == 'block_5' || $view->current_display = 'block_6' || $view->current_display = 'block_7')
 		)
   )) {
     return FALSE;
@@ -118,7 +118,7 @@ function cc_helper_views_pre_render(&$view) {
   if(isset($view->build_info['title'])) {
     $view->build_info['title'] = strtr(
       $view->build_info['title'],
-      array('!count' => $c, '!org_type' => $org_type)
+      array('!count' => $c, '!org_type' => $org_type, '!place' => arg(1))
     );
   }
 }
