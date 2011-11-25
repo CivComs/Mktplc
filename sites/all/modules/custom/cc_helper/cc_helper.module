@@ -387,9 +387,9 @@ function cc_helper_entity_info_alter(&$entity_info) {
 
 function _cc_helper_creators_info($appid) {
   $node = node_load($appid);
-  isset($node->language) ? $lng = $node->language : $lng = 'und';
-  $empty = !is_array($node->field_application_creator[$lng]);
-  $out=!$empty ? '<ul>' : '';
+  $lng = isset($node->language) ? $node->language : 'und';
+  $empty = isset($node->field_application_creator[$lng]) ? !is_array($node->field_application_creator[$lng]) : TRUE;
+  $out = !$empty ? '<ul>' : '';
   if(isset($node->field_application_creator[$lng])){
   foreach($node->field_application_creator[$lng] as $row){
     $creator_node = node_load($row['nid']);
@@ -571,55 +571,3 @@ function theme_using_sharing($variables) {
   return $o;
 }
 
-//Perform necessary operations just before data get saved.
-function cc_helper_node_submit($node, $form, &$form_state) {
-  $fname =
-    $node->type == 'application'
-    ? 'field_application_creator'
-    : ($node->type == 'project' ? 'field_creators' : '');
-  if(empty($fname)) {
-    return FALSE;
-  }
-  $intfieldname =
-    $node->type == 'application'
-    ? 'field_application_interactions'
-    : ($node->type == 'project' ? 'field_project_interactions' : '');
-  $oldnode = node_load($node->nid);
-  $newf =  field_get_items('node', $node, $fname);
-  $oldf =  field_get_items('node', $oldnode, $fname);
-  $new = array_filter(array_map('_cc_helper_nid', $newf ? $newf : array()));
-  $old = array_filter(array_map('_cc_helper_nid', $oldf ? $oldf : array()));
-  foreach($new as $nid) {
-    if(!in_array($nid, $old)) {
-      $app_id =  ($node->type == 'application' ? $node->nid : 0);
-      $proj_id = ($node->type == 'project' ? $node->nid : 0);
-      $int = _cc_helper_created($nid, $app_id, $proj_id);
-      $node->{$intfieldname}[$node->language][] = array('nid' => $int->nid);
-    }
-  }
-}
-
-//$item - node reference field item.
-function _cc_helper_nid($item) {
-  return isset($item['nid']) ? $item['nid'] : NULL;
-}
-
-//New interaction of type "Created".
-function _cc_helper_created($org_id = 0, $app_id = 0, $proj_id=0) {
-  $i = new StdClass();
-  $i->type = 'interaction';
-  $i->language = LANGUAGE_NONE;
-  node_object_prepare($i);
-  $i->field_interaction_type[$i->language][0]['tid'] = 154;
-  if ($org_id) {
-    $i->field_interaction_organization[$i->language][0]['nid'] = $org_id;
-  }
-  if ($app_id) {
-    $i->field_interaction_application[$i->language][0]['nid'] = $app_id;
-  }
-  if ($proj_id) {
-    $i->field_interaction_project[$i->language][0]['nid'] = $proj_id;
-  }
-  node_save($i);
-  return $i;
-}
