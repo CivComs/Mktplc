@@ -111,19 +111,18 @@ function cc_helper_views_pre_render(&$view) {
     return FALSE;
   }
   $org = node_load(isset($view->args[0]) ? $view->args[0] : 0);
-	//var_dump($org); die;
   if($org){
-	$f = field_get_items('node', $org, 'field_organization_type');
-  $term = isset($f[0]['tid']) ? taxonomy_term_load($f[0]['tid']) : FALSE;
-  $org_type = isset($term->field_watchname['und'][0]['safe_value']) ? $term->field_watchname['und'][0]['safe_value'] : '';
-  $c = isset($view->total_rows) ? $view->total_rows : count($view->result);
-  if(isset($view->build_info['title'])) {
-    $view->build_info['title'] = strtr(
-      $view->build_info['title'],
-      array('!count' => $c, '!org_type' => $org_type)
-    );
-  }}
-	//unset($org, $f, $term, $org_type, $c);
+		$f = field_get_items('node', $org, 'field_organization_type');
+		$term = isset($f[0]['tid']) ? taxonomy_term_load($f[0]['tid']) : FALSE;
+		$org_type = isset($term->field_watchname['und'][0]['safe_value']) ? $term->field_watchname['und'][0]['safe_value'] : '';
+		$c = isset($view->total_rows) ? $view->total_rows : count($view->result);
+		if(isset($view->build_info['title'])) {
+			$view->build_info['title'] = strtr(
+				$view->build_info['title'],
+				array('!count' => $c, '!org_type' => $org_type)
+			);
+		}
+	}
 	return TRUE;
 }
 
