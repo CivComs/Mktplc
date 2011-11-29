@@ -38,6 +38,13 @@ function _cc_helper_is_place($var) {
   }
 }
 
+function _cc_helper_title_by_id($nid){
+	$node = node_load($nid);
+	if($node){
+		return $node->title;
+	}
+}
+
 
 /* Amount of sharing applications. $org - organization node object, ID or it's city array(
 'locality' => city name
