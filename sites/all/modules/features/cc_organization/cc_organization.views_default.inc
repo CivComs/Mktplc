@@ -851,7 +851,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['footer']['php']['empty'] = FALSE;
   $handler->display->display_options['footer']['php']['php_output'] = '<?php $dest = drupal_get_destination();?>
 <div class="edit-content-button">
-<a class="button" href="<?php echo \'/node/add/interaction?app_id=\'.arg(1).\'&interaction_id=156&destination=\'.$dest[\'destination\'];?>">+ add a place</a>
+<a class="button" href="/node/add/interaction/?edit%5Bfield_interaction_type%5D%5Bund%5D=156&edit%5Bfield_interaction_application%5D%5Bund%5D%5B0%5D%5Bnid%5D=<?php echo _cc_helper_title_by_id(arg(1)); ?>%20%5Bnid%3A%20<?php echo arg(1); ?>%5D&compact-overlay=true&destination=node/<?php echo arg(1); ?>">+ add a place</a>
 </div>
 ';
   $handler->display->display_options['defaults']['empty'] = FALSE;
