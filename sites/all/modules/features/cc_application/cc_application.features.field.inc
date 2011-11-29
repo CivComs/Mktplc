@@ -119,6 +119,7 @@ function cc_application_field_default_fields() {
           'organization' => 'organization',
           'page' => 0,
           'project' => 0,
+          'standard' => 0,
           'video' => 0,
         ),
         'view' => array(
@@ -134,8 +135,8 @@ function cc_application_field_default_fields() {
       'bundle' => 'application',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '<strong>start typing</strong> the organization name into the field and it should appear below the field. Select it, and it will appear in the box with it\'s Marketplace ID Number, e.g.,<em> "New York City Department of Transportation [nid:13334]"</em><br /><br />
-If the organization is not yet listed on the Marketplace, it will not appear with it\'s Marketplace ID Number:
+      'description' => '<strong>start typing</strong> the organization name into the field and it should appear below the field. Select it, and it will appear in the box with its Marketplace ID Number, e.g.,<em> "New York City Department of Transportation [nid:13334]"</em><br /><br />
+If the organization is not yet listed on the Marketplace, it will not appear with its Marketplace ID Number:
 <strong>please click "create organization"</strong> button to add it!',
       'display' => array(
         'cc_business_card' => array(
@@ -2139,8 +2140,8 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   // Translatables
   // Included for use with string extractors like potx.
   t('<big>Please Click "Create Interaction"</big> When done, it will show up in the field above.');
-  t('<strong>start typing</strong> the organization name into the field and it should appear below the field. Select it, and it will appear in the box with it\'s Marketplace ID Number, e.g.,<em> "New York City Department of Transportation [nid:13334]"</em><br /><br />
-If the organization is not yet listed on the Marketplace, it will not appear with it\'s Marketplace ID Number:
+  t('<strong>start typing</strong> the organization name into the field and it should appear below the field. Select it, and it will appear in the box with its Marketplace ID Number, e.g.,<em> "New York City Department of Transportation [nid:13334]"</em><br /><br />
+If the organization is not yet listed on the Marketplace, it will not appear with its Marketplace ID Number:
 <strong>please click "create organization"</strong> button to add it!');
   t('<strong>start typing</strong> the vendor name into the field and it should appear below the field. Select it, and it will appear in the box with it\'s Marketplace ID Number, e.g.,<em> "Aquia [nid:217]]"</em><br /><br />
 If the vendor is not yet listed on the Marketplace, it will not appear with it\'s Marketplace ID Number:
