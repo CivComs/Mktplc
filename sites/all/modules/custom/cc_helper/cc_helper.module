@@ -260,9 +260,9 @@ function _cc_helper_get_references($nid = NULL, $ref_content_type = 'interaction
   if($nid) {
     $query->fieldCondition($ref_field, 'nid', $nid);
   }
-  foreach($tids as $tid) {
-    $query->fieldCondition('field_interaction_type', 'tid', $tid);
-  }
+	if(!empty($tids)){
+		$query->fieldConditions('field_interaction_type', 'tid', (array) $tids, 'IN');
+	}
   $entities = $query
     ->propertyCondition('status', 1)
     ->execute();
@@ -276,7 +276,7 @@ function _cc_helper_app_locs($app_id) {
   $intrs = _cc_helper_get_references($app_id, 'interaction', 'field_interaction_application', array());
   $orgs = array();
   $locs = array();
-  foreach($intrs as $int) {
+	foreach($intrs as $int) {
     $orgs = array_merge(_cc_helper_get_references(
       $int,
       'organization',
