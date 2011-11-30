@@ -261,7 +261,7 @@ function _cc_helper_get_references($nid = NULL, $ref_content_type = 'interaction
     $query->fieldCondition($ref_field, 'nid', $nid);
   }
 	if(!empty($tids)){
-		$query->fieldConditions('field_interaction_type', 'tid', (array) $tids, 'IN');
+		$query->fieldCondition('field_interaction_type', 'tid', (array) $tids, 'IN');
 	}
   $entities = $query
     ->propertyCondition('status', 1)
@@ -273,7 +273,7 @@ function _cc_helper_get_references($nid = NULL, $ref_content_type = 'interaction
 }
 
 function _cc_helper_app_locs($app_id) {
-  $intrs = _cc_helper_get_references($app_id, 'interaction', 'field_interaction_application', array());
+  $intrs = _cc_helper_get_references($app_id, 'interaction', 'field_interaction_application', array(156));
   $orgs = array();
   $locs = array();
 	foreach($intrs as $int) {
