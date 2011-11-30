@@ -69,7 +69,7 @@ If the application is not yet listed on the Marketplace, it will not appear with
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -147,7 +147,7 @@ If the application is not yet listed on the Marketplace, it will not appear with
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'above',
           'module' => 'date',
           'settings' => array(
             'format_type' => 'custom_1',
@@ -255,7 +255,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -350,9 +350,8 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         ),
         'default' => array(
           'label' => 'inline',
-          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'node_reference_default',
+          'type' => 'hidden',
           'weight' => '4',
         ),
         'teaser' => array(
@@ -439,7 +438,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'above',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
@@ -514,7 +513,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'module' => 'link',
           'settings' => array(),
           'type' => 'default',
-          'weight' => 6,
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
