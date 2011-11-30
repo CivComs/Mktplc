@@ -41,6 +41,20 @@ function cc_places_feature_default_fe_block_settings() {
     'cache' => '1',
   );
 
+  $theme['views-cc_organizations-block_1'] = array(
+    'module' => 'views',
+    'delta' => 'cc_organizations-block_1',
+    'theme' => 'alpha',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
+  );
+
   $theme['views-places-block_1'] = array(
     'module' => 'views',
     'delta' => 'places-block_1',
@@ -100,6 +114,20 @@ function cc_places_feature_default_fe_block_settings() {
     'pages' => '',
     'title' => '<none>',
     'cache' => '1',
+  );
+
+  $theme['views-cc_organizations-block_1'] = array(
+    'module' => 'views',
+    'delta' => 'cc_organizations-block_1',
+    'theme' => 'bartik',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
   );
 
   $theme['views-places-block_1'] = array(
@@ -163,6 +191,20 @@ function cc_places_feature_default_fe_block_settings() {
     'cache' => '1',
   );
 
+  $theme['views-cc_organizations-block_1'] = array(
+    'module' => 'views',
+    'delta' => 'cc_organizations-block_1',
+    'theme' => 'civiccommons',
+    'status' => 0,
+    'weight' => '-55',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
+  );
+
   $theme['views-places-block_1'] = array(
     'module' => 'views',
     'delta' => 'places-block_1',
@@ -224,6 +266,20 @@ function cc_places_feature_default_fe_block_settings() {
     'cache' => '1',
   );
 
+  $theme['views-cc_organizations-block_1'] = array(
+    'module' => 'views',
+    'delta' => 'cc_organizations-block_1',
+    'theme' => 'omega',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
+  );
+
   $theme['views-places-block_1'] = array(
     'module' => 'views',
     'delta' => 'places-block_1',
@@ -283,6 +339,20 @@ function cc_places_feature_default_fe_block_settings() {
     'pages' => '',
     'title' => '<none>',
     'cache' => '1',
+  );
+
+  $theme['views-cc_organizations-block_1'] = array(
+    'module' => 'views',
+    'delta' => 'cc_organizations-block_1',
+    'theme' => 'seven',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
   );
 
   $theme['views-places-block_1'] = array(
