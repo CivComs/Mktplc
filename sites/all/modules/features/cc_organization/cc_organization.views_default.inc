@@ -1073,7 +1073,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   /* Display: Block: Organizations by place */
   $handler = $view->new_display('block', 'Block: Organizations by place', 'block_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Agencies and organizations in this place';
+  $handler->display->display_options['title'] = 'Agencies in this place';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['css_class'] = 'orgs-list';
   $handler->display->display_options['display_description'] = 'Organizations in given place';
@@ -1222,7 +1222,7 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['arguments']['field_organization_address_locality']['field'] = 'field_organization_address_locality';
   $handler->display->display_options['arguments']['field_organization_address_locality']['default_action'] = 'default';
   $handler->display->display_options['arguments']['field_organization_address_locality']['title_enable'] = 1;
-  $handler->display->display_options['arguments']['field_organization_address_locality']['title'] = 'Government entities in %1';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['title'] = 'Agencies in %1';
   $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_type'] = 'raw';
   $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_options']['index'] = '1';
   $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_skip_url'] = 0;
@@ -1256,6 +1256,12 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
   $handler->display->display_options['filters']['tid']['value'] = array(
+    132 => '132',
+    131 => '131',
+    128 => '128',
+    130 => '130',
+    129 => '129',
+    127 => '127',
     124 => '124',
   );
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
@@ -1266,7 +1272,7 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   /* Display: Block: Organizations by place (2) */
   $handler = $view->new_display('block', 'Block: Organizations by place (2)', 'block_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Agencies and organizations in this place';
+  $handler->display->display_options['title'] = 'Companies and organizations in this place';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['css_class'] = 'orgs-list places-list';
   $handler->display->display_options['display_description'] = 'Organizations (not government) in given place';
@@ -1446,9 +1452,10 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['filters']['tid']['id'] = 'tid';
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
-  $handler->display->display_options['filters']['tid']['operator'] = 'not';
   $handler->display->display_options['filters']['tid']['value'] = array(
-    124 => '124',
+    229 => '229',
+    126 => '126',
+    125 => '125',
   );
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['tid']['type'] = 'select';
