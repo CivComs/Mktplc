@@ -135,9 +135,7 @@ aside .content {
 .block {
   clear: both;
 }
-
-#region-content-leftcolumn .block,
-#region-content-rightcolumn .block {
+.block {
   margin-bottom: 20px;
 }
 
@@ -266,7 +264,7 @@ body.page-preview #region-content {
 #region-search-bar .region-search-bar-inner {
   margin-bottom: 3px;  
   background: url('../images/search-bg.png') center top no-repeat;
-  height: 85px;
+  height: 60px;
   font-size: 12px;
 }
 #region-search-bar .form-item,
@@ -449,19 +447,17 @@ h2.block-title,
   padding: 0 0.8em;
   border-top: 1px solid #99c5ff;
   border-right: 1px solid #5684bf;
-  border-bottom: 3px solid #5684bf;
+  border-bottom: 1px solid #5684bf;
   border-left: 1px solid #99c5ff;
-     -moz-border-radius: 5px 5px 0 0;
-  -webkit-border-radius: 5px 5px 0 0;
-          border-radius: 5px 5px 0 0;
+     -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
 }
 #region-content .field-label {
   margin-top: 20px;
 }
 #region-content h2.block-title,
-#region-content .field-label,
-#region-content-leftcolumn h2.block-title,
-#region-content-rightcolumn h2.block-title {
+#region-content .field-label {
   /* maybe make the headings inside an app/org less overwhelming?*/
   /* more of an issue when there's no content */
   background: none;
@@ -470,9 +466,7 @@ h2.block-title,
   color: #333;
   padding-left: 0;
   font-weight: bold;
-      -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-          border-radius: 0; 
+  text-transform: none;
 } 
 
 .item-list ul li {
@@ -557,14 +551,14 @@ h2.block-title,
 }
 
 /* List: By Function */
-body.front .functions-list-container {
+.functions-list-container {
   border-top: 1px solid #eee;
   margin: 20px 0;
   padding-top: 20px;
   width: 940px;
   clear: both;
 }
-body.front .functions-list-container h2.block-title {
+.functions-list-container h2.block-title {
   color: #FF8700;
   background: transparent;
   font-size: 15px;
@@ -576,7 +570,7 @@ body.front .functions-list-container h2.block-title {
   width: 110px;
   border: 0;
 }
-body.front .functions-list-container .content {
+.functions-list-container .content {
   width: auto;
   margin-left: 120px;
 }
@@ -611,37 +605,19 @@ body.front .functions-list-container .content {
   margin: 20px 0;
 }
 
-.apps-list .views-row {
-  border-right: 1px solid #eee;
-  border-bottom: 1px solid #ddd;
-  background: #f7f7f7;
-       -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-          border-radius: 5px;
-}
-
 .views-field-field-application-logo {
   float: left;
   width: 60px;
   margin-right: -60px;
-  background: #fff;
-       -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-          border-radius: 5px;
-  padding: 5px;  
-  margin: 10px;
-  text-align: center;
-  border-right: 1px solid #eee;
-  border-bottom: 1px solid #ddd;
 }
 
 .apps-list .views-field-title,
 .apps-list .views-field-field-application-sdesc,
 .apps-list .views-field-field-interaction-organization {
-  margin-left: 75px;
+  margin-left: 70px;
 }
 .apps-list .views-field-title {
-  padding-top: 8px;
+  padding-top: 5px;
 }
 .apps-list .views-field-title a {
   font-size: 16px;
@@ -663,7 +639,7 @@ body.front .functions-list-container .content {
   clear: left;
   border-right: 1px solid #eee;
   border-bottom: 1px solid #ddd;
-  background: #e7e7e7;
+  background: #f7f7f7;
   -webkit-border-bottom-right-radius: 5px;
    -webkit-border-bottom-left-radius: 5px;
       -moz-border-radius-bottomright: 5px;
@@ -709,16 +685,6 @@ body.front .functions-list-container .content {
     -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
  -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
          box-shadow: 0 1px 8px 1px #DED8D8;
-}
-
-/*
- *
- * Sidebar 
- *
- */
-
-#region-sidebar-second .block {
-  margin-bottom: 20px;
 }
 
 /* Block: Add to the Marketplace */
@@ -837,30 +803,7 @@ margin-top: 20px;
   margin-right: 0.2em;
 }
 
-/* 
- *
- * Places Page
- *
- */
-
-body.page-places #breadcrumb {
-  display: none;
-}
-
-body.page-places #page-title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  padding: 5px 20px 5px 10px;
-  background: #fff;
-}
-
-body.page-places .openlayers-views-map {
-  border-top: 4px solid #ddd;
-  border-bottom: 4px solid #ddd;
-}
-
+/* Places Page */
 .view-id-places .view-content {
   margin-bottom: 10px;
 }
