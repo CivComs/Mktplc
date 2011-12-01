@@ -1070,8 +1070,8 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   );
   $handler->display->display_options['attachment_position'] = 'after';
 
-  /* Display: Block: Organizations by place */
-  $handler = $view->new_display('block', 'Block: Organizations by place', 'block_1');
+  /* Display: Block: Agencies in place */
+  $handler = $view->new_display('block', 'Block: Agencies in place', 'block_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Agencies in this place';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
@@ -1267,10 +1267,10 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'organization_type';
-  $handler->display->display_options['block_description'] = 'Agencies and organizations';
+  $handler->display->display_options['block_description'] = 'Agencies in place';
 
-  /* Display: Block: Organizations by place (2) */
-  $handler = $view->new_display('block', 'Block: Organizations by place (2)', 'block_3');
+  /* Display: Block: Companies and organizations in place */
+  $handler = $view->new_display('block', 'Block: Companies and organizations in place', 'block_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Companies and organizations in this place';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
@@ -1453,14 +1453,13 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
   $handler->display->display_options['filters']['tid']['value'] = array(
-    229 => '229',
     126 => '126',
     125 => '125',
   );
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'organization_type';
-  $handler->display->display_options['block_description'] = 'Agencies and organizations';
+  $handler->display->display_options['block_description'] = 'Companies and organizations in place';
 
   /* Display: Block: Apps Made In This Place */
   $handler = $view->new_display('block', 'Block: Apps Made In This Place', 'block_2');
