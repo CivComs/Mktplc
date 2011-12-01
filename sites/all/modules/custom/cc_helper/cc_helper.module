@@ -51,7 +51,7 @@ function _cc_helper_title_by_id($nid){
 'administrative_area' => state (2-letter abbreviation)
 'country' => country (2-letter abbreviation)
 ). */
-function _cc_helper_sharing($org = 0, $query = FALSE) {
+function _cc_helper_sharing($org = 0, $org_types = array(), $query = FALSE) {
   $is_id = ctype_digit($org);
   $is_place = _cc_helper_is_place($org);
   $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
@@ -73,8 +73,11 @@ function _cc_helper_sharing($org = 0, $query = FALSE) {
   $orgs = _cc_helper_orgs(TRUE)
     ->fieldCondition('field_organization_address', 'locality', $org['locality'])
     ->fieldCondition('field_organization_address', 'administrative_area', $org['administrative_area'])
-    ->fieldCondition('field_organization_address', 'country', $org['country'])
-    ->execute();
+    ->fieldCondition('field_organization_address', 'country', $org['country']);
+	if(!empty($org_types)){
+		$orgs->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
+	}
+	$orgs = $orgs->execute();
   $nids = array_keys(isset($orgs['node']) ? $orgs['node'] : array());
   $c = 0;
   foreach($nids as $nid) {
@@ -85,7 +88,7 @@ function _cc_helper_sharing($org = 0, $query = FALSE) {
   return $c;
 }
 
-function _cc_helper_using($org = 0, $query = FALSE) {
+function _cc_helper_using($org = 0, $org_types = array(), $query = FALSE) {
   $is_id = ctype_digit($org);
   $is_place = _cc_helper_is_place($org);
   $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
@@ -99,7 +102,7 @@ function _cc_helper_using($org = 0, $query = FALSE) {
   }elseif($is_node) {
     return _cc_helper_get_references_count($org->nid, 'interaction', 'field_interaction_organization', array(156));
   }
-  return _cc_helper_interactions_in_the_place($org, array(156));
+  return _cc_helper_interactions_in_the_place($org, array(156), $org_types);
 }
 
 function cc_helper_views_pre_render(&$view) {
@@ -160,7 +163,7 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
  * Using / Sharing.
  * $org - nid, node object or place array.
  */
-function _cc_helper_using_sharing($org, $setting) {
+function _cc_helper_using_sharing($org, $setting, $org_types = array()) {
   $node = is_numeric($org) ? node_load($org) : NULL;
   if(isset($node->type)){
     if($node->type == 'organization'){
@@ -175,13 +178,13 @@ function _cc_helper_using_sharing($org, $setting) {
       }
     }
     else {
-      $u = _cc_helper_using($org);
+      $u = _cc_helper_using($org, $org_types);
     }
   }
   else {
-    $u = _cc_helper_using($org);
+    $u = _cc_helper_using($org, $org_types);
   }
-  $s = _cc_helper_sharing($org);
+  $s = _cc_helper_sharing($org, $org_types);
   return theme('using_sharing', array('using' => $u, 'sharing' => $s, 'setting' => $setting));
 }
 
@@ -337,7 +340,7 @@ array(
 'administrative_area' => state (2-letter abbreviation)
 'country' => country (2-letter abbreviation)
 ) */
-function _cc_helper_interactions_in_the_place($place = array(), $types = array()) {
+function _cc_helper_interactions_in_the_place($place = array(), $types = array(), $org_types = array()) {
   $fplace = array_filter($place);
   $query = new EntityFieldQuery();
   $query
@@ -351,6 +354,9 @@ function _cc_helper_interactions_in_the_place($place = array(), $types = array()
       $value
     );
   }
+	if(!empty($org_types)){
+		$query->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
+	}
   $entities = $query->execute();
   $orgs = array();
   if(isset($entities['node'])) {
