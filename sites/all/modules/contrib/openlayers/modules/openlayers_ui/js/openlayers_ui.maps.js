@@ -36,42 +36,6 @@ function _function_exists(head, f) {
  */
 Drupal.behaviors.openlayers_ui = {
   'attach': function(context, settings) {
-    
-    // TODO: Review the following
-    /*
-    // Automatic options.  We do it here, instead of in Form API because
-    // Form API enforces the disabled
-    $("#edit-options-automatic-options:not(.openlayers-ui-processed)").each(function() {
-      $(this).addClass('openlayers-ui-processed');
-      $(this).change(function() {
-        var $thisCheck = $(this);
-        var $autoOptions = $thisCheck.parent()
-          .parent()
-          .parent()
-          .find('input:not("#edit-options-automatic-options")');
-        if ($thisCheck.is(':checked')) {
-          $autoOptions.attr('disabled', 'disabled');
-        }
-        else {
-          $autoOptions.removeAttr('disabled');
-        }
-      });
-  
-      // When form is submitted, if disabled, FAPI does not read values   
-      $(this).parents('form').submit(function() {
-        $("#edit-options-automatic-options").attr('checked', false).trigger('change');
-      });
-      $(this).trigger('change');
-    });
-  
-    // Update map positioning when text fields are changed.
-    $("#edit-center-lat:not(.openlayers-ui-processed), #edit-center-lon:not(.openlayers-ui-processed), #edit-center-zoom:not(.openlayers-ui-processed)").each(function() {
-      $(this).addClass('openlayers-ui-processed');
-      $(this).change(function() {
-        Drupal.openlayers_ui.updateMapCenter();
-      });
-    });
-    */
   
     // mark openlayers dependencies as valid or invalid
     $('.openlayers-dependency-flag').each(function() {

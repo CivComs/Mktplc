@@ -9,7 +9,7 @@
  */
 $plugin = array(
   'title' => t('Permalink'),
-  'description' =>  t('Provides a URL that will link to a specific map position.'),
+  'description' =>  t('Provides a link that will create an URL that will link to a specific map position.  Permalink is usually similar to: ?zoom=1&lat=11&lon=11&layers=B0F'),
   'type' => 'map',
   'behavior' => array(
     'file' => 'openlayers_behavior_permalink.inc',
@@ -27,7 +27,7 @@ class openlayers_behavior_permalink extends openlayers_behavior {
    */
   function options_init() {
     return array(
-      'permalink' => '',
+      'anchor' => FALSE,
     );
   }
 
@@ -36,7 +36,14 @@ class openlayers_behavior_permalink extends openlayers_behavior {
   }
 
   function options_form($defaults) {
-    return array();
+    return array(
+      'anchor' => array(
+        '#type' => 'checkbox',
+        '#title' => t('Anchor'),
+        '#description' => t('Permalink is in the form of an anchor (#) instead of a query (?).  Also, this means that the URL location will be constantly updated, and no link will appear.'),
+        '#default_value' => (isset($defaults['anchor'])) ? $defaults['anchor'] : FALSE,
+      ),
+    );
   }
 
   /**

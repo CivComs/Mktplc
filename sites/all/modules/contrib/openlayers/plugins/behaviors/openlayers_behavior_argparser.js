@@ -8,5 +8,5 @@
  * Control.
  */
 Drupal.openlayers.addBehavior('openlayers_behavior_argparser', function (data, options) {
-  Drupal.openlayers.addControl(data.openlayers, 'ArgParser');
+  Drupal.openlayers.addControl(data.openlayers, 'ArgParser', options);
 });
