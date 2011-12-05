@@ -8,5 +8,5 @@
  * Control.
  */
 Drupal.openlayers.addBehavior('openlayers_behavior_attribution', function (data, options) {
-  Drupal.openlayers.addControl(data.openlayers, 'Attribution');
+  Drupal.openlayers.addControl(data.openlayers, 'Attribution', options);
 });
