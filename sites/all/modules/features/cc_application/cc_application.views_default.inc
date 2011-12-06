@@ -159,7 +159,7 @@ function cc_application_views_default_views() {
   $view->description = '';
   $view->tag = 'apps';
   $view->base_table = 'node';
-  $view->human_name = 'CC Applications';
+  $view->human_name = 'СС Applications';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -167,6 +167,7 @@ function cc_application_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Recently added apps';
+  $handler->display->display_options['css_class'] = 'apps-list';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['link_display'] = 'page_5';
@@ -198,26 +199,10 @@ function cc_application_views_default_views() {
   $handler->display->display_options['relationships']['field_application_interactions_nid']['id'] = 'field_application_interactions_nid';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['table'] = 'field_data_field_application_interactions';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
-  $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
-  $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
-  $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
   /* Sort criterion: Content: When (field_interaction_date) */
   $handler->display->display_options['sorts']['field_interaction_date_value']['id'] = 'field_interaction_date_value';
   $handler->display->display_options['sorts']['field_interaction_date_value']['table'] = 'field_data_field_interaction_date';
   $handler->display->display_options['sorts']['field_interaction_date_value']['field'] = 'field_interaction_date_value';
-  /* Contextual filter: Global: Null */
-  $handler->display->display_options['arguments']['null']['id'] = 'null';
-  $handler->display->display_options['arguments']['null']['table'] = 'views';
-  $handler->display->display_options['arguments']['null']['field'] = 'null';
-  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
-  /* Contextual filter: Content: Who: Organization (field_interaction_organization) */
-  $handler->display->display_options['arguments']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
-  $handler->display->display_options['arguments']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
-  $handler->display->display_options['arguments']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
-  $handler->display->display_options['arguments']['field_interaction_organization_nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_interaction_organization_nid']['summary']['format'] = 'default_summary';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -523,6 +508,7 @@ function cc_application_views_default_views() {
   $handler->display->display_options['sorts']['count']['field'] = 'count';
   $handler->display->display_options['sorts']['count']['relationship'] = 'flag_count_rel';
   $handler->display->display_options['sorts']['count']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['block_description'] = 'Apps: Most Watched';
 
   /* Display: Block: Apps most used */
@@ -2972,7 +2958,6 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['link_display'] = 'page_3';
   $handler->display->display_options['defaults']['query'] = FALSE;
   $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'mini';
@@ -2996,15 +2981,6 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
-  /* No results behavior: Global: Text area */
-  $handler->display->display_options['empty']['area']['id'] = 'area';
-  $handler->display->display_options['empty']['area']['table'] = 'views';
-  $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['label'] = 'Add one';
-  $handler->display->display_options['empty']['area']['empty'] = FALSE;
-  $handler->display->display_options['empty']['area']['content'] = '<a href="/node/add/interaction" class="button">+ add an app this org has used</a>';
-  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Who Created the Application? (field_application_creator) */
   $handler->display->display_options['relationships']['field_application_creator_nid']['id'] = 'field_application_creator_nid';
@@ -3021,32 +2997,44 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
   $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
   $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Street address (field_organization_address:locality) */
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['id'] = 'field_organization_address_locality_1';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['table'] = 'field_data_field_organization_address';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['field'] = 'field_organization_address_locality';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['relationship'] = 'field_application_creator_nid';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['default_argument_type'] = 'raw';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['default_argument_options']['index'] = '1';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['glossary'] = 0;
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['limit'] = '0';
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['transform_dash'] = 0;
-  $handler->display->display_options['arguments']['field_organization_address_locality_1']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['id'] = 'field_organization_address_locality';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['table'] = 'field_data_field_organization_address';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['field'] = 'field_organization_address_locality';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['relationship'] = 'field_application_creator_nid';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['title_enable'] = 1;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['title'] = 'Apps made in %1';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_type'] = 'raw';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_options']['index'] = '1';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['specify_validation'] = 1;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['validate']['type'] = 'php';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['validate_options']['code'] = 'return _cc_places_validate_place($argument);';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['glossary'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['limit'] = '0';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['transform_dash'] = 0;
+  $handler->display->display_options['arguments']['field_organization_address_locality']['break_phrase'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -3316,8 +3304,6 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['css_class'] = 'places-list';
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['use_more'] = TRUE;
-  $handler->display->display_options['use_more_always'] = TRUE;
-  $handler->display->display_options['use_more_text'] = 'More places >';
   $handler->display->display_options['defaults']['group_by'] = FALSE;
   $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -3580,8 +3566,6 @@ echo _cc_helper_using_sharing($data->_field_data[\'nid\'][\'entity\'], \'full\')
   $handler->display->display_options['css_class'] = 'places-list-simple browse-by-grid';
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['use_more'] = TRUE;
-  $handler->display->display_options['use_more_always'] = TRUE;
-  $handler->display->display_options['use_more_text'] = 'More places >';
   $handler->display->display_options['defaults']['group_by'] = FALSE;
   $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['defaults']['pager'] = FALSE;

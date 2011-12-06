@@ -1,0 +1,4 @@
+name = String Overrides
+description = Custom module to handle a small amount of string overrides.
+package = Civic Commons Marketplace
+core = 7.x

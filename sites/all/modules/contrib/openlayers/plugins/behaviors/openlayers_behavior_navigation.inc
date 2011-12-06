@@ -9,7 +9,7 @@
  */
 $plugin = array(
   'title' => t('Navigation'),
-  'description' => t('Provides the ability to navigate the map interface.'),
+  'description' => t('Provides the ability to navigate the map interface.  This is just for user interactions and does not show any visual controls.  This behavior automatically includes the Pan Zoom, Zoom Box, and Pinch Zoom controls.'),
   'type' => 'map',
   'behavior' => array(
     'file' => 'openlayers_behavior_navigation.inc',
@@ -29,6 +29,7 @@ class openlayers_behavior_navigation extends openlayers_behavior {
     return array(
       'navigation' => '',
       'zoomWheelEnabled' => TRUE,
+      'zoomBoxEnabled' => TRUE,
       'documentDrag' => FALSE,
     );
   }
@@ -45,6 +46,12 @@ class openlayers_behavior_navigation extends openlayers_behavior {
         '#description' => t('Enable zooming via the mouse scroll wheel. This can 
           interfere with page scrolling.'),
         '#default_value' => isset($defaults['zoomWheelEnabled']) ? $defaults['zoomWheelEnabled'] : TRUE 
+      ),
+      'zoomBoxEnabled' => array(
+        '#type' => 'checkbox',
+        '#title' => t('Enable Zoom Box'),
+        '#description' => t('Enable zooming with selecting a box by <em>SHIFT + clicking</em>.'),
+        '#default_value' => isset($defaults['zoomBoxEnabled']) ? $defaults['zoomBoxEnabled'] : TRUE 
       ),
       'documentDrag' => array(
         '#type' => 'checkbox',

@@ -18,7 +18,9 @@ Drupal.openlayers.layer.virtualearth = function(title, map, options) {
     'hybrid': VEMapStyle.Hybrid
   };
 
+  // options.wrapDateLine = true;
   options.sphericalMercator = true;
+  options.projection = "EPSG:900913";
   options.maxExtent = new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34);
   options.type = virtualearth_type_map[options.type];
 

@@ -8,5 +8,5 @@
  * Control.
  */
 Drupal.openlayers.addBehavior('openlayers_behavior_dragpan', function (data, options) {
-  Drupal.openlayers.addControl(data.openlayers, 'DragPan');
+  Drupal.openlayers.addControl(data.openlayers, 'DragPan', options);
 });

@@ -7,5 +7,5 @@
  * Permalink Behavior
  */
 Drupal.openlayers.addBehavior('openlayers_behavior_permalink', function (data, options) {
-  Drupal.openlayers.addControl(data.openlayers, 'Permalink');
+  Drupal.openlayers.addControl(data.openlayers, 'Permalink', options);
 });

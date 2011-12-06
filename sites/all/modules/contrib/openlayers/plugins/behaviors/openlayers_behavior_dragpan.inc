@@ -8,8 +8,8 @@
  * Ctools plugin definition.
  */
 $plugin = array(
-  'title' => t('DragPan'),
-  'description' => t('Provides the ability to pan in the map interface.'),
+  'title' => t('Mouse Drag Pan'),
+  'description' => t('Provides the ability to pan in the map interface with the mouse.  The Navigation Control includes this control.  You should only use this behavior if you want fine control over what interactions you want on your map.'),
   'type' => 'map',
   'behavior' => array(
     'file' => 'openlayers_behavior_dragpan.inc',
@@ -27,7 +27,8 @@ class openlayers_behavior_dragpan extends openlayers_behavior {
    */
   function options_init() {
     return array(
-      'navigation' => '',
+      'enableKinetic' => FALSE,
+      'kineticInterval' => 10,
     );
   }
 
@@ -36,7 +37,27 @@ class openlayers_behavior_dragpan extends openlayers_behavior {
   }
 
   function options_form($defaults) {
-    return array();
+    $form = array();
+    
+    // This options seem to be buggy.  Shoudl look into more.
+    /*
+    $form = array(
+      'enableKinetic' => array(
+        '#title' => t('Enable Kinetic Dragging'),
+        '#type' => 'checkbox',
+        '#description' => t('Enables dragging and panning to have acceleration.'),
+        '#default_value' => isset($defaults['enableKinetic']) ? $defaults['enableKinetic'] : FALSE,
+      ),
+      'kineticInterval' => array(
+        '#title' => t('Kinetic Interval'),
+        '#type' => 'textfield',
+        '#description' => t('An integer of millseconds of time between steps in "Kinetic Scrolling".'),
+        '#default_value' => isset($defaults['kineticInterval']) ? $defaults['kineticInterval'] : 10,
+      ),
+    );
+    */
+    
+    return $form;
   }
 
   /**
