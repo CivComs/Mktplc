@@ -373,9 +373,9 @@ function cc_contexts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'views-f180557b90e1950dc78c1a58bbf318df' => array(
+        'views-applications-block_6' => array(
           'module' => 'views',
-          'delta' => 'f180557b90e1950dc78c1a58bbf318df',
+          'delta' => 'applications-block_6',
           'region' => 'content',
           'weight' => '-58',
         ),
@@ -384,12 +384,6 @@ function cc_contexts_context_default_contexts() {
           'delta' => 'interactions-block_3',
           'region' => 'content',
           'weight' => '-57',
-        ),
-        'views-applications-block_6' => array(
-          'module' => 'views',
-          'delta' => 'applications-block_6',
-          'region' => 'content',
-          'weight' => '-56',
         ),
         'views-at_a_glance-block' => array(
           'module' => 'views',
@@ -492,29 +486,29 @@ function cc_contexts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'views-cc_organizations-block_2' => array(
+        'views-applications-block_7' => array(
           'module' => 'views',
-          'delta' => 'cc_organizations-block_2',
+          'delta' => 'applications-block_7',
           'region' => 'content_leftcolumn',
-          'weight' => '-54',
+          'weight' => '-10',
         ),
         'views-cc_organizations-block_4' => array(
           'module' => 'views',
           'delta' => 'cc_organizations-block_4',
           'region' => 'content_leftcolumn',
-          'weight' => '-53',
+          'weight' => '-9',
         ),
         'views-cc_organizations-block_3' => array(
           'module' => 'views',
           'delta' => 'cc_organizations-block_3',
           'region' => 'content_leftcolumn',
-          'weight' => '-52',
+          'weight' => '-8',
         ),
         'views-cc_organizations-block_1' => array(
           'module' => 'views',
           'delta' => 'cc_organizations-block_1',
           'region' => 'content_leftcolumn',
-          'weight' => '-51',
+          'weight' => '-7',
         ),
         'views-interactions-block_4' => array(
           'module' => 'views',

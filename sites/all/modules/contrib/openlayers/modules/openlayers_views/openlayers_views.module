@@ -47,16 +47,6 @@ function openlayers_views_theme($existing, $type, $theme, $path) {
       ),
       'file' => 'views/openlayers_views.views.theme.inc',
     ),
-    'openlayers_row_geometry' => array(
-      'arguments' => array(
-        'view' => '',
-        'options' => '',
-        'row' => '',
-        'field_alias' => '',
-      ),
-      'file' => 'views/openlayers_views.views.theme.inc',
-    ),
-
   );
 }
 
@@ -68,6 +58,15 @@ function openlayers_views_views_api() {
     'api' => 3,
     'path' => drupal_get_path('module', 'openlayers_views') .'/views',
   );
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function openlayers_views_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'openlayers' && !empty($plugin)) {
+    return 'plugins/' . $plugin;
+  }
 }
 
 /**
@@ -130,25 +129,6 @@ function openlayers_views_openlayers_layers() {
   }
   cache_set('openlayers_views', $layers);
   return $layers;
-} 
-
-/**
- * Implements hook_openlayers_layer_types()
- */
-function openlayers_views_openlayers_layer_types() {
-  return array(
-    'openlayers_views_vector' => array(
-      'title' => t('OpenLayers_Views'),
-      'description' => t('OpenLayers Views Vector'),
-      'layer_type' => array(
-        'path' => drupal_get_path('module', 'openlayers_views') 
-          .'/includes/layer_types',
-        'file' => 'openlayers_views_vector.inc',
-        'class' => 'openlayers_layer_type_openlayers_views_vector',
-        'parent' => 'openlayers_layer_type',
-      ),
-    ),
-  );
 }
 
 /**

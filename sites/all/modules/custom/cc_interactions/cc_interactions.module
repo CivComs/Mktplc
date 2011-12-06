@@ -100,11 +100,19 @@ function cc_interactions_apps_block() {
 function cc_interactions_form_interaction_node_form_alter(&$form, &$form_state, $form_id) {
   
   // Get list of users organizations to send over to JS.
+  $fieldname = 'field_user_organization';
   global $user;
   $current_user = user_load($user->uid);
-  $lang = field_language('user', $current_user, 'field_interaction_organization');
+  $lang = field_language('user', $current_user, $fieldname);
   $organizations = array();
-  foreach ($current_user->field_interaction_organization[$lang] as $value) {
+  foreach (
+    (
+      isset($current_user->{$fieldname}[$lang])
+      ? $current_user->{$fieldname}[$lang]
+      : array()
+    )
+    as $value
+  ) {
     $node = node_load($value['nid']);
     $organizations[$value['nid']] = check_plain($node->title);
   }
@@ -124,34 +132,27 @@ function cc_interactions_form_interaction_node_form_alter(&$form, &$form_state, 
 function cc_interactions_node_submit($node, $form, &$form_state) {
   $isorg = $node->type == 'organization';
   $isapp = $node->type == 'application';
-  $isproj = $node->type == 'project';
-  if(!$isproj && !$isapp && !$isorg) {
+  if(!$isapp && !$isorg) {
     return FALSE;
   }
   $oldnode = node_load($node->nid);
   $fieldname = $isorg ? 'field_organization_apps_created' : (
-    $isapp ? 'field_application_creator' : (
-      isproj ? 'field_creators' : FALSE
-    )
-  );
+    $isapp ? 'field_application_creator' : FALSE);
   $intfieldname = $isapp ? 'field_application_interactions' : (
-    $isproj ? 'field_project_interactions' : (
-      $isorg ? 'field_organization_interactions' : NULL
-    )
+    $isorg ? 'field_organization_interactions' : NULL
   );
+  $intfieldlang = field_language('node', $node, $intfieldname, NULL);
   $added = _cc_interactions_added($fieldname, $node, $oldnode);
   $nids = array_filter(array_map('_cc_interactions_nid', $added));
   foreach($nids as $nid) {
-    $org_id = $isorg ? $node->nid : ($isapp ? $nid : ($isproj ? $nid : FALSE));
-    $app_id = $isorg ? $nid : ($isapp ? $node->nid : ($isproj ? NULL : FALSE));
-    $proj_id = $isorg ? NULL : ($isapp ? NULL : ($isproj ? $node->nid : FALSE));
-    $int = _cc_interactions_created($org_id, $app_id, $proj_id);
+    $org_id = $isorg ? $node->nid : ($isapp ? $nid : FALSE);
+    $app_id = $isorg ? $nid : ($isapp ? $node->nid : FALSE);
+    $int = _cc_interactions_created($org_id, $app_id, NULL);
     if($int) {
-      _cc_interactions_del_created($org_id, $app_id, $proj_id);
+      node_delete_multiple(_cc_interactions_db_created($org_id, $app_id, NULL));
       node_save($int);
+      $node->{$intfieldname}[$intfieldlang][] = array('nid' => $int->nid);//Check it. Probably the line can be removed.
     }
-    $node->{$intfieldname}[$node->language][] = array('nid' => $int->nid);
-    node_save($node);
   }
 }
 
@@ -179,7 +180,7 @@ function _cc_interactions_nid($item) {
 }
 
 //Delete interactions of type "Created" from database.
-function _cc_interactions_del_created($org_id = 0, $app_id = 0, $proj_id = 0) {
+function _cc_interactions_db_created($org_id = 0, $app_id = 0, $proj_id = 0) {
   $q = new EntityFieldQuery();
   $q
     ->entityCondition('entity_type', 'node')
@@ -197,11 +198,14 @@ function _cc_interactions_del_created($org_id = 0, $app_id = 0, $proj_id = 0) {
   }
   $r = $q->execute();
   $nids = array_map('_cc_interactions_nid', isset($r['node']) ? $r['node'] : array());
-  node_delete_multiple($nids);
+  return $nids;
 }
 
 //New interaction of type "Created".
 function _cc_interactions_created($org_id = 0, $app_id = 0, $proj_id=0) {
+  if(!$org_id && !$app_id && !$proj_id) {
+    return FALSE;
+  }
   $i = new StdClass();
   $i->type = 'interaction';
   $i->language = LANGUAGE_NONE;

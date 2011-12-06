@@ -38,11 +38,11 @@ function cc_flags_flag_default_flags() {
     'show_on_form' => 1,
     'access_author' => '',
     'i18n' => 0,
-    'api_version' => 2,
     'module' => 'cc_flags',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 2,
   );
   // Exported flag: "Needs Love".
   $flags['needs_love'] = array(
@@ -75,11 +75,11 @@ function cc_flags_flag_default_flags() {
     'show_on_form' => 0,
     'access_author' => '',
     'i18n' => 0,
-    'api_version' => 2,
     'module' => 'cc_flags',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 2,
   );
   // Exported flag: "Users".
   $flags['users'] = array(
@@ -110,11 +110,11 @@ function cc_flags_flag_default_flags() {
     'show_on_form' => 0,
     'access_author' => '',
     'i18n' => 0,
-    'api_version' => 2,
     'module' => 'cc_flags',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 2,
   );
   // Exported flag: "Watch this Organization".
   $flags['watch_this_org'] = array(
@@ -145,11 +145,11 @@ function cc_flags_flag_default_flags() {
     'show_on_form' => 0,
     'access_author' => '',
     'i18n' => 0,
-    'api_version' => 2,
     'module' => 'cc_flags',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 2,
   );
   // Exported flag: "App you&#039;re watching".
   $flags['watching_app'] = array(
@@ -180,11 +180,11 @@ function cc_flags_flag_default_flags() {
     'show_on_form' => 0,
     'access_author' => '',
     'i18n' => 0,
-    'api_version' => 2,
     'module' => 'cc_flags',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 2,
   );
   return $flags;
 }
