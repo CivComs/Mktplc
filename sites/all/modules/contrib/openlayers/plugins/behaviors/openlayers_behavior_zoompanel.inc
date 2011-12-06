@@ -8,8 +8,8 @@
  * Ctools plugin definition.
  */
 $plugin = array(
-  'title' => t('Zoom Panel'),
-  'description' => t('Provides a Zoom In, Zoom Out, and Zoom to Max Extent Button'),
+  'title' => t('Zoom Control'),
+  'description' => t('Provides a control that can Zoom In, Zoom Out, and Zoom to Max Extent Button.  Do not use with Pan Zoom Bar Control or Pan Zoom Control.'),
   'type' => 'map',
   'behavior' => array(
     'file' => 'openlayers_behavior_zoompanel.inc',

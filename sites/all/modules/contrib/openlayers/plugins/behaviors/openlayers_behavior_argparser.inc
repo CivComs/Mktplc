@@ -8,9 +8,10 @@
  * Ctools plugin definition.
  */
 $plugin = array(
-  'title' => t('ArgParser'),
+  'title' => t('Argument Parser'),
   'description' => t('Parses Permalink-formatted arguments without adding a 
-    Permalink link to the map'),
+    Permalink link to the map.  Permalink is usually similar to: 
+    ?zoom=1&lat=11&lon=11&layers=B0F'),
   'type' => 'layer',
   'behavior' => array(
     'file' => 'openlayers_behavior_argparser.inc',
@@ -28,7 +29,7 @@ class openlayers_behavior_argparser extends openlayers_behavior {
    */
   function options_init() {
     return array(
-      'attribution' => '',
+      'anchor' => FALSE,
     );
   }
 
@@ -36,8 +37,14 @@ class openlayers_behavior_argparser extends openlayers_behavior {
     return array('OpenLayers.Control.ArgParser');
   }
 
-  function options_form($defaults) {
+  function options_form($defaults = array()) {
     return array(
+      'anchor' => array(
+        '#type' => 'checkbox',
+        '#title' => t('Anchor'),
+        '#description' => t('Permalink is in the form of an anchor (#) instead of a query (?).'),
+        '#default_value' => (isset($defaults['anchor'])) ? $defaults['anchor'] : FALSE,
+      ),
     );
   }
 

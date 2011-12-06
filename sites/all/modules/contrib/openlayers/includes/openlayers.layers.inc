@@ -62,6 +62,53 @@ function _openlayers_openlayers_layers() {
 
   $layer = new stdClass();
   $layer->api_version = 1;
+  $layer->name = 'mapquest_osm';
+  $layer->title = 'MapQuest OSM';
+  $layer->description = 'MapQuest’s rendering of OpenStreetMap.';
+  $layer->data = array(
+    'baselayer' => TRUE,
+    'attribution' => t('&copy;<a href="@ccbysa">CCBYSA</a> 2010
+      <a href="@openstreetmap">OpenStreetMap.org</a> contributors',
+      array(
+        '@openstreetmap' => 'http://www.openstreetmap.org/',
+        '@ccbysa' => 'http://creativecommons.org/licenses/by-sa/2.0/',
+      )
+    ) . '. '. t('Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a>.'),
+    'projection' => array('900913'),
+    'layer_type' => 'openlayers_layer_type_xyz',
+    'url' => array(
+      'http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png',
+      'http://otile2.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png',
+      'http://otile3.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png',
+      'http://otile4.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png',
+    ),
+    'wrapDateLine' => TRUE,
+  );
+  $layers[$layer->name] = $layer;
+
+  $layer = new stdClass();
+  $layer->api_version = 1;
+  $layer->name = 'mapquest_openaerial';
+  $layer->title = 'MapQuest Open Aerial';
+  $layer->description = 'MapQuest’s aerial photo map.';
+  $layer->data = array(
+    'baselayer' => TRUE,
+    'attribution' => t('Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency.')
+      . ' '. t('Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a>.'),
+    'projection' => array('900913'),
+    'layer_type' => 'openlayers_layer_type_xyz',
+    'url' => array(
+      'http://oatile1.mqcdn.com/naip/${z}/${x}/${y}.png',
+      'http://oatile2.mqcdn.com/naip/${z}/${x}/${y}.png',
+      'http://oatile3.mqcdn.com/naip/${z}/${x}/${y}.png',
+      'http://oatile4.mqcdn.com/naip/${z}/${x}/${y}.png',
+    ),
+    'wrapDateLine' => TRUE,
+  );
+  $layers[$layer->name] = $layer;
+
+  $layer = new stdClass();
+  $layer->api_version = 1;
   $layer->name = 'yahoo_satellite';
   $layer->title = 'Yahoo Maps Satellite';
   $layer->description = 'Yahoo satellite imagery tiles.';
@@ -156,6 +203,7 @@ function _openlayers_openlayers_layers() {
     'projection' => array('900913'),
     'layer_type' => 'openlayers_layer_type_xyz',
     'url' => 'http://tile.openstreetmap.org/${z}/${x}/${y}.png',
+    'wrapDateLine' => TRUE,
   );
   $layers[$layer->name] = $layer;
 
@@ -177,6 +225,7 @@ function _openlayers_openlayers_layers() {
     'projection' => array('900913'),
     'layer_type' => 'openlayers_layer_type_xyz',
     'url' => 'http://tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png',
+    'wrapDateLine' => TRUE,
   );
   $layers[$layer->name] = $layer;
 
@@ -198,6 +247,7 @@ function _openlayers_openlayers_layers() {
     'projection' => array('900913'),
     'layer_type' => 'openlayers_layer_type_xyz',
     'url' => 'http://andy.sandbox.cloudmade.com/tiles/cycle/${z}/${x}/${y}.png',
+    'wrapDateLine' => TRUE,
   );
   $layers[$layer->name] = $layer;
 
@@ -230,6 +280,7 @@ function _openlayers_openlayers_layers() {
   );
   $layers[$layer->name] = $layer;
 
+  // MetaCarts base map
   $layer = new stdClass();
   $layer->api_version = 1;
   $layer->name = 'wms_default';
@@ -249,7 +300,43 @@ function _openlayers_openlayers_layers() {
     ),
   );
   $layers[$layer->name] = $layer;
-
+  
+  // GeoJSON example with direct data
+  $layer = new stdClass();
+  $layer->api_version = 1;
+  $layer->name = 'openlayers_geojson_picture_this';
+  $layer->title = t('Example GeoJSON, "Picture This"');
+  $layer->description = t('Example that puts GeoJSON directly in layer without Views.');
+  $layer->data = array(
+    'layer_type' => 'openlayers_layer_type_geojson',
+    'layer_handler' => 'geojson',
+    'projection' => array('4326'),
+    'baselayer' => FALSE,
+    'vector' => TRUE,
+    'geojson_data' => '
+      {
+        "type": "Feature", 
+        "properties": {
+          "name": "' . t('Picture This') . '",
+          "description": "' . t('Outside of the North Carolina Museum of Art.') . '"
+        }, 
+        "geometry": {
+          "type": "Point", 
+          "coordinates": [
+            -78.702798,
+            35.809411
+          ]
+        }, 
+        "crs": {
+          "type": "name", 
+          "properties": {
+              "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+          }
+        }
+      }
+    ',
+  );
+  $layers[$layer->name] = $layer;
 
   return $layers;
 }
@@ -294,5 +381,7 @@ function _openlayers_openlayers_layers_i18n() {
     t('Yahoo hybrid of streets and satellite tiles.'),
     t('Yahoo satellite imagery tiles.'),
     t('Yahoo streets tiles.'),
+    t('MapQuest’s rendering of OpenStreetMap.'),
+    t('MapQuest’s aerial photo map.'),
   );
 }
