@@ -281,18 +281,26 @@ Drupal.openlayers = {
       layer.addFeatures(newFeatures);
     }
   },
+  
   'getStyleMap': function(map, layername) {
     if (map.styles) {
       var stylesAdded = {};
+      
       // Grab and map base styles.
       for (var style in map.styles) {
         stylesAdded[style] = new OpenLayers.Style(map.styles[style]);
       }
-      // Implement layer-specific styles.
+      
+      // Implement layer-specific styles.  First default, then select.
       if (map.layer_styles !== undefined && map.layer_styles[layername]) {
         var style = map.layer_styles[layername];
         stylesAdded['default'] = new OpenLayers.Style(map.styles[style]);
       }
+      if (map.layer_styles_select !== undefined && map.layer_styles_select[layername]) {
+        var style = map.layer_styles_select[layername];
+        stylesAdded['select'] = new OpenLayers.Style(map.styles[style]);
+      }
+      
       return new OpenLayers.StyleMap(stylesAdded);
     }
     else {
@@ -311,6 +319,7 @@ Drupal.openlayers = {
       });
     }
   },
+  
   'objectFromFeature': function(feature) {
     var wktFormat = new OpenLayers.Format.WKT();
     // Extract geometry either from wkt property or lon/lat properties
@@ -320,6 +329,60 @@ Drupal.openlayers = {
     else if (feature.lon) {
       return wktFormat.read('POINT(' + feature.lon + ' ' + feature.lat + ')');
     }
+  },
+  
+  /**
+   * Add Behavior.
+   *
+   * This is a wrapper around adding behaviors for OpenLayers.
+   * a module does not have to use this, but it helps cut
+   * down on code.
+   *
+   * @param id
+   *   The identifier of the behavior that is attached to
+   *   the map.
+   * @param attach
+   *   The callback function for the attach part of the
+   *   Drupal behavior.
+   * @param detach
+   *   The callback function for the detach part of the
+   *   Drupal behavior.
+   */
+  'addBehavior': function(id, attach, detach) {
+    // Add as a Drupal behavior.  Add a prefix, just to be safe.
+    Drupal.behaviors['openlayers_auto_' + id] = {
+      attach: function (context, settings) {
+        var data = $(context).data('openlayers');
+        
+        // Ensure that there is a map and that the appropriate
+        // behavior exists.  Need "data &&" to avoid js crash 
+        // when data is empty
+        var localBehavior = data && data.map.behaviors[id];
+        
+        // Ensure scope in the attach callback
+        var that = this;
+        if (localBehavior) {
+          $(context).once('openlayers-' + id, function () {
+            attach.apply(that, [data, data.map.behaviors[id], context, settings]);
+          });
+        }
+      },
+      // Maybe we need a little more handling here.
+      detach: detach
+    };
+  },
+  
+  /**
+   * Add Control.
+   *
+   * This is a wrapper around adding controls to maps.  It
+   * is not needed but saves some code.
+   */
+  'addControl': function(openlayers, controlName, options) {
+    var control = new OpenLayers.Control[controlName](options);
+    openlayers.addControl(control);
+    control.activate();
+    return control;
   }
 };
 

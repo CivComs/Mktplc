@@ -35,10 +35,12 @@ function _openlayers_layers_process($layers = array(), &$map = array()) {
   
   // Process into array-based layer data for the map
   foreach ($layers as $layer_object) {
-    $layer_object->render($map);
-    $layer_object->data['title'] = $layer_object->title;
-    $layer_object->data['weight'] = $layer_object->weight;
-    $layer_data[$layer_object->name] = $layer_object->data;
+    if (is_object($layer_object)) {
+      $layer_object->render($map);
+      $layer_object->data['title'] = $layer_object->title;
+      $layer_object->data['weight'] = $layer_object->weight;
+      $layer_data[$layer_object->name] = $layer_object->data;
+    }
   }
 
   return $layer_data;
@@ -84,13 +86,19 @@ function _openlayers_behaviors_render($behaviors = array(), &$map = array()) {
 /**
  * Process Styles
  *
- * Get full data for any styles
+ * Get full data for any styles.  The idea is that we load
+ * all the needed styles into the ['styles'] key of the
+ * map object, and keep a reference in ['layer_styles']
+ * and ['layer_styles_select'] for layer specific styling.
  *
- * TODO: KILL KILL KILL
+ * TODO: Overall, this is not a great approach to managing
+ * styles.
  *
  * @param $styles
  *   Array of map styles ( <style_role> : <style_name> | <style_array> )
  * @param $layer_styles
+ *   Array of layer styles ( <layer_name> : <style_name> )
+ * @param $layer_styles_select
  *   Array of layer styles ( <layer_name> : <style_name> )
  * @param $map
  *   Map array
@@ -98,7 +106,7 @@ function _openlayers_behaviors_render($behaviors = array(), &$map = array()) {
  *   Array of processed styles ( <style_name> => <style_array> )
  */
 function _openlayers_styles_process($styles = array(), 
-  $layer_styles = array(), &$map = array()) {
+  $layer_styles = array(), $layer_styles_select = array(), &$map = array()) {
 
   // Get styles info array
   $styles_info = openlayers_styles();
@@ -123,17 +131,28 @@ function _openlayers_styles_process($styles = array(),
       $processed[$style] = $info;
     }
   }
+
+  // Add layer styles select
+  foreach ($layer_styles_select as $style) {
+    if (!isset($processed[$style]) && 
+        !empty($styles_info[$style]) && 
+        $info = $styles_info[$style]->data) {
+      $processed[$style] = $info;
+    }
+  }
+
+  // Add layer styles
+  foreach ($layer_styles as $style) {
+    if (!isset($processed[$style]) && 
+        !empty($styles_info[$style]) && 
+        $info = $styles_info[$style]->data) {
+      $processed[$style] = $info;
+    }
+  }
   
   // Update URLs to support different types of paths
   foreach ($processed as $k => $style) {
-    if (!empty($style['externalGraphic'])) {
-      // Check full URL or absolute path
-      if (!valid_url($style['externalGraphic'], TRUE) 
-        && strpos($style['externalGraphic'], '/') !== 0) {
-        // Make full URL from Drupal path
-        $processed[$k]['externalGraphic'] = openlayers_style_path($style['externalGraphic']);
-      }
-    }
+    $processed[$k] = openlayers_render_style($style);
   }
 
   // Run through theme function
@@ -144,6 +163,26 @@ function _openlayers_styles_process($styles = array(),
 
   // Return processed
   return $processed;
+}
+
+/**
+ * Render style array.
+ *
+ * At the moment, this only makes the external grpahics
+ * relative.
+ */
+function openlayers_render_style($style = array()) {
+  // Relative path conversion
+  if (!empty($style['externalGraphic'])) {
+    // Check full URL or absolute path
+    if (!valid_url($style['externalGraphic'], TRUE) 
+      && strpos($style['externalGraphic'], '/') !== 0) {
+      // Make full URL from Drupal path
+      $style['externalGraphic'] = openlayers_style_path($style['externalGraphic']);
+    }
+  }
+  
+  return $style;
 }
 
 /**
