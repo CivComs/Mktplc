@@ -8,9 +8,10 @@
  * Ctools plugin definition.
  */
 $plugin = array(
-  'title' => t('Boxselect'),
-  'description' => t('Allows the selection and display of a box.'),
+  'title' => t('Bounding Box Select'),
+  'description' => t('Allows the selection and display of a bounding box.  Currently hard-coded for the map making interface.'),
   'type' => 'map',
+  'ui_visibility' => FALSE,
   'behavior' => array(
     'file' => 'openlayers_behavior_boxselect.inc',
     'class' => 'openlayers_behavior_boxselect',

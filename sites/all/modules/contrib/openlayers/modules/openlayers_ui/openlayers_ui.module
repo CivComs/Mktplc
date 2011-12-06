@@ -13,16 +13,39 @@ function openlayers_init() {
   // For backwards compability for the change from maps to presets
   // in the 7.x-2.x version, we want to make it really obvious that
   // administrators and developers should be updating their maps
+  //
+  // There are also other requirement checks like the compatible
+  // suggestlibrary version.
   if (strpos($_GET['q'], 'admin/structure/openlayers') === 0) {
     include_once DRUPAL_ROOT . '/includes/install.inc';
     drupal_load_updates();
     module_load_include('install', 'openlayers', 'openlayers');
     $reqs = openlayers_requirements('runtime');
     foreach ($reqs as $r) {
-      drupal_set_message(t('<strong>!title</strong> !message', array(
-        '!title' => $r['value'],
-        '!message' => $r['description'],
-        )), 'error');
+      if ($r['severity'] != REQUIREMENT_OK) {
+        $severity = $r['severity'] == REQUIREMENT_WARNING ? 'warning' : 'error';
+        drupal_set_message(t('<strong>!title</strong> !message', array(
+          '!title' => $r['value'],
+          '!message' => isset($r['description']) ? $r['description'] : '',
+          )), $severity);
+      }
+    }
+    
+    // We also want to do some nice AJAX magic to get the library
+    // version to the system.
+    $check = variable_get('openlayers_ui_version_check', '');
+    if (empty($check)) {
+      // Load AJAX libraries
+      drupal_add_library('system', 'drupal.ajax');
+      drupal_add_library('system', 'jquery.form');
+      // Ensure that the library is included
+      openlayers_include();
+      // Add custom client JS
+      drupal_add_js(drupal_get_path('module', 'openlayers_ui') . '/js/openlayers_ui.admin.js');
+      // We shouldn't, but we are just gonna put a message up there
+      // to get replaced.
+      drupal_set_message('<div class="openlayers-ui-version-check-message">' . 
+        t('Checking client library via Javascript...') . '</div>', 'none');
     }
   }
 }
@@ -327,11 +350,12 @@ function openlayers_ui_menu() {
     'type' => MENU_LOCAL_TASK,
     'tab_parent' => 'admin/structure/openlayers/maps',
   );
-  $items['openlayers/ahah/map'] = array(
-    'title' => 'OpenLayers AHAH',
-    'page callback' => 'openlayers_ui_map_ahah',
-    'access callback' => TRUE,
-    'file' => 'includes/openlayers_ui.maps.inc',
+  $items['admin/structure/openlayers/callbacks/version_check/%'] = array(
+    'title' => 'OpenLayers Version Check',
+    'page callback' => 'openlayers_ui_version_check',
+    'page arguments' => array(5),
+    'access arguments' => array('administer openlayers'),
+    'file' => 'includes/openlayers_ui.admin.inc',
     'type' => MENU_CALLBACK,
   );
 
@@ -381,14 +405,16 @@ function openlayers_ui_object_list($type) {
 
   switch ($type) {
     case 'styles':
-      $header = array(t('Icon'), t('Title'), t('Description'), t('Actions'));
+      $header = array(t('Preview'), t('Title'), t('Description'), t('Actions'));
       $objects = openlayers_styles(TRUE);
       break;
+      
     case 'layers':
       $header = array(t('Title'), t('Type'), t('Description'), t('Actions'));
       $layer_types = openlayers_layer_types();
       $objects = openlayers_layers_load(TRUE);
       break;
+      
     case 'maps':
       $header = array(t('Title'), t('Layers'), t('Description'), t('Actions'));
       $layers = openlayers_layers_load();
@@ -405,7 +431,12 @@ function openlayers_ui_object_list($type) {
     switch ($type) {
       case 'styles':
       	// Add the icon as an image in the row if it exists.
-      	$row[] = isset($object->data['externalGraphic']) ? theme('image',array('path'=>$object->data['externalGraphic'])) : NULL;
+        if (isset($object->data['externalGraphic'])) {
+          $row[] = theme('image', array('path' => $object->data['externalGraphic']));
+      	}
+      	else {
+      	  $row[] = openlayers_ui_style_preview($object);
+      	}
         break;
       
       default:
@@ -720,4 +751,32 @@ function openlayers_dependency_widget($dependencies) {
     }
     return $dependency_form;
   }
+}
+
+/**
+ * Create Style Preview
+ *
+ * Create a style preview given style object.
+ */
+function openlayers_ui_style_preview($style, $crosshairs = FALSE) {
+  drupal_add_js(drupal_get_path('module', 'openlayers_ui') . '/js/openlayers_ui.styles.js');
+  drupal_add_css(drupal_get_path('module', 'openlayers_ui') . '/openlayers_ui.css');
+  module_load_include('inc', 'openlayers', 'includes/openlayers.render');
+  openlayers_include();
+  
+  // Render style data
+  $style->data = openlayers_render_style($style->data); 
+  
+  // Let's make a tiny map for a preview
+  drupal_add_js(array('openlayers_ui' => 
+    array(
+      'style_preview' => array(
+        $style->name => $style,
+        $style->name . '_crosshairs' => $crosshairs,
+      ),
+    ),
+  ), 'setting');
+  
+  // TODO: This should probably be in a theme function.
+  return '<div id="' . $style->name . '"class="openlayers-ui-style-preview"></div>';
 }

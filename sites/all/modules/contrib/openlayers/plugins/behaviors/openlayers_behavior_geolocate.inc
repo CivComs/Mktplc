@@ -8,8 +8,8 @@
  * Ctools plugin definition.
  */
 $plugin = array(
-  'title' => t('Geolocate'),
-  'description' => t('Provides the geolcoation control and simply zooms to users location.'),
+  'title' => t('Geolocate Client'),
+  'description' => t('Provides the geolcoation control that simply zooms to users location on map load.  Based on HTML5 geolocation, so this will not be supported in all browsers.'),
   'behavior' => array(
     'file' => 'openlayers_behavior_geolocate.inc',
     'class' => 'openlayers_behavior_geolocate',

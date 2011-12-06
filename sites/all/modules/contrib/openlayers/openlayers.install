@@ -37,6 +37,8 @@ function openlayers_schema() {
     'description' => 'Storage for User defined OpenLayers maps.',
     'export' => array(
       'key' => 'name',
+      'key name' => 'Name',
+      'primary key' => 'name',
       'identifier' => 'openlayers_maps',
       'default hook' => 'openlayers_maps',
       'api' => array(
@@ -78,6 +80,8 @@ function openlayers_schema() {
     'description' => 'Storage for user defined OpenLayers layers.',
     'export' => array(
       'key' => 'name',
+      'key name' => 'Name',
+      'primary key' => 'name',
       'identifier' => 'openlayers_layers',
       'default hook' => 'openlayers_layers',
       'api' => array(
@@ -124,6 +128,8 @@ function openlayers_schema() {
     'description' => 'Storage for user defined OpenLayers styles.',
     'export' => array(
       'key' => 'name',
+      'key name' => 'Name',
+      'primary key' => 'name',
       'identifier' => 'openlayers_styles',
       'default hook' => 'openlayers_styles',
       'api' => array(
@@ -174,6 +180,57 @@ function openlayers_schema() {
 function openlayers_requirements($phase) {
   $req = array();
   $t = get_t();
+  
+  // We should not require a specfic version of the OpenLayers library, but
+  // we should tell the administrator that specific versions are more
+  // compatible than others.
+  if ($phase == 'runtime') {
+    $ol_library_version = 0;
+    $current_library = variable_get('openlayers_source', OPENLAYERS_DEFAULT_LIBRARY);
+    
+    // As of 2.11, the hosted version supports the newest hosted
+    // stable with an actual version number.  This used to be just under
+    // the 'api' path.
+    if (strpos($current_library, (string) OPENLAYERS_SUGGESTED_LIBRARY) !== FALSE) {
+      $ol_library_version = OPENLAYERS_SUGGESTED_LIBRARY;
+    }
+    
+    // Check if it is the default hosted.
+    if ($current_library == 'http://openlayers.org/api/OpenLayers.js') {
+      $ol_library_version = OPENLAYERS_HOSTED_API_LIBRARY;
+    }
+    
+    // Finally, let's see if the client has sent us a value
+    // from the UI module AJAX magic.
+    $client = variable_get('openlayers_ui_version_check', '');
+    if (strpos($client, (string) OPENLAYERS_SUGGESTED_LIBRARY) !== FALSE) {
+      $ol_library_version = OPENLAYERS_SUGGESTED_LIBRARY;
+    }
+    
+    // Check if suggest version.
+    if ($ol_library_version == OPENLAYERS_SUGGESTED_LIBRARY) {
+      $req['openlayers_old_presets'] = array(
+        'title' => $t('OpenLayers library version'), 
+        'value' => $t('Using suggested compatible version %suggested.',
+          array(
+            '%suggested' => OPENLAYERS_SUGGESTED_LIBRARY,
+          )),
+        'severity' => REQUIREMENT_OK,
+      );
+    }
+    else {
+      $req['openlayers_old_presets'] = array(
+        'title' => $t('OpenLayers library version'), 
+        'value' => $t('Not suggested compatible version.'),
+        'description' => $t('Though you are very welcome to use whatever version of the OpenLayers library you want, it is suggested that you use version %suggested.  You are currently not using that version or we are unable to determine which version you are using.  Update your library settings at !settings.',
+          array(
+            '%suggested' => OPENLAYERS_SUGGESTED_LIBRARY,
+            '!settings' => l(t('OpenLayers settings'), 'admin/structure/openlayers'),
+          )), 
+        'severity' => REQUIREMENT_WARNING,
+      );
+    }
+  }
 
   // There are some backwards compability for the shift from
   // preset to maps.  We want to communicate to administrators
