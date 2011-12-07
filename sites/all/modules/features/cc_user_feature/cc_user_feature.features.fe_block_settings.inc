@@ -13,6 +13,36 @@ function cc_user_feature_default_fe_block_settings() {
   // alpha
   $theme = array();
 
+  $theme['block-user_signup'] = array(
+    'module' => 'block',
+    'theme' => 'alpha',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/login
+user/denied
+toboggan/denied',
+    'title' => 'Not a Member Yet?',
+    'cache' => -1,
+    'machine_name' => 'user_signup',
+  );
+
+  $theme['block-user_login'] = array(
+    'module' => 'block',
+    'theme' => 'alpha',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/register',
+    'title' => 'Already a Member?',
+    'cache' => -1,
+    'machine_name' => 'user_login',
+  );
+
   $theme['menu-menu-user-tasks'] = array(
     'module' => 'menu',
     'delta' => 'menu-user-tasks',
@@ -35,6 +65,36 @@ denied',
 
   // bartik
   $theme = array();
+
+  $theme['block-user_signup'] = array(
+    'module' => 'block',
+    'theme' => 'bartik',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/login
+user/denied
+toboggan/denied',
+    'title' => 'Not a Member Yet?',
+    'cache' => -1,
+    'machine_name' => 'user_signup',
+  );
+
+  $theme['block-user_login'] = array(
+    'module' => 'block',
+    'theme' => 'bartik',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/register',
+    'title' => 'Already a Member?',
+    'cache' => -1,
+    'machine_name' => 'user_login',
+  );
 
   $theme['menu-menu-user-tasks'] = array(
     'module' => 'menu',
@@ -59,13 +119,43 @@ denied',
   // civiccommons
   $theme = array();
 
+  $theme['block-user_signup'] = array(
+    'module' => 'block',
+    'theme' => 'civiccommons',
+    'status' => '1',
+    'weight' => '0',
+    'region' => 'sidebar_second',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/login
+user/denied
+toboggan/denied',
+    'title' => 'Not a Member Yet?',
+    'cache' => -1,
+    'machine_name' => 'user_signup',
+  );
+
+  $theme['block-user_login'] = array(
+    'module' => 'block',
+    'theme' => 'civiccommons',
+    'status' => '1',
+    'weight' => '0',
+    'region' => 'sidebar_second',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/register',
+    'title' => 'Already a Member?',
+    'cache' => -1,
+    'machine_name' => 'user_login',
+  );
+
   $theme['menu-menu-user-tasks'] = array(
     'module' => 'menu',
     'delta' => 'menu-user-tasks',
     'theme' => 'civiccommons',
-    'status' => '1',
+    'status' => 0,
     'weight' => '-46',
-    'region' => 'sidebar_second',
+    'region' => '',
     'custom' => '0',
     'visibility' => '1',
     'pages' => 'user/login
@@ -81,6 +171,36 @@ denied',
 
   // omega
   $theme = array();
+
+  $theme['block-user_signup'] = array(
+    'module' => 'block',
+    'theme' => 'omega',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/login
+user/denied
+toboggan/denied',
+    'title' => 'Not a Member Yet?',
+    'cache' => -1,
+    'machine_name' => 'user_signup',
+  );
+
+  $theme['block-user_login'] = array(
+    'module' => 'block',
+    'theme' => 'omega',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/register',
+    'title' => 'Already a Member?',
+    'cache' => -1,
+    'machine_name' => 'user_login',
+  );
 
   $theme['menu-menu-user-tasks'] = array(
     'module' => 'menu',
@@ -104,6 +224,36 @@ denied',
 
   // seven
   $theme = array();
+
+  $theme['block-user_signup'] = array(
+    'module' => 'block',
+    'theme' => 'seven',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/login
+user/denied
+toboggan/denied',
+    'title' => 'Not a Member Yet?',
+    'cache' => -1,
+    'machine_name' => 'user_signup',
+  );
+
+  $theme['block-user_login'] = array(
+    'module' => 'block',
+    'theme' => 'seven',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '1',
+    'pages' => 'user/register',
+    'title' => 'Already a Member?',
+    'cache' => -1,
+    'machine_name' => 'user_login',
+  );
 
   $theme['menu-menu-user-tasks'] = array(
     'module' => 'menu',
