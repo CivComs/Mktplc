@@ -2,7 +2,7 @@
 // $Id: cc_helper.module,v 0.1 2011/09/21 Paul de Paula Exp $
 require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'cc_helper') . '/cc_helper.inc';
 
-/* Applications. $query - boolean, whether we need nodes array or EntityFieldQuery object. */
+/*  Applications. $query - boolean, whether we need nodes array or EntityFieldQuery object. */
 function _cc_helper_apps($query) {
   $fquery = new EntityFieldQuery();
   $fquery
