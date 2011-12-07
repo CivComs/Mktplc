@@ -885,3 +885,45 @@ footer a:visited {
 footer a:hover {
   color: #cacaca;
 }
+
+/**
+ * OpenLayers maps styling
+ */
+body .openlayers-map .olControlAttribution {
+  right: inherit;
+  left: 5px;
+  background-color: rgba(15, 15, 15, 0.5);
+  color: #EEEEEE;
+  padding: 5px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+body .openlayers-views-map .olControlAttribution a {
+  color: #EEEEEE;
+  font-size: 10px;
+  font-weight: bold;
+}
+body .openlayers-map .olControlPermalink {
+  right: 5px;
+  bottom: 5px;
+  background-color: rgba(15, 15, 15, 0.5);
+  color: #EEEEEE;
+  padding: 5px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+body .openlayers-map .olControlPermalink a {
+  color: #EEEEEE;
+  font-size: 10px;
+  font-weight: bold;
+}
+body .openlayers-map .olFramedCloudPopupContent {
+  border-radius: 5px;
+  color: #EEEEEE;
+}
+body .openlayers-map .olFramedCloudPopupContent a {
+  color: #EEEEEE;
+}
+body .openlayers-map img.olImageLoadError {
+  background-color: transparent;
+}

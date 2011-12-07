@@ -3450,7 +3450,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
     ? $data->field_data_field_organization_address_field_organization_add_2
     : NULL
 );
-return _cc_helper_using($place, \'full\');';
+return _cc_helper_using($place);';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Field: PHP: Sharing */
@@ -3492,7 +3492,7 @@ return _cc_helper_using($place, \'full\');';
     ? $data->field_data_field_organization_address_field_organization_add_2
     : NULL
 );
-return _cc_helper_sharing($place, \'full\');';
+return _cc_helper_sharing($place);';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
   /* Field: PHP: Using / Sharing */
@@ -3711,7 +3711,7 @@ echo _cc_helper_using_sharing($data->_field_data[\'nid\'][\'entity\'], \'full\')
     ? $data->field_data_field_organization_address_field_organization_add_2
     : NULL
 );
-return _cc_helper_using($place, \'full\');';
+return _cc_helper_using($place);';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Field: PHP: Sharing */
@@ -3753,43 +3753,40 @@ return _cc_helper_using($place, \'full\');';
     ? $data->field_data_field_organization_address_field_organization_add_2
     : NULL
 );
-return _cc_helper_sharing($place, \'full\');';
+return _cc_helper_sharing($place);';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
   /* Field: PHP: Using / Sharing */
-  $handler->display->display_options['fields']['php_3']['id'] = 'php_3';
-  $handler->display->display_options['fields']['php_3']['table'] = 'views';
-  $handler->display->display_options['fields']['php_3']['field'] = 'php';
-  $handler->display->display_options['fields']['php_3']['ui_name'] = 'PHP: Using / Sharing';
-  $handler->display->display_options['fields']['php_3']['label'] = '';
-  $handler->display->display_options['fields']['php_3']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['path'] = '[field_organization_address_1]';
-  $handler->display->display_options['fields']['php_3']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['php_3']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['php_3']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['php_3']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['php_3']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['php_3']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['php_3']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['php_3']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_3']['php_value'] = '$row->php + $row->php_1;';
-  $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
-//echo theme(\'using_sharing\', array(\'using\' => $row->php_1, \'sharing\' =>$row->php_2, \'setting\' => \'full\'));
-// echo _cc_helper_using_sharing($data->_field_data[\'nid\'][\'entity\'], \'full\');
+  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['fields']['php_2']['table'] = 'views';
+  $handler->display->display_options['fields']['php_2']['field'] = 'php';
+  $handler->display->display_options['fields']['php_2']['ui_name'] = 'PHP: Using / Sharing';
+  $handler->display->display_options['fields']['php_2']['label'] = '';
+  $handler->display->display_options['fields']['php_2']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['php_2']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['php_2']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['php_2']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['php_2']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php_2']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['php_2']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['php_2']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['php_2']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_2']['php_value'] = '$row->php + $row->php_1;';
+  $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
 $total = $row->php + $row->php_1;
 if ($total > 0) echo "($total)";
 ?>';
-  $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
+  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Global: PHP */
   $handler->display->display_options['sorts']['php']['id'] = 'php';

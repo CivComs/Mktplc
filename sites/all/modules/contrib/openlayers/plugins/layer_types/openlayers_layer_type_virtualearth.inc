@@ -58,6 +58,11 @@ class openlayers_layer_type_virtualearth extends openlayers_layer_type {
    * Layer-type-wide settings form
    */
   function settings_form() {
+    return array();
+    
+    // This is not actually used anywhere.
+    
+    /*
     return array(
       'openlayers_layers_virtualearth_api' => array(
         '#type' => 'textfield',
@@ -67,6 +72,7 @@ class openlayers_layer_type_virtualearth extends openlayers_layer_type {
           array('@microsoft' => 'http://www.microsoft.com/maps/developers/'))
       )
     );
+    */
   }
 
   /**
