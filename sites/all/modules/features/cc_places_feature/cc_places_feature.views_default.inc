@@ -662,7 +662,8 @@ $place = array(
     ? $data->field_data_field_organization_address_field_organization_add_2
     : NULL
 );
-echo _cc_helper_using_sharing($place, \'full\');
+
+echo _cc_helper_using_sharing($place, \'full\', array(124, 127, 128, 129, 130, 131, 132));
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
