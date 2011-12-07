@@ -53,9 +53,21 @@ function openlayers_test_ctools_plugin_api($module, $api) {
     switch ($api) {
       case 'openlayers_maps':
         return array('version' => 1);
+        
+      case 'openlayers_layers':
+        return array('version' => 1);
 
     }
   }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function openlayers_test_views_api() {
+  return array(
+    'api' => 2,
+  );
 }
 
 /**
@@ -67,12 +79,11 @@ function openlayers_test_openlayers_maps() {
 }
 
 /**
- * Implements hook_views_api().
+ * Implements hook_openlayers_layers().
  */
-function openlayers_test_views_api() {
-  return array(
-    'api' => 2,
-  );
+function openlayers_test_openlayers_layers() {
+  module_load_include('inc', 'openlayers_test', 'includes/openlayers_test.layers');
+  return _openlayers_test_openlayers_layers();
 }
 
 /**

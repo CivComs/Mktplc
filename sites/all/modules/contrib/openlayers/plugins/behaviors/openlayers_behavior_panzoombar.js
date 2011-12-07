@@ -7,5 +7,5 @@
  * Pan Zoom Bar Behavior
  */
 Drupal.openlayers.addBehavior('openlayers_behavior_panzoombar', function (data, options) {
-  Drupal.openlayers.addControl(data.openlayers, 'PanZoomBar');
+  Drupal.openlayers.addControl(data.openlayers, 'PanZoomBar', options);
 });

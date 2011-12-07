@@ -9,7 +9,7 @@
  */
 $plugin = array(
   'title' => t('Layer Switcher'),
-  'description' => t('Provides the ability to switch layers in the map interface.'),
+  'description' => t('Provides the ability to switch layers in the map interface.  This provides an expandable box on the map to enable and disable layers.'),
   'type' => 'map',
   'behavior' => array(
     'file' => 'openlayers_behavior_layerswitcher.inc',
