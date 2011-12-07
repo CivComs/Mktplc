@@ -262,7 +262,7 @@ function cc_organization_field_default_fields() {
       'bundle' => 'organization',
       'default_value' => array(
         0 => array(
-          'administrative_area' => '',
+          'administrative_area' => 'AL',
           'country' => 'US',
           'element_key' => 'node|organization|field_organization_address|und|0',
           'locality' => '',
@@ -315,7 +315,7 @@ function cc_organization_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_organization_address',
       'label' => 'Street address',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -326,7 +326,7 @@ function cc_organization_field_default_fields() {
           'available_countries' => array(),
           'format_handlers' => array(
             'address' => 'address',
-            'county' => 'county',
+            'address-hide-country' => 0,
             'name-full' => 0,
             'name-oneline' => 0,
             'organisation' => 0,
