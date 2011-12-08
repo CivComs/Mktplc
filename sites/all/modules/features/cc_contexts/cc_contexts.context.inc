@@ -492,12 +492,6 @@ function cc_contexts_context_default_contexts() {
           'region' => 'content_leftcolumn',
           'weight' => '-10',
         ),
-        'views-cc_organizations-block_4' => array(
-          'module' => 'views',
-          'delta' => 'cc_organizations-block_4',
-          'region' => 'content_leftcolumn',
-          'weight' => '-9',
-        ),
         'views-cc_organizations-block_3' => array(
           'module' => 'views',
           'delta' => 'cc_organizations-block_3',
