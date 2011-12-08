@@ -5,8 +5,25 @@ function cc_helper_field_attach_form($entity_type, $entity, &$form, &$form_state
     return FALSE;
   }
   $form['field_organization_address'][$langcode]['#element_validate'][] = '_cc_helper_address_validate';
-	$arr = array(''=>t('--None--'))+$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options'];
-	$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options']= $arr;
+  $arr = array(''=>t('--None--'))+$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options'];
+  $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options']= $arr;
+  $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#attributes'] = array('class' => array('administrative-area'));
+  array_walk(
+    $form['field_organization_address'][$langcode],
+    '_cc_helper_address_required',
+    array('langcode' => $langcode, 'field name' => 'field_organization_address')
+  );
+  drupal_add_js(drupal_get_path('module', 'cc_helper') . '/cc_helper_address.js');
+}
+
+//Make elements required in address. $outer_data - array with field name and language.
+function _cc_helper_address_required(&$item, $delta, $outer_data) {
+  if(!is_int($delta)) {
+    return FALSE;
+  }
+  $l = $outer_data['langcode'];
+  $f = $outer_data['field name'];
+  $county = ':input[name="' . $f . '[' . $l . '][' . $delta . '][sub_administrative_area]"]';
 }
 
 function _cc_helper_address_validate($element, $form_state) {
@@ -44,7 +61,7 @@ function _cc_helper_org_address_error($a1, $a2, $l, $ar, $sar, $c, $tid = 0) {
     'city' => ($a1 || $a2 || ($tid == 127)) && !$l,
     'county' => ($tid == 129) && !$sar,
     'state' => ($sar || $l || $a1 || $a2 || ($tid == 130) || ($tid == 129) || ($tid == 127)) && !$ar,
-    'country' => TRUE && !$c
+    'country' => ($ar || $sar || $l || $a1 || $a2 || ($tid == 131) || ($tid == 130) || ($tid == 129) || ($tid == 127)) && !$c
   );
   $flds = array_keys(array_filter($req));
   return empty($flds) ? '' : t(
