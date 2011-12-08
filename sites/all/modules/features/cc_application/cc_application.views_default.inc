@@ -1116,6 +1116,8 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['preserve_tags'] = '<a>';
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['html'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_interaction_organization']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_interaction_organization']['element_wrapper_class'] = 'views-field-field-application-sdesc';
   $handler->display->display_options['fields']['field_interaction_organization']['element_default_classes'] = 1;
   $handler->display->display_options['fields']['field_interaction_organization']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['empty_zero'] = 0;
