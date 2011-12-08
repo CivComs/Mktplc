@@ -36,21 +36,19 @@ function _cc_helper_address_validate($element, $form_state) {
 }
 
 /*
-$address - address field item. $tid - "what kind of Organization is it".
+$tid - "what kind of Organization is it".
 */
 function _cc_helper_org_address_error($a1, $a2, $l, $ar, $sar, $c, $tid = 0) {
-  $m = '';
-  if (($a1 || $a2 || $tid == 127) && (!$l || !$ar || !$c)) {
-    $m = t('Please, provide city, state and country in address field.');
-  }
-  elseif (($tid == 130 || $l || $sar) && (!$ar || !$c)) {
-    $m = t('Please, provide state and country in address field.');
-  }
-  elseif ($tid == 129 && (!$sar || !$ar || !$c)){
-    $m = t('Please, provide county, state and country in address field.');
-  }
-  elseif (($tid == 131 || $ar) && !$c) {
-    $m = t('Please, provide country in address field.');
-  }
-  return $m;
+  $req = array(
+    'address' => FALSE && (!$a1 || !$a2),
+    'city' => ($a1 || $a2 || ($tid == 127)) && !$l,
+    'county' => ($tid == 129) && !$sar,
+    'state' => ($sar || $l || $a1 || $a2 || ($tid == 130) || ($tid == 129) || ($tid == 127)) && !$ar,
+    'country' => TRUE && !$c
+  );
+  $flds = array_keys(array_filter($req));
+  return empty($flds) ? '' : t(
+    'Following data is required but absent: !fields.',
+    array('!fields' => implode(', ', $flds))
+  );
 }
