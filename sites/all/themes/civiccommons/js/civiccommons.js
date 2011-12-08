@@ -4,7 +4,6 @@ jQuery(document).ready(evenizeRowHeights(".view-applications .views-row .views-f
 jQuery(document).ready(evenizeRowHeights(".view-places .views-row .field-content"));
 
 
-
 /*
 #
 #  makes all app listing rows the same height --
