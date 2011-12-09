@@ -1,21 +1,23 @@
 (function ($) {
-  $(document).ready(function () {
-    field = $('#edit-field-organization-address-und-0');
-    a1 = field.find('.thoroughfare');
-    a2 = field.find('.premise');
-    l = field.find('.locality');
-    ar = field.find('.administrative-area');
-    sar = field.find('.sub-administrative-area');
-    c =  field.find('.country');
-    tid = $('#edit-field-organization-type-und');
-    a1.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
-    a2.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
-    l.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
-    ar.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
-    sar.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
-    c.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
-    tid.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
-  });
+  Drupal.behaviors.ccHelper = {
+      attach: function(context, settings) {
+      field = $('#edit-field-organization-address-und-0');
+      a1 = field.find('.thoroughfare');
+      a2 = field.find('.premise');
+      l = field.find('.locality');
+      ar = field.find('.administrative-area');
+      sar = field.find('.sub-administrative-area');
+      c =  field.find('.country');
+      tid = $('#edit-field-organization-type-und');
+      a1.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
+      a2.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
+      l.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
+      ar.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
+      sar.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
+      c.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
+      tid.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});      
+    }
+  }
 
   function req(element, toggle) {
     if(toggle && element.parent().find('.form-required').length == 0) {
