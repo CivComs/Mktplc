@@ -2,6 +2,7 @@
 // Fire of row evenizers on page load
 jQuery(document).ready(evenizeRowHeights(".view-applications .views-row .views-field-field-application-sdesc"));
 jQuery(document).ready(evenizeRowHeights(".view-places .views-row .field-content"));
+jQuery(document).ready(evenizeRowHeights(".meta"));
 
 
 /*
@@ -14,14 +15,14 @@ function evenizeRowHeights(selector) {
 
   return function() {
   	var rowMaxHeight = 0;
-  	jQuery(selector).each(function (i) {
+  	jQuery(selector).each(function () {
   		 var elHeight = jQuery(this).height();
-  		 if(parseInt(elHeight) > rowMaxHeight){
-  			 rowMaxHeight = parseInt(elHeight);
+  		 if(elHeight > rowMaxHeight){
+  			 rowMaxHeight = elHeight;
   		 }
   	});
-  		jQuery(selector).each(function (i) {
-  		jQuery(this).css('height',rowMaxHeight+'px !important');
+  		jQuery(selector).each(function () {
+				jQuery(this).height(rowMaxHeight);
   	});
   }  
   	
