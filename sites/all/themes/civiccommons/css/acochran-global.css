@@ -130,7 +130,7 @@ button {width: auto; overflow: visible;}
 }
 aside .content {
   font-size: 12px;
-  padding: 9px;
+  padding: 0px 9px;
 }
 .block {
   clear: both;
@@ -294,8 +294,8 @@ input#edit-go {
   display: none;
 }
 .block-custom-search-blocks {
-  float:right;
-  width: 390px;
+  float: right;
+  width: auto;
   clear: none;
 }
 
@@ -369,6 +369,13 @@ input#edit-go {
   clear: both;
   margin-left: 1em;
 }
+#block-user-login {
+  margin-bottom: 0px;
+ /* margin-top: -80px */ 
+ /* moves it above search, closer to util bar */
+
+}
+
 #block-addtoany-addtoany-button {
   display: none;
 }
@@ -410,6 +417,7 @@ body.node-type-page #region-content
  */
 .breadcrumb {
   font-size: 12px;
+
 }
 #section-content {
   font-size: 15px;
@@ -443,7 +451,7 @@ h2.block-title,
   letter-spacing: -0.05em;
   text-transform: uppercase;
   line-height: 2;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   padding: 0 0.8em;
   border-top: 1px solid #99c5ff;
   border-right: 1px solid #5684bf;
@@ -468,6 +476,13 @@ h2.block-title,
   font-weight: bold;
   text-transform: none;
 } 
+
+.region-content-inner {
+    margin-bottom: 0px;
+}
+.region-content-inner p {
+    margin-bottom: .8em;
+}
 
 .item-list ul li {
   border-bottom: 1px solid #eee;
@@ -676,6 +691,13 @@ h2.block-title,
   font-weight: bold;
 }
 
+/* List: Related Apps */
+.view-related-apps-block view-empty {
+    display: none;
+
+}
+
+
 /* Block: Preview Intro */
 .preview-intro {
   margin-bottom: 20px;
@@ -717,6 +739,11 @@ h2.block-title,
   border-top: 1px solid #ff8700;
   border-left: 1px solid #ff8700;
 }
+
+.highlight views-row {
+  margin 0 0 0px;
+
+}
 .front .add-to-marketplace h2 {    
   text-align: center;
 }
@@ -739,20 +766,22 @@ h2.block-title,
 
 #block-views-at-a-glance-application-block .content {
   padding-top: 0;
+  list-style: none;
 }
+
 .views-field-field-application-used-in {
   color: #666;
   font-size: 16px;
   font-weight: bold;
   background: url(../images/icon_place_mini.gif) left center no-repeat scroll;
-  padding: 10px 0 10px 24px;
+  padding: 0px 0 0px 24px;
   margin: 0 0 5px;
 }
 .views-field-field-application-used-in .views-label {
   font-size: 16px;
 }
 .views-field-field-application-used-in div {
-  display: inline;
+  display: inline; 
 }
 #block-views-at-a-glance-application-block .view-header p {
   font-size: 14px;
@@ -774,13 +803,13 @@ h2.block-title,
   border-top: 1px solid #eee;
   margin: 0 0 10px;
   padding: 10px 0 0;
+  display: block; 
 }
 
 #block-views-cc-organizations-block{
-margin-top: 20px;
+  margin-top: 20px;
 
 }
-
 
 .views-label {
   font-size: 14px;

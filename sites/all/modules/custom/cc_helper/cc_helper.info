@@ -6,5 +6,6 @@ scripts[] = 'cc_helper.js'
 files[] = cc_helper.inc
 files[] = cc_helper.install
 files[] = cc_helper.module
+files[] = cc_helper_address.js
 
 version = "7.x-0.1"
