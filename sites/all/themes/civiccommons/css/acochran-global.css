@@ -294,8 +294,8 @@ input#edit-go {
   display: none;
 }
 .block-custom-search-blocks {
-  float:right;
-  width: 390px;
+  float: right;
+  width: auto;
   clear: none;
 }
 
