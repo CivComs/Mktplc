@@ -130,7 +130,7 @@ button {width: auto; overflow: visible;}
 }
 aside .content {
   font-size: 12px;
-  padding: 0px 9px;
+  padding: 9px 9px;
 }
 .block {
   clear: both;
@@ -451,7 +451,7 @@ h2.block-title,
   letter-spacing: -0.05em;
   text-transform: uppercase;
   line-height: 2;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
   padding: 0 0.8em;
   border-top: 1px solid #99c5ff;
   border-right: 1px solid #5684bf;
@@ -723,6 +723,14 @@ h2.block-title,
          box-shadow: 0 1px 8px 1px #DED8D8;
 }
 
+#region-sidebar-second{
+  margin-top: 16px;
+}
+
+.add-to-marketplace {
+   margin-top: -16px;
+}
+
 #region-sidebar-second h2.block-title {
      -moz-border-radius: 5px 5px 0 0;
   -webkit-border-radius: 5px 5px 0 0;
@@ -774,7 +782,7 @@ h2.block-title,
   font-size: 16px;
   font-weight: bold;
   background: url(../images/icon_place_mini.gif) left center no-repeat scroll;
-  padding: 0px 0 0px 24px;
+  padding: 5px 0px 0px 24px;
   margin: 0 0 5px;
 }
 .views-field-field-application-used-in .views-label {
