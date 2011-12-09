@@ -196,7 +196,7 @@ function cc_places_feature_default_fe_block_settings() {
     'delta' => 'cc_organizations-block_1',
     'theme' => 'civiccommons',
     'status' => 0,
-    'weight' => '-55',
+    'weight' => '-56',
     'region' => '',
     'custom' => '0',
     'visibility' => '0',
