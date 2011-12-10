@@ -335,6 +335,7 @@ input#edit-go {
   position: absolute;
   top: 12px;
   right: 12px;
+  width: 370px;
 }
 #region-search-bar input {
   margin: 0;
