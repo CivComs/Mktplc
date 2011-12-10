@@ -360,6 +360,7 @@ input#edit-go {
 #block-system-user-menu {
   clear: both;
   float: right;
+  margin-bottom: 0px;
 }
 #block-system-user-menu li {
   display: inline;
