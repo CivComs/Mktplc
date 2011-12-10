@@ -278,7 +278,7 @@ body.page-preview #region-content {
   padding: 0;
 }
 #block-menu-menu-mktplc-section-nav {
-  padding: 12px 14px;
+  padding: 10px 14px;
   margin-bottom: 5px;
   float: left;
 }
@@ -299,8 +299,8 @@ input#edit-go {
   display: none;
 }
 .block-custom-search-blocks {
-  float:right;
-  width: 390px;
+  float: right;
+  width: auto;
   clear: none;
 }
 
@@ -316,31 +316,44 @@ input#edit-go {
   padding: 0;
   list-style: none;
 }
+
+#region-search-bar li.first.leaf {
+  width: 211px;
+  text-align: center;
+  margin-right: 10px;
+  border-right: 1px solid gainsboro;
+}
+#region-search-bar .section-nav li.first.leaf a {
+  color: #FE892C; 
+}
+
 #region-search-bar .section-nav .menu a,
 #region-search-bar .section-nav .menu a:visited {
-  height: 32px;
+  height: 38px;
   padding: 0 15px;
-  line-height: 32px;
+  line-height: 38px;
   font-sizE: 15px;
   font-weight: bold;
-  color: #559efc;
-  background: url('../images/nav-bg.png') 0 0 repeat-x;
+  color: #559EFC; /* 31B0EF */
+  background: url('../images/nav38px.png') 0 0 repeat-x;
   text-decoration: none;
   border-left: 1px solid #dcdcdc;
   text-transform: none;
   display: block;
 } 
 #region-search-bar .section-nav .menu a:hover {
-  background-image: url('../images/nav-bg-hover.png');
+  background-image: url('../images/nav-bg-hover38.png');
+
 }
 #region-search-bar .section-nav .menu a.active {
-  background-image: url("../images/nav-bg-selected.png");
+  background-image: url("../images/nav-bg-selected38.png");
+
 }
 #region-search-bar .search-form {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 370px;
+  top: 10px;
+  right: 15px;
+  width: 535px;
 }
 #region-search-bar input {
   margin: 0;
@@ -350,15 +363,17 @@ input#edit-go {
 }
 #region-search-bar .custom-search-box {
   color: #999;
-  height: 30px;
-  line-height: 30px;
+  height: 38px;
+  line-height: 38px;
   font-size: 15px;
-  padding: 0 5px;
-  width: 300px;
-  margin: 0 14px 0 0;
+  width: 470px;
+  margin: 0 10px 0 0;
+  font-style: italic;
+  border: 1px solid #EEE;
+  border-top: 2px solid #DDD;
 }
 #region-search-bar .form-submit {
-  height: 32px;
+  height: 38px;
   width: auto;
 }
 
