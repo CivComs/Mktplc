@@ -256,6 +256,11 @@ body.page-preview #region-search-bar {
 body.page-preview #breadcrumb {
   display: none;  
 }
+
+body.page-user-login #breadcrumb {
+  margin-top: -38px;
+}
+
 body.page-preview #region-content {
   padding: 40px;
   text-align: center;
