@@ -35,7 +35,7 @@ function civiccommons_form_alter(&$form, &$form_state, $form_id) {
     if (isset($form['delta']['#value'])) {
       $query = str_replace('search/node/', '', $path);
       $textfield = 'custom_search_blocks_form_' . $form['delta']['#value'];
-      $form[$textfield]['#value'] = check_plain($query); 
+      $form[$textfield]['#default_value'] = check_plain($query); 
     }
   }
 }
