@@ -256,6 +256,11 @@ body.page-preview #region-search-bar {
 body.page-preview #breadcrumb {
   display: none;  
 }
+
+body.page-user-login, body.page-user-register #breadcrumb {
+  margin-top: -6px;
+}
+
 body.page-preview #region-content {
   padding: 40px;
   text-align: center;
@@ -273,7 +278,7 @@ body.page-preview #region-content {
   padding: 0;
 }
 #block-menu-menu-mktplc-section-nav {
-  padding: 12px 14px;
+  padding: 10px 14px;
   margin-bottom: 5px;
   float: left;
 }
@@ -311,30 +316,44 @@ input#edit-go {
   padding: 0;
   list-style: none;
 }
+
+#region-search-bar li.first.leaf {
+  width: 211px;
+  text-align: center;
+  margin-right: 10px;
+  border-right: 1px solid gainsboro;
+}
+#region-search-bar .section-nav li.first.leaf a {
+  color: #FE892C; 
+}
+
 #region-search-bar .section-nav .menu a,
 #region-search-bar .section-nav .menu a:visited {
-  height: 32px;
+  height: 38px;
   padding: 0 15px;
-  line-height: 32px;
+  line-height: 38px;
   font-sizE: 15px;
   font-weight: bold;
-  color: #559efc;
-  background: url('../images/nav-bg.png') 0 0 repeat-x;
+  color: #559EFC; /* 31B0EF */
+  background: url('../images/nav38px.png') 0 0 repeat-x;
   text-decoration: none;
   border-left: 1px solid #dcdcdc;
   text-transform: none;
   display: block;
 } 
 #region-search-bar .section-nav .menu a:hover {
-  background-image: url('../images/nav-bg-hover.png');
+  background-image: url('../images/nav-bg-hover38.png');
+
 }
 #region-search-bar .section-nav .menu a.active {
-  background-image: url("../images/nav-bg-selected.png");
+  background-image: url("../images/nav-bg-selected38.png");
+
 }
 #region-search-bar .search-form {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 15px;
+  width: 535px;
 }
 #region-search-bar input {
   margin: 0;
@@ -344,21 +363,24 @@ input#edit-go {
 }
 #region-search-bar .custom-search-box {
   color: #999;
-  height: 30px;
-  line-height: 30px;
+  height: 38px;
+  line-height: 38px;
   font-size: 15px;
-  padding: 0 5px;
-  width: 300px;
-  margin: 0 14px 0 0;
+  width: 468px;
+  margin: 0 10px 0 0;
+  font-style: italic;
+  border: 1px solid #EEE;
+  border-top: 2px solid #DDD;
 }
 #region-search-bar .form-submit {
-  height: 32px;
+  height: 38px;
   width: auto;
 }
 
 #block-system-user-menu {
   clear: both;
   float: right;
+  margin-bottom: 0px;
 }
 #block-system-user-menu li {
   display: inline;
@@ -567,9 +589,7 @@ h2.block-title,
 
 /* List: By Function */
 .functions-list-container {
-  border-top: 1px solid #eee;
-  margin: 20px 0;
-  padding-top: 20px;
+  margin: 10px 0;
   width: 940px;
   clear: both;
 }
@@ -578,16 +598,11 @@ h2.block-title,
   background: transparent;
   font-size: 15px;
   line-height: 1.5;
-  background: url('../images/civic2.gif') center top no-repeat;
-  padding: 80px 0 0;
-  float: left;
-  text-align: center;
-  width: 110px;
   border: 0;
 }
 .functions-list-container .content {
   width: auto;
-  margin-left: 120px;
+
 }
 .browse-by-grid {
   padding-top: 10px;
