@@ -9,6 +9,7 @@
       sar = field.find('.sub-administrative-area');
       c =  field.find('.country');
       tid = $('#edit-field-organization-type-und');
+      updateAll(a1, a2, l, ar, sar, c, tid);
       a1.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
       a2.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});
       l.live('change', function() {updateAll(a1, a2, l, ar, sar, c, tid)});

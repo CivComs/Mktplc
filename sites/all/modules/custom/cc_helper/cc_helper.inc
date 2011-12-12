@@ -4,9 +4,19 @@ function cc_helper_field_attach_form($entity_type, $entity, &$form, &$form_state
   if(!isset($form['field_organization_address'])) {
     return FALSE;
   }
+  $curr_addr = field_get_items(
+    $entity_type,
+    $entity,
+    'field_organization_address'
+  );
+  $curr_admar =
+    isset($curr_addr[0]['administrative_area'])
+    ? $curr_addr[0]['administrative_area']
+    : FALSE;
   $form['field_organization_address'][$langcode]['#element_validate'][] = '_cc_helper_address_validate';
   $arr = array(''=>t('--None--'))+$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options'];
   $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options']= $arr;
+  $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#default_value'] = $curr_admar;
   $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#attributes'] = array('class' => array('administrative-area'));
   array_walk(
     $form['field_organization_address'][$langcode],
