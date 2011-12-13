@@ -479,9 +479,10 @@ h2.block-title,
   border-right: 1px solid #5684bf;
   border-bottom: 1px solid #5684bf;
   border-left: 1px solid #99c5ff;
-     -moz-border-radius: 5px;
+  background-image: url('../images/bluehead.png');
+  /*   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-          border-radius: 5px;
+          border-radius: 5px; */
 }
 #region-content .field-label {
   margin-top: 20px;
@@ -489,14 +490,14 @@ h2.block-title,
 #region-content h2.block-title,
 #region-content .field-label {
   /* maybe make the headings inside an app/org less overwhelming?*/
-  /* more of an issue when there's no content */
-  background: none;
+  /* more of an issue when there's no content  background: none;
   border: none;
   border-bottom: 4px solid #ddd;
   color: #333;
   padding-left: 0;
   font-weight: bold;
-  text-transform: none;
+  text-transform: none; */
+
 } 
 
 .region-content-inner {
@@ -593,6 +594,7 @@ h2.block-title,
   width: 940px;
   clear: both;
 }
+/*
 .functions-list-container h2.block-title {
   color: #FF8700;
   background: transparent;
@@ -604,10 +606,12 @@ h2.block-title,
   width: auto;
 
 }
+*/
 .browse-by-grid {
   padding-top: 10px;
   font-size: 12px;
   color: #666;
+  padding-left: 24px;
 }
 .browse-by-grid a {
   text-decoration: none;
@@ -667,15 +671,10 @@ h2.block-title,
   display: block;
   margin-left: 0;
   clear: left;
-  border-right: 1px solid #eee;
-  border-bottom: 1px solid #ddd;
-  background: #f7f7f7;
-  -webkit-border-bottom-right-radius: 5px;
-   -webkit-border-bottom-left-radius: 5px;
-      -moz-border-radius-bottomright: 5px;
-       -moz-border-radius-bottomleft: 5px;
-          border-bottom-right-radius: 5px;
-           border-bottom-left-radius: 5px;
+  background: #F8F8F8;
+  border: 1px solid #E4E4E4;
+  height: 24px;
+           
 }
 .apps-list .meta a {
   text-decoration: none;
@@ -688,9 +687,17 @@ h2.block-title,
 .apps-list .meta a {
 }
 .apps-list .meta span.civic-function {
+  float: right;
 }
 .apps-list span.places-used {
   font-weight: bold;
+  float: left;
+  border-right: 1px solid #E4E4E4;
+  padding-right: 12px;
+  width: 100px;
+}
+.apps-list span.date-updated {
+   float: left;
 }
 
 /* List: Recent Activity */
@@ -730,9 +737,6 @@ h2.block-title,
 #region-sidebar-second .block {
   background-color: #fbfbfb;
   /*margin: -10px -10px 20px -10px;*/
-     -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-          border-radius: 5px;
     -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
  -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
          box-shadow: 0 1px 8px 1px #DED8D8;
@@ -747,9 +751,9 @@ h2.block-title,
 }
 
 #region-sidebar-second h2.block-title {
-     -moz-border-radius: 5px 5px 0 0;
+/*     -moz-border-radius: 5px 5px 0 0;
   -webkit-border-radius: 5px 5px 0 0;
-          border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0; */
 }
 
 .add-to-marketplace h2.block-title,
@@ -761,6 +765,7 @@ h2.block-title,
   border-color: #dc7b0f;
   border-top: 1px solid #ff8700;
   border-left: 1px solid #ff8700;
+    background-image: url(../images/orangehead.png);
 }
 
 .highlight views-row {
