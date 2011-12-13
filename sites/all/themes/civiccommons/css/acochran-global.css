@@ -497,7 +497,6 @@ h2.block-title,
   padding-left: 0;
   font-weight: bold;
   text-transform: none; */
-
 } 
 
 .region-content-inner {
@@ -699,7 +698,6 @@ h2.block-title,
 .apps-list span.date-updated {
    float: left;
 }
-
 /* List: Recent Activity */
 .view-interactions {
 }
@@ -755,6 +753,7 @@ h2.block-title,
   -webkit-border-radius: 5px 5px 0 0;
           border-radius: 5px 5px 0 0; */
 }
+
 
 .add-to-marketplace h2.block-title,
 .block.highlight h2.block-title {
