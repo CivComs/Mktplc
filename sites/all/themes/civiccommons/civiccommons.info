@@ -71,6 +71,10 @@ css[global.css][name] = Your custom global styles
 css[global.css][description] = This file holds all the globally active custom CSS of your theme.
 css[global.css][options][weight] = 13
 
+css[acochran-global.css][name] = Andy's Stylesheet
+css[acochran-global.css][description] = Make it Right
+css[acochran-global.css][options][weight] = 13
+
 
 ; SCRIPTS
 

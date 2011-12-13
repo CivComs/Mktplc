@@ -1,0 +1,13 @@
+name = "Add another"
+description = "Presents users with an option to create another node of the same type after a node is added."
+core = 7.x
+package = User interface
+files[] = addanother.module
+files[] = addanother.install
+files[] = addanother.test
+; Information added by drupal.org packaging script on 2011-03-19
+version = "7.x-2.0"
+core = "7.x"
+project = "addanother"
+datestamp = "1300507267"
+

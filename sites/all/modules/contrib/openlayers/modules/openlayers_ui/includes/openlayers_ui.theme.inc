@@ -31,9 +31,7 @@ function theme_openlayers_ui_form_projection_description($args) {
 
 function theme_openlayers_ui_maps_form_layers($args) {
   $form = $args['elements'];
-
-  $output = drupal_render($form['ahah-start']) .
-    drupal_render($form['projections']);
+  $output = '';
 
   // Base layers
   $rows = array();
@@ -65,15 +63,18 @@ function theme_openlayers_ui_maps_form_layers($args) {
         drupal_render($form['layers']['overlays'][$key]),
         drupal_render($form['layer_activated'][$key]),
         drupal_render($form['layer_switcher'][$key]),
-        drupal_render($form['layer_styles'][$key])),
+        drupal_render($form['layer_styles'][$key]),
+        drupal_render($form['layer_styles_select'][$key]),
+      ),
       'class' => array('draggable')
     );
   }
   $output .= theme('table', 
     array(
-      'header' => array(t('Overlay layers'),
-        t('Weight'), t('Enabled'), t('Activated'),
-        t('In Switcher'), t('Style')), 
+      'header' => array(
+        t('Overlay layers'), t('Weight'), t('Enabled'), 
+        t('Activated'), t('In Switcher'), t('Style'), t('Select Style')
+      ), 
       'rows' => $rows, 
       array('id' => 'overlay-layer-table')
     )

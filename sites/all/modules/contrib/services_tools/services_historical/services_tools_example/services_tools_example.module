@@ -1,0 +1,126 @@
+<?php
+/**
+ * @file
+ * Provides primary Drupal hook implementations.
+ *
+ * @author Jimmy Berry ("boombatower", http://drupal.org/user/214218)
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function services_tools_example_permission() {
+  $permissions = array();
+
+  $permissions['create paste'] = array(
+    'title' => t('Create a paste'),
+    'description' => t('Create a paste.'),
+  );
+  $permissions['retrieve paste'] = array(
+    'title' => t('Retrieve a paste'),
+    'description' => t('Retrieve a paste.'),
+  );
+
+  return $permissions;
+}
+
+/**
+ * Implements hook_services_resources().
+ */
+function services_tools_example_services_resources() {
+  return array(
+    'paste' => array(
+      'create' => array(
+        'help' => 'Create a paste (with optional title).',
+        'callback' => 'services_tools_example_paste_create',
+        'access arguments' => array('create paste'),
+        'args' => array(
+          array(
+            'name' => 'text',
+            'type' => 'string',
+            'description' => 'The text to paste.',
+            'source' => array('data' => 'text'),
+            'optional' => FALSE,
+          ),
+          array(
+            'name' => 'title',
+            'type' => 'string',
+            'description' => 'Title to associate with the paste.',
+            'source' => array('data' => 'title'),
+            'optional' => TRUE,
+          ),
+        ),
+      ),
+      'retrieve' => array(
+        'help' => 'Retrieve a paste.',
+        'callback' => 'services_tools_example_paste_retrieve',
+        'access arguments' => array('retrieve paste'),
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The ID of the paste to retrieve.',
+            'source' => array('path' => 0),
+            'optional' => FALSE,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Get all the pastes.
+ *
+ * @return
+ *   An associative array of pastes keyed by paste ID.
+ */
+function services_tools_example_paste_get_all() {
+  if (!($pastes = &drupal_static('services_tools_example_paste'))) {
+    $pastes = variable_get('services_tools_example_paste', array());
+  }
+  return $pastes;
+}
+
+/**
+ * Create a paste.
+ *
+ * @param $text
+ *   A string of text to create paste from.
+ * @param $title
+ *   (Optional) A string title for the paste.
+ * @return
+ *   An associative array reperesenting the newly created paste.
+ */
+function services_tools_example_paste_create($text, $title = NULL) {
+  $pastes = services_tools_example_paste_get_all();
+  $paste = $pastes[] = array(
+    'id' => count($pastes),
+    'text' => $text,
+    'title' => $title,
+  );
+  variable_set('services_tools_example_paste', $pastes);
+  return $paste;
+}
+
+/**
+ * Retrieve a paste by ID.
+ *
+ * @param $id
+ *   The ID of the paste to retrieve.
+ * @return
+ *   An associative array reperesenting a paste.
+ */
+function services_tools_example_paste_retrieve($id) {
+  $pastes = services_tools_example_paste_get_all();
+  return isset($pastes[$id]) ? $pastes[$id] : FALSE;
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function services_tools_example_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array('version' => 3);
+  }
+}

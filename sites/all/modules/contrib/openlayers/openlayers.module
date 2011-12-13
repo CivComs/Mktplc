@@ -16,6 +16,22 @@
  */
 
 /**
+ * OpenLayers hosted default library.
+ */
+define('OPENLAYERS_DEFAULT_LIBRARY', 'http://openlayers.org/api/2.11/OpenLayers.js');
+
+/**
+ * OpenLayers library compatible suggestion.
+ */
+define('OPENLAYERS_SUGGESTED_LIBRARY', 2.11);
+
+/**
+ * OpenLayers hosted API version.  What version is used when going to
+ * http://openlayers.org/api/OpenLayers.js
+ */
+define('OPENLAYERS_HOSTED_API_LIBRARY', 2.11);
+
+/**
  * Implements hook_help().
  */
 function openlayers_help($path, $arg) {
@@ -53,9 +69,32 @@ function openlayers_theme($existing, $type, $theme, $path) {
  * Implements hook_ctools_plugin_directory().
  */
 function openlayers_ctools_plugin_directory($module, $plugin) {
-  if ($plugin == 'content_types') {
-    return "includes/$plugin";
+  if ($plugin == 'content_types' && !empty($plugin)) {
+    return 'includes/' . $plugin;
   }
+  if ($module == 'openlayers' && !empty($plugin)) {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function openlayers_ctools_plugin_type() {
+  // For backwards compatability, we allow for the use
+  // of hooks to define these plugins.
+  //
+  // This should be removed in 7.x-3.x
+  return array(
+    'behaviors' => array(
+      'use hooks' => TRUE,
+      'classes' => array('behavior'),
+    ),
+    'layer_types' => array(
+      'use hooks' => TRUE,
+      'classes' => array('layer_types'),
+    )
+  );
 }
 
 /**
@@ -69,8 +108,7 @@ function openlayers_include() {
   if (!isset($once)) {
     $once = TRUE;
 
-    $path = check_plain(variable_get('openlayers_source', 
-      'http://openlayers.org/api/2.10/OpenLayers.js'));
+    $path = check_plain(variable_get('openlayers_source', OPENLAYERS_DEFAULT_LIBRARY));
     // Check for full URL and include it manually if external.
     if (valid_url($path, TRUE)) {
       drupal_add_js($path, 'external');
@@ -121,18 +159,16 @@ function openlayers_build_map($map = array()) {
   // hook_openlayers_map_preprocess_alter($map)
   drupal_alter('openlayers_map_preprocess', $map);
 
-  // styles and layer styles are not required parameters
-  $map['styles'] = isset($map['styles']) ? 
-  $map['styles'] : array();
-  $map['layer_styles'] = isset($map['layer_styles']) ? 
-  $map['layer_styles'] : array();
-
+  // Styles and layer styles are not required parameters
+  $map['styles'] = isset($map['styles']) ? $map['styles'] : array();
+  $map['layer_styles'] = isset($map['layer_styles']) ? $map['layer_styles'] : array();
+  $map['layer_styles_select'] = isset($map['layer_styles_select']) ? $map['layer_styles_select'] : array();
+  
+  // Process map parts.
   $map['layers'] = _openlayers_layers_process($map['layers'], $map);
   $map['behaviors'] = _openlayers_behaviors_render($map['behaviors'], $map);
-  $map['styles'] = _openlayers_styles_process(
-  $map['styles'], 
-  $map['layer_styles'], 
-  $map);
+  $map['styles'] = _openlayers_styles_process($map['styles'], 
+    $map['layer_styles'], $map['layer_styles_select'], $map);
 
   // Hook to alter map one last time.  Final modification to existing 
   // styles, behaviors, layers can happen here, but adding new styles,
@@ -851,7 +887,7 @@ class openlayers_behavior {
    * @param $defaults default values for the form as an array
    * @return a FormAPI form
    */
-  function options_form($defaults) {
+  function options_form($defaults = array()) {
     return array();
   }
 
@@ -881,7 +917,7 @@ class openlayers_layer_type {
     return array();
   }
 
-  function options_form() {
+  function options_form($defaults = array()) {
     return array();
   }
 
@@ -919,22 +955,6 @@ class openlayers_layer_type {
 }
 
 /**
- * Implements hook_ctools_plugin_type
- */
-function openlayers_ctools_plugin_type() {
-  return array(
-    'behaviors' => array(
-      'use hooks' => TRUE,
-      'classes' => array('behavior')
-    ),
-    'layer_types' => array(
-      'use hooks' => TRUE,
-      'classes' => array('layer_type')
-    )
-  );
-}
-
-/**
  * Implements hook_ctools_plugin_api().
  */
 function openlayers_ctools_plugin_api($module, $api) {
@@ -947,6 +967,12 @@ function openlayers_ctools_plugin_api($module, $api) {
         return array('version' => 1);
 
       case 'openlayers_styles':
+        return array('version' => 1);
+
+      case 'openlayers_layer_types':
+        return array('version' => 1);
+
+      case 'openlayers_behaviors':
         return array('version' => 1);
 
     }
@@ -965,14 +991,6 @@ function openlayers_openlayers_layers() {
 }
 
 /**
- * Implements hook_openlayers_behaviors().
- */
-function openlayers_openlayers_behaviors() {
-  module_load_include('inc', 'openlayers', 'includes/openlayers.behaviors');
-  return _openlayers_openlayers_behaviors();
-}
-
-/**
  * Implements hook_openlayers_styles().
  */
 function openlayers_openlayers_styles() {
@@ -986,14 +1004,6 @@ function openlayers_openlayers_styles() {
 function openlayers_openlayers_maps() {
   module_load_include('inc', 'openlayers', 'includes/openlayers.maps');
   return _openlayers_openlayers_maps();
-}
-
-/**
- * Implements hook_openlayers_layer_types().
- */
-function openlayers_openlayers_layer_types() {
-  module_load_include('inc', 'openlayers', 'includes/openlayers.layer_types');
-  return _openlayers_openlayers_layer_types();
 }
 
 /**
@@ -1020,6 +1030,8 @@ function openlayers_boxes_plugins() {
  * These functions temporarily map the alias the renamed 'map' functions to their
  * previous 'preset' functions to allow time for contrib modules to catch up.
  * These will eventually be removed
+ * 
+ * These should be removed in 7.x-3.x
  */
 function openlayers_build_preset($map = array())                        { return openlayers_build_map($map); }
 function openlayers_preset_load($name = '', $reset = FALSE)             { return openlayers_map_load($name, $reset); }

@@ -1,5 +1,109 @@
 <?php
 // $Id: cc_helper.module,v 0.1 2011/09/21 Paul de Paula Exp $
+require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'cc_helper') . '/cc_helper.inc';
+
+/*  Applications. $query - boolean, whether we need nodes array or EntityFieldQuery object. */
+function _cc_helper_apps($query) {
+  $fquery = new EntityFieldQuery();
+  $fquery
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'application')
+    ->propertyCondition('status', 1);
+  if($query) {
+    return $fquery;
+  }else{
+    return $fquery->execute();
+  }
+}
+
+/* Organizations. $query - boolean, whether we need nodes array or EntityFieldQuery object. */
+function _cc_helper_orgs($query) {
+  $fquery = new EntityFieldQuery();
+  $fquery
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'organization')
+    ->propertyCondition('status', 1);
+  if($query) {
+    return $fquery;
+  }else{
+    return $fquery->execute();
+  }
+}
+
+function _cc_helper_is_place($var) {
+  if(is_array($var)) {
+    return array_keys($var) == array('locality', 'country', 'administrative_area');
+  }else{
+    return FALSE;
+  }
+}
+
+function _cc_helper_title_by_id($nid){
+	$node = node_load($nid);
+	if($node){
+		return $node->title;
+	}
+}
+
+
+/* Amount of sharing applications. $org - organization node object, ID or it's city array(
+'locality' => city name
+'administrative_area' => state (2-letter abbreviation)
+'country' => country (2-letter abbreviation)
+). */
+function _cc_helper_sharing($org = 0, $org_types = array(), $query = FALSE) {
+  $is_id = ctype_digit($org);
+  $is_place = _cc_helper_is_place($org);
+  $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
+  if(!$is_id && !$is_place && !$is_node) {
+    return FALSE;
+  }
+  $fquery = _cc_helper_apps(TRUE)->count();
+  if(!$org) {
+    return $fquery->execute();
+  }elseif($is_id) {
+    return $fquery
+      ->fieldCondition('field_application_creator', 'nid', $org)
+      ->execute();
+  }elseif($is_node) {
+    return $fquery
+      ->fieldCondition('field_application_creator', 'nid', $org->nid)
+      ->execute();
+  }
+  $orgs = _cc_helper_orgs(TRUE)
+    ->fieldCondition('field_organization_address', 'locality', $org['locality'])
+    ->fieldCondition('field_organization_address', 'administrative_area', $org['administrative_area'])
+    ->fieldCondition('field_organization_address', 'country', $org['country']);
+	if(!empty($org_types)){
+		$orgs->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
+	}
+	$orgs = $orgs->execute();
+  $nids = array_keys(isset($orgs['node']) ? $orgs['node'] : array());
+  $c = 0;
+  foreach($nids as $nid) {
+    $c += $fquery
+      ->fieldCondition('field_application_creator', 'nid', $nid)
+      ->execute();
+  }
+  return $c;
+}
+
+function _cc_helper_using($org = 0, $org_types = array(), $query = FALSE) {
+  $is_id = ctype_digit($org);
+  $is_place = _cc_helper_is_place($org);
+  $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
+  if(!$is_id && !$is_place && !$is_node) {
+    return FALSE;
+  }
+  if(!$org) {
+    return _cc_helper_apps(TRUE)->count()->execute();
+  }elseif($is_id) {
+    return _cc_helper_get_references_count($org, 'interaction', 'field_interaction_organization', array(156));
+  }elseif($is_node) {
+    return _cc_helper_get_references_count($org->nid, 'interaction', 'field_interaction_organization', array(156));
+  }
+  return _cc_helper_interactions_in_the_place($org, array(156), $org_types);
+}
 
 function cc_helper_views_pre_render(&$view) {
   if(!(
@@ -9,27 +113,37 @@ function cc_helper_views_pre_render(&$view) {
     ) || (
       $view->name == 'apps_this_organization_has_used'
       && $view->current_display == 'block'
-    )
+    ) || (
+			$view->name == 'applications'
+			&& ($view->current_display == 'block_5' || $view->current_display = 'block_6')
+		)
   )) {
     return FALSE;
   }
   $org = node_load(isset($view->args[0]) ? $view->args[0] : 0);
-  $f = field_get_items('node', $org, 'field_organization_type');
-  $term = isset($f[0]['tid']) ? taxonomy_term_load($f[0]['tid']) : FALSE;
-  $org_type = isset($term->field_watchname['und'][0]['safe_value']) ? $term->field_watchname['und'][0]['safe_value'] : '';
-  $c = $view->total_rows;
-  if(isset($view->build_info['title'])) {
-    $view->build_info['title'] = strtr(
-      $view->build_info['title'],
-      array('!count' => $c, '!org_type' => $org_type)
-    );
-  }
+  if($org){
+		$f = field_get_items('node', $org, 'field_organization_type');
+		$term = isset($f[0]['tid']) ? taxonomy_term_load($f[0]['tid']) : FALSE;
+		$org_type = isset($term->field_watchname['und'][0]['safe_value']) ? $term->field_watchname['und'][0]['safe_value'] : '';
+		$c = isset($view->total_rows) ? $view->total_rows : count($view->result);
+		if(isset($view->build_info['title'])) {
+			$view->build_info['title'] = strtr(
+				$view->build_info['title'],
+				array('!count' => $c, '!org_type' => $org_type)
+			);
+		}
+	}
+	return TRUE;
 }
+
 
 /*
  * Count a view results. $view - unexecuted view object.
  */
 function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
+  if(!is_object($view)) {
+    return FALSE;
+  }
   if(!empty($custom_arguments)) {
     $view->args = $custom_arguments;
   }
@@ -46,25 +160,32 @@ function _cc_helper_view_count($view, $display, $custom_arguments = array()) {
 }
 
 /*
- * "Using / Sharing" HTML.
+ * Using / Sharing.
+ * $org - nid, node object or place array.
  */
-function _cc_helper_using_sharing($using = 0, $sharing = 0) {
-  $o = '';
-  if ($using) {
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-using">Using</div><div class="cc-org-count cc-using">' . $using . '</div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>';
+function _cc_helper_using_sharing($org, $setting, $org_types = array()) {
+  $node = is_numeric($org) ? node_load($org) : NULL;
+  if(isset($node->type)){
+    if($node->type == 'organization'){
+      $lng = $node->language;
+      $tid = $node->field_organization_type[$lng][0]['tid'];
+      if ($tid == 229) {
+        $u = 0;
+        $setting .= '+person';
+      }
+      else{
+        $u = _cc_helper_using($org);
+      }
+    }
+    else {
+      $u = _cc_helper_using($org, $org_types);
+    }
   }
   else {
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-no-using">Using</div><div class="cc-org-no-count cc-using"></div><div class="cc-org-postfix">' . format_plural($using, 'app', 'apps') . '</div></div>';
+    $u = _cc_helper_using($org, $org_types);
   }
-  if ($sharing) {
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-sharing">Sharing</div><div class="cc-org-count cc-sharing">' . $sharing . '</div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>';
-  }
-  else {
-    $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-no-sharing">Sharing</div><div class="cc-org-no-count cc-sharing"></div><div class="cc-org-postfix">' . format_plural($sharing, 'app', 'apps') . '</div></div>';
-  }
-  return $o;
-  
-  //modification as per ticket https://secure.warecorp.com/redmine/issues/15003
+  $s = _cc_helper_sharing($org, $org_types);
+  return theme('using_sharing', array('using' => $u, 'sharing' => $s, 'setting' => $setting));
 }
 
 /*
@@ -142,9 +263,9 @@ function _cc_helper_get_references($nid = NULL, $ref_content_type = 'interaction
   if($nid) {
     $query->fieldCondition($ref_field, 'nid', $nid);
   }
-  foreach($tids as $tid) {
-    $query->fieldCondition('field_interaction_type', 'tid', $tid);
-  }
+	if(!empty($tids)){
+		$query->fieldCondition('field_interaction_type', 'tid', (array) $tids, 'IN');
+	}
   $entities = $query
     ->propertyCondition('status', 1)
     ->execute();
@@ -155,10 +276,10 @@ function _cc_helper_get_references($nid = NULL, $ref_content_type = 'interaction
 }
 
 function _cc_helper_app_locs($app_id) {
-  $intrs = _cc_helper_get_references($app_id, 'interaction', 'field_interaction_application', array());
+  $intrs = _cc_helper_get_references($app_id, 'interaction', 'field_interaction_application', array(156));
   $orgs = array();
   $locs = array();
-  foreach($intrs as $int) {
+	foreach($intrs as $int) {
     $orgs = array_merge(_cc_helper_get_references(
       $int,
       'organization',
@@ -219,7 +340,7 @@ array(
 'administrative_area' => state (2-letter abbreviation)
 'country' => country (2-letter abbreviation)
 ) */
-function _cc_helper_interactions_in_the_place($place = array(), $types = array()) {
+function _cc_helper_interactions_in_the_place($place = array(), $types = array(), $org_types = array()) {
   $fplace = array_filter($place);
   $query = new EntityFieldQuery();
   $query
@@ -233,6 +354,9 @@ function _cc_helper_interactions_in_the_place($place = array(), $types = array()
       $value
     );
   }
+	if(!empty($org_types)){
+		$query->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
+	}
   $entities = $query->execute();
   $orgs = array();
   if(isset($entities['node'])) {
@@ -280,9 +404,9 @@ function cc_helper_entity_info_alter(&$entity_info) {
 
 function _cc_helper_creators_info($appid) {
   $node = node_load($appid);
-  $empty = !is_array($node->field_application_creator[$lng]);
-  $out=!$empty ? '<ul>' : '';
-  $lng = $node->language;
+  $lng = isset($node->language) ? $node->language : 'und';
+  $empty = isset($node->field_application_creator[$lng]) ? !is_array($node->field_application_creator[$lng]) : TRUE;
+  $out = !$empty ? '<ul>' : '';
   if(isset($node->field_application_creator[$lng])){
   foreach($node->field_application_creator[$lng] as $row){
     $creator_node = node_load($row['nid']);
@@ -331,14 +455,15 @@ function cc_helper_form_alter(&$form, &$form_state, $form_id) {
       $form['additional_settings']['#access'] = FALSE;
     }
   }
-  $dest_url = parse_url($_SERVER['HTTP_REFERER']);
-  //if(!is_empty($dest_url['path'])){
-  switch($form_id){
-  case 'interaction_node_form' :
-    $form['#action'].='&destination='.$dest_url['path'];
-    break;
+}
+
+function cc_helper_form_interaction_node_form_alter(&$form, &$form_state) {
+  // Redirect form to referrer if there is already one not
+  // set.
+  if ($_SERVER['HTTP_REFERER']) {
+  $form_state['redirect'] = (isset($form_state['redirect'])) ? $form_state['redirect'] :
+    parse_url($_SERVER['HTTP_REFERER']);
   }
-  //}
 }
 
 function cc_helper_init() {
@@ -353,8 +478,8 @@ function cc_helper_node_view_alter(&$build) {
   global $app_in_act;
   if($build['#bundle']=='application' && $build['#view_mode']=='full'){
     $app_in_act = 0;
-    $app_in_act += count($build['field_application_screenshots']['#items']);
-    $app_in_act += count($build['field_application_tutors']['#items']);
+    $app_in_act += (isset($build['field_application_screenshots']) ? count($build['field_application_screenshots']['#items']) : 0);
+    $app_in_act += (isset($build['field_application_tutors']) ? count($build['field_application_tutors']['#items']) : 0);
   }
 }
 
@@ -380,3 +505,86 @@ function _cc_helper_is_term_in_node($nid, $tid){
   if(in_array($tid, $trms)){ return FALSE;}
   else{ return TRUE;}
 }
+
+function cc_helper_token_info(){
+  $info['tokens']['node']['sub-content-type'] = array(
+    'name' => t('Sub content type'),
+    'description' => t('URL path change depending on the sub content type (within orgs, specifically)'),
+  );
+  return $info;
+}
+
+function cc_helper_tokens($type, $tokens, array $data = array(), array $options = array()){
+	$replacements = array();
+	$sanitize = !empty($options['sanitize']);
+	
+	if ($type == 'node' && !empty($data['node'])) {
+        $node = $data['node'];
+		if($node->type == 'organization'){
+			$lng = $node->language;
+			$tid = $node->field_organization_type[$lng][0]['tid'];
+			$org_type='organizations';
+			switch($tid){
+				case '124'	: $org_type='government-entities'; break; 	//government
+				case '125' 	: $org_type='organizations'; break; 		//nonprofit
+				case '126' 	: $org_type='companies'; break; 			//company
+				case '127' 	: $org_type='government-entities'; break; 	//municipal
+				case '128' 	: $org_type='government-entities'; break; 	//regional
+				case '129' 	: $org_type='government-entities'; break; 	//county
+				case '130' 	: $org_type='government-entities'; break; 	//state
+				case '131' 	: $org_type='government-entities'; break; 	//national
+				case '132' 	: $org_type='government-entities'; break; 	//multinational
+				case '229' 	: $org_type='people'; break; 				//person
+			}
+			
+			foreach ($tokens as $name => $original) {
+				switch ($name) {
+					case 'sub-content-type':
+						$replacements[$original] = $org_type;
+						break;
+				}
+			}
+		}
+    }
+
+    return $replacements;
+}
+
+function cc_helper_theme($existing, $type, $theme, $path) {
+  return array('using_sharing' => array(
+    'variables' => array('using' => 0, 'sharing' => 0, 'setting' => 'full')
+  ));
+}
+
+function theme_using_sharing($variables) {
+  $o = '';
+  $variables['setting']=='full+person' ? $p=1 : $p=0;
+  $variables['setting']=='full+person' ? $variables['setting']='full' : $variables['setting']=$variables['setting'];
+  $o .= '<div class="using-sharing">';
+  foreach(array('using' => t('Using'), 'sharing' => t('Created')) as $key => $name) {
+    $c = $variables[$key] ? $variables[$key] : '';
+    $n = $c ? '' : 'no-';
+      if(!($p==1 && $key=='using')){
+      
+        if (!$c && $key == 'using') {
+          $o .= '<div class="cc-org-apps">&nbsp;</div>';
+        }
+      
+        if ($c) {
+	 $o .= '<div class="cc-org-apps"><div class="cc-org-prefix-' . $key . '">' . $name . '</div>';
+        $o .= ' <div class="cc-org-count cc-' . $key . '">' . $c . '</div>';
+        $o .= $variables['setting'] == 'full' || $variables['setting'] == 'full+person' ? ' <div class="cc-org-postfix">' . format_plural($variables[$key], 'app', 'apps') . '</div>' : '';
+        $o .= '</div>';
+        } 
+        
+        if (!$c && $key == 'sharing') {
+          $o .= '<div class="cc-org-apps">&nbsp;</div>';
+        }
+        
+
+      } 
+  }
+  $o .= '</div>';
+  return $o;
+}
+

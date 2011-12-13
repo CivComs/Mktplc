@@ -32,7 +32,7 @@ namespace('Drupal.media.popups');
  *
  *          Example
  *          pluginOptions = {library: {url_include_patterns:'/foo/bar'}};
- *          
+ *
  * @param {Object}
  *          widgetOptions Options controlling the appearance and behavior of the
  *          modal dialog.
@@ -43,9 +43,12 @@ Drupal.media.popups.mediaBrowser = function (onSelect, globalOptions, pluginOpti
   options.global = $.extend({}, options.global, globalOptions);
   options.plugins = pluginOptions;
   options.widget = $.extend({}, options.widget, widgetOptions);
-  
+
   // Create it as a modal window.
   var browserSrc = options.widget.src;
+  if ($.isArray(browserSrc) && browserSrc.length) {
+    browserSrc = browserSrc[browserSrc.length - 1];
+  }
   // Params to send along to the iframe.  WIP.
   var params = {};
   $.extend(params, options.global);
@@ -58,7 +61,7 @@ Drupal.media.popups.mediaBrowser = function (onSelect, globalOptions, pluginOpti
   /**
    * Setting up the modal dialog
    */
-  
+
   var ok = 'OK';
   var cancel = 'Cancel';
   var notSelected = 'You have not selected anything!';
@@ -321,7 +324,7 @@ Drupal.media.popups.setDialogPadding = function (dialogElement) {
   // - It's included to make IE on Windows 7 display the dialog without
   //   collapsing. 550 is the height that displays all of the tab panes
   //   within the Add Media overlay. This is either a bug in the jQuery
-  //   UI library, a bug in IE on Windows 7 or a bug in the way the 
+  //   UI library, a bug in IE on Windows 7 or a bug in the way the
   //   dialog is instantiated. Or a combo of the three.
   //   All browsers except IE on Win7 ignore these defaults and adjust
   //   the height of the iframe correctly to match the content in the panes

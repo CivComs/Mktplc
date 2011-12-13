@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC Organization feature.
+ */
+
+include_once('cc_organization.features.inc');
