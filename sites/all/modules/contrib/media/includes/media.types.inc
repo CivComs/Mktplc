@@ -146,7 +146,7 @@ function media_type_get_types() {
  *  Create the basic class and defaults for a media entity bundle type.
  */
 function media_type_set_defaults($info) {
-  $type = new StdClass();
+  $type = new stdClass();
 
   // This is used to filter a file to the proper bundle.
   $type->type_callback = 'media_is_type';
@@ -222,12 +222,12 @@ function media_is_type($file, $args) {
 }
 
 /**
- * Implement hook_media_format_form_prepare_alter
+ * Implements hook_media_format_form_prepare_alter().
  */
 function media_media_format_form_prepare_alter(&$form, &$form_state, $file) {
-  switch($file->type) {
+  switch ($file->type) {
     case 'image':
-       $form['options']['alt'] = array(
+      $form['options']['alt'] = array(
         '#type' => 'textfield',
         '#title' => t('Description'),
         '#default_value' => $file->filename,
@@ -242,7 +242,7 @@ function media_media_format_form_prepare_alter(&$form, &$form_state, $file) {
  */
 function media_type_invalid_files_count() {
   return db_select('file_managed', 'fm')
-    ->condition('type', '')
+    ->condition('type', FILE_TYPE_NONE)
     ->countQuery()
     ->execute()
     ->fetchField();
@@ -262,12 +262,12 @@ function media_type_invalid_files_count() {
  */
 function media_type_batch_update($update_existing = FALSE, $no_to_update = NULL, $offset = 0) {
   $results = array();
-  
+
   $query = db_select('file_managed', 'fm')
     ->fields('fm', array('fid'));
 
   if (!$update_existing) {
-    $query->condition('type', '');
+    $query->condition('type', FILE_TYPE_NONE);
   }
 
   if ($no_to_update) {

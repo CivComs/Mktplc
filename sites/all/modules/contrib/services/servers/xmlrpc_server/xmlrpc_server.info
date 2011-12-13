@@ -1,0 +1,15 @@
+name = XMLRPC Server
+description = Provides a XMLRPC server.
+package = Services - servers
+
+files[] = xmlrpc_server.module
+
+dependencies[] = services
+
+core = 7.x
+; Information added by drupal.org packaging script on 2011-09-30
+version = "7.x-3.0"
+core = "7.x"
+project = "services"
+datestamp = "1317342461"
+

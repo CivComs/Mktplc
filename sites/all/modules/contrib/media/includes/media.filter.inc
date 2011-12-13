@@ -8,10 +8,10 @@
  */
 
 /**
- * Implementation of hook_wysiwyg_include_directory()
+ * Implements hook_wysiwyg_include_directory().
  */
 function media_wysiwyg_include_directory($type) {
-  switch($type) {
+  switch ($type) {
     case 'plugins':
       return 'wysiwyg_plugins';
         break;
@@ -26,7 +26,7 @@ function media_wysiwyg_include_directory($type) {
  */
 function media_filter($text) {
   $text = ' ' . $text . ' ';
-  $text = preg_replace_callback("/\[\[.*?]]/s",'media_token_to_markup', $text);
+  $text = preg_replace_callback("/\[\[.*?]]/s", 'media_token_to_markup', $text);
 
   return $text;
 }
@@ -41,7 +41,7 @@ function media_filter($text) {
  *  module because of this difficulty. ~ aaron.
  */
 function media_url_filter($text, $filter) {
-  $text = ' '. $text .' ';
+  $text = ' ' . $text . ' ';
 
   // Need to attach the variables to the callback after the regex.
   $callback = _media_url_curry('_media_url_parse_full_links', 1);
@@ -120,7 +120,7 @@ function _media_url_curry($func, $arity) {
  */
 function media_parse_css_declarations($declarations) {
   $properties = array();
-  foreach(array_map('trim', explode(";", $declarations)) as $declaration) {
+  foreach (array_map('trim', explode(";", $declarations)) as $declaration) {
     if ($declaration != '') {
       list($name, $value) = array_map('trim', explode(':', $declaration, 2));
       $properties[strtolower($name)] = $value;
@@ -140,15 +140,15 @@ function media_parse_css_declarations($declarations) {
  */
 function media_token_to_markup($match, $wysiwyg = FALSE) {
   $settings = array();
-  $match = str_replace("[[","",$match);
-  $match = str_replace("]]","",$match);
+  $match = str_replace("[[", "", $match);
+  $match = str_replace("]]", "", $match);
   $tag = $match[0];
 
   try {
     if (!is_string($tag)) {
       throw new Exception('Unable to find matching tag');
     }
-    
+
     $tag_info = drupal_json_decode($tag);
 
     if (!isset($tag_info['fid'])) {
@@ -161,7 +161,7 @@ function media_token_to_markup($match, $wysiwyg = FALSE) {
     }
     $file = file_load($tag_info['fid']);
     if (!$file) {
-     throw new Exception('Could not load media object');
+      throw new Exception('Could not load media object');
     }
 
     // Track the fid of this file in the {media_filter_usage} table.
@@ -216,7 +216,7 @@ function media_pre_render_text_format($element) {
   if (!isset($element['format'])) {
     return $element;
   }
-  
+
   $field = &$element['value'];
   $settings = array(
     'field' => $field['#id'],
@@ -238,9 +238,8 @@ function media_pre_render_text_format($element) {
  * @return
  * An associative array with tag code as key and html markup as the value.
  *
- * @see
- * media_process_form
- * media_token_to_markup
+ * @see media_process_form()
+ * @see media_token_to_markup()
  */
 function _media_generate_tagMap($text) {
   // Making $tagmap static as this function is called many times and
@@ -252,16 +251,17 @@ function _media_generate_tagMap($text) {
   // with same form, this function is also called multiple times.
   static $tagmap = array();
   preg_match_all("/\[\[.*?]]/s", $text, $matches, PREG_SET_ORDER);
-  foreach($matches as $match) {
+  foreach ($matches as $match) {
     // We see if tagContent is already in $tagMap, if not we add it
     // to $tagmap.  If we return an empty array, we break embeddings of the same
     // media multiple times.
-    if(empty($tagmap[$match[0]])) {
+    if (empty($tagmap[$match[0]])) {
       // @TODO: Total HACK, but better than nothing.
       // We should find a better way of cleaning this up.
       if ($markup_for_media = media_token_to_markup($match, TRUE)) {
         $tagmap[$match[0]] = $markup_for_media;
-      } else {
+      }
+      else {
         $tagmap[$match[0]] = '<div><img src="/broken.jpg" height="50px" width="100px"/></div>';
       }
     }
@@ -334,7 +334,7 @@ function media_format_form($form, $form_state, $file) {
 
   $form['preview'] = array(
     '#type' => 'markup',
-    '#title' => basename($file->uri),
+    '#title' => check_plain(basename($file->uri)),
     '#markup' => drupal_render($preview),
   );
 
@@ -388,6 +388,17 @@ function media_get_file_without_label($file, $view_mode, $settings = array()) {
   // element attributes.
   if (!isset($element['#attributes']) && isset($settings['attributes'])) {
     $element['#attributes'] = $settings['attributes'];
+
+    // While this function may be called for any file type, images are a common
+    // use-case. theme_image() and theme_image_style() require the 'alt'
+    // attribute to be passed separately from the 'attributes' array (see
+    // http://drupal.org/node/999338). Until that's fixed, implement this
+    // special-case logic. Image formatters using other theme functions are
+    // responsible for their own 'alt' attribute handling. See
+    // theme_media_formatter_large_icon() for an example.
+    if (isset($settings['attributes']['alt']) && !isset($element['#alt']) && isset($element['#theme']) && in_array($element['#theme'], array('image', 'image_style'))) {
+      $element['#alt'] = $settings['attributes']['alt'];
+    }
   }
 
   return $element;

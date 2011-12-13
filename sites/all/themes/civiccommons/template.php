@@ -9,18 +9,35 @@
  * Alpha comes with a neat solution for keeping this file as clean as possible while the code
  * for your subtheme grows. Please read the README.txt in the /preprocess and /process subfolders
  * for more information on this topic.
-**/ 
+ */ 
 
-// Add some cool text to the search block form
+/**
+ * Implements hook_form_alter().
+ */
 function civiccommons_form_alter(&$form, &$form_state, $form_id) {
-
+  // Add some cool text to the search block form
   if ($form_id == 'search_block_form') {
     // HTML5 placeholder attribute
     $form['search_block_form']['#attributes']['placeholder'] = t('Enter Keyword');
-    $form['actions']['submit']['#value'] = t(''); // Change the text on the submit button
-    $form['actions']['submit'] = array('#type' => 'image_button', '#src' => base_path() . path_to_theme() . '/images/search_btn.png');
-
-}
+    // Change the text on the submit button and replace with
+    // image.
+    $form['actions']['submit']['#value'] = t('');
+    $form['actions']['submit'] = array('#type' => 'image_button', 
+      '#src' => base_path() . path_to_theme() . '/images/search_btn.png');
+  }
+  
+  // Get search term from URL if available and put into custom
+  // search forms.  This is a fairly hackish way to do this, but
+  // not sure if there is a better way.
+  $path = current_path();
+  if (strpos($form_id, 'custom_search_blocks_form') !== FALSE &&
+    strpos($path, 'search/node') !== FALSE) {
+    if (isset($form['delta']['#value'])) {
+      $query = str_replace('search/node/', '', $path);
+      $textfield = 'custom_search_blocks_form_' . $form['delta']['#value'];
+      $form[$textfield]['#default_value'] = check_plain($query); 
+    }
+  }
 }
 
 /**

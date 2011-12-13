@@ -1,0 +1,137 @@
+<?php
+
+/**
+ * Implementation of hook_features_api().
+ */
+function fe_nodequeue_features_api() {
+  return array(
+      'fe_nodequeue' => array(
+          'name' => t('Nodequeues'),
+          'feature_source' => TRUE,
+          'default_hook' => 'fe_nodequeue_export_fields',
+          'default_file' => FEATURES_DEFAULTS_INCLUDED_COMMON,
+      )
+  );
+}
+
+/**
+ * Implementation of hook_features_export_options().
+ */
+function fe_nodequeue_features_export_options() {
+  $options = array();
+  $table   = 'nodequeue_queue'; 
+  
+  $query = "SELECT * FROM {{$table}}";
+  $fields = db_query($query);
+  while ($obj = $fields->fetchObject()) {
+    $options[$obj->name] = t('@name [@machine_name]', array('@name' => $obj->title, '@machine_name' => $obj->name));
+  }
+
+  return $options;
+}
+
+/**
+ * Implementation of hook_features_export().
+ */
+function fe_nodequeue_features_export($data, &$export, $module_name = '') {
+  $pipe = array();
+  $map = features_get_default_map('fe_nodequeue');
+  foreach ($data as $name) {
+    $export['dependencies']['fe_nodequeue'] = 'fe_nodequeue';
+    // If another module provides this style, add it as a dependency
+    if (isset($map[$name]) && $map[$name] != $module_name) {
+      $module = $map[$name];
+      $export['dependencies'][$module] = $module;
+    }
+    // Otherwise, export the nodequeue
+    elseif (nodequeue_load_queue_by_name($name)) {
+      $export['features']['fe_nodequeue'][$name] = $name;
+    }
+  }
+  return $pipe;
+}
+
+/**
+ * Implementation of hook_features_export_render().
+ */
+function fe_nodequeue_features_export_render($module_name = '', $data) {
+  $code = array();
+  $code[] = '  $nodequeues = array();';
+  $code[] = '';
+
+  foreach ($data as $name) {
+    if ($nodequeue = nodequeue_load_queue_by_name($name)) {
+      // sort roles and types arrays into ascending order so that we can 
+      // check for overridden db data without being affected by the 
+      // order in which this array gets stored/loaded.
+      if (!empty($nodequeue->roles)) {
+        sort($nodequeue->roles);
+      }
+      if (!empty($nodequeue->types)) {
+        sort($nodequeue->types);
+      }
+
+      $nodequeue_export = features_var_export($nodequeue, '  ');
+
+      $code[] = "  // Exported nodequeues: {$nodequeue->name}";
+      $code[] = "  \$nodequeues['{$name}'] = {$nodequeue_export};";
+      $code[] = "";
+    }
+  }
+
+  $code[] = '  return $nodequeues;';
+  $code = implode("\n", $code);
+
+  return array('fe_nodequeue_export_fields' => $code);
+}
+
+
+/**
+ * Implementation of hook_features_revert().
+ */
+function fe_nodequeue_features_revert($module) {
+  $defaults = features_get_default('fe_nodequeue', $module);
+  
+  // Revert.
+  foreach ($defaults as $object) {
+    if (empty($object['name'])) {
+      continue;
+    }
+    
+    if (!($nodequeue_queue = nodequeue_load_queue_by_name($object['name']))) {
+      unset($object['qid']);
+      $result = _fe_nodequeue_save_queue((array) $object);
+    } else {
+      $result = _fe_nodequeue_save_queue((array) $object);
+    }
+  }
+
+  return TRUE;
+}
+
+/**
+ * Implements hook_features_revert().
+ */
+function fe_nodequeue_features_rebuild($module) {
+  fe_nodequeue_features_revert($module);
+}
+
+/**
+ * Save a nodequeue queue.
+ *
+ * @param $settings
+ * @return array
+ */
+function _fe_nodequeue_save_queue($settings = array()) {
+  // Simulate checkboxes.
+  $settings['roles'] = drupal_map_assoc($settings['roles']);
+  $settings['types'] = drupal_map_assoc($settings['types']);
+
+  // Simulate submitting.
+  $form_state = array();
+  $form_state['values'] = $settings;
+  module_load_include('inc', 'nodequeue', 'includes/nodequeue.admin');
+  nodequeue_edit_queue_form_submit(NULL, $form_state);
+
+  return $settings;
+}

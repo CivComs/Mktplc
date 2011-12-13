@@ -1,0 +1,8 @@
+name = Interactions
+description = Provides a specific workflow for the Interactions content type.
+core = 7.x
+package = Warecorp
+dependencies[] = prepopulate
+
+files[] = cc_interactions.module
+

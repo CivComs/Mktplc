@@ -1,0 +1,985 @@
+/*
+Author: Andy Cochran 
+Author URI: http://www.openplans.org/team#andy-cochran
+*/
+
+/* html5doctor.com Reset Stylesheet \\v1.6.1 \\ Last Updated: 2010-09-17 \\ http://richclarkdesign.com \\ @rich_clark */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
+  font-size:100%;
+  vertical-align:baseline;
+  background:transparent;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section { display:block; }
+nav ul { list-style:none; }
+blockquote, q { quotes:none; }
+blockquote:before, blockquote:after,
+q:before, q:after { content:''; content:none; }
+a { margin:0; padding:0; font-size:100%; vertical-align:baseline; background:transparent; }
+ins { background-color:#ff9; color:#000; text-decoration:none; }
+mark { background-color:#ff9; color:#000; font-style:italic; font-weight:bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom:1px dotted; cursor:help; }
+/* tables still need cellspacing="0" in the markup */
+table { border-collapse:collapse; border-spacing:0; }
+hr { display:block; height:1px; border:0; border-top:1px solid #ccc; margin:1em 0; padding:0; }
+input, select { vertical-align:middle; }
+
+/*
+ *
+ * Base Typography 
+ *
+ */
+body { 
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  *font-size:small; 
+}
+select, input, textarea, button { font:99% sans-serif; }
+pre, code, kbd, samp { font-family: monospace, sans-serif; }
+
+/*
+ *
+ * Base Styles 
+ *
+ */
+body, select, input, textarea { 
+  color: #444; 
+  font-family: Helvetica, Arial, sans-serif;
+}
+h1,h2,h3,h4,h5,h6 { 
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+  font-weight: bold; 
+  letter-spacing: 0;
+}
+/* always force a scrollbar in non-IE */ 
+html { overflow-y: scroll; }
+/* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
+a:hover, a:active { outline: none; }
+a, a:active, a:visited { color: #225f97; }
+a:hover { color: #c03d1d; text-decoration: underline; }
+ul, ol { margin-left: 1.8em; }
+ol { list-style-type: decimal; }
+/* Remove margins for navigation lists */
+nav ul, nav li { margin: 0; } 
+p { margin-bottom: 1.5em; }
+small { font-size: 85%; }
+strong, th { font-weight: bold; }
+td, td img { vertical-align: top; } 
+sub { vertical-align: sub; font-size: smaller; }
+sup { vertical-align: super; font-size: smaller; }
+pre { 
+  padding: 15px; 
+  /* www.pathf.com/blogs/2008/05/formatting-quoted-code-in-blog-posts-css21-white-space-pre-wrap/ */
+  white-space: pre; /* CSS2 */
+  white-space: pre-wrap; /* CSS 2.1 */
+  white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+  word-wrap: break-word; /* IE */
+}
+textarea { overflow: auto; } /* thnx ivannikolic! www.sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/ */
+.ie6 legend, .ie7 legend { margin-left: -7px; } /* thnx ivannikolic! */
+/* align checkboxes, radios, text inputs with their label
+   by: Thierry Koblentz tjkdesign.com/ez-css/css/base.css  */
+input[type="radio"] { vertical-align: text-bottom; }
+input[type="checkbox"] { vertical-align: bottom; }
+.ie7 input[type="checkbox"] { vertical-align: baseline; }
+.ie6 input { vertical-align: text-bottom; }
+/* hand cursor on clickable input elements */
+label, input[type=button], input[type=submit], button { cursor: pointer; }
+/* webkit browsers add a 2px margin outside the chrome of form elements */  
+button, input, select, textarea { margin: 0; }
+/* colors for form validity */
+input:valid, textarea:valid   {  }
+input:invalid, textarea:invalid { 
+      border-radius: 1px;
+    -moz-box-shadow: 0px 0px 5px red; 
+ -webkit-box-shadow: 0px 0px 5px red; 
+         box-shadow: 0px 0px 5px red;
+}
+.no-boxshadow input:invalid, 
+.no-boxshadow textarea:invalid { background-color: #f0dddd; }
+button {width: auto; overflow: visible;}
+/* bicubic resizing for non-native sized IMG: 
+   code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
+.ie7 img {-ms-interpolation-mode: bicubic;}
+
+/*
+ *
+ * Structure / Layout
+ *
+ */
+#page {
+  width: auto;
+  padding: 0;
+}
+aside .content {
+  font-size: 12px;
+  padding: 9px 9px;
+}
+.block {
+  clear: both;
+}
+.block {
+  margin-bottom: 20px;
+}
+
+/*
+ *
+ * Header
+ *
+ */
+#section-header {
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/body-bg.png') 0 0 repeat-x;
+}
+#zone-branding-wrapper {
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/header-bg.png') center top no-repeat;
+}
+#zone-branding {
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/tagline.png') 248px 29px no-repeat;
+}
+#zone-branding .logo-img {
+  float: left;
+  margin: 0 0 3px -10px !important;
+  padding: 16px 10px 0 0 !important;
+}
+#region-top-menu {
+  margin-right: 0;
+  float: right;
+}
+.block-nice-menus {
+  margin-bottom: 0;
+}
+.block-nice-menus ul.nice-menu {
+  margin-top: 14px;
+  float: right;
+  border-top: 1px solid #d9d9d9;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #fff;
+}
+.block-nice-menus ul.nice-menu li {
+  border: 0;
+  border-right: 1px solid #dbdbdb;
+  border-bottom: 1px solid #ddd;
+}
+ul.nice-menu a {
+  display: block;
+  height: 31px;
+  color: #559efc;
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
+  text-decoration: none;
+  padding: 0 19px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 34px;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 #F5F5F5;
+  border-top: 1px solid #fafafa;
+  border-left: 1px solid #fafafa;
+}
+ul.nice-menu a.active,
+ul.nice-menu a:hover,
+ul.nice-menu:hover a.active:hover {
+  background-image: none;
+  background-color : #e6e6e6;
+  border-color :  #b4b4b4;
+  color : #006fff;
+  box-shadow: inset 0 0 5px 0 #a2a2a2;
+  -moz-box-shadow: inset 0 0 5px 0 #a2a2a2;
+  -webkit-box-shadow: inset 0 0 5px 0 #a2a2a2;
+}
+ul.nice-menu:hover a.active {
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
+  border-top: 1px solid #fafafa;
+  border-left: 1px solid #fafafa;
+  color: #559efc;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+/* 1st menu needs overrides so to not match 2nd */
+.block-nice-menus:first-child ul.nice-menu {
+  border: 0;
+  margin-top: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.block-nice-menus:first-child ul.nice-menu li {
+  border-right: 0;
+  border-bottom: 0;
+  background-color: transparent;
+  padding-left: 42px;
+}
+.block-nice-menus:first-child ul.nice-menu a,
+.block-nice-menus:first-child ul.nice-menu a:visited {
+  display: block;
+  height: auto;
+  color: #ff8700;
+  background-color: none;
+  background-image: none;
+  padding: 0;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.5;
+  text-shadow: none;
+  border-top: 0;
+  border-left: 0;
+}
+.block-nice-menus:first-child ul.nice-menu a:hover {
+  color: #ffa137;
+  background-color: transparent;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+/* Navigation */
+#region-search-bar {
+  position: relative;
+} 
+body.page-preview #region-search-bar {
+  display: none;
+}
+body.page-preview #breadcrumb {
+  display: none;  
+}
+
+body.page-user-login, body.page-user-register #breadcrumb {
+  margin-top: -6px;
+}
+
+body.page-preview #region-content {
+  padding: 40px;
+  text-align: center;
+  width: 920px;
+}
+#region-search-bar .region-search-bar-inner {
+  margin-bottom: 3px;  
+  background: url('../images/search-bg.png') center top no-repeat;
+  height: 60px;
+  font-size: 12px;
+}
+#region-search-bar .form-item,
+#region-search-bar .form-actions {
+  margin: 0;
+  padding: 0;
+}
+#block-menu-menu-mktplc-section-nav {
+  padding: 10px 14px;
+  margin-bottom: 5px;
+  float: left;
+}
+.add-content-menu{
+  float: left;
+  padding: 12px 14px;
+}
+.add-content-menu select#edit-jump {
+  color: #999;
+  height: 30px;
+  line-height: 30px;
+  font-size: 15px;
+  padding: 0 5px;
+  margin: 1px 14px 0 0;
+}
+input#edit-go { 
+  /* this button is hidden via JS but there's a flicker */
+  display: none;
+}
+.block-custom-search-blocks {
+  float: right;
+  width: auto;
+  clear: none;
+}
+
+#region-search-bar .section-nav .menu {
+  float:left;
+  border-right: 1px solid #dcdcdc;
+  padding: 0;
+  margin: 0;
+}
+#region-search-bar .section-nav .menu li {
+  float:left;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#region-search-bar li.first.leaf {
+  width: 211px;
+  text-align: center;
+  margin-right: 10px;
+  border-right: 1px solid gainsboro;
+}
+#region-search-bar .section-nav li.first.leaf a {
+  color: #FE892C; 
+}
+
+#region-search-bar .section-nav .menu a,
+#region-search-bar .section-nav .menu a:visited {
+  height: 38px;
+  padding: 0 15px;
+  line-height: 38px;
+  font-sizE: 15px;
+  font-weight: bold;
+  color: #559EFC; /* 31B0EF */
+  background: url('../images/nav38px.png') 0 0 repeat-x;
+  text-decoration: none;
+  border-left: 1px solid #dcdcdc;
+  text-transform: none;
+  display: block;
+} 
+#region-search-bar .section-nav .menu a:hover {
+  background-image: url('../images/nav-bg-hover38.png');
+
+}
+#region-search-bar .section-nav .menu a.active {
+  background-image: url("../images/nav-bg-selected38.png");
+
+}
+#region-search-bar .search-form {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  width: 535px;
+}
+#region-search-bar input {
+  margin: 0;
+}
+#region-search-bar .search-form div {
+  display: inline;
+}
+#region-search-bar .custom-search-box {
+  color: #999;
+  height: 38px;
+  line-height: 38px;
+  font-size: 15px;
+  width: 468px;
+  margin: 0 10px 0 0;
+  font-style: italic;
+  border: 1px solid #EEE;
+  border-top: 2px solid #DDD;
+}
+#region-search-bar .form-submit {
+  height: 38px;
+  width: auto;
+}
+
+#block-system-user-menu {
+  clear: both;
+  float: right;
+  margin-bottom: 0px;
+}
+#block-system-user-menu li {
+  display: inline;
+}
+#block-user-login,
+#block-addtoany-addtoany-button {
+  float: right;
+  clear: both;
+  margin-left: 1em;
+}
+#block-user-login {
+  margin-bottom: 0px;
+ /* margin-top: -80px */ 
+ /* moves it above search, closer to util bar */
+
+}
+
+#block-addtoany-addtoany-button {
+  display: none;
+}
+#block-cc-flag-block-flag-block {
+  background: none;
+  box-shadow: none;
+  margin-bottom: none;
+}
+#block-cc-flag-block-flag-block li {
+  display: inline;
+}
+
+/*
+ *
+ * Content-type specific layouts
+ *
+ */
+
+/* override .grid-16 for apps and orgs */
+body.node-type-application #region-content,
+body.node-type-organization #region-content,
+body.node-type-project #region-content,
+body.node-type-standard #region-content,
+body.node-type-page #region-content
+ {
+  width: 630px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.page-places #region-content {
+  width: 940px;
+  margin-bottom: 20px;
+}
+
+/*
+ *
+ * Content
+ *
+ */
+.breadcrumb {
+  font-size: 12px;
+
+}
+#section-content {
+  font-size: 15px;
+}
+body.front #region-content {
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+  font-size: 20px;
+  text-align: center;
+}
+#section-content .tabs {
+  /* editing tabs hide via JS but w/ a flicker */
+  display: none;
+}
+#page-title {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+body.front #page-title {
+  font-size: 50px;
+  margin-bottom: 0;
+}
+h2.block-title,
+#region-content .field-label {
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+  color: #fff;
+  background: #669fe9;
+  font-size: 16px;
+  font-weight: normal;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  line-height: 2;
+  margin-bottom: 5px;
+  padding: 0 0.8em;
+  border-top: 1px solid #99c5ff;
+  border-right: 1px solid #5684bf;
+  border-bottom: 1px solid #5684bf;
+  border-left: 1px solid #99c5ff;
+  background-image: url('../images/bluehead.png');
+  /*   -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px; */
+}
+#region-content .field-label {
+  margin-top: 20px;
+}
+#region-content h2.block-title,
+#region-content .field-label {
+  /* maybe make the headings inside an app/org less overwhelming?*/
+  /* more of an issue when there's no content  background: none;
+  border: none;
+  border-bottom: 4px solid #ddd;
+  color: #333;
+  padding-left: 0;
+  font-weight: bold;
+  text-transform: none; */
+} 
+
+.region-content-inner {
+    margin-bottom: 0px;
+}
+.region-content-inner p {
+    margin-bottom: .8em;
+}
+
+.item-list ul li {
+  border-bottom: 1px solid #eee;
+  padding: 0 0 10px;
+  margin: 0 0 10px;
+}
+
+/* List: By Place */
+.places-list-container {
+  margin-bottom: 20px;
+}
+.places-list-container h2.block-title {
+  color: #FF8700;
+  background: transparent;
+  /*font-size: 15px;*/
+  background: url('../images/place2.gif') center top no-repeat;
+  padding: 80px 0 0;
+  float: left;
+  text-align: center;
+  width: 110px;
+  border: 0;
+}
+.places-list-container .content {
+  width: auto;
+  margin-left: 120px;
+}
+.places-list-container .view-content {
+  margin-bottom: 10px;
+}
+.places-list-container .views-field-field-organization-address {
+  font-weight: bold;
+}
+.places-list-container td {
+  border-bottom: 1px dashed #eee;
+  padding: 5px 0;
+  clear:both;
+}
+.places-list-container td > div {
+  /*float: left;
+  width: 48%;
+  margin-right: 2%;
+  */
+}
+
+.front .places-list-container .views-field-field-organization-address {
+  float: left;
+  width: 260px;
+}
+
+.front .using-sharing {
+  float: right;
+  width: 250px;
+}
+
+
+.places-list-container td div {
+  display: inline;
+}
+.views-field-field-organization-address a {
+  font-size: 16px;
+  text-decoration: none;
+}
+.cc-org-apps {
+  float: left;
+  width: 48%;
+  margin-right: 2%;
+}
+.cc-org-apps > div {
+  /*margin-right: 0.3em;*/
+}
+.cc-org-prefix-using,
+.cc-org-prefix-sharing {
+}
+.cc-org-count {
+}
+.cc-using,
+.cc-sharing {
+}
+.cc-org-postfix { 
+  display: none;
+}
+
+/* List: By Function */
+.functions-list-container {
+  margin: 10px 0;
+  width: 940px;
+  clear: both;
+}
+/*
+.functions-list-container h2.block-title {
+  color: #FF8700;
+  background: transparent;
+  font-size: 15px;
+  line-height: 1.5;
+  border: 0;
+}
+.functions-list-container .content {
+  width: auto;
+
+}
+*/
+.browse-by-grid {
+  padding-top: 10px;
+  font-size: 12px;
+  color: #666;
+  padding-left: 24px;
+}
+.browse-by-grid a {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 13px;
+}
+.browse-by-grid td {
+  background: #fff !important;
+  padding: 0 10px 20px 0;
+}
+
+/* Views Rows */
+.views-row {
+  margin: 0 0 20px;
+  color: #666;
+  position: relative;
+  }
+  .views-row:before, .views-row:after { content: "\0020"; display: block; height: 0; visibility: hidden; } 
+  .views-row:after { clear: both; }
+  .views-row { zoom: 1; 
+}
+
+/* List: Apps */
+.apps-list {
+  margin: 20px 0;
+}
+
+.views-field-field-application-logo {
+  float: left;
+  width: 60px;
+  margin-right: -60px;
+}
+
+.apps-list .views-field-title,
+.apps-list .views-field-field-application-sdesc,
+.apps-list .views-field-field-interaction-organization {
+  margin-left: 70px;
+}
+.apps-list .views-field-title {
+  padding-top: 5px;
+}
+.apps-list .views-field-title a {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.apps-list .views-field-field-application-sdesc {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.apps-list .meta {
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+  line-height: 2;
+  display: block;
+  margin-left: 0;
+  clear: left;
+  background: #F8F8F8;
+  border: 1px solid #E4E4E4;
+  height: 24px;
+           
+}
+.apps-list .meta a {
+  text-decoration: none;
+}
+.apps-list .meta .civic-function,
+.apps-list .meta .places-used,
+.apps-list .meta .date-updated {
+  margin: 0 5px;
+}
+.apps-list .meta a {
+}
+.apps-list .meta span.civic-function {
+  float: right;
+}
+.apps-list span.places-used {
+  font-weight: bold;
+  float: left;
+  border-right: 1px solid #E4E4E4;
+  padding-right: 12px;
+  width: 100px;
+}
+.apps-list span.date-updated {
+   float: left;
+}
+/* List: Recent Activity */
+.view-interactions {
+}
+.view-interactions .org-name a {
+  font-weight: bold;
+  /*font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;*/
+}
+.view-interactions .app-name a {
+  font-weight: bold;
+}
+
+/* List: Related Apps */
+.view-related-apps-block view-empty {
+    display: none;
+
+}
+
+
+/* Block: Preview Intro */
+.preview-intro {
+  margin-bottom: 20px;
+     -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+    -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
+ -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
+         box-shadow: 0 1px 8px 1px #DED8D8;
+}
+
+/* Block: Add to the Marketplace */
+.block.add-to-marketplace,
+.block.highlight,
+#region-sidebar-second .block {
+  background-color: #fbfbfb;
+  /*margin: -10px -10px 20px -10px;*/
+    -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
+ -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
+         box-shadow: 0 1px 8px 1px #DED8D8;
+}
+
+#region-sidebar-second{
+  margin-top: 16px;
+}
+
+.add-to-marketplace {
+   margin-top: -16px;
+}
+
+#region-sidebar-second h2.block-title {
+/*     -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0; */
+}
+
+
+.add-to-marketplace h2.block-title,
+.block.highlight h2.block-title {
+  /*margin: 0 9px 18px;
+  position: relative;
+  top: 9px;*/
+  background-color: #ed8309;
+  border-color: #dc7b0f;
+  border-top: 1px solid #ff8700;
+  border-left: 1px solid #ff8700;
+    background-image: url(../images/orangehead.png);
+}
+
+.highlight views-row {
+  margin 0 0 0px;
+
+}
+.front .add-to-marketplace h2 {    
+  text-align: center;
+}
+
+/* Apps & org Pages */
+.field-name-field-application-logo,
+.field-name-field-organization-logo {
+  float: left;
+  margin: 0 20px 20px 0;
+}
+.node-type-organization .field-name-field-organization-address {
+  margin: 0 0 10px;w
+}
+
+.group_basic_info {
+  /*border-bottom: 1px solid #eee;*/
+  /*padding: 0 0 20px;*/
+  margin: 0 0 20px;
+}
+
+#block-views-at-a-glance-application-block .content {
+  padding-top: 0;
+  list-style: none;
+}
+
+.views-field-field-application-used-in {
+  color: #666;
+  font-size: 16px;
+  font-weight: bold;
+  background: url(../images/icon_place_mini.gif) left center no-repeat scroll;
+  padding: 5px 0px 0px 24px;
+  margin: 0 0 5px;
+}
+.views-field-field-application-used-in .views-label {
+  font-size: 16px;
+}
+.views-field-field-application-used-in div {
+  display: inline; 
+}
+#block-views-at-a-glance-application-block .view-header p {
+  font-size: 14px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  padding: 0 0 10px;
+  margin: 0 0 10px;
+}
+#block-views-at-a-glance-application-block .view-header .cc-places-count {
+  padding: 0 0.2em;
+}
+#block-views-at-a-glance-application-block .views-field-php,
+#block-views-at-a-glance-application-block .views-field-field-application-reqs,
+#block-views-at-a-glance-application-block .views-field-field-application-hosturl,
+#block-views-at-a-glance-application-block .views-field-field-application-deliverymeth,
+#block-views-at-a-glance-application-block .views-field-field-application-license,
+#block-views-at-a-glance-application-block .views-field-field-application-rlss,
+#block-views-at-a-glance-application-block .views-field-nothing {
+  border-top: 1px solid #eee;
+  margin: 0 0 10px;
+  padding: 10px 0 0;
+  display: block; 
+}
+
+#block-views-cc-organizations-block{
+  margin-top: 20px;
+
+}
+
+.views-label {
+  font-size: 14px;
+  font-weight: bold;
+}
+.views-field-field-application-reqs {
+}
+.views-field-field-application-hosturl {
+}
+.views-field-field-application-deliverymeth {
+}
+.views-field-field-application-license {
+}
+.views-field-field-application-rlss {
+}
+.views-field-nothing {
+}
+#block-views-at-a-glance-application-block ul div {
+  display: inline;
+  margin-right: 0.2em;
+}
+
+/* Places Page */
+.view-id-places .view-content {
+  margin-bottom: 10px;
+}
+.view-id-places .views-row {
+  border-bottom: 1px dashed #eee;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+.view-id-places .views-row > div {
+  /*float: left;
+  width: 48%;
+  margin-right: 2%;*/
+}
+.view-id-places .views-row div {
+  display: inline;
+}
+.view-id-places .views-row div.views-field-title  {
+  display: block;
+  font-weight: bold;
+}
+.view-id-places a {
+  font-size: 16px;
+  text-decoration: none;
+}
+.view-id-places .views-row div.location {
+  display: block;
+}
+
+.view-id-places .using-sharing {
+  display: block;
+}
+.view-id-places .cc-org-apps {
+  /*float: left;
+  width: 48%;
+  margin-right: 2%;*/
+  float: none;
+  display: inline;
+  margin-right: 10px;
+  }
+
+/* Applications Page */
+.page-applications #region-content {
+  width: 940px;
+}
+.page-applications #region-content-leftcolumn,
+.page-applications #region-content-leftcolumn-lower {
+  float: left;
+  clear: left;
+}
+.page-applications #region-content-rightcolumn,
+.page-applications #region-content-rightcolumn-lower {
+  float: right;
+  clear: right;
+}
+
+/*
+ *
+ * Footer
+ *
+ */
+footer {
+  color: #a5a5a5;
+  background: #44484F url('http://civiccommons.org/wp-content/themes/biznizz/images/dark-noise.png') 0 0 repeat scroll;
+  margin: 40px 0 0;
+  padding: 20px 0;
+}
+footer h2.block-title {
+  color: #fff;
+  background: transparent;
+  font-size: 18px;
+  text-transform: none;
+  padding: 0;
+  border: 0;
+}
+footer a:link,
+footer a:visited {
+  color: #a5a5a5;
+}
+footer a:hover {
+  color: #cacaca;
+}
+
+/**
+ * OpenLayers maps styling
+ */
+body .openlayers-map .olControlAttribution {
+  right: inherit;
+  left: 5px;
+  background-color: rgba(15, 15, 15, 0.5);
+  color: #EEEEEE;
+  padding: 5px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+body .openlayers-views-map .olControlAttribution a {
+  color: #EEEEEE;
+  font-size: 10px;
+  font-weight: bold;
+}
+body .openlayers-map .olControlPermalink {
+  right: 5px;
+  bottom: 5px;
+  background-color: rgba(15, 15, 15, 0.5);
+  color: #EEEEEE;
+  padding: 5px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+body .openlayers-map .olControlPermalink a {
+  color: #EEEEEE;
+  font-size: 10px;
+  font-weight: bold;
+}
+body .openlayers-map .olFramedCloudPopupContent {
+  border-radius: 5px;
+  color: #EEEEEE;
+}
+body .openlayers-map .olFramedCloudPopupContent a {
+  color: #EEEEEE;
+}
+body .openlayers-map img.olImageLoadError {
+  background-color: transparent;
+}

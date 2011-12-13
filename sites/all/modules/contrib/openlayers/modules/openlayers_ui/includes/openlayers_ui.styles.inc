@@ -11,7 +11,7 @@
 /**
  * Styles add/edit form.
  */
-function openlayers_ui_styles_form($form, $form_state, $style = NULL, $edit = FALSE) {
+function openlayers_ui_styles_form($form, &$form_state, $style = NULL, $edit = FALSE) {
   $form = array();
   
   // Available styling properies.  Defaults and descriptions are taken
@@ -215,27 +215,50 @@ function openlayers_ui_styles_form($form, $form_state, $style = NULL, $edit = FA
   $form['info'] = array(
     '#type' => 'fieldset',
     '#tree' => FALSE,
+    '#title' => t('Style Basics'),
+    '#description' => t('The basic settings for the style.'),
   );
+  
+  // Provide a preview of the style
+  $preview_style = (isset($form_state['values']) && $form_state['values']['preview_style']) ?  
+    $form_state['values']['preview_style'] : $style;
+  if ($preview_style) {
+    $form['info']['preview_style_container'] = array(
+      '#type' => 'item',
+      '#title' => t('Preview'),
+      '#markup' => openlayers_ui_style_preview($preview_style, TRUE),
+      '#description' => t('If you are using attribute replacement, the style may not show properly.  The crosshairs point out where the feature is centered.'),
+    );
+  }
+  
   $form['info']['name'] = array(
-    '#title' => t('Name'),
+    '#title' => t('Style Machine Name'),
     '#type' => 'textfield',
     '#required' => TRUE,
     '#default_value' => !empty($style->name) ? $style->name : '',
+    '#description' => t('This is the unique name of the style. It must contain only alphanumeric characters and underscores.'),
   );
   $form['info']['title'] = array(
-    '#title' => t('Title'),
+    '#title' => t('Style Title'),
     '#type' => 'textfield',
     '#required' => TRUE,
     '#default_value' => !empty($style->title) ? $style->title : '',
+    '#description' => t('The title of your style, which will appear in the administration interface.'),
   );
   $form['info']['description'] = array(
-    '#title' => t('Description'),
+    '#title' => t(' Style Description'),
     '#type' => 'textfield',
     '#default_value' => !empty($style->description) ? $style->description : '',
+    '#description' => t('The description of your style, which will appear in the administration interface.'),
   );
 
   // OpenLayers style properties
-  $form['data'] = array('#type' => 'fieldset', '#tree' => TRUE);
+  $form['data'] = array(
+    '#type' => 'fieldset', 
+    '#tree' => TRUE,
+    '#title' => t('Style Properties'),
+    '#description' => t('The specific properties for the style.'),
+  );
 
   foreach ($properties as $key => $prop) {
     $form['data'][$key] = array(
@@ -255,6 +278,10 @@ function openlayers_ui_styles_form($form, $form_state, $style = NULL, $edit = FA
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
+  );
+  $form['preview'] = array(
+    '#type' => 'submit',
+    '#value' => t('Preview'),
   );
   return $form;
 }
@@ -284,12 +311,21 @@ function openlayers_ui_styles_form_submit(&$form, &$form_state) {
     }
   }
   
+  // Create style object
   $style = new stdClass();
   $style->name = $form_state['values']['name'];
   $style->title = $form_state['values']['title'];
   $style->description = $form_state['values']['description'];
   $style->data = $form_state['values']['data'];
 
+  // On preview, process, but don't save, rebuild.
+  if ($form_state['clicked_button']['#id'] == 'edit-preview') {
+    $form_state['values']['preview_style'] = $style;
+    $form_state['rebuild'] = TRUE;
+    return;
+  }
+  
+  // Save
   $success = openlayers_style_save($style);
   
   // Redirect to edit page

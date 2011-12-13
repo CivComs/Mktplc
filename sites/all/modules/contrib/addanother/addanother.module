@@ -1,0 +1,210 @@
+<?php
+
+/**
+ * @file
+ * Presents users with an option to create another node of the same type after a
+ * node is added.
+ */
+
+/**
+ * Implement hook_help().
+ */
+function addanother_help($path, $arg) {
+  if ($path == "admin/help#addanother") {
+    return '<p>' . t("Presents users with an option to create another node of the same type after a node is added.") . '</p>';
+  }
+}
+
+/**
+ * Implement hook_permission().
+ */
+function addanother_permission() {
+  return array(
+    'administer add another' => array(
+      'title' => t('Administer Add Another'),
+      'description' => t('Configure content types for Add Another'),
+    ),
+    'use add another' => array(
+      'title' => t('Use Add Another'),
+      'description' => t('Use the "Add Another..." link or button to create additional content'),
+    ),
+  );
+}
+
+/**
+ * Implement hook_menu().
+ */
+function addanother_menu() {
+  $items = array();
+  $items['node/%/addanother'] = array(
+    'title' => 'Add another',
+    'page callback' => 'addanother_goto',
+    'page arguments' => array(1),
+    'access callback' => 'addanother_access',
+    'access arguments' => array(1),
+    'weight' => 5,
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+/**
+ * Check if we should display the Add another verbage on a node.
+ */
+function addanother_access($nid) {
+  $node = node_load($nid);
+
+  if (arg(2) == "edit" && !variable_get('addanother_tab_edit_' . $node->type, FALSE)) {
+    return FALSE;
+  }
+
+  if ($node && variable_get('addanother_tab_' . $node->type, FALSE)
+      && user_access('use add another') && node_access('create', $node->type)) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+/**
+ * Alter content type settings to add our options.
+ */
+function addanother_form_node_type_form_alter(&$form, &$form_state) {
+  if (isset($form['#node_type'])) {
+    $form['addanother_display'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Add another settings'),
+      '#collapsible' => TRUE,
+      '#group' => 'additional_settings',
+    );
+    $form['addanother_display']['addanother_button'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Display Add another button on node add form.'),
+      '#default_value' => variable_get('addanother_button_' . $form['#node_type']->type, FALSE),
+      '#description' => t('Enable this checkbox if you want to provide a "Save and add another" button on the node add form for your users.'),
+    );
+    $form['addanother_display']['addanother_message'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Display the Add another message after node creation.'),
+      '#default_value' => variable_get('addanother_message_' . $form['#node_type']->type, FALSE),
+      '#description' => t('Enable this checkbox if you want to show a "Add another..." message after creating a new node.'),
+    );
+    $form['addanother_display']['addanother_tab'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Display the Add another tab.'),
+      '#default_value' => variable_get('addanother_tab_' . $form['#node_type']->type, FALSE),
+      '#description' => t('Enable this checkbox if you want to show a "Add another" tab on nodes of this type.'),
+    );
+    $form['addanother_display']['addanother_tab_edit'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Also Display Add another tab on edit page.'),
+      '#default_value' => variable_get('addanother_tab_edit_' . $form['#node_type']->type, FALSE),
+      '#description' => t('Enable this checkbox if you want to also show a "Add another" tab on node edit pages of this type. Tis option does nothing if the Add Another tab is disabled.'),
+    );
+  }
+}
+
+/**
+ * Takes the user to the node creation page for the type of a given node.
+ */
+function addanother_goto($nid) {
+  if ($node = node_load($nid)) {
+    drupal_goto('node/add/' . addanother_node_type_url($node->type));
+  }
+  else {
+    drupal_goto('node/add');
+  }
+}
+
+/**
+ * Implementation of hook_module_implements_alter().
+ */
+function addanother_module_implements_alter(&$implementations, $hook){
+  if ($hook == 'node_insert') {
+    // Ensure we are the last node_insert to fire.
+    $group = $implementations['addanother'];
+    unset($implementations['addanother']);
+    $implementations['addanother'] = $group;
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function addanother_form_alter(&$form, $form_state, $form_id) {
+  if (!empty($form['#node_edit_form'])) {
+    if (variable_get('addanother_button_' . $form['type']['#value'], FALSE)) {
+
+      $form['actions']['addanother'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save and add another'),
+        '#weight' => -41,
+        '#submit' => array('node_form_submit')
+      );
+    }
+  }
+}
+
+/**
+ * Implement hook_node_insert().
+ */
+function addanother_node_insert($node) {
+  if (!isset($node->op)) return;
+  if ($node->op == t('Save and add another')) {
+    theme('addanother_button_message', array('nid' => $node->nid));
+    drupal_goto('node/add/' . addanother_node_type_url($node->type));
+  }
+  elseif (user_access('use add another') && variable_get('addanother_message_' . $node->type, FALSE)) {
+    theme('addanother_message_message', array('node' => $node));
+  }
+}
+
+ /**
+ * Returns node type string acceptable for URL.
+ */
+function addanother_node_type_url($type) {
+  return str_replace('_', '-', $type);
+}
+
+/**
+ * Impelementation of hook_theme().
+ *
+ * Concept borrowed from 6.x Submit Again.
+ *
+ * @return array
+ */
+function addanother_theme() {
+  return array(
+    'addanother_message_message' => array(
+      'variables' => array('node' => NULL)
+    ),
+    'addanother_button_message' => array(
+      'variables' => array('nid' => NULL)
+    ),
+  );
+}
+
+/**
+ * Displays a message and link to the added/edited node after submit
+ */
+function theme_addanother_message_message($variables) {
+  $node = $variables['node'];
+  $addanother_message = t('Add another <a href="@typeurl">%type</a>.', array(
+      '@typeurl' => url('node/add/' . addanother_node_type_url($node->type)),
+      '%type' => node_type_get_name($node),
+      ));
+  drupal_set_message($addanother_message);
+  return array();
+}
+
+
+
+/**
+ * Displays a message and link to the added/edited node after submit
+ */
+function theme_addanother_button_message($variables) {
+  $nid = $variables['nid'];
+  drupal_set_message(t('You may visit your post at !link', array('!link' => l(url('node/' . $nid), 'node/' . $nid))));
+  return array();
+}

@@ -5,6 +5,12 @@
  * API extensions of Drupal core's file.inc.
  */
 
+
+/**
+ * The {file_managed}.type value when the file type has not yet been determined.
+ */
+define('FILE_TYPE_NONE', 'undefined');
+
 /**
  * Returns information about file types from hook_file_type_info().
  *
@@ -22,13 +28,31 @@ function file_info_file_types($file_type = NULL) {
     drupal_alter('file_type_info', $info);
     _file_sort_array_by_weight($info);
   }
-  if ($file_type) {
+  if (isset($file_type)) {
     if (isset($info[$file_type])) {
       return $info[$file_type];
     }
   }
   else {
     return $info;
+  }
+}
+
+/**
+ * Returns an object with file type information, so that %file_type can be used in hook_menu() paths.
+ *
+ * In addition to the information returned by file_info_file_types(), the 'type'
+ * property is set for use by field_extract_bundle().
+ */
+function file_type_load($type) {
+  $info = file_info_file_types($type);
+  if (isset($info)) {
+    $info = (object) $info;
+    $info->type = $type;
+    return $info;
+  }
+  else {
+    return FALSE;
   }
 }
 
