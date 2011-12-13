@@ -524,8 +524,8 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'entity_type' => 'node',
       'field_name' => 'field_url',
-      'label' => 'URL',
-      'required' => FALSE,
+      'label' => 'For (Project Title)',
+      'required' => 0,
       'settings' => array(
         'attributes' => array(
           'class' => '',
@@ -533,19 +533,20 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'target' => 'default',
         ),
         'display' => array(
-          'url_cutoff' => 80,
+          'url_cutoff' => '80',
         ),
         'enable_tokens' => 1,
         'title' => 'optional',
         'title_value' => '',
-        'url' => 0,
+        'url' => 'optional',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 0,
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_field',
-        'weight' => '9',
+        'weight' => '6',
       ),
     ),
   );
@@ -553,8 +554,8 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
   // Translatables
   // Included for use with string extractors like potx.
   t('Did What:');
+  t('For (Project Title)');
   t('This field doesn\'t work yet. skip it. Sorry it\'s here. ');
-  t('URL');
   t('When');
   t('Which <strong>Application</strong> was used? E.g., <em>Open Layers, Wordpress, Drupal</em>
 <br /><strong>start typing </strong>the application name into the field and it should appear below the field. Select it, and it will appear in the box with it\'s Marketplace ID Number, e.g., <em>"OpenLayers [nid:9113]"</em><br /><br />
