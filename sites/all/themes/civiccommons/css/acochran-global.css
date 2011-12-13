@@ -256,6 +256,11 @@ body.page-preview #region-search-bar {
 body.page-preview #breadcrumb {
   display: none;  
 }
+
+body.page-user-login, body.page-user-register #breadcrumb {
+  margin-top: -6px;
+}
+
 body.page-preview #region-content {
   padding: 40px;
   text-align: center;
@@ -374,6 +379,7 @@ input#edit-go {
 #block-system-user-menu {
   clear: both;
   float: right;
+  margin-bottom: 0px;
 }
 #block-system-user-menu li {
   display: inline;
@@ -591,17 +597,13 @@ h2.block-title,
   background: transparent;
   font-size: 15px;
   line-height: 1.5;
-  background: url('../images/civic2.gif') center top no-repeat;
-  padding: 80px 0 0;
-  float: left;
-  text-align: center;
-  width: 110px;
   border: 0;
 }
 .functions-list-container .content {
   width: auto;
 
 }
+
 .browse-by-grid {
   padding-top: 10px;
   font-size: 12px;
