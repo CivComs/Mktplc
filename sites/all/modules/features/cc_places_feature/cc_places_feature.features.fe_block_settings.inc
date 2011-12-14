@@ -23,7 +23,7 @@ function cc_places_feature_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '1',
     'pages' => '',
-    'title' => 'Browse By Place',
+    'title' => '<none>',
     'cache' => '1',
   );
 
@@ -98,7 +98,7 @@ function cc_places_feature_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '1',
     'pages' => '',
-    'title' => 'Browse By Place',
+    'title' => '<none>',
     'cache' => '1',
   );
 
@@ -173,7 +173,7 @@ function cc_places_feature_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '1',
     'pages' => '',
-    'title' => 'Browse By Place',
+    'title' => '<none>',
     'cache' => '1',
   );
 
@@ -248,7 +248,7 @@ function cc_places_feature_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '1',
     'pages' => '',
-    'title' => 'Browse By Place',
+    'title' => '<none>',
     'cache' => '1',
   );
 
@@ -323,7 +323,7 @@ function cc_places_feature_default_fe_block_settings() {
     'custom' => '0',
     'visibility' => '1',
     'pages' => '',
-    'title' => 'Browse By Place',
+    'title' => '<none>',
     'cache' => '1',
   );
 
