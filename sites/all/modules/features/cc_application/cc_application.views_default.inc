@@ -3304,7 +3304,6 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   /* Display: Block: Places */
   $handler = $view->new_display('block', 'Block: Places', 'block_2');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Block: Places';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['css_class'] = 'places-list';
   $handler->display->display_options['defaults']['use_more'] = FALSE;
@@ -3329,6 +3328,20 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['row_options']['hide_empty'] = 0;
   $handler->display->display_options['row_options']['default_field_elements'] = 1;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area_1']['id'] = 'area_1';
+  $handler->display->display_options['header']['area_1']['table'] = 'views';
+  $handler->display->display_options['header']['area_1']['field'] = 'area';
+  $handler->display->display_options['header']['area_1']['label'] = '"Table" headings';
+  $handler->display->display_options['header']['area_1']['empty'] = FALSE;
+  $handler->display->display_options['header']['area_1']['content'] = '<h2 class="block-title">
+<span class="browse">Browse places</span>
+<span class="using">Using</span>
+<span class="created">Created</span>
+</h2>';
+  $handler->display->display_options['header']['area_1']['format'] = 'full_html';
+  $handler->display->display_options['header']['area_1']['tokenize'] = 0;
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: &quot;More&quot; Link */
   $handler->display->display_options['footer']['php']['id'] = 'php';
