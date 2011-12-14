@@ -286,6 +286,12 @@ function cc_contexts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'block-22' => array(
+          'module' => 'block',
+          'delta' => 22,
+          'region' => 'content',
+          'weight' => '-10',
+        ),
         'views-applications-block_2' => array(
           'module' => 'views',
           'delta' => 'applications-block_2',
@@ -309,12 +315,6 @@ function cc_contexts_context_default_contexts() {
           'delta' => 'interactions-block_1',
           'region' => 'content_rightcolumn',
           'weight' => '-44',
-        ),
-        'block-22' => array(
-          'module' => 'block',
-          'delta' => 22,
-          'region' => 'content_main',
-          'weight' => '-10',
         ),
         'views-apps_browse_by-block_2' => array(
           'module' => 'views',

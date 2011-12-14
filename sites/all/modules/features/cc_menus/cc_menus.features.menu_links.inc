@@ -266,7 +266,7 @@ function cc_menus_menu_default_menu_links() {
     'menu_name' => 'menu-mktplc-section-nav',
     'link_path' => '<front>',
     'router_path' => '',
-    'link_title' => 'Home',
+    'link_title' => 'Marketplace',
     'options' => array(
       'attributes' => array(
         'title' => '',
