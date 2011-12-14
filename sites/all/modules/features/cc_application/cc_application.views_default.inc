@@ -2776,8 +2776,14 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['label'] = 'Add one';
   $handler->display->display_options['empty']['area']['empty'] = FALSE;
-  $handler->display->display_options['empty']['area']['content'] = '<a href="/node/add/interaction" class="button">+ add an app this org has used</a>';
-  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['content'] = '<?php
+ print \'<div class="edit-content-button">\'
+ . l(t(\'+ add an app this org has used\'), \'node/add/interaction\', array(
+  \'attributes\' => array(\'class\' => array(\'button\'))
+ ))
+ . \'</div>\';
+?>';
+  $handler->display->display_options['empty']['area']['format'] = 'php_code';
   $handler->display->display_options['empty']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Related Interaction */
