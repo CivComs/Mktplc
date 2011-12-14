@@ -2460,7 +2460,14 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['footer']['php']['table'] = 'views';
   $handler->display->display_options['footer']['php']['field'] = 'php';
   $handler->display->display_options['footer']['php']['empty'] = TRUE;
-  $handler->display->display_options['footer']['php']['php_output'] = '<?php echo \'<div class="edit-content-button"><a href="/node/add/interaction" class="button">+ add an app this org has created</a></div>\'; ?>
+  $handler->display->display_options['footer']['php']['php_output'] = '<?php
+ print \'<div class="edit-content-button">\'
+ . l(\'+ add an app this org has created\', \'node/\' . arg(1) . \'/edit\', array(
+  \'attributes\' => array(\'class\' => array(\'button\')),
+  \'fragment\' => \'edit-field-organization-apps-created\'
+ ))
+ . \'</div>\';
+?>
 ';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Taxonomy terms on node */
@@ -2754,7 +2761,13 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['footer']['php']['table'] = 'views';
   $handler->display->display_options['footer']['php']['field'] = 'php';
   $handler->display->display_options['footer']['php']['empty'] = FALSE;
-  $handler->display->display_options['footer']['php']['php_output'] = '<div class="edit-content-button"><a href="/node/add/application" class="button">+ add an app this org has used</a></div>
+  $handler->display->display_options['footer']['php']['php_output'] = '<?php
+ print \'<div class="edit-content-button">\'
+ . l(t(\'+ add an app this org has used\'), \'node/add/interaction\', array(
+  \'attributes\' => array(\'class\' => array(\'button\'))
+ ))
+ . \'</div>\';
+?>
 ';
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
