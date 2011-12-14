@@ -267,10 +267,14 @@ body.page-preview #region-content {
   width: 920px;
 }
 #region-search-bar .region-search-bar-inner {
-  margin-bottom: 3px;  
+/*  margin-bottom: 3px;  */
   background: url('../images/search-bg.png') center top no-repeat;
-  height: 60px;
+  height: 57px;
   font-size: 12px;
+  -webkit-box-shadow: 0px 2px 4px #CCC;
+  -moz-box-shadow: 0px 2px 4px #CCC;
+  box-shadow: 0px 2px 4px #CCC;
+  
 }
 #region-search-bar .form-item,
 #region-search-bar .form-actions {
@@ -278,7 +282,7 @@ body.page-preview #region-content {
   padding: 0;
 }
 #block-menu-menu-mktplc-section-nav {
-  padding: 10px 14px;
+  padding: 10px 14px 7px 14px;
   margin-bottom: 5px;
   float: left;
 }
@@ -324,7 +328,9 @@ input#edit-go {
   border-right: 1px solid gainsboro;
 }
 #region-search-bar .section-nav li.first.leaf a {
-  color: #FE892C; 
+  color: #FE892C;
+  text-transform: uppercase;
+  font-size: 1.5em;
 }
 
 #region-search-bar .section-nav .menu a,
@@ -381,9 +387,25 @@ input#edit-go {
   clear: both;
   float: right;
   margin-bottom: 0px;
+  margin-top: -3px;
+  z-index: -1;
 }
+#block-system-user-menu ul {
+  border: 1px solid #E4E4E4;
+  list-style: none;
+  text-align: left;
+  background: #F7F7F7;
+  font-style: normal;
+/*  margin-top: 1px; */
+}
+
 #block-system-user-menu li {
   display: inline;
+}
+
+#block-system-user-menu a {
+  text-decoration: none;
+  padding: 1px 3px 1px 3px;
 }
 #block-user-login,
 #block-addtoany-addtoany-button {
@@ -515,21 +537,6 @@ h2.block-title,
 /* List: By Place */
 .places-list-container {
   margin-bottom: 20px;
-}
-.places-list-container h2.block-title {
-  color: #FF8700;
-  background: transparent;
-  /*font-size: 15px;*/
-  background: url('../images/place2.gif') center top no-repeat;
-  padding: 80px 0 0;
-  float: left;
-  text-align: center;
-  width: 110px;
-  border: 0;
-}
-.places-list-container .content {
-  width: auto;
-  margin-left: 120px;
 }
 .places-list-container .view-content {
   margin-bottom: 10px;
@@ -982,4 +989,27 @@ body .openlayers-map .olFramedCloudPopupContent a {
 }
 body .openlayers-map img.olImageLoadError {
   background-color: transparent;
+}
+
+/**
+ * Home page
+ */
+#block-block-22 .block-inner .block-title {
+  background: transparent;
+  border: none;
+  color: #777;
+  text-align: left;
+  text-transform: none;
+  font-size: 1.5em;
+  font-weight: 100;
+  margin: 0 0 2em 220px;
+}
+body.front #block-system-main {
+  margin: 0;
+}
+body.front #page-title {
+  font-size: 50px;
+  margin: 1em 0 0 240px;
+  text-align: left;
+  font-weight: lighter;
 }
