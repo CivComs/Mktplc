@@ -448,14 +448,14 @@ function cc_helper_block_view_alter(&$data, $block){
   
 }
 
-function cc_helper_form_alter(&$form, &$form_state, $form_id) {
+/*function cc_helper_form_alter(&$form, &$form_state, $form_id) {
   $c_editor = in_array('content editor', $GLOBALS['user']->roles);
   if(isset($form['#entity_type']) && $c_editor) {
     if($form['#entity_type'] == 'node') {
-      $form['additional_settings']['#access'] = FALSE;
+      $form['additional_settings']['#theme'] = '';
     }
   }
-}
+}*/
 
 function cc_helper_form_interaction_node_form_alter(&$form, &$form_state) {
   // Redirect form to referrer if there is already one not
