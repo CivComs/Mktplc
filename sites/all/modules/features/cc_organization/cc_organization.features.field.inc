@@ -262,7 +262,7 @@ function cc_organization_field_default_fields() {
       'bundle' => 'organization',
       'default_value' => array(
         0 => array(
-          'administrative_area' => 'AL',
+          'administrative_area' => '',
           'country' => 'US',
           'element_key' => 'node|organization|field_organization_address|und|0',
           'locality' => '',
