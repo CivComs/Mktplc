@@ -257,8 +257,8 @@ body.page-preview #breadcrumb {
   display: none;  
 }
 
-body.page-user-login, body.page-user-register #breadcrumb {
-  margin-top: -6px;
+body.page-user #breadcrumb {
+  margin-top: 0px;
 }
 
 body.page-preview #region-content {
