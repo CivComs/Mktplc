@@ -327,11 +327,6 @@ input#edit-go {
   margin-right: 10px;
   border-right: 1px solid gainsboro;
 }
-#region-search-bar .section-nav li.first.leaf a {
-  color: #FE892C;
-  text-transform: uppercase;
-  font-size: 1.5em;
-}
 
 #region-search-bar .section-nav .menu a,
 #region-search-bar .section-nav .menu a:visited {
@@ -341,11 +336,11 @@ input#edit-go {
   font-sizE: 15px;
   font-weight: bold;
   color: #559EFC; /* 31B0EF */
-  background: url('../images/nav38px.png') 0 0 repeat-x;
   text-decoration: none;
   border-left: 1px solid #dcdcdc;
   text-transform: none;
   display: block;
+  background: url('../images/nav38px.png') 0 0 repeat-x;
 } 
 #region-search-bar .section-nav .menu a:hover {
   background-image: url('../images/nav-bg-hover38.png');
@@ -355,6 +350,23 @@ input#edit-go {
   background-image: url("../images/nav-bg-selected38.png");
 
 }
+/* Utilizing CSS3 multiple bg images for the marketplace item */
+#region-search-bar .section-nav li.first.leaf a {
+  color: #FE892C;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  background: url('../images/nav38px.png') 0 0 repeat-x;
+  background: url('../images/home.png') 7px 7px no-repeat, url('../images/nav38px.png') 0 0 repeat-x;
+}
+#region-search-bar .section-nav li.first.leaf a:active {
+  background-image: url("../images/nav-bg-selected38.png");
+  background-image: url('../images/home.png'), url("../images/nav-bg-selected38.png");
+}
+#region-search-bar .section-nav li.first.leaf a:hover {
+  background-image: url("../images/nav-bg-hover38.png");
+  background-image: url('../images/home.png'), url("../images/nav-bg-hover38.png");
+}
+
 #region-search-bar .search-form {
   position: absolute;
   top: 10px;
