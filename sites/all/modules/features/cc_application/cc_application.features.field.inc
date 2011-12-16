@@ -919,7 +919,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'module' => 'image',
       'settings' => array(
-        'default_image' => '284',
+        'default_image' => '621',
         'uri_scheme' => 'public',
       ),
       'translatable' => '0',
