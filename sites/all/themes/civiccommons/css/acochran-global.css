@@ -130,7 +130,7 @@ button {width: auto; overflow: visible;}
 }
 aside .content {
   font-size: 12px;
-  padding: 9px;
+  padding: 9px 9px;
 }
 .block {
   clear: both;
@@ -256,16 +256,25 @@ body.page-preview #region-search-bar {
 body.page-preview #breadcrumb {
   display: none;  
 }
+
+body.page-user-login, body.page-user-register #breadcrumb {
+  margin-top: -6px;
+}
+
 body.page-preview #region-content {
   padding: 40px;
   text-align: center;
   width: 920px;
 }
 #region-search-bar .region-search-bar-inner {
-  margin-bottom: 3px;  
+/*  margin-bottom: 3px;  */
   background: url('../images/search-bg.png') center top no-repeat;
-  height: 60px;
+  height: 57px;
   font-size: 12px;
+  -webkit-box-shadow: 0px 2px 4px #CCC;
+  -moz-box-shadow: 0px 2px 4px #CCC;
+  box-shadow: 0px 2px 4px #CCC;
+  
 }
 #region-search-bar .form-item,
 #region-search-bar .form-actions {
@@ -273,7 +282,7 @@ body.page-preview #region-content {
   padding: 0;
 }
 #block-menu-menu-mktplc-section-nav {
-  padding: 12px 14px;
+  padding: 10px 14px 7px 14px;
   margin-bottom: 5px;
   float: left;
 }
@@ -294,8 +303,8 @@ input#edit-go {
   display: none;
 }
 .block-custom-search-blocks {
-  float:right;
-  width: 390px;
+  float: right;
+  width: auto;
   clear: none;
 }
 
@@ -311,30 +320,58 @@ input#edit-go {
   padding: 0;
   list-style: none;
 }
+
+#region-search-bar li.first.leaf {
+  width: 211px;
+  text-align: center;
+  margin-right: 10px;
+  border-right: 1px solid gainsboro;
+}
+
 #region-search-bar .section-nav .menu a,
 #region-search-bar .section-nav .menu a:visited {
-  height: 32px;
+  height: 38px;
   padding: 0 15px;
-  line-height: 32px;
+  line-height: 38px;
   font-sizE: 15px;
   font-weight: bold;
-  color: #559efc;
-  background: url('../images/nav-bg.png') 0 0 repeat-x;
+  color: #559EFC; /* 31B0EF */
   text-decoration: none;
   border-left: 1px solid #dcdcdc;
   text-transform: none;
   display: block;
+  background: url('../images/nav38px.png') 0 0 repeat-x;
 } 
 #region-search-bar .section-nav .menu a:hover {
-  background-image: url('../images/nav-bg-hover.png');
+  background-image: url('../images/nav-bg-hover38.png');
+
 }
 #region-search-bar .section-nav .menu a.active {
-  background-image: url("../images/nav-bg-selected.png");
+  background-image: url("../images/nav-bg-selected38.png");
+
 }
+/* Utilizing CSS3 multiple bg images for the marketplace item */
+#region-search-bar .section-nav li.first.leaf a {
+  color: #FE892C;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  background: url('../images/nav38px.png') 0 0 repeat-x;
+  background: url('../images/home.png') 7px 7px no-repeat, url('../images/nav38px.png') 0 0 repeat-x;
+}
+#region-search-bar .section-nav li.first.leaf a:active {
+  background-image: url("../images/nav-bg-selected38.png");
+  background-image: url('../images/home.png'), url("../images/nav-bg-selected38.png");
+}
+#region-search-bar .section-nav li.first.leaf a:hover {
+  background-image: url("../images/nav-bg-hover38.png");
+  background-image: url('../images/home.png'), url("../images/nav-bg-hover38.png");
+}
+
 #region-search-bar .search-form {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 15px;
+  width: 535px;
 }
 #region-search-bar input {
   margin: 0;
@@ -344,24 +381,43 @@ input#edit-go {
 }
 #region-search-bar .custom-search-box {
   color: #999;
-  height: 30px;
-  line-height: 30px;
+  height: 38px;
+  line-height: 38px;
   font-size: 15px;
-  padding: 0 5px;
-  width: 300px;
-  margin: 0 14px 0 0;
+  width: 468px;
+  margin: 0 10px 0 0;
+  font-style: italic;
+  border: 1px solid #EEE;
+  border-top: 2px solid #DDD;
 }
 #region-search-bar .form-submit {
-  height: 32px;
+  height: 38px;
   width: auto;
 }
 
 #block-system-user-menu {
   clear: both;
   float: right;
+  margin-bottom: 0px;
+  margin-top: -3px;
+  z-index: -1;
 }
+#block-system-user-menu ul {
+  border: 1px solid #E4E4E4;
+  list-style: none;
+  text-align: left;
+  background: #F7F7F7;
+  font-style: normal;
+/*  margin-top: 1px; */
+}
+
 #block-system-user-menu li {
   display: inline;
+}
+
+#block-system-user-menu a {
+  text-decoration: none;
+  padding: 1px 3px 1px 3px;
 }
 #block-user-login,
 #block-addtoany-addtoany-button {
@@ -369,6 +425,13 @@ input#edit-go {
   clear: both;
   margin-left: 1em;
 }
+#block-user-login {
+  margin-bottom: 0px;
+ /* margin-top: -80px */ 
+ /* moves it above search, closer to util bar */
+
+}
+
 #block-addtoany-addtoany-button {
   display: none;
 }
@@ -410,6 +473,7 @@ body.node-type-page #region-content
  */
 .breadcrumb {
   font-size: 12px;
+
 }
 #section-content {
   font-size: 15px;
@@ -443,15 +507,16 @@ h2.block-title,
   letter-spacing: -0.05em;
   text-transform: uppercase;
   line-height: 2;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding: 0 0.8em;
   border-top: 1px solid #99c5ff;
   border-right: 1px solid #5684bf;
   border-bottom: 1px solid #5684bf;
   border-left: 1px solid #99c5ff;
-     -moz-border-radius: 5px;
+  background-image: url('../images/bluehead.png');
+  /*   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-          border-radius: 5px;
+          border-radius: 5px; */
 }
 #region-content .field-label {
   margin-top: 20px;
@@ -459,15 +524,21 @@ h2.block-title,
 #region-content h2.block-title,
 #region-content .field-label {
   /* maybe make the headings inside an app/org less overwhelming?*/
-  /* more of an issue when there's no content */
-  background: none;
+  /* more of an issue when there's no content  background: none;
   border: none;
   border-bottom: 4px solid #ddd;
   color: #333;
   padding-left: 0;
   font-weight: bold;
-  text-transform: none;
+  text-transform: none; */
 } 
+
+.region-content-inner {
+    margin-bottom: 0px;
+}
+.region-content-inner p {
+    margin-bottom: .8em;
+}
 
 .item-list ul li {
   border-bottom: 1px solid #eee;
@@ -478,21 +549,6 @@ h2.block-title,
 /* List: By Place */
 .places-list-container {
   margin-bottom: 20px;
-}
-.places-list-container h2.block-title {
-  color: #FF8700;
-  background: transparent;
-  /*font-size: 15px;*/
-  background: url('../images/place2.gif') center top no-repeat;
-  padding: 80px 0 0;
-  float: left;
-  text-align: center;
-  width: 110px;
-  border: 0;
-}
-.places-list-container .content {
-  width: auto;
-  margin-left: 120px;
 }
 .places-list-container .view-content {
   margin-bottom: 10px;
@@ -552,32 +608,28 @@ h2.block-title,
 
 /* List: By Function */
 .functions-list-container {
-  border-top: 1px solid #eee;
-  margin: 20px 0;
-  padding-top: 20px;
+  margin: 10px 0;
   width: 940px;
   clear: both;
 }
+/*
 .functions-list-container h2.block-title {
   color: #FF8700;
   background: transparent;
   font-size: 15px;
   line-height: 1.5;
-  background: url('../images/civic2.gif') center top no-repeat;
-  padding: 80px 0 0;
-  float: left;
-  text-align: center;
-  width: 110px;
   border: 0;
 }
 .functions-list-container .content {
   width: auto;
-  margin-left: 120px;
+
 }
+*/
 .browse-by-grid {
   padding-top: 10px;
   font-size: 12px;
   color: #666;
+  padding-left: 24px;
 }
 .browse-by-grid a {
   text-decoration: none;
@@ -637,15 +689,10 @@ h2.block-title,
   display: block;
   margin-left: 0;
   clear: left;
-  border-right: 1px solid #eee;
-  border-bottom: 1px solid #ddd;
-  background: #f7f7f7;
-  -webkit-border-bottom-right-radius: 5px;
-   -webkit-border-bottom-left-radius: 5px;
-      -moz-border-radius-bottomright: 5px;
-       -moz-border-radius-bottomleft: 5px;
-          border-bottom-right-radius: 5px;
-           border-bottom-left-radius: 5px;
+  background: #F8F8F8;
+  border: 1px solid #E4E4E4;
+  height: 24px;
+           
 }
 .apps-list .meta a {
   text-decoration: none;
@@ -658,11 +705,18 @@ h2.block-title,
 .apps-list .meta a {
 }
 .apps-list .meta span.civic-function {
+  float: right;
 }
 .apps-list span.places-used {
   font-weight: bold;
+  float: left;
+  border-right: 1px solid #E4E4E4;
+  padding-right: 12px;
+  width: 100px;
 }
-
+.apps-list span.date-updated {
+   float: left;
+}
 /* List: Recent Activity */
 .view-interactions {
 }
@@ -675,6 +729,13 @@ h2.block-title,
 .view-interactions .app-name a {
   font-weight: bold;
 }
+
+/* List: Related Apps */
+.view-related-apps-block view-empty {
+    display: none;
+
+}
+
 
 /* Block: Preview Intro */
 .preview-intro {
@@ -693,19 +754,25 @@ h2.block-title,
 #region-sidebar-second .block {
   background-color: #fbfbfb;
   /*margin: -10px -10px 20px -10px;*/
-     -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-          border-radius: 5px;
     -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
  -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
          box-shadow: 0 1px 8px 1px #DED8D8;
 }
 
-#region-sidebar-second h2.block-title {
-     -moz-border-radius: 5px 5px 0 0;
-  -webkit-border-radius: 5px 5px 0 0;
-          border-radius: 5px 5px 0 0;
+#region-sidebar-second{
+  margin-top: 16px;
 }
+
+.add-to-marketplace {
+   margin-top: -16px;
+}
+
+#region-sidebar-second h2.block-title {
+/*     -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0; */
+}
+
 
 .add-to-marketplace h2.block-title,
 .block.highlight h2.block-title {
@@ -716,6 +783,12 @@ h2.block-title,
   border-color: #dc7b0f;
   border-top: 1px solid #ff8700;
   border-left: 1px solid #ff8700;
+    background-image: url(../images/orangehead.png);
+}
+
+.highlight views-row {
+  margin 0 0 0px;
+
 }
 .front .add-to-marketplace h2 {    
   text-align: center;
@@ -739,20 +812,22 @@ h2.block-title,
 
 #block-views-at-a-glance-application-block .content {
   padding-top: 0;
+  list-style: none;
 }
+
 .views-field-field-application-used-in {
   color: #666;
   font-size: 16px;
   font-weight: bold;
   background: url(../images/icon_place_mini.gif) left center no-repeat scroll;
-  padding: 10px 0 10px 24px;
+  padding: 5px 0px 0px 24px;
   margin: 0 0 5px;
 }
 .views-field-field-application-used-in .views-label {
   font-size: 16px;
 }
 .views-field-field-application-used-in div {
-  display: inline;
+  display: inline; 
 }
 #block-views-at-a-glance-application-block .view-header p {
   font-size: 14px;
@@ -774,13 +849,13 @@ h2.block-title,
   border-top: 1px solid #eee;
   margin: 0 0 10px;
   padding: 10px 0 0;
+  display: block; 
 }
 
 #block-views-cc-organizations-block{
-margin-top: 20px;
+  margin-top: 20px;
 
 }
-
 
 .views-label {
   font-size: 14px;
@@ -926,4 +1001,100 @@ body .openlayers-map .olFramedCloudPopupContent a {
 }
 body .openlayers-map img.olImageLoadError {
   background-color: transparent;
+}
+
+/**
+ * Home page
+ */
+#block-block-22 .block-inner .block-title {
+  background: transparent;
+  border: none;
+  color: #777;
+  text-align: left;
+  text-transform: none;
+  font-size: 1.5em;
+  font-weight: 100;
+  margin: 0 0 1em 220px;
+}
+body.front #block-system-main {
+  margin: 0;
+}
+body.front #page-title {
+  font-size: 50px;
+  margin: .5em 0 0 0;
+  padding-left: 240px;
+  text-align: left;
+  font-weight: lighter;
+}
+body.front #zone-content .region-content {
+  background: transparent url('../images/hammer.jpg') 40px 1em no-repeat;
+}
+
+/**
+ * Browse places block
+ */
+.view-apps-browse-by h2.block-title {
+  margin-bottom: 1em;
+}
+.view-apps-browse-by h2.block-title .browse {
+  width: 370px;
+  display: inline-block;
+}
+.view-apps-browse-by .block-title .using {
+  width: 125px;
+  display: inline-block;
+}
+.view-apps-browse-by .block-title .created {
+  width: 110px;
+  display: inline-block;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps {
+  background: transparent url('../images/created-inactive.png') top left no-repeat;
+  height: 44px;
+  padding: 0px;
+  margin: 0px;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps:first-child {
+  background: transparent url('../images/hammer-wrench-inactive.png') top left no-repeat;
+}
+
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-using,
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
+  color: transparent;
+  background: transparent url('../images/hammer-wrench-active.png') top left no-repeat;
+  width: 40px;
+  height: 44px;
+  display: block;
+  float: left;
+  margin-right: 5px;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
+  background: transparent url('../images/created-active.png') top left no-repeat;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-count {
+  padding-top: 3px;
+  font-size: 2em;
+  color: #777777;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-postfix {
+  display: none;
+}
+
+.view-apps-browse-by .views-field-field-organization-address {
+  line-height: 44px;
+  margin-left: 10px;
+}
+
+.view-apps-browse-by .view-footer a {
+  display: block;
+  float: right;
+  width: 125px;
+  border: 1px solid #E4E4E4;
+  background-color: #F7F7F7;
+  color: #222222;
+  border-radius: 3px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: .8em;
 }
