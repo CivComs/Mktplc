@@ -422,7 +422,7 @@ function logintoboggan_page_alter(&$page) {
   // Remove blocks on access denied pages.
   if (isset($page['#logintoboggan_denied'])) {
     drupal_set_message(t('Access denied.  You may need to login below or register to access this page.'), 'error');
-    unset($page['sidebar_first'], $page['sidebar_second']);
+    //unset($page['sidebar_first'], $page['sidebar_second']);
   }
 }
 

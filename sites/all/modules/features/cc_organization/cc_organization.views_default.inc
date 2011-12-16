@@ -263,7 +263,7 @@ if(isset($data->field_field_organization_members)) {
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Content: Annual budget */
+  /* Field: Content: Annual budget (in USD) */
   $handler->display->display_options['fields']['field_organization_abudget']['id'] = 'field_organization_abudget';
   $handler->display->display_options['fields']['field_organization_abudget']['table'] = 'field_data_field_organization_abudget';
   $handler->display->display_options['fields']['field_organization_abudget']['field'] = 'field_organization_abudget';
@@ -318,7 +318,7 @@ if(isset($data->field_field_organization_members)) {
   $handler->display->display_options['fields']['field_organization_members']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_organization_members']['delta_reversed'] = 0;
   $handler->display->display_options['fields']['field_organization_members']['field_api_classes'] = 0;
-  /* Field: Content: Typical project budget */
+  /* Field: Content: Typical project budget (in USD) */
   $handler->display->display_options['fields']['field_organization_pbudget']['id'] = 'field_organization_pbudget';
   $handler->display->display_options['fields']['field_organization_pbudget']['table'] = 'field_data_field_organization_pbudget';
   $handler->display->display_options['fields']['field_organization_pbudget']['field'] = 'field_organization_pbudget';
@@ -553,7 +553,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
     'prefix_suffix' => 1,
   );
   $handler->display->display_options['fields']['field_organization_employees']['field_api_classes'] = 0;
-  /* Field: Content: Annual budget */
+  /* Field: Content: Annual budget (in USD) */
   $handler->display->display_options['fields']['field_organization_abudget']['id'] = 'field_organization_abudget';
   $handler->display->display_options['fields']['field_organization_abudget']['table'] = 'field_data_field_organization_abudget';
   $handler->display->display_options['fields']['field_organization_abudget']['field'] = 'field_organization_abudget';
@@ -608,7 +608,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['fields']['field_organization_members']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_organization_members']['delta_reversed'] = 0;
   $handler->display->display_options['fields']['field_organization_members']['field_api_classes'] = 0;
-  /* Field: Content: Typical project budget */
+  /* Field: Content: Typical project budget (in USD) */
   $handler->display->display_options['fields']['field_organization_pbudget']['id'] = 'field_organization_pbudget';
   $handler->display->display_options['fields']['field_organization_pbudget']['table'] = 'field_data_field_organization_pbudget';
   $handler->display->display_options['fields']['field_organization_pbudget']['field'] = 'field_organization_pbudget';
@@ -851,7 +851,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['footer']['php']['empty'] = FALSE;
   $handler->display->display_options['footer']['php']['php_output'] = '<?php $dest = drupal_get_destination();?>
 <div class="edit-content-button">
-<a class="button" href="<?php echo \'/node/add/interaction?app_id=\'.arg(1).\'&interaction_id=156&destination=\'.$dest[\'destination\'];?>">+ add a place</a>
+<a class="button" href="/node/add/interaction/?edit%5Bfield_interaction_type%5D%5Bund%5D=156&edit%5Bfield_interaction_application%5D%5Bund%5D%5B0%5D%5Bnid%5D=<?php echo _cc_helper_title_by_id(arg(1)); ?>%20%5Bnid%3A%20<?php echo arg(1); ?>%5D&compact-overlay=true&destination=node/<?php echo arg(1); ?>">+ add a place</a>
 </div>
 ';
   $handler->display->display_options['defaults']['empty'] = FALSE;
@@ -1070,10 +1070,10 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   );
   $handler->display->display_options['attachment_position'] = 'after';
 
-  /* Display: Block: Organizations by place */
-  $handler = $view->new_display('block', 'Block: Organizations by place', 'block_1');
+  /* Display: Block: Agencies in place */
+  $handler = $view->new_display('block', 'Block: Agencies in place', 'block_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Agencies and organizations in this place';
+  $handler->display->display_options['title'] = 'Agencies in this place';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['css_class'] = 'orgs-list';
   $handler->display->display_options['display_description'] = 'Organizations in given place';
@@ -1222,7 +1222,7 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['arguments']['field_organization_address_locality']['field'] = 'field_organization_address_locality';
   $handler->display->display_options['arguments']['field_organization_address_locality']['default_action'] = 'default';
   $handler->display->display_options['arguments']['field_organization_address_locality']['title_enable'] = 1;
-  $handler->display->display_options['arguments']['field_organization_address_locality']['title'] = 'Government entities in %1';
+  $handler->display->display_options['arguments']['field_organization_address_locality']['title'] = 'Agencies in %1';
   $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_type'] = 'raw';
   $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_options']['index'] = '1';
   $handler->display->display_options['arguments']['field_organization_address_locality']['default_argument_skip_url'] = 0;
@@ -1256,17 +1256,23 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
   $handler->display->display_options['filters']['tid']['value'] = array(
+    132 => '132',
+    131 => '131',
+    128 => '128',
+    130 => '130',
+    129 => '129',
+    127 => '127',
     124 => '124',
   );
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'organization_type';
-  $handler->display->display_options['block_description'] = 'Agencies and organizations';
+  $handler->display->display_options['block_description'] = 'Agencies in place';
 
-  /* Display: Block: Organizations by place (2) */
-  $handler = $view->new_display('block', 'Block: Organizations by place (2)', 'block_3');
+  /* Display: Block: Companies and organizations in place */
+  $handler = $view->new_display('block', 'Block: Companies and organizations in place', 'block_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Agencies and organizations in this place';
+  $handler->display->display_options['title'] = 'Companies and organizations in this place';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['css_class'] = 'orgs-list places-list';
   $handler->display->display_options['display_description'] = 'Organizations (not government) in given place';
@@ -1446,14 +1452,14 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['filters']['tid']['id'] = 'tid';
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
-  $handler->display->display_options['filters']['tid']['operator'] = 'not';
   $handler->display->display_options['filters']['tid']['value'] = array(
-    124 => '124',
+    126 => '126',
+    125 => '125',
   );
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'organization_type';
-  $handler->display->display_options['block_description'] = 'Agencies and organizations';
+  $handler->display->display_options['block_description'] = 'Companies and organizations in place';
 
   /* Display: Block: Apps Made In This Place */
   $handler = $view->new_display('block', 'Block: Apps Made In This Place', 'block_2');

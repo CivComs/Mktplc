@@ -20,7 +20,7 @@ function cc_organization_field_group_info() {
   $field_group->parent_name = 'group_organization_main';
   $field_group->data = array(
     'label' => 'Contact Info',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_organization_address',
       1 => 'field_organization_phone',
@@ -107,17 +107,16 @@ function cc_organization_field_group_info() {
   $field_group->data = array(
     'label' => 'Misc',
     'weight' => '8',
-    'children' => array(
-      0 => 'field_organization_members',
-      1 => 'field_organization_ss_id',
-    ),
+    'children' => array(),
     'format_type' => 'tab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Misc',
       'instance_settings' => array(
+        'required_fields' => 0,
         'classes' => '',
-        'required_fields' => 1,
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_organization_misc|node|organization|form'] = $field_group;
@@ -132,7 +131,7 @@ function cc_organization_field_group_info() {
   $field_group->parent_name = 'group_organization_main';
   $field_group->data = array(
     'label' => 'Apps & Services',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
       0 => 'field_organization_interactions',
       1 => 'field_organization_services',
@@ -168,7 +167,8 @@ function cc_organization_field_group_info() {
       1 => 'field_organization_abudget',
       2 => 'field_organization_employees',
       3 => 'field_organization_pbudget',
-      4 => 'field_organization_branch',
+      4 => 'field_organization_members',
+      5 => 'field_organization_branch',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

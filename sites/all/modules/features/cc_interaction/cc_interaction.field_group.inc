@@ -26,7 +26,8 @@ function cc_interaction_field_group_info() {
       1 => 'field_interaction_application',
       2 => 'field_interaction_type',
       3 => 'field_interaction_date',
-      4 => 'title',
+      4 => 'field_url',
+      5 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -80,8 +81,8 @@ function cc_interaction_field_group_info() {
     'label' => 'Main',
     'weight' => '0',
     'children' => array(
-      0 => 'group_interaction_info',
-      1 => 'group_interaction_details',
+      0 => 'group_interaction_details',
+      1 => 'group_interaction_info',
     ),
     'format_type' => 'tabs',
     'format_settings' => array(

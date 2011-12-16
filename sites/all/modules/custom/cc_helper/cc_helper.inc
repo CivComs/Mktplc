@@ -4,9 +4,19 @@ function cc_helper_field_attach_form($entity_type, $entity, &$form, &$form_state
   if(!isset($form['field_organization_address'])) {
     return FALSE;
   }
+  $curr_addr = field_get_items(
+    $entity_type,
+    $entity,
+    'field_organization_address'
+  );
+  $curr_admar =
+    isset($curr_addr[0]['administrative_area'])
+    ? $curr_addr[0]['administrative_area']
+    : '';
   $form['field_organization_address'][$langcode]['#element_validate'][] = '_cc_helper_address_validate';
-	$arr = array(''=>t('--None--'))+$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options'];
-	$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options']= $arr;
+  $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#default_value'] = $curr_admar;
+  $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#attributes'] = array('class' => array('administrative-area'));
+  drupal_add_js(drupal_get_path('module', 'cc_helper') . '/cc_helper_address.js');
 }
 
 function _cc_helper_address_validate($element, $form_state) {
@@ -36,21 +46,19 @@ function _cc_helper_address_validate($element, $form_state) {
 }
 
 /*
-$address - address field item. $tid - "what kind of Organization is it".
+$tid - "what kind of Organization is it".
 */
 function _cc_helper_org_address_error($a1, $a2, $l, $ar, $sar, $c, $tid = 0) {
-  $m = '';
-  if (($a1 || $a2 || $tid == 127) && (!$l || !$ar || !$c)) {
-    $m = t('Please, provide city, state and country in address field.');
-  }
-  elseif (($tid == 130 || $l || $sar) && (!$ar || !$c)) {
-    $m = t('Please, provide state and country in address field.');
-  }
-  elseif ($tid == 129 && (!$sar || !$ar || !$c)){
-    $m = t('Please, provide county, state and country in address field.');
-  }
-  elseif (($tid == 131 || $ar) && !$c) {
-    $m = t('Please, provide country in address field.');
-  }
-  return $m;
+  $req = array(
+    'address' => FALSE && (!$a1 || !$a2),
+    'city' => ($a1 || $a2 || ($tid == 127)) && !$l,
+    'county' => ($tid == 129) && !$sar,
+    'state' => ($sar || $l || $a1 || $a2 || ($tid == 130) || ($tid == 129) || ($tid == 127)) && !$ar,
+    'country' => ($ar || $sar || $l || $a1 || $a2 || ($tid == 131) || ($tid == 130) || ($tid == 129) || ($tid == 127)) && !$c
+  );
+  $flds = array_keys(array_filter($req));
+  return empty($flds) ? '' : t(
+    'Following data is required but absent: !fields.',
+    array('!fields' => implode(', ', $flds))
+  );
 }

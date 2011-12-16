@@ -1,0 +1,37 @@
+diff --git a/admin_menu.js b/admin_menu.js
+index f8c730a..b7fad61 100644
+--- a/admin_menu.js
++++ b/admin_menu.js
+@@ -15,6 +15,7 @@ Drupal.behaviors.adminMenu = {
+     // Initialize settings.
+     settings.admin_menu = $.extend({
+       suppress: false,
++      overlay_child: false,
+       margin_top: false,
+       position_fixed: false,
+       tweak_modules: false,
+@@ -32,7 +33,7 @@ Drupal.behaviors.adminMenu = {
+     var $adminMenu = $('#admin-menu:not(.admin-menu-processed)', context);
+     // Client-side caching; if administration menu is not in the output, it is
+     // fetched from the server and cached in the browser.
+-    if (!$adminMenu.length && settings.admin_menu.hash) {
++    if (!$adminMenu.length && settings.admin_menu.hash && !settings.admin_menu.overlay_child) {
+       Drupal.admin.getCache(settings.admin_menu.hash, function (response) {
+           if (typeof response == 'string' && response.length > 0) {
+             $('body', context).prepend(response);
+diff --git a/admin_menu.module b/admin_menu.module
+index 6fa85f2..96daf74 100644
+--- a/admin_menu.module
++++ b/admin_menu.module
+@@ -141,6 +141,11 @@ function admin_menu_init() {
+   // Destination query strings are applied via JS.
+   $settings['destination'] = drupal_http_build_query(drupal_get_destination());
+ 
++  // Tell JS if we're an overlay child so it won't create a duplicate menu
++  if (module_exists('overlay') && overlay_get_mode() == 'child') {
++    $settings['overlay_child'] = TRUE;
++  }
++
+   // Hash for client-side HTTP/AJAX caching.
+   $cid = 'admin_menu:' . $user->uid . ':' . $language->language;
+   if (!empty($_COOKIE['has_js']) && ($hash = admin_menu_cache_get($cid))) {
