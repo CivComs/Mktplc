@@ -81,7 +81,7 @@ function cc_application_field_default_fields() {
         'active' => 1,
         'module' => 'options',
         'settings' => array(),
-        'type' => 'options_select',
+        'type' => 'options_buttons',
         'weight' => '9',
       ),
     ),
@@ -254,7 +254,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         'active' => 1,
         'module' => 'options',
         'settings' => array(),
-        'type' => 'options_select',
+        'type' => 'options_buttons',
         'weight' => '10',
       ),
     ),
@@ -521,7 +521,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       'bundle' => 'application',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Enter the URL of the application or project homepage where people can go to find more information about this app, e.g., instructions on how to download it, what it does in greater detail, etc.',
+      'description' => 'Enter the URL of the application homepage where people can go to find more information',
       'display' => array(
         'cc_business_card' => array(
           'label' => 'above',
@@ -544,7 +544,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'entity_type' => 'node',
       'field_name' => 'field_application_homepage',
-      'label' => 'Project Homepage',
+      'label' => 'App Homepage',
       'required' => 0,
       'settings' => array(
         'attributes' => array(
@@ -890,7 +890,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         'active' => 1,
         'module' => 'options',
         'settings' => array(),
-        'type' => 'options_select',
+        'type' => 'options_buttons',
         'weight' => '13',
       ),
     ),
@@ -1521,7 +1521,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       'bundle' => 'application',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'In a few words, what does the app do? E.g. <em>A web-based data visualization tool</em> (this appears in search results)',
+      'description' => '<em>E.g. A web-based data visualization tool</em> ',
       'display' => array(
         'cc_business_card' => array(
           'label' => 'above',
@@ -1545,7 +1545,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'entity_type' => 'node',
       'field_name' => 'field_application_sdesc',
-      'label' => 'Short Description',
+      'label' => 'Short Description for Search Results',
       'required' => 1,
       'settings' => array(
         'text_processing' => '0',
@@ -1634,7 +1634,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         'active' => 1,
         'module' => 'options',
         'settings' => array(),
-        'type' => 'options_select',
+        'type' => 'options_buttons',
         'weight' => '11',
       ),
     ),
@@ -2140,6 +2140,7 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   // Translatables
   // Included for use with string extractors like potx.
   t('<big>Please Click "Create Interaction"</big> When done, it will show up in the field above.');
+  t('<em>E.g. A web-based data visualization tool</em> ');
   t('<strong>start typing</strong> the organization name into the field and it should appear below the field. Select it, and it will appear in the box with its Marketplace ID Number, e.g.,<em> "New York City Department of Transportation [nid:13334]"</em><br /><br />
 If the organization is not yet listed on the Marketplace, it will not appear with its Marketplace ID Number:
 <strong>please click "create organization"</strong> button to add it!');
@@ -2148,26 +2149,25 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
 <strong>please click "create organization"</strong> button to add it!');
   t('Add Deployment, Creation, Evaluation, Support');
   t('App Description');
+  t('App Homepage');
   t('CC Researchers only: If the item has an entry in shortstack.codeforamerica.org, add it here.');
   t('Civic Function');
   t('Demo URL');
   t('Don\'t see a term you need? Add it <a href="https://docs.google.com/a/codeforamerica.org/spreadsheet/embeddedform?formkey=dEtwOHRvOV9JdmVXNTBMXzNoNGdtUnc6MQ">here</a>');
-  t('Enter the URL of the application or project homepage where people can go to find more information about this app, e.g., instructions on how to download it, what it does in greater detail, etc.');
+  t('Enter the URL of the application homepage where people can go to find more information');
   t('Host URL');
   t('Host name');
-  t('In a few words, what does the app do? E.g. <em>A web-based data visualization tool</em> (this appears in search results)');
   t('Is the software a binary such as a .exe, like MS Word? Is it SaaS (Software as a Service), provided by a hosted or cloud service like Google Apps? Is it an open source scripting language like a PHP app?');
   t('Key features');
   t('License');
   t('Logo');
-  t('Project Homepage');
   t('Project this app resulted from');
   t('Rating');
   t('Related Projects');
   t('Related apps');
   t('Releases');
   t('Screenshots');
-  t('Short Description');
+  t('Short Description for Search Results');
   t('Short Stack ID');
   t('Software Function');
   t('Software Requirements');
