@@ -224,7 +224,7 @@ function cc_organization_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_organization_abudget',
-      'label' => 'Annual budget',
+      'label' => 'Annual budget (in USD)',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -728,7 +728,7 @@ function cc_organization_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '13',
+        'weight' => '15',
       ),
     ),
   );
@@ -1116,7 +1116,7 @@ function cc_organization_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'user_reference_autocomplete',
-        'weight' => '17',
+        'weight' => '16',
       ),
     ),
   );
@@ -1173,7 +1173,7 @@ function cc_organization_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_organization_pbudget',
-      'label' => 'Typical project budget',
+      'label' => 'Typical project budget (in USD)',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -1187,7 +1187,7 @@ function cc_organization_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '14',
+        'weight' => '13',
       ),
     ),
   );
@@ -1535,7 +1535,7 @@ function cc_organization_field_default_fields() {
       'bundle' => 'organization',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'select all that apply (hold control on pc, command on mac)',
+      'description' => '',
       'display' => array(
         'business_card' => array(
           'label' => 'above',
@@ -1575,67 +1575,6 @@ function cc_organization_field_default_fields() {
         'settings' => array(),
         'type' => 'options_buttons',
         'weight' => '15',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-organization-field_organization_ss_id'
-  $fields['node-organization-field_organization_ss_id'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_organization_ss_id',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'number_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'organization',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'cc_business_card' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '18',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_organization_ss_id',
-      'label' => 'Short Stack ID',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '18',
       ),
     ),
   );
@@ -1755,7 +1694,7 @@ function cc_organization_field_default_fields() {
       'bundle' => 'organization',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Enter the link to the page about this organization in Wikipedia, if an article exists there.',
+      'description' => 'Enter the URL to the Wikipedia article on this organization, if one exists.',
       'display' => array(
         'business_card' => array(
           'label' => 'above',
@@ -1784,19 +1723,19 @@ function cc_organization_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_organization_wiki',
-      'label' => 'Wikipedia URL',
+      'label' => 'Wikipedia Article',
       'required' => 0,
       'settings' => array(
         'attributes' => array(
           'class' => '',
-          'rel' => '',
+          'rel' => 'nofollow',
           'target' => 'default',
         ),
         'display' => array(
           'url_cutoff' => '80',
         ),
         'enable_tokens' => 0,
-        'title' => 'optional',
+        'title' => 'none',
         'title_value' => '',
         'url' => 0,
         'user_register_form' => FALSE,
@@ -1806,7 +1745,7 @@ function cc_organization_field_default_fields() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_field',
-        'weight' => '15',
+        'weight' => '14',
       ),
     ),
   );
@@ -1908,14 +1847,14 @@ function cc_organization_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Abbreviation');
-  t('Annual budget');
+  t('Annual budget (in USD)');
   t('Apps this organization created');
   t('Apps this organization provides support / services for');
   t('Branch of Government');
   t('Coordinates');
   t('Deployments, Evaluations and other interactions with apps');
   t('Description');
-  t('Enter the link to the page about this organization in Wikipedia, if an article exists there.');
+  t('Enter the URL to the Wikipedia article on this organization, if one exists.');
   t('Has this organization evaluated, deployed or contributed to Apps in the marketplace?  If so, link them up above.  
 <big>Please Click "Create Interaction"</big> When done, it will show up in the field above.');
   t('Logo');
@@ -1923,13 +1862,12 @@ function cc_organization_field_default_fields() {
   t('Phone');
   t('Related Civic Functions');
   t('Select all that apply.');
-  t('Short Stack ID');
   t('Street address');
-  t('Typical project budget');
+  t('Typical project budget (in USD)');
   t('Website');
   t('What kind of Organization is it?');
   t('Who works there?');
-  t('Wikipedia URL');
+  t('Wikipedia Article');
   t('e.g., DPW or DoITT');
   t('for Vendors: What Application Services do they provide?');
   t('select all that apply (hold control on pc, command on mac)');

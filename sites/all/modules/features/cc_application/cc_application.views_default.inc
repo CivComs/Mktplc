@@ -168,6 +168,7 @@ function cc_application_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Recently added apps';
   $handler->display->display_options['css_class'] = 'apps-list';
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['link_display'] = 'page_5';
   $handler->display->display_options['access']['type'] = 'perm';
@@ -308,7 +309,7 @@ function cc_application_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '1';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -401,7 +402,7 @@ function cc_application_views_default_views() {
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -527,7 +528,7 @@ function cc_application_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '2';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -621,7 +622,7 @@ function cc_application_views_default_views() {
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -781,7 +782,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '3';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -868,7 +869,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -966,7 +967,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '4';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -1275,7 +1276,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '5';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -1361,7 +1362,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -1506,7 +1507,7 @@ print $value ? \'<span class="count">\'. $value. \'</span>\'. \' \'. t(\'places\
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '6';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -1611,7 +1612,7 @@ print $value ? \'<span class="count">\'. $value. \'</span>\'. \' \'. t(\'places\
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -1768,7 +1769,7 @@ print $value ? \'<span class="count">\'. $value. \'</span>\'. \' \'. t(\'places\
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '7';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -1849,7 +1850,7 @@ print $value ? \'<span class="count">\'. $value. \'</span>\'. \' \'. t(\'places\
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -1967,7 +1968,7 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '8';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -2067,7 +2068,7 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -2199,7 +2200,7 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '9';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -2442,7 +2443,7 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '10';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -2550,7 +2551,7 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -2731,6 +2732,8 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler = $view->new_display('block', 'Block: Apps this org has used', 'block_6');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Apps This !org_type Has Used (!count)';
+  $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['defaults']['link_display'] = FALSE;
   $handler->display->display_options['link_display'] = 'page_3';
@@ -2742,7 +2745,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '11';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -2874,7 +2877,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['field_organization_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_organization_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_organization_type']['field_api_classes'] = 0;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -3062,6 +3065,8 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler = $view->new_display('block', 'Block: Apps made in This place', 'block_7');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Apps made in !place';
+  $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['defaults']['link_display'] = FALSE;
   $handler->display->display_options['link_display'] = 'page_3';
@@ -3073,7 +3078,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '12';
+  $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
@@ -3150,7 +3155,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -4282,7 +4287,7 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -4526,7 +4531,7 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -4743,7 +4748,7 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['fields']['field_organization_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_organization_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_organization_type']['field_api_classes'] = 0;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -4957,7 +4962,7 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['fields']['field_organization_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_organization_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_organization_type']['field_api_classes'] = 0;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -5319,7 +5324,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
-  /* Field: Content: Project Homepage */
+  /* Field: Content: App Homepage */
   $handler->display->display_options['fields']['field_application_homepage']['id'] = 'field_application_homepage';
   $handler->display->display_options['fields']['field_application_homepage']['table'] = 'field_data_field_application_homepage';
   $handler->display->display_options['fields']['field_application_homepage']['field'] = 'field_application_homepage';
@@ -5618,7 +5623,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
-  /* Field: Content: Project Homepage */
+  /* Field: Content: App Homepage */
   $handler->display->display_options['fields']['field_application_homepage']['id'] = 'field_application_homepage';
   $handler->display->display_options['fields']['field_application_homepage']['table'] = 'field_data_field_application_homepage';
   $handler->display->display_options['fields']['field_application_homepage']['field'] = 'field_application_homepage';
@@ -6393,7 +6398,7 @@ print $value;
   $handler->display->display_options['fields']['field_application_creator']['delta_reversed'] = 0;
   $handler->display->display_options['fields']['field_application_creator']['separator'] = '<br />';
   $handler->display->display_options['fields']['field_application_creator']['field_api_classes'] = 0;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
@@ -6478,7 +6483,7 @@ print $value;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
