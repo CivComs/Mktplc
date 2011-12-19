@@ -3581,7 +3581,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['header']['area_1']['content'] = '<h2 class="block-title">
 <span class="browse">Browse places</span>
 <span class="using">Using</span>
-<span class="created">Created</span>
+<!--<span class="created">Created</span>-->
 </h2>';
   $handler->display->display_options['header']['area_1']['format'] = 'full_html';
   $handler->display->display_options['header']['area_1']['tokenize'] = 0;
@@ -3762,7 +3762,8 @@ return _cc_helper_sharing($place);';
   $handler->display->display_options['fields']['php_3']['field'] = 'php';
   $handler->display->display_options['fields']['php_3']['ui_name'] = 'PHP: Using / Sharing';
   $handler->display->display_options['fields']['php_3']['label'] = '';
-  $handler->display->display_options['fields']['php_3']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['php_3']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['php_3']['alter']['text'] = '<div class="cc-org-apps" style="width: 120px; margin-left: 110px;"><div class="cc-org-postfix">apps</div><div class="cc-org-prefix-using">Using</div> <div class="cc-org-count cc-using">[php]</div> </div>';
   $handler->display->display_options['fields']['php_3']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['php_3']['alter']['path'] = '[field_organization_address_1]';
   $handler->display->display_options['fields']['php_3']['alter']['absolute'] = 0;
