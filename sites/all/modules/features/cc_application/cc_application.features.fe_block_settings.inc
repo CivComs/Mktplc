@@ -13,6 +13,20 @@ function cc_application_default_fe_block_settings() {
   // alpha
   $theme = array();
 
+  $theme['block-cc_add_interaction'] = array(
+    'module' => 'block',
+    'theme' => 'alpha',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => 'Activity',
+    'cache' => -1,
+    'machine_name' => 'cc_add_interaction',
+  );
+
   $theme['cc_interactions-cc_interactions_apps'] = array(
     'module' => 'cc_interactions',
     'delta' => 'cc_interactions_apps',
@@ -269,6 +283,20 @@ function cc_application_default_fe_block_settings() {
 
   // bartik
   $theme = array();
+
+  $theme['block-cc_add_interaction'] = array(
+    'module' => 'block',
+    'theme' => 'bartik',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => 'Activity',
+    'cache' => -1,
+    'machine_name' => 'cc_add_interaction',
+  );
 
   $theme['cc_interactions-cc_interactions_apps'] = array(
     'module' => 'cc_interactions',
@@ -527,6 +555,20 @@ function cc_application_default_fe_block_settings() {
   // civiccommons
   $theme = array();
 
+  $theme['block-cc_add_interaction'] = array(
+    'module' => 'block',
+    'theme' => 'civiccommons',
+    'status' => '1',
+    'weight' => '-53',
+    'region' => 'content',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => 'Activity',
+    'cache' => -1,
+    'machine_name' => 'cc_add_interaction',
+  );
+
   $theme['cc_interactions-cc_interactions_apps'] = array(
     'module' => 'cc_interactions',
     'delta' => 'cc_interactions_apps',
@@ -784,6 +826,20 @@ function cc_application_default_fe_block_settings() {
   // omega
   $theme = array();
 
+  $theme['block-cc_add_interaction'] = array(
+    'module' => 'block',
+    'theme' => 'omega',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => 'Activity',
+    'cache' => -1,
+    'machine_name' => 'cc_add_interaction',
+  );
+
   $theme['cc_interactions-cc_interactions_apps'] = array(
     'module' => 'cc_interactions',
     'delta' => 'cc_interactions_apps',
@@ -1040,6 +1096,20 @@ function cc_application_default_fe_block_settings() {
 
   // seven
   $theme = array();
+
+  $theme['block-cc_add_interaction'] = array(
+    'module' => 'block',
+    'theme' => 'seven',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => 'Activity',
+    'cache' => -1,
+    'machine_name' => 'cc_add_interaction',
+  );
 
   $theme['cc_interactions-cc_interactions_apps'] = array(
     'module' => 'cc_interactions',

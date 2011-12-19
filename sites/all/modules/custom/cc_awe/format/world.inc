@@ -4,7 +4,7 @@ $plugin = array(
   'title' => t('World Data'),
   'format callback' => 'cc_awe_format_world_generate',
   'type' => 'world',
-  'weight' => -80,
+  'weight' => 80,
 );
 
 //Note that we do not make difference between "administrative area", "region", "state".
@@ -39,10 +39,11 @@ function cc_awe_format_world_generate(&$format, $address, $context = array()) {
   }else{
     $regs = _cc_awe_regions($c);
   }
+  $opts = array('' => t('--None--')) + $regs;
   unset($format['locality_block']['administrative_area']);
   $format['locality_block']['administrative_area'] = array(
     '#title' => t('State'),
     '#type' => 'select',
-    '#options' => $regs
+    '#options' => $opts
   );
 }

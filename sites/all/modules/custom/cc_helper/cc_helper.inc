@@ -12,28 +12,11 @@ function cc_helper_field_attach_form($entity_type, $entity, &$form, &$form_state
   $curr_admar =
     isset($curr_addr[0]['administrative_area'])
     ? $curr_addr[0]['administrative_area']
-    : FALSE;
+    : '';
   $form['field_organization_address'][$langcode]['#element_validate'][] = '_cc_helper_address_validate';
-  $arr = array(''=>t('--None--'))+$form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options'];
-  $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#options']= $arr;
   $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#default_value'] = $curr_admar;
   $form['field_organization_address'][$langcode][0]['locality_block']['administrative_area']['#attributes'] = array('class' => array('administrative-area'));
-  array_walk(
-    $form['field_organization_address'][$langcode],
-    '_cc_helper_address_required',
-    array('langcode' => $langcode, 'field name' => 'field_organization_address')
-  );
   drupal_add_js(drupal_get_path('module', 'cc_helper') . '/cc_helper_address.js');
-}
-
-//Make elements required in address. $outer_data - array with field name and language.
-function _cc_helper_address_required(&$item, $delta, $outer_data) {
-  if(!is_int($delta)) {
-    return FALSE;
-  }
-  $l = $outer_data['langcode'];
-  $f = $outer_data['field name'];
-  $county = ':input[name="' . $f . '[' . $l . '][' . $delta . '][sub_administrative_area]"]';
 }
 
 function _cc_helper_address_validate($element, $form_state) {
