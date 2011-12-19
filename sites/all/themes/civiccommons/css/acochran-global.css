@@ -1067,6 +1067,7 @@ body.front #zone-content .region-content {
   display: block;
   float: left;
   margin-right: 5px;
+  font-size: 0;
 }
 .view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
   background: transparent url('../images/created-active.png') top left no-repeat;
