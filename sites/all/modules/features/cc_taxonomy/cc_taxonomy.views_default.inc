@@ -280,7 +280,7 @@ function cc_taxonomy_views_default_views() {
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short Description for Search Results */
   $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
   $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
