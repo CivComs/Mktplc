@@ -1171,24 +1171,27 @@ body.front #zone-content .region-content {
 
 .beta{
   vertical-align: top;
-  height: 30px;
-  width: 1070px;
-  padding: 11px 0px 0px 185px;
+  width: 916px;
+  padding: 4px 10px;
+  border-left: 2px solid #ddd;
+  border-right: 2px solid #ddd;
   background: url(../images/betabg.png);
-  margin-left: -180px;
+  /*margin-left: -180px;*/
   text-transform: uppercase;
   font-weight: bold;
-  -webkit-box-shadow: -5px 0px 8px #aaa;
+  /*-webkit-box-shadow: -5px 0px 8px #aaa;
   -moz-box-shadow: -5px 0px 8px #aaa;
   box-shadow: -5px 0px 8px #aaa;
   margin-bottom: 7px;
+  */
+  margin-bottom: 0;
   font-family: 'PT Sans', Helvetica, Arial;
   font-size: 1.2em;
 }
 .beta span{
   padding-right: #fafadf;
   background: #FAFAD5;
-  padding: 4px 6px 4px 4px;
+  padding: 4px;
   opacity: 0.8;
 }
 .beta a {
@@ -1199,7 +1202,7 @@ body.front #zone-content .region-content {
 }
 
 .beta .build {
-  margin-left: 175px;
+  margin-left: 260px;
 }
 
 .beta .red {
