@@ -1,3 +1,64 @@
 /**
  * CSS changes to the Seven base theme.
  */
+
+.dialog-links {
+  width: 97%;
+
+}
+
+.street-block {
+  font-weight: normal;
+  color: #888; 
+}
+
+.form-item-field-organization-address-und-0-postal-code {
+  font-weight: normal;
+  color: #888;
+
+}
+
+#edit-group_organization_stats .field-prefix {
+  visibility: hidden;
+}
+
+#edit-group_organization_stats input {
+  width: 200px;
+  float: left;
+}
+
+#edit-group_organization_stats input {
+  width: 200px;
+}
+
+#field-organization-wiki-add-more-wrapper input {
+ width: 280px;
+
+}
+
+#page {
+  color: #444;
+}
+
+.form-checkboxes div{
+  display: inline-block;
+  width: 290px; /*22em*/
+  vertical-align: middle;
+  text-align: left;
+  height: 15px;
+}
+
+.node-type-application #edit-title {
+  width: 290px;
+}
+
+.node-type-application .tips {
+  visibility: hidden;
+  display: none;
+}
+
+#edit-group_application_misc div{
+  visibility: hidden;
+  display: none;
+}
+
