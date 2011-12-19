@@ -574,7 +574,7 @@ function cc_application_default_fe_block_settings() {
     'delta' => 'cc_interactions_apps',
     'theme' => 'civiccommons',
     'status' => 0,
-    'weight' => '-54',
+    'weight' => '-24',
     'region' => '',
     'custom' => '0',
     'visibility' => '0',
