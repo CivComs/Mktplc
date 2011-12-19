@@ -327,11 +327,6 @@ input#edit-go {
   margin-right: 10px;
   border-right: 1px solid gainsboro;
 }
-#region-search-bar .section-nav li.first.leaf a {
-  color: #FE892C;
-  text-transform: uppercase;
-  font-size: 1.5em;
-}
 
 #region-search-bar .section-nav .menu a,
 #region-search-bar .section-nav .menu a:visited {
