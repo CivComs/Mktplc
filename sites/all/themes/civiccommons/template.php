@@ -46,9 +46,19 @@ function civiccommons_form_alter(&$form, &$form_state, $form_id) {
 function civiccommons_preprocess_page(&$vars, $hook) {
   //drupal_add_js('https://getsatisfaction.com/civiccommons/widgets/javascripts/7f68acfc31/widgets.js', 'external',  array('weight' => 100));
   //drupal_add_js('https://getsatisfaction.com/civiccommons/topics.widget?callback=gsfnTopicsCallback&amp;style=idea', 'external', array('weight' => 100));
-  drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction1.js', 'file');
-  drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction2.js', 'file');
-  drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/googleanalytics.js', 'file');
+  
+  // It is important that Get Satisfaction is in the footer, so
+  // We have to include here, as opposed to in the theme info
+  // file.
+  //
+  // Also need to make 2 script tags in order to have the 
+  // library loaded when the second is executed.  So,
+  // we have to turn off the cache.
+  //
+  // Inline code caused issues as well.
+  $options = array('type' => 'file', 'scope' => 'footer', 'weight' => 5, 'cache' => FALSE);
+  drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction1.js', $options);
+  drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction2.js', $options);
 }
 
 

@@ -1,0 +1,7 @@
+name = Civic Commons Admin
+description = Admin theme of civic commons with Seven base theme
+core = 7.x
+engine = phptemplate
+base theme = seven
+
+stylesheets[all][] = css/custom-style.css

@@ -336,11 +336,11 @@ input#edit-go {
   font-sizE: 15px;
   font-weight: bold;
   color: #559EFC; /* 31B0EF */
-  background: url('../images/nav38px.png') 0 0 repeat-x;
   text-decoration: none;
   border-left: 1px solid #dcdcdc;
   text-transform: none;
   display: block;
+  background: url('../images/nav38px.png') 0 0 repeat-x;
 } 
 #region-search-bar .section-nav .menu a:hover {
   background-image: url('../images/nav-bg-hover38.png');
@@ -350,6 +350,23 @@ input#edit-go {
   background-image: url("../images/nav-bg-selected38.png");
 
 }
+/* Utilizing CSS3 multiple bg images for the marketplace item */
+#region-search-bar .section-nav li.first.leaf a {
+  color: #FE892C;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  background: url('../images/nav38px.png') 0 0 repeat-x;
+  background: url('../images/home.png') 7px 7px no-repeat, url('../images/nav38px.png') 0 0 repeat-x;
+}
+#region-search-bar .section-nav li.first.leaf a:active {
+  background-image: url("../images/nav-bg-selected38.png");
+  background-image: url('../images/home.png'), url("../images/nav-bg-selected38.png");
+}
+#region-search-bar .section-nav li.first.leaf a:hover {
+  background-image: url("../images/nav-bg-hover38.png");
+  background-image: url('../images/home.png'), url("../images/nav-bg-hover38.png");
+}
+
 #region-search-bar .search-form {
   position: absolute;
   top: 10px;
@@ -997,14 +1014,88 @@ body .openlayers-map img.olImageLoadError {
   text-transform: none;
   font-size: 1.5em;
   font-weight: 100;
-  margin: 0 0 2em 220px;
+  margin: 0 0 1em 220px;
 }
 body.front #block-system-main {
   margin: 0;
 }
 body.front #page-title {
   font-size: 50px;
-  margin: 1em 0 0 240px;
+  margin: .5em 0 0 0;
+  padding-left: 240px;
   text-align: left;
   font-weight: lighter;
+}
+body.front #zone-content .region-content {
+  background: transparent url('../images/hammer.jpg') 40px 1em no-repeat;
+}
+
+/**
+ * Browse places block
+ */
+.view-apps-browse-by h2.block-title {
+  margin-bottom: 1em;
+}
+.view-apps-browse-by h2.block-title .browse {
+  width: 370px;
+  display: inline-block;
+}
+.view-apps-browse-by .block-title .using {
+  width: 125px;
+  display: inline-block;
+}
+.view-apps-browse-by .block-title .created {
+  width: 110px;
+  display: inline-block;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps {
+  background: transparent url('../images/created-inactive.png') top left no-repeat;
+  height: 44px;
+  padding: 0px;
+  margin: 0px;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps:first-child {
+  background: transparent url('../images/hammer-wrench-inactive.png') top left no-repeat;
+}
+
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-using,
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
+  color: transparent;
+  background: transparent url('../images/hammer-wrench-active.png') top left no-repeat;
+  width: 40px;
+  height: 44px;
+  display: block;
+  float: left;
+  margin-right: 5px;
+  font-size: 0;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
+  background: transparent url('../images/created-active.png') top left no-repeat;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-count {
+  padding-top: 3px;
+  font-size: 2em;
+  color: #777777;
+}
+.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-postfix {
+  display: none;
+}
+
+.view-apps-browse-by .views-field-field-organization-address {
+  line-height: 44px;
+  margin-left: 10px;
+}
+
+.view-apps-browse-by .view-footer a {
+  display: block;
+  float: right;
+  width: 125px;
+  border: 1px solid #E4E4E4;
+  background-color: #F7F7F7;
+  color: #222222;
+  border-radius: 3px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: .8em;
 }

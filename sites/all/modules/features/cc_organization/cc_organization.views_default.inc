@@ -263,7 +263,7 @@ if(isset($data->field_field_organization_members)) {
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Content: Annual budget */
+  /* Field: Content: Annual budget (in USD) */
   $handler->display->display_options['fields']['field_organization_abudget']['id'] = 'field_organization_abudget';
   $handler->display->display_options['fields']['field_organization_abudget']['table'] = 'field_data_field_organization_abudget';
   $handler->display->display_options['fields']['field_organization_abudget']['field'] = 'field_organization_abudget';
@@ -318,7 +318,7 @@ if(isset($data->field_field_organization_members)) {
   $handler->display->display_options['fields']['field_organization_members']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_organization_members']['delta_reversed'] = 0;
   $handler->display->display_options['fields']['field_organization_members']['field_api_classes'] = 0;
-  /* Field: Content: Typical project budget */
+  /* Field: Content: Typical project budget (in USD) */
   $handler->display->display_options['fields']['field_organization_pbudget']['id'] = 'field_organization_pbudget';
   $handler->display->display_options['fields']['field_organization_pbudget']['table'] = 'field_data_field_organization_pbudget';
   $handler->display->display_options['fields']['field_organization_pbudget']['field'] = 'field_organization_pbudget';
@@ -553,7 +553,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
     'prefix_suffix' => 1,
   );
   $handler->display->display_options['fields']['field_organization_employees']['field_api_classes'] = 0;
-  /* Field: Content: Annual budget */
+  /* Field: Content: Annual budget (in USD) */
   $handler->display->display_options['fields']['field_organization_abudget']['id'] = 'field_organization_abudget';
   $handler->display->display_options['fields']['field_organization_abudget']['table'] = 'field_data_field_organization_abudget';
   $handler->display->display_options['fields']['field_organization_abudget']['field'] = 'field_organization_abudget';
@@ -608,7 +608,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['fields']['field_organization_members']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_organization_members']['delta_reversed'] = 0;
   $handler->display->display_options['fields']['field_organization_members']['field_api_classes'] = 0;
-  /* Field: Content: Typical project budget */
+  /* Field: Content: Typical project budget (in USD) */
   $handler->display->display_options['fields']['field_organization_pbudget']['id'] = 'field_organization_pbudget';
   $handler->display->display_options['fields']['field_organization_pbudget']['table'] = 'field_data_field_organization_pbudget';
   $handler->display->display_options['fields']['field_organization_pbudget']['field'] = 'field_organization_pbudget';

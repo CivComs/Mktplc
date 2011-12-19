@@ -162,7 +162,7 @@ function _cc_interactions_added($field, $new, $old = NULL) {
   $oldf = $old ? field_get_items('node', $old, $field) : array();
   $added = array();
   foreach($newf as $delta => $item) {
-    if(!in_array($item, $oldf)) {
+    if(!in_array(is_array($item) ? $item : array(), is_array($oldf) ? $oldf : array())) {
       $added[] = $item;
     }
   }
