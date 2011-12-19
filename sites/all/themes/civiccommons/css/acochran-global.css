@@ -748,16 +748,86 @@ h2.block-title,
          box-shadow: 0 1px 8px 1px #DED8D8;
 }
 
-/* Block: Add to the Marketplace */
-.block.add-to-marketplace,
-.block.highlight,
-#region-sidebar-second .block {
-  background-color: #fbfbfb;
-  /*margin: -10px -10px 20px -10px;*/
+/* Block: Preview Intro */
+.preview-intro {
+  margin-bottom: 20px;
+     -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
     -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
  -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
          box-shadow: 0 1px 8px 1px #DED8D8;
 }
+
+/* Block: Add to the Marketplace */
+.block.add-to-marketplace,
+.block.highlight,
+#region-sidebar-second .block {
+  background-color: #FBFBFB; 
+  /* to mimic the color of the foil: background-color: #FBF6DD; */
+    -moz-box-shadow: 0 1px 8px 1px #DED8D8; 
+ -webkit-box-shadow: 0 1px 8px 1px #DED8D8; 
+         box-shadow: 0 1px 8px 1px #DED8D8;
+}
+
+.add-to-marketplace{
+  border: 3px dashed #FDE9BC;
+  text-align: center;
+}
+
+
+.add-to-marketplace .add-button{
+  display: block;
+  background-image: url('../images/buttonbg.png');
+  width: 220px;
+  height: 22px;
+  margin: auto;
+  text-align: center;
+  padding: 8px 0px 8px 0px;
+  font-weight: normal;
+  font-family: Helvetica, Arial; 
+  text-transform: uppercase;
+  text-decoration: none;
+  color: white;
+  font-size: 1.3em;
+  margin-bottom: 3px;
+  -webkit-box-shadow: 2px 2px 3px #aaa;
+  -moz-box-shadow: 2px 2px 3px #aaa;
+  box-shadow: 2px 2px 3px #aaa;
+  border: 2px solid #E79E27;
+  border-bottom: initial;
+  border-top: 1px solid #D68C14;
+  border-right: 2px solid #D68C14;
+}
+
+.block.add-to.marketplace div{
+  text-align: center;
+  display: inline-block;
+  padding-left:;
+  margin-left: 52px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+
+.block.add-to-marketplace h2{
+  color:#555;
+   background-image: none;
+    background-color: transparent;
+    border: none;
+}
+.block.add-to-marketplace li{
+  list-style:none;
+}
+
+.block.add-to.marketplace  p{
+  margin 15px 0px 0px 0px;
+  font-size: 1.2em;
+}
+
+.example {
+  margin-bottom: 10px;
+}
+
 
 #region-sidebar-second{
   margin-top: 16px;
@@ -767,6 +837,12 @@ h2.block-title,
    margin-top: -16px;
 }
 
+.page-taxonomy .add-to-marketplace{
+  margin-top: 3px;
+}
+
+
+
 #region-sidebar-second h2.block-title {
 /*     -moz-border-radius: 5px 5px 0 0;
   -webkit-border-radius: 5px 5px 0 0;
@@ -774,17 +850,6 @@ h2.block-title,
 }
 
 
-.add-to-marketplace h2.block-title,
-.block.highlight h2.block-title {
-  /*margin: 0 9px 18px;
-  position: relative;
-  top: 9px;*/
-  background-color: #ed8309;
-  border-color: #dc7b0f;
-  border-top: 1px solid #ff8700;
-  border-left: 1px solid #ff8700;
-    background-image: url(../images/orangehead.png);
-}
 
 .highlight views-row {
   margin 0 0 0px;
