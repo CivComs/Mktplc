@@ -1171,10 +1171,10 @@ body.front #zone-content .region-content {
 
 .beta{
   vertical-align: top;
-  width: 916px;
+  width: 918px;
   padding: 4px 10px;
-  border-left: 2px solid #ddd;
-  border-right: 2px solid #ddd;
+  border-left: 2px solid #eee;
+  border-right: 2px solid #eee;
   background: url(../images/betabg.png);
   /*margin-left: -180px;*/
   text-transform: uppercase;
