@@ -20,12 +20,8 @@ function cc_organization_field_group_info() {
   $field_group->parent_name = 'group_organization_main';
   $field_group->data = array(
     'label' => 'Contact Info',
-    'weight' => '5',
-    'children' => array(
-      0 => 'field_organization_address',
-      1 => 'field_organization_phone',
-      2 => 'field_organization_coords',
-    ),
+    'weight' => '8',
+    'children' => array(),
     'format_type' => 'tab',
     'format_settings' => array(
       'formatter' => 'closed',
@@ -51,11 +47,14 @@ function cc_organization_field_group_info() {
     'children' => array(
       0 => 'field_organization_decs',
       1 => 'field_organization_type',
-      2 => 'field_organization_logo',
-      3 => 'field_organization_link',
-      4 => 'field_organization_abbr',
-      5 => 'field_organization',
-      6 => 'title',
+      2 => 'field_organization_address',
+      3 => 'field_organization_logo',
+      4 => 'field_organization_link',
+      5 => 'field_organization_abbr',
+      6 => 'field_organization',
+      7 => 'field_organization_phone',
+      8 => 'field_organization_coords',
+      9 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -82,9 +81,9 @@ function cc_organization_field_group_info() {
     'children' => array(
       0 => 'group_organization_info',
       1 => 'group_organization_stats',
-      2 => 'group_organization_contact',
-      3 => 'group_organization_relationships',
-      4 => 'group_organization_misc',
+      2 => 'group_organization_relationships',
+      3 => 'group_organization_misc',
+      4 => 'group_organization_contact',
     ),
     'format_type' => 'tabs',
     'format_settings' => array(
@@ -106,7 +105,7 @@ function cc_organization_field_group_info() {
   $field_group->parent_name = 'group_organization_main';
   $field_group->data = array(
     'label' => 'Misc',
-    'weight' => '8',
+    'weight' => '7',
     'children' => array(),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -131,7 +130,7 @@ function cc_organization_field_group_info() {
   $field_group->parent_name = 'group_organization_main';
   $field_group->data = array(
     'label' => 'Apps & Services',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_organization_interactions',
       1 => 'field_organization_services',
@@ -161,7 +160,7 @@ function cc_organization_field_group_info() {
   $field_group->parent_name = 'group_organization_main';
   $field_group->data = array(
     'label' => 'Facts and Stats',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
       0 => 'field_organization_wiki',
       1 => 'field_organization_abudget',
