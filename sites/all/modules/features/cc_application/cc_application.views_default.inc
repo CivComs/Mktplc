@@ -3762,7 +3762,7 @@ return _cc_helper_sharing($place);';
   $handler->display->display_options['fields']['php_3']['field'] = 'php';
   $handler->display->display_options['fields']['php_3']['ui_name'] = 'PHP: Using / Sharing';
   $handler->display->display_options['fields']['php_3']['label'] = '';
-  $handler->display->display_options['fields']['php_3']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['php_3']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['php_3']['alter']['text'] = '<div class="cc-org-apps"><div class="cc-org-postfix">apps</div><div class="cc-org-prefix-using">Using</div> <div class="cc-org-count cc-using">[php]</div> </div>';
   $handler->display->display_options['fields']['php_3']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['php_3']['alter']['path'] = '[field_organization_address_1]';
@@ -3783,8 +3783,21 @@ return _cc_helper_sharing($place);';
   $handler->display->display_options['fields']['php_3']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
-//echo theme(\'using_sharing\', array(\'using\' => $row->php_1, \'sharing\' =>$row->php_2, \'setting\' => \'full\'));
-//echo _cc_helper_using_sharing($data->_field_data[\'nid\'][\'entity\'], \'full\');
+$place = array(
+  \'locality\' =>
+    isset($data->field_data_field_organization_address_field_organization_add)
+    ? $data->field_data_field_organization_address_field_organization_add
+    : NULL,
+  \'country\' =>
+    isset($data->field_data_field_organization_address_field_organization_add_1)
+    ? $data->field_data_field_organization_address_field_organization_add_1
+    : NULL,
+  \'administrative_area\' =>
+    isset($data->field_data_field_organization_address_field_organization_add_2)
+    ? $data->field_data_field_organization_address_field_organization_add_2
+    : NULL
+);
+echo _cc_helper_using_sharing($place, \'full\');
 ?>';
   $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
