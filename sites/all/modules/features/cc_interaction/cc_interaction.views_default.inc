@@ -100,7 +100,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Who: Organization */
+  /* Field: Content: Who */
   $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
@@ -123,7 +123,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_organization']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['field_api_classes'] = 0;
-  /* Field: Content: Did What: */
+  /* Field: Content: Did what */
   $handler->display->display_options['fields']['field_interaction_type']['id'] = 'field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['field'] = 'field_interaction_type';
@@ -147,7 +147,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_interaction_type']['field_api_classes'] = 0;
-  /* Field: Content: With what: App */
+  /* Field: Content: With what */
   $handler->display->display_options['fields']['field_interaction_application']['id'] = 'field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['field'] = 'field_interaction_application';
@@ -232,7 +232,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['filters']['status_extra']['table'] = 'node';
   $handler->display->display_options['filters']['status_extra']['field'] = 'status_extra';
   $handler->display->display_options['filters']['status_extra']['group'] = 0;
-  /* Filter criterion: Content: Who: Organization (field_interaction_organization) */
+  /* Filter criterion: Content: Who (field_interaction_organization) */
   $handler->display->display_options['filters']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['filters']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['filters']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
@@ -245,7 +245,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['filters']['field_interaction_organization_nid']['expose']['remember'] = 1;
   $handler->display->display_options['filters']['field_interaction_organization_nid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_interaction_organization_nid']['expose']['reduce'] = 0;
-  /* Filter criterion: Content: Did What: (field_interaction_type) */
+  /* Filter criterion: Content: Did what (field_interaction_type) */
   $handler->display->display_options['filters']['field_interaction_type_tid']['id'] = 'field_interaction_type_tid';
   $handler->display->display_options['filters']['field_interaction_type_tid']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['filters']['field_interaction_type_tid']['field'] = 'field_interaction_type_tid';
@@ -263,7 +263,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['filters']['field_interaction_type_tid']['vocabulary'] = 'interaction_type';
   $handler->display->display_options['filters']['field_interaction_type_tid']['hierarchy'] = 1;
   $handler->display->display_options['filters']['field_interaction_type_tid']['error_message'] = 1;
-  /* Filter criterion: Content: With what: App (field_interaction_application) */
+  /* Filter criterion: Content: With what (field_interaction_application) */
   $handler->display->display_options['filters']['field_interaction_application_nid']['id'] = 'field_interaction_application_nid';
   $handler->display->display_options['filters']['field_interaction_application_nid']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['filters']['field_interaction_application_nid']['field'] = 'field_interaction_application_nid';
@@ -317,13 +317,13 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = FALSE;
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  /* Relationship: Content: Who (field_interaction_organization) */
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['delta'] = '-1';
-  /* Field: Content: Who: Organization */
+  /* Field: Content: Who */
   $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
@@ -378,7 +378,7 @@ function cc_interaction_views_default_views() {
     ),
   );
   $handler->display->display_options['fields']['field_organization_address']['field_api_classes'] = 0;
-  /* Field: Content: Did What: */
+  /* Field: Content: Did what */
   $handler->display->display_options['fields']['field_interaction_type']['id'] = 'field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['field'] = 'field_interaction_type';
@@ -402,7 +402,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_interaction_type']['field_api_classes'] = 0;
-  /* Field: Content: With what: App */
+  /* Field: Content: With what */
   $handler->display->display_options['fields']['field_interaction_application']['id'] = 'field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['field'] = 'field_interaction_application';
@@ -457,7 +457,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['sorts']['changed']['id'] = 'changed';
   $handler->display->display_options['sorts']['changed']['table'] = 'node';
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-  /* Contextual filter: Content: With what: App (field_interaction_application) */
+  /* Contextual filter: Content: With what (field_interaction_application) */
   $handler->display->display_options['arguments']['field_interaction_application_nid']['id'] = 'field_interaction_application_nid';
   $handler->display->display_options['arguments']['field_interaction_application_nid']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['arguments']['field_interaction_application_nid']['field'] = 'field_interaction_application_nid';
@@ -508,7 +508,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['row_options']['default_field_elements'] = 1;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Who: Organization */
+  /* Field: Content: Who */
   $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
@@ -533,7 +533,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_organization']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['field_api_classes'] = 0;
-  /* Field: Content: Did What: */
+  /* Field: Content: Did what */
   $handler->display->display_options['fields']['field_interaction_type']['id'] = 'field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['field'] = 'field_interaction_type';
@@ -558,7 +558,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_interaction_type']['field_api_classes'] = 0;
-  /* Field: Content: With what: App */
+  /* Field: Content: With what */
   $handler->display->display_options['fields']['field_interaction_application']['id'] = 'field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['field'] = 'field_interaction_application';
@@ -606,7 +606,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['empty_zero'] = 0;
   $handler->display->display_options['fields']['created']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['created']['date_format'] = 'cc_date_short';
-  /* Field: Content: For (Project Title) */
+  /* Field: Content: Link */
   $handler->display->display_options['fields']['field_url']['id'] = 'field_url';
   $handler->display->display_options['fields']['field_url']['table'] = 'field_data_field_url';
   $handler->display->display_options['fields']['field_url']['field'] = 'field_url';
@@ -795,80 +795,6 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['row_options']['default_field_elements'] = 1;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Who: Organization */
-  $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
-  $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
-  $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
-  $handler->display->display_options['fields']['field_interaction_organization']['label'] = '';
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['element_type'] = 'span';
-  $handler->display->display_options['fields']['field_interaction_organization']['element_class'] = 'org-name';
-  $handler->display->display_options['fields']['field_interaction_organization']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_interaction_organization']['element_default_classes'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['field_api_classes'] = 0;
-  /* Field: Content: Did What: */
-  $handler->display->display_options['fields']['field_interaction_type']['id'] = 'field_interaction_type';
-  $handler->display->display_options['fields']['field_interaction_type']['table'] = 'field_data_field_interaction_type';
-  $handler->display->display_options['fields']['field_interaction_type']['field'] = 'field_interaction_type';
-  $handler->display->display_options['fields']['field_interaction_type']['label'] = '';
-  $handler->display->display_options['fields']['field_interaction_type']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_interaction_type']['element_default_classes'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['field_interaction_type']['type'] = 'taxonomy_term_reference_plain';
-  $handler->display->display_options['fields']['field_interaction_type']['field_api_classes'] = 0;
-  /* Field: Content: With what: App */
-  $handler->display->display_options['fields']['field_interaction_application']['id'] = 'field_interaction_application';
-  $handler->display->display_options['fields']['field_interaction_application']['table'] = 'field_data_field_interaction_application';
-  $handler->display->display_options['fields']['field_interaction_application']['field'] = 'field_interaction_application';
-  $handler->display->display_options['fields']['field_interaction_application']['label'] = '';
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['text'] = '<span class="interaction [field_interaction_type]">[field_interaction_type]</span> <span class="app-name">[field_interaction_application]</span>';
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_interaction_application']['element_default_classes'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['field_interaction_application']['field_api_classes'] = 0;
   /* Field: Content: Street address */
   $handler->display->display_options['fields']['field_organization_address']['id'] = 'field_organization_address';
   $handler->display->display_options['fields']['field_organization_address']['table'] = 'field_data_field_organization_address';
@@ -903,6 +829,30 @@ function cc_interaction_views_default_views() {
     ),
   );
   $handler->display->display_options['fields']['field_organization_address']['field_api_classes'] = 0;
+  /* Field: Content revision: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node_revision';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  $handler->display->display_options['fields']['title']['link_to_node_revision'] = 0;
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -927,35 +877,6 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['empty_zero'] = 0;
   $handler->display->display_options['fields']['created']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['created']['date_format'] = 'cc_date_short';
-  /* Field: Content: For (Project Title) */
-  $handler->display->display_options['fields']['field_url']['id'] = 'field_url';
-  $handler->display->display_options['fields']['field_url']['table'] = 'field_data_field_url';
-  $handler->display->display_options['fields']['field_url']['field'] = 'field_url';
-  $handler->display->display_options['fields']['field_url']['label'] = '';
-  $handler->display->display_options['fields']['field_url']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['field_url']['alter']['text'] = 'Link';
-  $handler->display->display_options['fields']['field_url']['alter']['make_link'] = 1;
-  $handler->display->display_options['fields']['field_url']['alter']['path'] = '[field-url]';
-  $handler->display->display_options['fields']['field_url']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_url']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_url']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_url']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_url']['alter']['prefix'] = '(';
-  $handler->display->display_options['fields']['field_url']['alter']['suffix'] = ')';
-  $handler->display->display_options['fields']['field_url']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_url']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_url']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_url']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_url']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_url']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_url']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_url']['element_default_classes'] = 0;
-  $handler->display->display_options['fields']['field_url']['hide_empty'] = 1;
-  $handler->display->display_options['fields']['field_url']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_url']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_url']['click_sort_column'] = 'url';
-  $handler->display->display_options['fields']['field_url']['type'] = 'url';
-  $handler->display->display_options['fields']['field_url']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
@@ -963,7 +884,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: With what: App (field_interaction_application) */
+  /* Contextual filter: Content: With what (field_interaction_application) */
   $handler->display->display_options['arguments']['field_interaction_application_nid']['id'] = 'field_interaction_application_nid';
   $handler->display->display_options['arguments']['field_interaction_application_nid']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['arguments']['field_interaction_application_nid']['field'] = 'field_interaction_application_nid';
@@ -1005,7 +926,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['row_options']['default_field_elements'] = 1;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Who: Organization */
+  /* Field: Content: Who */
   $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
@@ -1030,7 +951,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_organization']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['field_api_classes'] = 0;
-  /* Field: Content: Did What: */
+  /* Field: Content: Did what */
   $handler->display->display_options['fields']['field_interaction_type']['id'] = 'field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['field'] = 'field_interaction_type';
@@ -1055,7 +976,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_interaction_type']['field_api_classes'] = 0;
-  /* Field: Content: With what: App */
+  /* Field: Content: With what */
   $handler->display->display_options['fields']['field_interaction_application']['id'] = 'field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['field'] = 'field_interaction_application';
@@ -1137,7 +1058,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['empty_zero'] = 0;
   $handler->display->display_options['fields']['created']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['created']['date_format'] = 'cc_date_short';
-  /* Field: Content: For (Project Title) */
+  /* Field: Content: Link */
   $handler->display->display_options['fields']['field_url']['id'] = 'field_url';
   $handler->display->display_options['fields']['field_url']['table'] = 'field_data_field_url';
   $handler->display->display_options['fields']['field_url']['field'] = 'field_url';
@@ -1173,7 +1094,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Who: Organization (field_interaction_organization) */
+  /* Contextual filter: Content: Who (field_interaction_organization) */
   $handler->display->display_options['arguments']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['arguments']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['arguments']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
@@ -1224,7 +1145,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   $handler->display->display_options['empty']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Who: Organization */
+  /* Field: Content: Who */
   $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
@@ -1249,7 +1170,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_organization']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['field_api_classes'] = 0;
-  /* Field: Content: Did What: */
+  /* Field: Content: Did what */
   $handler->display->display_options['fields']['field_interaction_type']['id'] = 'field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['fields']['field_interaction_type']['field'] = 'field_interaction_type';
@@ -1274,7 +1195,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_type']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_interaction_type']['field_api_classes'] = 0;
-  /* Field: Content: With what: App */
+  /* Field: Content: With what */
   $handler->display->display_options['fields']['field_interaction_application']['id'] = 'field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['field'] = 'field_interaction_application';
@@ -1356,7 +1277,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['empty_zero'] = 0;
   $handler->display->display_options['fields']['created']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['created']['date_format'] = 'cc_date_short';
-  /* Field: Content: For (Project Title) */
+  /* Field: Content: Link */
   $handler->display->display_options['fields']['field_url']['id'] = 'field_url';
   $handler->display->display_options['fields']['field_url']['table'] = 'field_data_field_url';
   $handler->display->display_options['fields']['field_url']['field'] = 'field_url';
