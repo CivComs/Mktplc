@@ -246,7 +246,7 @@ function _file_resource_retrieve($fid, $include_file_contents, $get_image_style)
     $file->target_uri = file_uri_target($file->uri);
 
     if ($include_file_contents) {
-      $file->file = base64_encode(file_get_contents($filepath));
+      $file->file = base64_encode(file_get_contents(drupal_realpath($filepath)));
     }
 
     $file->image_styles = array();
@@ -305,7 +305,7 @@ function _file_resource_index($page, $fields, $parameters, $page_size) {
   $file_select = db_select('file_managed', 't')
     ->orderBy('timestamp', 'DESC');
 
-  services_resource_build_index_query($file_select, $page, $fields, $parameters, $page_size);
+  services_resource_build_index_query($file_select, $page, $fields, $parameters, $page_size, 'file');
 
   $results = services_resource_execute_index_query($file_select);
 
