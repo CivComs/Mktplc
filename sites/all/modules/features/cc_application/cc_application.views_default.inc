@@ -754,7 +754,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['filters']['type']['value'] = array(
     'application' => 'application',
   );
-  /* Filter criterion: Content: Did What: (field_interaction_type) */
+  /* Filter criterion: Content: Did what (field_interaction_type) */
   $handler->display->display_options['filters']['field_interaction_type_tid']['id'] = 'field_interaction_type_tid';
   $handler->display->display_options['filters']['field_interaction_type_tid']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['filters']['field_interaction_type_tid']['field'] = 'field_interaction_type_tid';
@@ -990,7 +990,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['relationships']['field_application_interactions_nid']['id'] = 'field_application_interactions_nid';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['table'] = 'field_data_field_application_interactions';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  /* Relationship: Content: Who (field_interaction_organization) */
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
@@ -1099,7 +1099,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Who: Organization */
+  /* Field: Content: Who */
   $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
@@ -1245,7 +1245,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['filters']['type']['value'] = array(
     'application' => 'application',
   );
-  /* Filter criterion: Content: Did What: (field_interaction_type) */
+  /* Filter criterion: Content: Did what (field_interaction_type) */
   $handler->display->display_options['filters']['field_interaction_type_tid']['id'] = 'field_interaction_type_tid';
   $handler->display->display_options['filters']['field_interaction_type_tid']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['filters']['field_interaction_type_tid']['field'] = 'field_interaction_type_tid';
@@ -1302,7 +1302,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['relationships']['field_application_interactions_nid']['id'] = 'field_application_interactions_nid';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['table'] = 'field_data_field_application_interactions';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  /* Relationship: Content: Who (field_interaction_organization) */
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
@@ -2228,7 +2228,7 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_application_interactions_nid']['delta'] = '-1';
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  /* Relationship: Content: Who (field_interaction_organization) */
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
@@ -2317,7 +2317,7 @@ if ($row1->php > $row2->php) {return 1;}';
     ),
   );
   $handler->display->display_options['fields']['field_organization_address']['field_api_classes'] = 0;
-  /* Field: Content: Who: Organization */
+  /* Field: Content: Who */
   $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
@@ -2399,7 +2399,7 @@ if ($row1->php > $row2->php) {return 1;}';
   $handler->display->display_options['filters']['type']['value'] = array(
     'application' => 'application',
   );
-  /* Filter criterion: Content: Did What: (field_interaction_type) */
+  /* Filter criterion: Content: Did what (field_interaction_type) */
   $handler->display->display_options['filters']['field_interaction_type_tid']['id'] = 'field_interaction_type_tid';
   $handler->display->display_options['filters']['field_interaction_type_tid']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['filters']['field_interaction_type_tid']['field'] = 'field_interaction_type_tid';
@@ -2798,7 +2798,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['relationships']['field_application_interactions_nid']['label'] = 'Interactions';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_application_interactions_nid']['delta'] = '-1';
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  /* Relationship: Content: Who (field_interaction_organization) */
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
@@ -3555,7 +3555,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '8';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '4';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'grid';
@@ -3581,7 +3581,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['header']['area_1']['content'] = '<h2 class="block-title">
 <span class="browse">Browse places</span>
 <span class="using">Using</span>
-<!--<span class="created">Created</span>-->
+<span class="created">Created</span>
 </h2>';
   $handler->display->display_options['header']['area_1']['format'] = 'full_html';
   $handler->display->display_options['header']['area_1']['tokenize'] = 0;
@@ -4233,7 +4233,7 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_application_interactions_nid']['delta'] = '-1';
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  /* Relationship: Content: Who (field_interaction_organization) */
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
@@ -4669,7 +4669,7 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_application_interactions_nid']['delta'] = '-1';
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  /* Relationship: Content: Who (field_interaction_organization) */
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
@@ -4861,7 +4861,7 @@ if ($total > 0) echo "($total)";
   $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
   $handler->display->display_options['relationships']['field_application_interactions_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_application_interactions_nid']['delta'] = '-1';
-  /* Relationship: Content: Who: Organization (field_interaction_organization) */
+  /* Relationship: Content: Who (field_interaction_organization) */
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
