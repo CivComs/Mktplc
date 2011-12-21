@@ -88,7 +88,7 @@ function cc_organization_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '9',
+        'weight' => '12',
       ),
     ),
   );
@@ -167,7 +167,7 @@ function cc_organization_field_default_fields() {
           'size' => '7',
         ),
         'type' => 'text_textfield',
-        'weight' => '7',
+        'weight' => '10',
       ),
     ),
   );
@@ -334,7 +334,7 @@ function cc_organization_field_default_fields() {
           ),
         ),
         'type' => 'addressfield_standard',
-        'weight' => '3',
+        'weight' => '6',
       ),
     ),
   );
@@ -583,7 +583,7 @@ function cc_organization_field_default_fields() {
           'geocode_handler' => 'google',
         ),
         'type' => 'geocode',
-        'weight' => '5',
+        'weight' => '8',
       ),
     ),
   );
@@ -661,7 +661,7 @@ function cc_organization_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '8',
+        'weight' => '11',
       ),
     ),
   );
@@ -1014,7 +1014,7 @@ function cc_organization_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '6',
+        'weight' => '9',
       ),
     ),
   );
@@ -1491,7 +1491,7 @@ function cc_organization_field_default_fields() {
           'size' => 15,
         ),
         'type' => 'phone_number',
-        'weight' => '4',
+        'weight' => '7',
       ),
     ),
   );

@@ -26,8 +26,9 @@ function cc_interaction_field_group_info() {
       1 => 'field_interaction_application',
       2 => 'field_interaction_type',
       3 => 'field_interaction_date',
-      4 => 'field_url',
-      5 => 'title',
+      4 => 'field_interaction_content',
+      5 => 'field_url',
+      6 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -53,9 +54,7 @@ function cc_interaction_field_group_info() {
   $field_group->data = array(
     'label' => 'Skip this',
     'weight' => '3',
-    'children' => array(
-      0 => 'field_interaction_project',
-    ),
+    'children' => array(),
     'format_type' => 'tab',
     'format_settings' => array(
       'label' => 'Skip this',

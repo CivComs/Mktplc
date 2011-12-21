@@ -712,7 +712,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['relationships']['field_organization_interactions_nid']['field'] = 'field_organization_interactions_nid';
   $handler->display->display_options['relationships']['field_organization_interactions_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_organization_interactions_nid']['delta'] = '-1';
-  /* Relationship: Content: With what: App (field_interaction_application) */
+  /* Relationship: Content: With what (field_interaction_application) */
   $handler->display->display_options['relationships']['field_interaction_application_nid']['id'] = 'field_interaction_application_nid';
   $handler->display->display_options['relationships']['field_interaction_application_nid']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['relationships']['field_interaction_application_nid']['field'] = 'field_interaction_application_nid';
@@ -823,7 +823,7 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['filters']['type']['value'] = array(
     'organization' => 'organization',
   );
-  /* Filter criterion: Content: Did What: (field_interaction_type) */
+  /* Filter criterion: Content: Did what (field_interaction_type) */
   $handler->display->display_options['filters']['field_interaction_type_tid']['id'] = 'field_interaction_type_tid';
   $handler->display->display_options['filters']['field_interaction_type_tid']['table'] = 'field_data_field_interaction_type';
   $handler->display->display_options['filters']['field_interaction_type_tid']['field'] = 'field_interaction_type_tid';

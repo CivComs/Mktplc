@@ -41,7 +41,8 @@ function cc_interaction_field_default_fields() {
           'interaction' => 0,
           'organization' => 0,
           'page' => 0,
-          'project' => 'project',
+          'project' => 0,
+          'standard' => 0,
           'video' => 0,
         ),
         'view' => array(
@@ -57,10 +58,7 @@ function cc_interaction_field_default_fields() {
       'bundle' => 'interaction',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Which <strong>Application</strong> was used? E.g., <em>Open Layers, Wordpress, Drupal</em>
-<br /><strong>start typing </strong>the application name into the field and it should appear below the field. Select it, and it will appear in the box with it\'s Marketplace ID Number, e.g., <em>"OpenLayers [nid:9113]"</em><br /><br />
-If the application is not yet listed on the Marketplace, it will not appear with its Marketplace ID Number:<br />
-<strong>please click "Create Application"</strong> below to add it!',
+      'description' => 'The Application involved in this story -- start typing to choose from a list, or click "Create Application" to add a new one.',
       'display' => array(
         'cc_business_card' => array(
           'label' => 'above',
@@ -69,7 +67,7 @@ If the application is not yet listed on the Marketplace, it will not appear with
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -84,7 +82,7 @@ If the application is not yet listed on the Marketplace, it will not appear with
       ),
       'entity_type' => 'node',
       'field_name' => 'field_interaction_application',
-      'label' => 'With what: App',
+      'label' => 'With what',
       'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -102,7 +100,79 @@ If the application is not yet listed on the Marketplace, it will not appear with
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '5',
+        'weight' => '12',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-interaction-field_interaction_content'
+  $fields['node-interaction-field_interaction_content'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_interaction_content',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'interaction',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'What happened?  Optionally, describe this story in a bit more detail. ',
+      'display' => array(
+        'cc_business_card' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '7',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_interaction_content',
+      'label' => 'The story',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '15',
       ),
     ),
   );
@@ -147,7 +217,7 @@ If the application is not yet listed on the Marketplace, it will not appear with
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'date',
           'settings' => array(
             'format_type' => 'custom_1',
@@ -191,7 +261,7 @@ If the application is not yet listed on the Marketplace, it will not appear with
           'year_range' => '-8:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '7',
+        'weight' => '13',
       ),
     ),
   );
@@ -228,6 +298,7 @@ If the application is not yet listed on the Marketplace, it will not appear with
           'organization' => 'organization',
           'page' => 0,
           'project' => 0,
+          'standard' => 0,
           'video' => 0,
         ),
         'view' => array(
@@ -243,10 +314,7 @@ If the application is not yet listed on the Marketplace, it will not appear with
       'bundle' => 'interaction',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Which <strong>Organization</strong> was taking the action? E.g., <em>New York City Department of Transportation, Microsoft, Trimet</em>
-<br /><strong>start typing </strong>the organization name into the field and it should appear below the field. Select it, and it will appear in the box with it\'s Marketplace ID Number, e.g., <em>"New York City Department of Transportation [nid:13334]"</em><br /><br />
-If the organization is not yet listed on the Marketplace, it will not appear with its Marketplace ID Number:<br />
-<strong>please click "create organization"</strong> button to add it!',
+      'description' => 'What organization or company is involved in this story?  Start typing to choose from existing options, or click "Create Organization" to create a new one.',
       'display' => array(
         'cc_business_card' => array(
           'label' => 'above',
@@ -255,7 +323,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -270,7 +338,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'entity_type' => 'node',
       'field_name' => 'field_interaction_organization',
-      'label' => 'Who: Organization',
+      'label' => 'Who',
       'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -288,7 +356,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '3',
+        'weight' => '10',
       ),
     ),
   );
@@ -336,7 +404,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         ),
       ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'What did they do?',
       'display' => array(
         'cc_business_card' => array(
           'label' => 'above',
@@ -345,10 +413,10 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
+          'type' => 'taxonomy_term_reference_plain',
           'weight' => '1',
         ),
         'teaser' => array(
@@ -360,7 +428,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'entity_type' => 'node',
       'field_name' => 'field_interaction_type',
-      'label' => 'Did What:',
+      'label' => 'Did what',
       'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -370,7 +438,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '4',
+        'weight' => '11',
       ),
     ),
   );
@@ -416,10 +484,10 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'link',
           'settings' => array(),
-          'type' => 'default',
+          'type' => 'url',
           'weight' => '6',
         ),
         'teaser' => array(
@@ -431,7 +499,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'entity_type' => 'node',
       'field_name' => 'field_url',
-      'label' => 'For (Project Title)',
+      'label' => 'Link',
       'required' => 0,
       'settings' => array(
         'attributes' => array(
@@ -443,7 +511,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
           'url_cutoff' => '80',
         ),
         'enable_tokens' => 1,
-        'title' => 'optional',
+        'title' => 'none',
         'title_value' => '',
         'url' => 'optional',
         'user_register_form' => FALSE,
@@ -453,26 +521,23 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_field',
-        'weight' => '6',
+        'weight' => '14',
       ),
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Did What:');
-  t('For (Project Title)');
+  t('Did what');
+  t('Link');
+  t('The Application involved in this story -- start typing to choose from a list, or click "Create Application" to add a new one.');
+  t('The story');
+  t('What did they do?');
+  t('What happened?  Optionally, describe this story in a bit more detail. ');
+  t('What organization or company is involved in this story?  Start typing to choose from existing options, or click "Create Organization" to create a new one.');
   t('When');
-  t('Which <strong>Application</strong> was used? E.g., <em>Open Layers, Wordpress, Drupal</em>
-<br /><strong>start typing </strong>the application name into the field and it should appear below the field. Select it, and it will appear in the box with it\'s Marketplace ID Number, e.g., <em>"OpenLayers [nid:9113]"</em><br /><br />
-If the application is not yet listed on the Marketplace, it will not appear with its Marketplace ID Number:<br />
-<strong>please click "Create Application"</strong> below to add it!');
-  t('Which <strong>Organization</strong> was taking the action? E.g., <em>New York City Department of Transportation, Microsoft, Trimet</em>
-<br /><strong>start typing </strong>the organization name into the field and it should appear below the field. Select it, and it will appear in the box with it\'s Marketplace ID Number, e.g., <em>"New York City Department of Transportation [nid:13334]"</em><br /><br />
-If the organization is not yet listed on the Marketplace, it will not appear with its Marketplace ID Number:<br />
-<strong>please click "create organization"</strong> button to add it!');
-  t('Who: Organization');
-  t('With what: App');
+  t('Who');
+  t('With what');
 
   return $fields;
 }
