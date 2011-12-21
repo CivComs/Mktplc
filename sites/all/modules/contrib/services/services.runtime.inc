@@ -144,26 +144,12 @@ function services_controller_execute($controller, $args = array(), $options = ar
 
   // Call default or custom access callback.
   if (call_user_func_array($controller['access callback'], $access_arguments) != TRUE) {
-    global $user;
     return services_error(t('Access denied for user @user', array(
       '@user' => isset($user->name) ? $user->name : 'anonymous',
     )), 401);
   }
 
-  // Change working directory to drupal root to call drupal function,
-  // then change it back to server module root to handle return.
-  $server_root = getcwd();
-  $drupal_path = services_get_server_info('drupal_path');
-  if (isset($drupal_path) && $drupal_path) {
-    chdir($drupal_path);
-  }
-
-  // Check if the arguments should be preprocessed.
-  if (!empty($controller['endpoint']['preprocess'])) {
-    foreach ($controller['endpoint']['preprocess'] as $callable) {
-      call_user_func_array($callable, array(&$args, $controller));
-    }
-  }
+  drupal_alter('services_request_preprocess', $controller, $args);
 
   // Log the arguments.
   if ($server_info->debug) {
@@ -173,12 +159,7 @@ function services_controller_execute($controller, $args = array(), $options = ar
   // Execute the controller callback.
   $result = call_user_func_array($controller['callback'], $args);
   
-  // Check if the result should be post-processed.
-  if (!empty($controller['endpoint']['postprocess'])) {
-    foreach ($controller['endpoint']['postprocess'] as $callable) {
-      $result = call_user_func_array($callable, array($args, $controller, $result));
-    }
-  }
+  drupal_alter('services_request_postprocess', $controller, $args, $result);
   
   if (drupal_save_session($user) === FALSE) {
     $user = $original_user;
