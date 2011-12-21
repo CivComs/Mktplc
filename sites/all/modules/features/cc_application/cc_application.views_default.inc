@@ -3581,7 +3581,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['header']['area_1']['content'] = '<h2 class="block-title">
 <span class="browse">Browse places</span>
 <span class="using">Using</span>
-<!--<span class="created">Created</span>-->
+<span class="created">Created</span>
 </h2>';
   $handler->display->display_options['header']['area_1']['format'] = 'full_html';
   $handler->display->display_options['header']['area_1']['tokenize'] = 0;
