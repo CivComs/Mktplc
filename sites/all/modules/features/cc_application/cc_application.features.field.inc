@@ -1073,6 +1073,69 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
     ),
   );
 
+  // Exported field: 'node-application-field_application_rating'
+  $fields['node-application-field_application_rating'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_application_rating',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'fivestar',
+      'settings' => array(
+        'axis' => 'overall',
+      ),
+      'translatable' => '0',
+      'type' => 'fivestar',
+    ),
+    'field_instance' => array(
+      'bundle' => 'application',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'What do you think of the application? Is it easy to use? Is it easy to implement? (Your rating will be aggregated with others).',
+      'display' => array(
+        'cc_business_card' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '17',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_application_rating',
+      'label' => 'Rating',
+      'required' => 0,
+      'settings' => array(
+        'allow_clear' => 0,
+        'axis' => 'vote',
+        'stars' => '5',
+        'target' => 'self',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'fivestar',
+        'settings' => array(),
+        'type' => 'stars',
+        'weight' => '5',
+      ),
+    ),
+  );
+
   // Exported field: 'node-application-field_application_relapps'
   $fields['node-application-field_application_relapps'] = array(
     'field_config' => array(
@@ -2099,6 +2162,7 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   t('License');
   t('Logo');
   t('Project this app resulted from');
+  t('Rating');
   t('Related Projects');
   t('Related apps');
   t('Releases');
@@ -2111,6 +2175,7 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   t('Standards Implemented');
   t('Technology Type');
   t('Tutorials');
+  t('What do you think of the application? Is it easy to use? Is it easy to implement? (Your rating will be aggregated with others).');
   t('What does the app do? What should people know about the app?');
   t('Which Vendors Provide Support?');
   t('Who Created the Application?');
