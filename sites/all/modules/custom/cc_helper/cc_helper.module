@@ -58,6 +58,20 @@ function _cc_helper_sharing($org = 0, $org_types = array(), $query = FALSE) {
   if(!$is_id && !$is_place && !$is_node) {
     return FALSE;
   }
+  if(!$org) {
+    return _cc_helper_apps(TRUE)->count()->execute();
+  }elseif($is_id) {
+    return _cc_helper_get_references_count($org, 'interaction', 'field_interaction_organization', array(154));
+  }elseif($is_node) {
+    return _cc_helper_get_references_count($org->nid, 'interaction', 'field_interaction_organization', array(154));
+  }
+  return _cc_helper_interactions_in_the_place($org, array(154), $org_types);
+/*  $is_id = ctype_digit($org);
+  $is_place = _cc_helper_is_place($org);
+  $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
+  if(!$is_id && !$is_place && !$is_node) {
+    return FALSE;
+  }
   $fquery = _cc_helper_apps(TRUE)->count();
   if(!$org) {
     return $fquery->execute();
@@ -85,7 +99,7 @@ function _cc_helper_sharing($org = 0, $org_types = array(), $query = FALSE) {
       ->fieldCondition('field_application_creator', 'nid', $nid)
       ->execute();
   }
-  return $c;
+  return $c;*/
 }
 
 function _cc_helper_using($org = 0, $org_types = array(), $query = FALSE) {
