@@ -60,6 +60,11 @@ function services_permission() {
       'title' => t('Set a system variable'),
       'description' => t(''),
     ),
+    // Query-limiting permissions
+    'perform unlimited index queries' => array(
+      'title' => t('Perform unlimited index queries'),
+      'description' => t(''),
+    ),
   );
 }
 
@@ -188,7 +193,6 @@ function services_endpoint_callback($endpoint_name) {
       'endpoint'      => $endpoint_name,
       'endpoint_path' => $endpoint->path,
       'debug'         => $endpoint->debug,
-      'drupal_path'   => getcwd(),
       'settings'      => $endpoint->server_settings[$server],
     ));
     if ($endpoint->debug) {
@@ -255,6 +259,14 @@ function services_endpoint_save($endpoint) {
   if (is_array($endpoint) && isset($endpoint['build_info'])) {
     $endpoint = $endpoint['build_info']['args'][0];
   }
+
+  // Set a default of an array if the value is not present.
+  foreach (array('server_settings', 'resources', 'authenication') as $endpoint_field) {
+    if (empty($endpoint->{$endpoint_field})) {
+      $endpoint->{$endpoint_field} = array();
+    }
+  }
+
   ctools_export_crud_save('services_endpoint', $endpoint);
   ctools_export_load_object_reset('services_endpoint');
   menu_rebuild();
@@ -470,8 +482,14 @@ function _services_resource_controller_as_procedure($resource, $name, $controlle
  *   Array parameters to add to the index query.
  * @param $page_size
  *   Integer number of items to be returned.
+ * @param $resource
+ *   String name of the resource building the index query
  */
-function services_resource_build_index_query($query, $page, $fields, $parameters, $page_size) {
+function services_resource_build_index_query($query, $page, $fields, $parameters, $page_size, $resource) {
+  $default_limit = variable_get("services_{$resource}_index_page_size", 20);
+  if (!user_access('perform unlimited index queries') && $page_size > $default_limit) {
+    $page_size = $default_limit;
+  }
   $query->range($page * $page_size, $page_size);
   if ($fields == '*') {
     $query->fields('t');
@@ -479,9 +497,9 @@ function services_resource_build_index_query($query, $page, $fields, $parameters
   else {
     $query->fields('t', explode(',', $fields));
   }
-  if(isset($parameters) && is_array($parameters)) {
+  if (isset($parameters) && is_array($parameters)) {
     foreach ($parameters as $parameter => $parameter_value) {
-      $query->condition($parameter, $parameter_value, '=');
+      $query->condition($parameter, explode(',', $parameter_value), 'IN');
     }
   }
 }
