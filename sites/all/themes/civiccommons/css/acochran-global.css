@@ -570,7 +570,7 @@ h2.block-title,
 
 .front .places-list-container .views-field-field-organization-address {
   float: left;
-  width: 260px;
+  width: 230px;
 }
 
 .front .using-sharing {
@@ -720,12 +720,20 @@ h2.block-title,
 /* List: Recent Activity */
 .view-interactions {
 }
+.view-interactions .views-row {
+  margin-bottom: 12px;
+}
+.view-interactions a {
+  text-decoration: none;
+}
+.view-interactions .org-name,
 .view-interactions .org-name a {
   font-weight: bold;
   /*font-size: 16px;
   font-weight: bold;
   text-decoration: none;*/
 }
+.view-interactions .app-name, 
 .view-interactions .app-name a {
   font-weight: bold;
 }
@@ -1071,6 +1079,12 @@ body .openlayers-map img.olImageLoadError {
 /**
  * Home page
  */
+
+/* recent activity block */ 
+#block-views-interactions-block .content {
+  padding: 10px 15px; 
+}
+
 #block-block-22 .block-inner .block-title {
   background: transparent;
   border: none;
@@ -1079,7 +1093,7 @@ body .openlayers-map img.olImageLoadError {
   text-transform: none;
   font-size: 1.5em;
   font-weight: 100;
-  margin: 0 0 1em 220px;
+  margin: 0 0 20px 190px;
 }
 body.front #block-system-main {
   margin: 0;
@@ -1087,12 +1101,13 @@ body.front #block-system-main {
 body.front #page-title {
   font-size: 42px;
   margin: .5em 0 0 0;
-  padding-left: 240px;
+  padding-left: 210px;
   text-align: left;
   font-weight: lighter;
 }
 body.front #zone-content .region-content {
-  background: transparent url('../images/hammer.jpg') 40px 1em no-repeat;
+  /*background: transparent url('../images/hammer.jpg') 40px 1em no-repeat;*/
+  background: transparent url('../images/gov-gov-gray-100.png') 70px 33px no-repeat;
 }
 
 /**
@@ -1135,7 +1150,8 @@ body.front #zone-content .region-content {
   font-size: 0;
 }
 .view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
-  background: transparent url('../images/created-active.png') top left no-repeat;
+  /*background: transparent url('../images/created-active.png') top left no-repeat;*/
+  background: transparent url('../images/gov-gov-gray-40.png') top left no-repeat;
 }
 .view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-count {
   padding-top: 3px;
@@ -1147,8 +1163,8 @@ body.front #zone-content .region-content {
 }
 
 .view-apps-browse-by .views-field-field-organization-address {
-  line-height: 44px;
-  margin-left: 10px;
+  /*line-height: 44px;
+  margin-left: 10px;*/
 }
 
 .view-apps-browse-by .view-footer a {
@@ -1283,4 +1299,66 @@ margin-top: 0px;
 margin-bottom: 5px;
 }
 
+/*
+#
+# Interaction Node view
+#
+*/
 
+body.node-type-interaction h1#page-title {
+  display:none;
+}
+
+article.node-interaction {
+  padding-top: 25px;
+}
+
+/*body.node-type-interaction #region-content h2.block-title, */
+#region-content .field-label-inline .field-label {
+  background: none;
+  padding: 0 15px 0 0;
+  color: #333;
+  margin: 0;
+  width: 120px;
+  font-size:auto;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: inherit;
+  border: none !important;
+  font-size: inherit;
+  font-weight: bold;
+  text-align: right;
+}
+/*
+body.node-type-interaction .field-name-field-interaction-date {
+  margin-top: 25px;
+}
+
+body.node-type-interaction .field-name-field-interaction-organization,
+body.node-type-interaction .field-name-field-interaction-organization *,
+body.node-type-interaction .field-name-field-interaction-type,
+body.node-type-interaction .field-name-field-interaction-type *,
+body.node-type-interaction .field-name-field-interaction-application,
+body.node-type-interaction .field-name-field-interaction-application * 
+{
+  display: inline;
+}
+
+body.node-type-interaction #region-content {
+  padding-top: 25px;
+}
+
+
+body.node-type-interaction .field-name-field-interaction-organization,
+body.node-type-interaction .field-name-field-interaction-type,
+body.node-type-interaction .field-name-field-interaction-application
+{
+  font-size: 1.5em;
+}
+body.node-type-interaction .field-name-field-interaction-organization,
+body.node-type-interaction .field-name-field-interaction-application
+{
+  font-size: 1.5em;
+  font-weight: bold;
+}
+*/
