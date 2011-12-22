@@ -1,0 +1,63 @@
+<?php
+/**
+ * @file
+ * Main module file for the CC API module.
+ * 
+ * This module is aimed at providing a public
+ * documenation page(s) for the implemented
+ * Marketplace API.
+ *
+ * Also a set of tests specific to configured API.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function cc_api_help($path, $arg) {
+  switch ($path) {
+    // Main module help for the CC API module
+    case 'admin/help#cc_api':
+      return '<p>' . t('The CC API module provides more in-depth API documentation.') . '</p>';
+  
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function cc_api_menu() {
+  $path = variable_get('cc_api_doc_page_path', 'api');
+  $items[$path] = array(
+    'title' => variable_get('cc_api_doc_page_title', 'Marketplace API'), 
+    'page callback' => 'cc_api_documentation_page', 
+    'access arguments' => array('access content'), 
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/config/services/cc_api'] = array(
+    'title' => 'Marketplace API', 
+    'description' => 'Configure the marketplace API settings.',
+    'page callback' => 'drupal_get_form', 
+    'page arguments' => array('cc_api_admin_settings'), 
+    'access arguments' => array('administer site configuration'), 
+    'file' =>  'includes/cc_api.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+ 
+/**
+ * Main callback for API documentation page.
+ */
+function cc_api_documentation_page() {
+  $output = '';
+  
+  $output .= 'Hi';
+
+  return $output;
+}
