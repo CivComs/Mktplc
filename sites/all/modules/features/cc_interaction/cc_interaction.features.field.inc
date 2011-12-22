@@ -621,9 +621,14 @@ function cc_interaction_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Did What:');
-  t('For (Project Title)');
+  t('Did what');
+  t('Link');
+  t('The Application involved in this story -- start typing to choose from a list, or click "Create Application" to add a new one.');
+  t('The story');
   t('This field doesn\'t work yet. skip it. Sorry it\'s here. ');
+  t('What did they do?');
+  t('What happened?  Optionally, describe this story in a bit more detail. ');
+  t('What organization or company is involved in this story?  Start typing to choose from existing options, or click "Create Organization" to create a new one.');
   t('When');
   t('Who');
   t('With what');
