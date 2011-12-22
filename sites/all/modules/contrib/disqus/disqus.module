@@ -1,0 +1,656 @@
+<?php
+
+/**
+ * @file
+ * The Disqus Drupal module.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function disqus_help($path, $arg) {
+  switch ($path) {
+  case 'admin/help#disqus':
+    $output = '<p>'. t('Uses the <a href="@disqus">Disqus</a> comment system to enhance comments.', array('@disqus' => 'http://disqus.com')) .'</p>';
+    $output.= '<h3>'. t('Installation') .'</h3>';
+    $output.= '<ol><li>'. t('Register your site information at <a href="http://disqus.com">Disqus</a>') .'</li>';
+    $output.= '<li>'. t('In the <a href="@configuration">Disqus configuration</a>, set the domain to what you registered with Disqus, and what node types you would like to have comments', array('@configuration' => url('admin/config/services/disqus'))) .'</li>';
+    $output.= '<li>'. t('Visit the <a href="@permissions">permissions</a>, and set which users you would like to have the ability to view Disqus threads (recommended for role)', array('@permissions' => url('admin/people/permissions', array('fragment' => 'module-disqus')))) .'</li></ol>';
+    return $output;
+  case 'admin/config/services/disqus':
+    return '<p>'. t('The following provides the general configuration options for the <a href="@disqus">Disqus</a> comment web service.', array('@disqus' => 'http://disqus.com')) .'</p>';
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function disqus_permission() {
+  return array(
+    'administer disqus' => array(
+      'title' => t('Administer Disqus'),
+      'description' => t('Perform administrative actions with Disqus.'),
+    ),
+    'view disqus comments' => array(
+      'title' => t('View Disqus comments'),
+      'description' => t('Allows access to view Disqus comments.')
+    ),
+    'display disqus comments on profile' => array(
+      'title' => t('Disqus comments in profile'),
+      'description' => t('When enabled, will display Disqus comments on the profiles of users belonging to this role.'),
+    ),
+    'toggle disqus comments' => array(
+      'title' => t('Toggle Disqus comments'),
+      'description' => t('When enabled, will allow users to toggle comments on and off on nodes.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function disqus_menu() {
+  $items = array();
+  $items['admin/config/services/disqus'] = array(
+    'title' => 'Disqus',
+    'description' => 'Provides configuration options for the Disqus comment system.',
+    'access arguments' => array('administer disqus'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('disqus_admin_settings'),
+    'file' => 'disqus.admin.inc',
+  );
+  $items['disqus/closewindow'] = array(
+    'title' => 'Please wait',
+    'description' => 'Once the user logs in through the Disqus login workflow, they are redirected here to automatically close the popup window.',
+    'access arguments' => array('access content'),
+    'page callback' => 'disqus_closewindow',
+    'file' => 'disqus.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_element_info().
+ */
+function disqus_element_info() {
+  $types['disqus'] = array(
+    '#disqus' => array(),
+    '#theme_wrappers' => array('disqus_noscript', 'container'),
+    '#attributes' => array('id' => 'disqus_thread'),
+    '#post_render' => array('disqus_element_post_render'),
+  );
+  return $types;
+}
+
+/**
+ * Post render function of the Disqus element to inject the Disqus JavaScript.
+ */
+function disqus_element_post_render($children, &$element) {
+  // Construct the settings to be passed in for Disqus.
+  $disqus = array(
+    'domain' => $element['#disqus']['domain'],
+    'url' => $element['#disqus']['url'],
+    'title' => $element['#disqus']['title'],
+    'identifier' => $element['#disqus']['identifier'],
+  );
+  if (isset($element['#disqus']['developer']) && $element['#disqus']['developer']) {
+    $disqus['developer'] = 1;
+  }
+
+  // If the user is logged in, we can inject the username and email for Disqus.
+  global $user;
+  if (variable_get('disqus_inherit_login', TRUE) && $user->uid > 0) {
+    $disqus['name'] = $user->name;
+    $disqus['email'] = $user->mail;
+  }
+
+  // Provide alternate language support if desired.
+  if (variable_get('disqus_localization', FALSE)) {
+    global $language;
+    $disqus['language'] = $language->language;
+  }
+
+  // Check if we are to provide Single Sign-On access.
+  if (variable_get('disqus_sso', FALSE)) {
+    $data = array();
+
+    // Inject the user data if it's available.
+    if ($user->uid > 0) {
+      $data['id'] = $user->uid;
+      $data['username'] = $user->name;
+      $data['email'] = $user->mail;
+      $data['url'] = url('user/' . $user->uid, array(
+        'absolute' => TRUE,
+      ));
+
+      // Load the user's avatar.
+      $user_picture_default = variable_get('user_picture_default', '');
+      if (isset($user->picture) && !empty($user->picture) && is_numeric($user->picture) && $file = file_load($user->picture)) {
+        $data['avatar'] = !empty($file->uri) ? $file->uri : NULL;
+      }
+      elseif (!empty($user_picture_default)) {
+        $data['avatar'] = variable_get('user_picture_default', '');
+      }
+      if (isset($data['avatar'])) {
+        $data['avatar'] = file_create_url($data['avatar']);
+      }
+    }
+
+    // Give Disqus information about the site.
+    $disqus['sso'] = array(
+      'name' => variable_get('site_name', t('Drupal')),
+      // The login window must be closed once the user logs in.
+      'url' => url('user/login', array('query' => array('destination' => 'disqus/closewindow'))),
+      // The logout link must redirect back to the original page.
+      'logout' => url('user/logout', array('query' => array('destination' => $_GET['q']))),
+      'width' => 800,
+      'height' => 600,
+    );
+    if ($logo = theme_get_setting('logo')) {
+      $disqus['sso']['button'] = $logo;
+    }
+    else {
+      $disqus['sso']['button'] = url('misc/druplicon.png', array('absolute' => TRUE));
+    }
+    if ($favicon = theme_get_setting('favicon')) {
+      $disqus['sso']['icon'] = $favicon;
+    }
+
+    // Encode the data to be sent off to Disqus.
+    $message = base64_encode(json_encode($data));
+    $timestamp = time();
+    $hmac = hash_hmac('sha1', "$message $timestamp", variable_get('disqus_secretkey', ''));
+
+    // Stick the authentication requirements and data in the settings.
+    $disqus['remote_auth_s3'] = "$message $hmac $timestamp";
+    $disqus['api_key'] = variable_get('disqus_publickey', '');
+  }
+
+  // Add the disqus.js and all the settings to process the JavaScript and load Disqus.
+  $element['#attached']['js'] = array(
+    drupal_get_path('module', 'disqus') . '/disqus.js' => array(),
+    array(
+      'type' => 'setting',
+      'data' => array(
+        'disqus' => $disqus,
+      ),
+    ),
+  );
+  return $children;
+}
+
+/**
+ * Implements hook_node_load().
+ */
+function disqus_node_load($nodes, $types) {
+  // Make sure we only load Disqus on nodes of the desired types.
+  $disqustypes = variable_get('disqus_nodetypes', array());
+
+  // Check which Disqus domain to use.
+  $domain = variable_get('disqus_domain', '');
+  if (!empty($domain)) {
+    // Load Disqus into the nodes.
+    foreach ($nodes as &$node) {
+      if (!empty($disqustypes[$node->type])) {
+        // Save the data to the node object.
+        $node->disqus = array('domain' => $domain);
+
+        // Apply the Disqus status to the node.
+        $status = db_query("SELECT status FROM {disqus} WHERE nid = :nid", array(':nid' => $node->nid))->fetchObject();
+        $node->disqus['status'] = isset($status->status) ? (bool)$status->status : TRUE;
+
+        // Build the absolute URL without the alias for the disqus_url flag.
+        $node->disqus['url'] = url("node/$node->nid", array(
+          'absolute' => TRUE,
+        ));
+
+        // Build the title.
+        $node->disqus['title'] = check_plain($node->title);
+
+        // Provide the identifier.
+        $node->disqus['identifier'] = 'node/' . $node->nid;
+
+        // The developer flag must always be set when the node is unpublished.
+        if ($node->status == 0) {
+          $node->disqus['developer'] = 1;
+        }
+        elseif ($developer = variable_get('disqus_developer', FALSE)) {
+          $node->disqus['developer'] = intval($developer);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function disqus_node_view($node, $view_mode) {
+  if (isset($node->disqus) && user_access('view disqus comments') && $node->disqus['status'] == 1) {
+    switch ($view_mode) {
+      case 'full':
+      	// Inject Disqus into the node object.
+      	switch (variable_get('disqus_location', 'content_area')) {
+      		case 'content_area':
+	          // Inject into the node content.
+	          $node->content['disqus'] = array(
+	            '#type' => 'disqus',
+	            '#disqus' => $node->disqus,
+	            '#weight' => variable_get('disqus_weight', 50),
+	          );
+      			break;
+      	}
+        break;
+      case 'teaser':
+        // Display the Disqus link.
+        $links['disqus_comments_num'] = array(
+          'title' => t('Comments'),
+          'href' => 'node/' . $node->nid,
+          'fragment' => 'disqus_thread',
+          'attributes' => array(
+            // Identify the node for Disqus with the unique identifier:
+            // http://docs.disqus.com/developers/universal/#comment-count
+            'data-disqus-identifier' => 'node/' . $node->nid,
+          ),
+        );
+        $node->content['links']['disqus'] = array(
+          '#theme' => 'links',
+          '#links' => $links,
+          '#attributes' => array(
+            'class' => array('links', 'inline'),
+          ),
+        );
+
+        // Attach disqus.js to load the Disqus comment count JavaScript.
+        $node->content['links']['#attached']['js'][] = drupal_get_path('module', 'disqus') . '/disqus.js';
+        $node->content['links']['#attached']['js'][] = array(
+          'data' => array('disqusComments' => $node->disqus['domain']),
+          'type' => 'setting',
+        );
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function disqus_node_delete($node) {
+  db_delete('disqus')->condition('nid', $node->nid)->execute();
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function disqus_node_insert($node) {
+  // Clear the value from the database.
+  disqus_node_delete($node);
+
+  // Write the value only if it's disabled (default is enabled).
+  if (isset($node->disqus_status) && $node->disqus_status == FALSE) {
+    $data = array(
+      'nid' => $node->nid,
+      'status' => $node->disqus_status,
+    );
+    drupal_write_record('disqus', $data);
+  }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function disqus_node_update($node) {
+  // Update is the same as insert.
+  disqus_node_insert($node);
+}
+
+/**
+ * Implements hook_user_load().
+ */
+function disqus_user_load($users) {
+  // Check which Disqus domain to use.
+  $domain = variable_get('disqus_domain', '');
+  if (!empty($domain)) {
+    foreach ($users as &$account) {
+      // Only show on the profile if desired. Don't show on the administrator's profile.
+      if (user_access('display disqus comments on profile', $account) && $account->uid != 1) {
+        // Save the data to the user object.
+        $account->disqus = array('domain' => $domain);
+
+        // Build the absolute URL without the alias for the disqus_url flag.
+        $account->disqus['url'] = url('user/' . $account->uid, array(
+          'absolute' => TRUE,
+        ));
+
+        // Build the title.
+        $account->disqus['title'] = check_plain($account->name);
+
+        // Provide the identifier.
+        $account->disqus['identifier'] = 'user/' . $account->uid;
+
+        // Inject the script.
+        if ($developer = variable_get('disqus_developer', FALSE)) {
+          $account->disqus['developer'] = $developer;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_user_view().
+ */
+function disqus_user_view($account, $view_mode, $langcode) {
+  if (isset($account->disqus) && $view_mode == 'full') {
+    // Inject Disqus into the user object.
+    switch (variable_get('disqus_location', 'content_area')) {
+      case 'content_area':
+        $account->content['disqus'] = array(
+          '#type' => 'disqus',
+          '#disqus' => $account->disqus,
+          '#weight' => variable_get('disqus_weight', 50),
+          '#access' => user_access('view disqus comments'),
+        );
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function disqus_block_info() {
+  $blocks['disqus_recent_comments'] = array(
+    'info' => t('Disqus: Recent Comments'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  $blocks['disqus_popular_threads'] = array(
+    'info' => t('Disqus: Popular Threads'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  $blocks['disqus_top_commenters'] = array(
+    'info' => t('Disqus: Top Commenters'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  $blocks['disqus_combination_widget'] = array(
+    'info' => t('Disqus: Combination Widget'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  $blocks['disqus_comments'] = array(
+    'info' => t('Disqus: Comments'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function disqus_block_configure($delta = '') {
+  $form = array();
+  $form['disqus'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Disqus settings'),
+  );
+  if ($delta == 'disqus_comments') {
+    $form['disqus']['#description'] = t('This block will be used to display the comments from Disqus when comments are applied to the given page. Visit the <a href="@disqussettings">Disqus settings</a> to configure when this is visible.', array('@disqussettings' => url('admin/config/services/disqus')));
+  }
+  $form['disqus'][$delta . '_items'] = array(
+    '#type' => 'select',
+    '#title' => t('Number of items to show'),
+    '#options' => array(1 => 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20),
+    '#default_value' => variable_get($delta .'_items', 5),
+    '#access' => ($delta != 'disqus_comments'),
+  );
+  $form['disqus'][$delta . '_showavatars'] = array(
+    '#type' => 'select',
+    '#title' => t('Show avatars'),
+    '#options' => array(FALSE => t('No'), TRUE => t('Yes')),
+    '#default_value' => variable_get($delta .'_showavatars', TRUE),
+    '#access' => ($delta == 'disqus_recent_comments') || ($delta == 'disqus_top_commenters'),
+  );
+  $form['disqus'][$delta . '_avatarsize'] = array(
+    '#type' => 'select',
+    '#title' => t('Avatar size'),
+    '#options' => array(
+      24 => t('X-Small (24px)'),
+      32 => t('Small (32px)'),
+      48 => t('Medium (48px)'),
+      92 => t('Large (92px)'),
+      128 => t('X-Large (128px)'),
+    ),
+    '#default_value' => variable_get($delta .'_avatarsize', 32),
+    '#access' => ($delta == 'disqus_recent_comments') || ($delta == 'disqus_top_commenters'),
+  );
+  $form['disqus'][$delta . '_colortheme'] = array(
+    '#type' => 'select',
+    '#title' => t('Color Theme'),
+    '#options' => array(
+      'blue' => t('Blue'),
+      'grey' => t('Grey'),
+      'green' => t('Green'),
+      'red' => t('Red'),
+      'orange' => t('Orange'),
+    ),
+    '#default_value' => variable_get($delta .'_colortheme', 'blue'),
+    '#access' => $delta == 'disqus_combination_widget',
+  );
+  $form['disqus'][$delta . '_defaulttabview'] = array(
+    '#type' => 'select',
+    '#title' => t('Default Tab View'),
+    '#options' => array(
+      'people' => t('People'),
+      'recent' => t('Recent'),
+      'popular' => t('Popular'),
+    ),
+    '#default_value' => variable_get($delta .'_defaulttabview', 'people'),
+    '#access' => $delta == 'disqus_combination_widget',
+  );
+  $form['disqus'][$delta . '_excerpt_length'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Comment Except Length'),
+    '#default_value' => variable_get($delta .'_excerpt_length', '200'),
+    '#access' => ($delta == 'disqus_recent_comments') || ($delta == 'disqus_combination_widget'),
+    '#size' => 4,
+  );
+  $form['disqus'][$delta . '_hide_mods'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hide moderators in ranking'),
+    '#default_value' => variable_get($delta .'_hide_mods', FALSE),
+    '#access' => ($delta == 'disqus_top_commenters') || ($delta == 'disqus_combination_widget'),
+  );
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function disqus_block_save($delta = '', $edit = array()) {
+  // The Disqus comments block doesn't have any configuration.
+  if ($delta != 'disqus_comments') {
+    variable_set($delta . '_items', $edit[$delta . '_items']);
+    // Recent comments and top commenters have avatars.
+    if (($delta == 'disqus_recent_comments') || ($delta == 'disqus_top_commenters')) {
+      variable_set($delta . '_showavatars', $edit[$delta . '_showavatars']);
+      variable_set($delta . '_avatarsize', $edit[$delta . '_avatarsize']);
+    }
+    // The excerpt length is only available for recent comments and combination.
+    if (($delta == 'disqus_recent_comments') || ($delta == 'disqus_combination_widget')) {
+      variable_set($delta . '_excerpt_length', $edit[$delta . '_excerpt_length']);
+    }
+    // Combination widget has the color theme and the default tab view.
+    if ($delta == 'disqus_combination_widget') {
+      variable_set($delta . '_colortheme', $edit[$delta . '_colortheme']);
+      variable_set($delta . '_defaulttabview', $edit[$delta . '_defaulttabview']);
+    }
+    // Hide moderators appears in top commenters and combination widget.
+    if (($delta == 'disqus_top_commenters') || ($delta == 'disqus_combination_widget')) {
+      variable_set($delta . '_hide_mods', $edit[$delta . '_hide_mods']);
+    }
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function disqus_block_view($delta = '') {
+  $num_items = variable_get($delta . '_items', 5);
+  $avatars = variable_get($delta . '_showavatars', TRUE) ? '&avatar_size=' . variable_get($delta . '_avatarsize', 32) : '&amp;hide_avatars=1';
+  $color = variable_get($delta . '_colortheme', 'blue');
+  $default_tab = variable_get($delta . '_defaulttabview', 'people');
+  $excerpt_length = variable_get($delta . '_excerpt_length', '200');
+  $hide_mods = variable_get($delta . '_hide_mods', FALSE) ? '1' : '0';
+  $domain = variable_get('disqus_domain', '');
+  if (!empty($domain)) {
+    $subject = '';
+    $content = '';
+    switch ($delta) {
+    case 'disqus_recent_comments':
+      $subject = t('Recent Comments');
+      $content = <<<EOT
+<div id="dsq-recentcomments" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/$domain/recent_comments_widget.js?num_items=$num_items&amp;excerpt_length=$excerpt_length$avatars"></script></div>
+EOT;
+    break;
+    case 'disqus_popular_threads':
+      $subject = t('Popular Threads');
+      $content = <<<EOT
+<div id="dsq-popthreads" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/$domain/popular_threads_widget.js?num_items=$num_items"></script></div>
+EOT;
+    break;
+    case 'disqus_top_commenters':
+      $subject = t('Top Commenters');
+      $content = <<<EOT
+<div id="dsq-topcommenters" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/$domain/top_commenters_widget.js?hide_mods=$hide_mods&amp;num_items=$num_items$avatars"></script></div>
+EOT;
+    break;
+    case 'disqus_combination_widget':
+      $subject = t('Comments');
+      $content = <<<EOT
+<script type="text/javascript" src="http://disqus.com/forums/$domain/combination_widget.js?num_items=$num_items&amp;hide_mods=$hide_mods&amp;excerpt_length=$excerpt_length&amp;color=$color&amp;default_tab=$default_tab"></script>
+EOT;
+    break;
+    case 'disqus_comments':
+      if ((variable_get('disqus_location', 'content_area') == 'block') && user_access('view disqus comments')) {
+        // Check what the user is currently looking at from the menu router.
+        $item = menu_get_item();
+        // Retrieve the object from the menu router, if it exists.
+        if ($object = isset($item['page_arguments'][0]) ? $item['page_arguments'][0] : FALSE) {
+          switch ($item['path']) {
+            case 'node/%':
+              // For nodes, display if the Disqus object is enabled.
+              if (isset($object->disqus) && $object->disqus['status']) {
+                $content['disqus'] = array(
+                  '#type' => 'disqus',
+                  '#disqus' => $object->disqus,
+                );
+              }
+              break;
+            case 'user/%':
+              // For users, display if the Disqus object exists.
+              if (isset($object->disqus)) {
+                $content['disqus'] = array(
+                  '#type' => 'disqus',
+                  '#disqus' => $object->disqus,
+                );
+              }
+              break;
+          }
+        }
+      }
+      break;
+    }
+    return array('subject' => $subject, 'content' => $content);
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function disqus_form_alter(&$form, $form_state, $form_id) {
+  // Allow toggling the comments on or off per node from the node edit form.
+  if (!empty($form['#node_edit_form'])) {
+    $node = $form['#node'];
+    // Only display the toggle Disqus comments setting if comments are available
+    // for the given node type.
+    $types = variable_get('disqus_nodetypes', array());
+    if (isset($types[$node->type]) && !empty($types[$node->type])) {
+      // Add the Disqus settings into the Comment settings fieldset if it exists.
+      if (!isset($form['comment_settings'])) {
+        $form['comment_settings'] = array(
+          '#type' => 'fieldset',
+          '#access' => user_access('toggle disqus comments'),
+          '#title' => t('Comment settings'),
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE,
+          '#group' => 'additional_settings',
+          '#weight' => 30,
+        );
+      }
+      else {
+        if (isset($form['comment_settings']['comment'])) {
+          $form['comment_settings']['comment']['#access'] = $form['comment_settings']['#access'];
+          $form['comment_settings']['#access'] = true;
+        }
+      }
+      $form['comment_settings']['disqus_status'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Disqus comments'),
+        '#description' => t('Users can post comments using <a href="@disqus">Disqus</a>.', array('@disqus' => 'http://disqus.com')),
+        '#default_value' => isset($node->disqus['status']) ? $node->disqus['status'] : TRUE,
+        '#access' => user_access('toggle disqus comments'),
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function disqus_theme() {
+  return array(
+    'disqus_noscript' => array(
+      'variables' => array('disqus' => NULL),
+    ),
+  );
+}
+
+/**
+ * Prepares the noscript tag which is used when JavaScript is not available.
+ *
+ * @param $variables
+ *   An array containing a "disqus" array, containing the following items:
+ *     - "domain": The domain associated with this Disqus account.
+ *     - "title": The title of the thread.
+ *     - "developer": Whether or not testing is enabled.
+ *     - "url": The disqus_url variable (http://disqus.com/docs/help/#faq-16).
+ */
+function theme_disqus_noscript($variables = array()) {
+  $disqus = $variables['disqus'];
+  // Return the comment markup.
+  return '<noscript><p>' . l(t('View the discussion thread.'), 'http://' . $disqus['domain'] . '.disqus.com/?url=' . urlencode($disqus['url'])) . '</p></noscript>';
+}
+
+/**
+ * Creates an instance of the Disqus PHP API.
+ *
+ * @param $user_api_key
+ *   The User API Key.
+ * @param $forum_api_key
+ *   The Forum API key.
+ *
+ * @return
+ *   The instance of the Disqus API.
+ */
+function disqus($user_api_key = NULL, $forum_api_key = NULL) {
+  module_load_include('php', 'disqus', 'disqus');
+  return new Disqus($user_api_key, $forum_api_key);
+}
+
+/**
+ * Implementation of hook_views_api().
+ */
+function disqus_views_api() {
+  return array('api' => 3);
+}
+
