@@ -323,6 +323,12 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_interaction_organization_nid']['delta'] = '-1';
+  /* Relationship: Content: With what (field_interaction_application) */
+  $handler->display->display_options['relationships']['field_interaction_application_nid']['id'] = 'field_interaction_application_nid';
+  $handler->display->display_options['relationships']['field_interaction_application_nid']['table'] = 'field_data_field_interaction_application';
+  $handler->display->display_options['relationships']['field_interaction_application_nid']['field'] = 'field_interaction_application_nid';
+  $handler->display->display_options['relationships']['field_interaction_application_nid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_interaction_application_nid']['delta'] = '-1';
   /* Field: Content: Who */
   $handler->display->display_options['fields']['field_interaction_organization']['id'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
@@ -477,16 +483,18 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'interaction' => 'interaction',
   );
-  /* Filter criterion: Content: With what: App (field_interaction_application) */
-  $handler->display->display_options['filters']['field_interaction_application_nid']['id'] = 'field_interaction_application_nid';
-  $handler->display->display_options['filters']['field_interaction_application_nid']['table'] = 'field_data_field_interaction_application';
-  $handler->display->display_options['filters']['field_interaction_application_nid']['field'] = 'field_interaction_application_nid';
-  $handler->display->display_options['filters']['field_interaction_application_nid']['operator'] = 'not empty';
-  /* Filter criterion: Content: Who: Organization (field_interaction_organization) */
-  $handler->display->display_options['filters']['field_interaction_organization_nid']['id'] = 'field_interaction_organization_nid';
-  $handler->display->display_options['filters']['field_interaction_organization_nid']['table'] = 'field_data_field_interaction_organization';
-  $handler->display->display_options['filters']['field_interaction_organization_nid']['field'] = 'field_interaction_organization_nid';
-  $handler->display->display_options['filters']['field_interaction_organization_nid']['operator'] = 'not empty';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'node';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['relationship'] = 'field_interaction_organization_nid';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status_2']['id'] = 'status_2';
+  $handler->display->display_options['filters']['status_2']['table'] = 'node';
+  $handler->display->display_options['filters']['status_2']['field'] = 'status';
+  $handler->display->display_options['filters']['status_2']['relationship'] = 'field_interaction_application_nid';
+  $handler->display->display_options['filters']['status_2']['value'] = '1';
 
   /* Display: Block: Recent activity - List (All) */
   $handler = $view->new_display('block', 'Block: Recent activity - List (All)', 'block');
