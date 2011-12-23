@@ -207,13 +207,13 @@ function cc_api_display_documentation($apis) {
               if (!empty($action['args'])) {
                 $output .= '<strong>' . t('Arguments') . '</strong>';
                 $rows = array();
-                $headers = array(t('Key'), t('Type'), t('Description'), t('Optional'), t('Source'));
+                $headers = array(t('Key'), t('Type'), t('Description'), t('Required'), t('Source'));
                 foreach ($action['args'] as $arg) {
                   $rows[] = array(
                     $arg['name'], 
                     $arg['type'], 
                     $arg['description'], 
-                    ($arg['optional']) ? t('yes') : t('no'),
+                    ($arg['optional']) ? t('no') : t('yes'),
                     (is_array($arg['source'])) ? implode(', ', array_flip($arg['source'])) : 
                       t('post body'),
                   );
@@ -226,6 +226,7 @@ function cc_api_display_documentation($apis) {
               
               // Examples
               if (!empty($action['examples'])) {
+                $output .= '<strong>' . t('Examples') . '</strong>';
                 $output .= '<ul>';
                 foreach ($action['examples'] as $e => $example) {
                   $output .= '
@@ -370,24 +371,114 @@ function cc_api_documentation_page_resources(&$resources, $url) {
   );
   
   $resources_meta = array(
+    // Comments
     'comment' => array(
       'name' => t('Comments'),
       'description' => t('Comments are user supplied data that are attached to content, like nodes.'),
       'operations' => array(
         'name' => t('Comment Operations'),
         'description' => t('Basic operations for the Comment objects.'),
+        'create' => array(
+          'name' => t('Create Comments'),
+          'description' => t('Use this method to create a specific comment.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/comment/ ????',
+            ),
+          ),
+        ),
+        'retrieve' => array(
+          'name' => t('Retrieve Comments'),
+          'description' => t('Use this method to retrieve a specific comment.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/comment/:cid',
+            ),
+          ),
+        ),
+        'update' => array(
+          'name' => t('Update Comment'),
+          'description' => t('Use this method to update a specific comment.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/comment/ ?????',
+            ),
+          ),
+        ),
+        'delete' => array(
+          'name' => t('Delete Comment'),
+          'description' => t('Use this method to delete a specific comment.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/comment/ ?????',
+            ),
+          ),
+        ),
+        'index' => array(
+          'name' => t('Search Comment'),
+          'description' => t('Use this method to search comments.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/comment ?????',
+            ),
+          ),
+        ),
       ),
       'actions' => array(
         'name' => t('Comment Actions'),
         'description' => t('Actions for the Comment objects.'),
+        'countAll' => array(
+          'name' => t('Count Comments per Node'),
+          'description' => t('Returns the number of comments are on a single node.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/comment ?????',
+            ),
+          ),
+        ),
+        'countNew' => array(
+          'name' => t('Count New Comments per Node'),
+          'description' => t('Returns the number of new comments are on a single node, given a timestamp.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/comment ?????',
+            ),
+          ),
+        ),
       ),
     ),
+    // Nodes
     'node' => array(
       'name' => t('Nodes (Content)'),
       'description' => t('Nodes are the basic content objects in the system.'),
       'operations' => array(
         'name' => t('Node Operations'),
         'description' => t('Basic operations for the Node objects.'),
+        'create' => array(
+          'name' => t('Create Node'),
+          'description' => t('Use this method to create a specific node.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/node/ ????',
+            ),
+          ),
+        ),
         'retrieve' => array(
           'name' => t('Retrieve Nodes'),
           'description' => t('Use this endpoint to retrieve a specific node.'),
@@ -395,7 +486,40 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/retrieve?nid',
+              'data' => 'curl -data ' . $url . '/node/:nid',
+            ),
+          ),
+        ),
+        'update' => array(
+          'name' => t('Update Node'),
+          'description' => t('Use this method to update a specific node.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/node/ ?????',
+            ),
+          ),
+        ),
+        'delete' => array(
+          'name' => t('Delete Node'),
+          'description' => t('Use this method to delete a specific comment.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/node/ ?????',
+            ),
+          ),
+        ),
+        'index' => array(
+          'name' => t('Search Nodes'),
+          'description' => t('Use this method to search nodes.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/node ?????',
             ),
           ),
         ),
@@ -403,6 +527,28 @@ function cc_api_documentation_page_resources(&$resources, $url) {
       'relationships' => array(
         'name' => t('Node Relationships'),
         'description' => t('Retrieve objects that are related to nodes.'),
+        'files' => array(
+          'name' => t('Files Attached to Node'),
+          'description' => t('Use this method to get files that are associated with a node.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/node ?????',
+            ),
+          ),
+        ),
+        'comments' => array(
+          'name' => t('New Comments Attached to Node'),
+          'description' => t('Use this method to get new comments associated with a node.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/node ?????',
+            ),
+          ),
+        ),
       ),
     ),
     'taxonomy_term' => array(
@@ -411,20 +557,98 @@ function cc_api_documentation_page_resources(&$resources, $url) {
       'operations' => array(
         'name' => t('Term Operations'),
         'description' => t('Basic operations for Taxonomy Term objects.'),
+        'create' => array(
+          'name' => t('Create Term'),
+          'description' => t('Use this method to create a specific Taxonomy Term.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/taxonomy_term/ ????',
+            ),
+          ),
+        ),
+        'retrieve' => array(
+          'name' => t('Retrieve Term'),
+          'description' => t('Use this endpoint to retrieve a specific Term.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/taxonomy_term/:tid',
+            ),
+          ),
+        ),
+        'update' => array(
+          'name' => t('Update Term'),
+          'description' => t('Use this method to update a specific term.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
+            ),
+          ),
+        ),
+        'delete' => array(
+          'name' => t('Delete Term'),
+          'description' => t('Use this method to delete a specific term.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
+            ),
+          ),
+        ),
+        'index' => array(
+          'name' => t('Search Terms'),
+          'description' => t('Use this method to search Terms.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
+            ),
+          ),
+        ),
       ),
       'actions' => array(
         'name' => t('Term Actions'),
         'description' => t('Actions for the Term objects.'),
+        'selectNodes' => array(
+          'name' => t('Nodes with Term'),
+          'description' => t('Use this method to get all nodes with specific Term.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
+            ),
+          ),
+        ),
       ),
     ),
   );
   
   // Merge
-  foreach ($resources as $r => $resource) {
-    if (!is_array($resources[$r])) {
-      $resources[$r] = array('enabled' => $resources[$r]);
+  $resources = cc_api_merge_arrays($resources_meta, $resources);
+}
+
+/**
+ * Recursive array merge
+ */
+function cc_api_merge_arrays($arr1, $arr2) {
+  if (is_array($arr1) && is_array($arr2)) {
+    foreach ($arr2 as $k => $v) {
+      if (isset($arr1[$k]) && is_array($v) && is_array($arr1[$k])) {
+        $arr1[$k] = cc_api_merge_arrays($arr1[$k], $v);
+      }
+      else {
+        $arr1[$k] = $v;
+      }
     }
-    // array_merge_recursive kind of sucks, so be careful.
-    $resources[$r] = array_merge_recursive($resources[$r], $resources_meta[$r]);
   }
+  
+  return $arr1;
 }
