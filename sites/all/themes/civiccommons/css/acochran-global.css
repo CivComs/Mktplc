@@ -575,7 +575,7 @@ h2.block-title,
 
 .front .using-sharing {
   float: right;
-  width: 250px;
+  width: 260px;
 }
 
 
@@ -588,7 +588,7 @@ h2.block-title,
 }
 .cc-org-apps {
   float: left;
-  width: 48%;
+  width: 50%;
   margin-right: 2%;
 }
 .cc-org-apps > div {
@@ -609,8 +609,8 @@ h2.block-title,
 /* List: By Function */
 .functions-list-container {
   margin: 10px 0;
-  width: 940px;
-  clear: both;
+  /*width: 940px;
+  clear: both;*/
 }
 /*
 .functions-list-container h2.block-title {
@@ -1081,8 +1081,22 @@ body .openlayers-map img.olImageLoadError {
  */
 
 /* recent activity block */ 
+#block-views-interactions-block,
+#block-views-interactions-block-1
+ {
+  height: 31em;
+}
+
+#block-views-interactions-block h2 {
+  width: 915px;
+}
+
+#block-views-interactions-block-1 .block-inner {
+  padding-top: 50px;
+}
+
 #block-views-interactions-block .content {
-  padding: 10px 15px; 
+  padding: 10px 0; 
 }
 
 #block-block-22 .block-inner .block-title {
@@ -1129,21 +1143,22 @@ body.front #zone-content .region-content {
   display: inline-block;
 }
 .view-apps-browse-by .views-field-php-3 .cc-org-apps {
-  background: transparent url('../images/created-inactive.png') top left no-repeat;
-  height: 44px;
+  /*background: transparent url('../images/created-inactive.png') top left no-repeat;*/
+  /*height: 44px;*/
   padding: 0px;
   margin: 0px;
 }
 .view-apps-browse-by .views-field-php-3 .cc-org-apps:first-child {
-  background: transparent url('../images/hammer-wrench-inactive.png') top left no-repeat;
+  /*background: transparent url('../images/hammer-wrench-inactive.png') top left no-repeat;*/
 }
 
 .view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-using,
 .view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
   color: transparent;
-  background: transparent url('../images/hammer-wrench-active.png') top left no-repeat;
+  background: transparent url('../images/hammer-wrench-active-24.png') 12px 0 no-repeat;
   width: 40px;
-  height: 44px;
+  height: 24px;
+  /*height: 44px;*/
   display: block;
   float: left;
   margin-right: 5px;
@@ -1151,11 +1166,14 @@ body.front #zone-content .region-content {
 }
 .view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
   /*background: transparent url('../images/created-active.png') top left no-repeat;*/
-  background: transparent url('../images/gov-gov-gray-40.png') top left no-repeat;
+  background: transparent url('../images/gov-gov-gray-24.png') 12px 0 no-repeat;
 }
 .view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-count {
-  padding-top: 3px;
-  font-size: 2em;
+  /*padding-top: 3px;
+  font-size: 2em;*/
+  font-size: 1.2em;
+  padding: 0;
+  line-height: 1.2em;
   color: #777777;
 }
 .view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-postfix {
