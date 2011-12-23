@@ -534,6 +534,16 @@ function cc_helper_block_view_alter(&$data, $block){
 }*/
 
 function cc_helper_form_interaction_node_form_alter(&$form, &$form_state) {
+  if(
+    request_path() == 'node/add/interaction'
+    && array_key_exists('interaction_id', $_GET)
+    && array_key_exists('app_id', $_GET)
+    && array_key_exists('field_interaction_application', $form)
+    && array_key_exists('field_interaction_type', $form)
+  ) {
+    $form['field_interaction_application']['und'][0]['nid']['#default_value'] = $_GET['app_id'];
+    $form['field_interaction_type']['und']['#default_value'] = $_GET['interaction_id'];
+  }
   // Redirect form to referrer if there is already one not
   // set.
   if ($_SERVER['HTTP_REFERER']) {

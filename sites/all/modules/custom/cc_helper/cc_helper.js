@@ -9,13 +9,3 @@ var $_GET = {};
     while (e = r.exec(q))
        $_GET[d(e[1])] = d(e[2]);
 })();
-
-jQuery(document).ready(function(){
-	if(document.location.pathname=='/node/add/interaction'){
-		//alert($_GET);
-		if(($_GET["interaction_id"]!=undefined)/*&&($_GET["app_id"]!=undefined)*/){
-			$('#edit-field-interaction-type-und').val(""+$_GET["interaction_id"]+"");
-			$('#edit-field-interaction-application-und').val(""+$_GET["app_id"]+"");
-		}
-	}
-});
