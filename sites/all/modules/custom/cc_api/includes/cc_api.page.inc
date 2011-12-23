@@ -59,6 +59,7 @@ function cc_api_documentation_page() {
   
   // Include some CSS and JS
   drupal_add_css(drupal_get_path('module', 'cc_api') . '/cc_api.css');
+  drupal_add_js(drupal_get_path('module', 'cc_api') . '/js/jquery.tableofcontents.js');
   drupal_add_js(drupal_get_path('module', 'cc_api') . '/js/cc_api.page.js');
   
   // Create output
@@ -89,24 +90,16 @@ function cc_api_cc_api_alter(&$apis) {
     // Add resource meta data
     cc_api_documentation_page_resources($apis[$api_id]->resources, $apis[$api_id]->base_url);
   }
-  
-  $method_map = array(
-    'retrieve'         => 'GET',
-    'update'           => 'PUT',
-    'delete'           => 'DELETE',
-    'index'            => 'GET',
-    'create'           => 'POST',
-    'actions'          => 'POST',
-    'targeted actions' => 'POST',
-    'relationships'    => 'GET',
-  );
 }
 
 /**
  * Main display operation for documentation
  */
 function cc_api_display_documentation($apis) {
-  $output = '';
+  $output = '
+    <ul class="api-toc-container"></ul>
+    <div class="api-container">
+  ';
   
   // There could be multiple (versions) apis.
   foreach ($apis as $api_id => $api) {
@@ -202,7 +195,7 @@ function cc_api_display_documentation($apis) {
             <p>' . $type['description'] . '</p>
           ';
           
-          // Type actions
+          // Methods
           foreach ($type as $a => $action) {
             if (!in_array($a, array('name', 'description'))) {
               $output .= '
@@ -221,7 +214,8 @@ function cc_api_display_documentation($apis) {
                     $arg['type'], 
                     $arg['description'], 
                     ($arg['optional']) ? t('yes') : t('no'),
-                    $arg['source']
+                    (is_array($arg['source'])) ? implode(', ', array_flip($arg['source'])) : 
+                      t('post body'),
                   );
                 }
                 $output .= theme('table', array(
@@ -254,6 +248,7 @@ function cc_api_display_documentation($apis) {
     ';
   }
   
+  $output .= '</div>';
   return $output;
 }
 
@@ -362,6 +357,18 @@ Content-Type: text/plain
  * Add meta data to resources.
  */
 function cc_api_documentation_page_resources(&$resources, $url) {
+  
+  $method_map = array(
+    'retrieve'         => 'GET',
+    'update'           => 'PUT',
+    'delete'           => 'DELETE',
+    'index'            => 'GET',
+    'create'           => 'POST',
+    'actions'          => 'POST',
+    'targeted actions' => 'POST',
+    'relationships'    => 'GET',
+  );
+  
   $resources_meta = array(
     'comment' => array(
       'name' => t('Comments'),
