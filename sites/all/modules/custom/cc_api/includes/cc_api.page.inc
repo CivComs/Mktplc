@@ -81,6 +81,9 @@ function cc_api_cc_api_alter(&$apis) {
     cc_api_documentation_page_parsers(
       $apis[$api_id]->server_settings['rest_server']['parsers']
     );
+    
+    // Add resource meta data
+    cc_api_documentation_page_resources($apis[$api_id]->resources, $apis[$api_id]->base_url);
   }
   
   $method_map = array(
@@ -161,7 +164,7 @@ function cc_api_display_documentation($apis) {
         <li>
           <strong>' . check_plain($p) . '</strong>: ' . $enabled['description'] . '
           <ul><li>
-            ' . t('Example data') . ': <code>' . $enabled['example_data'] . '</code>
+            ' . t('Example data') . ': <code><pre class="brush: plain">' . $enabled['example_data'] . '</pre></code>
           </li></ul>
         </li>';
     }
@@ -174,6 +177,53 @@ function cc_api_display_documentation($apis) {
       <h3>' . t('Limitations') . '</h3>
       <div class="api-description-limitation">
         <p>' . t('…') . '</p>
+      </div>
+    ';
+      
+    $output .= '
+      <h3>' . t('Resources') . '</h3>
+      <div class="api-description-resources">
+    ';
+    foreach ($api->resources as $r => $resource) {
+      $output .= '
+        <h4>' . $resource['name'] . '</h4>
+        <p>' . $resource['description'] . '</p>
+      ';
+      
+      // Resource object types
+      foreach ($resource as $t => $type) {
+        if (!in_array($t, array('name', 'description'))) {
+          $output .= '
+            <h5>' . $type['name'] . '</h5>
+            <p>' . $type['description'] . '</p>
+          ';
+          
+          // Type actions
+          foreach ($type as $a => $action) {
+            if (!in_array($a, array('name', 'description'))) {
+              $output .= '
+                <h6>' . $action['name'] . '</h6>
+                <p>' . $action['description'] . '</p>
+              ';
+              if (!empty($action['examples'])) {
+                $output .= '<ul>';
+                foreach ($action['examples'] as $e => $example) {
+                  $output .= '
+                    <li>' . $example['title'] . ':
+                    <code><pre class="' . $example['class'] . '">
+                      ' . $example['data'] . '
+                    </pre></code>
+                    </li>
+                  ';
+                }
+                $output .= '</ul>';
+              }
+            }
+          }
+        }
+      }      
+    }
+    $output .= '
       </div>
     ';
   }
@@ -279,5 +329,69 @@ Content-Type: text/plain
       $parsers[$p] = array('enabled' => $parsers[$p]);
     }
     $parsers[$p] += $parsers_meta[$p];
+  }
+}
+
+/**
+ * Add meta data to resources.
+ */
+function cc_api_documentation_page_resources(&$resources, $url) {
+  $resources_meta = array(
+    'comment' => array(
+      'name' => t('Comments'),
+      'description' => t('Comments are user supplied data that are attached to content, like nodes.'),
+      'operations' => array(
+        'name' => t('Comment Operations'),
+        'description' => t('Basic operations for the Comment objects.'),
+      ),
+      'actions' => array(
+        'name' => t('Comment Actions'),
+        'description' => t('Actions for the Comment objects.'),
+      ),
+    ),
+    'node' => array(
+      'name' => t('Nodes (Content)'),
+      'description' => t('Nodes are the basic content objects in the system.'),
+      'operations' => array(
+        'name' => t('Node Operations'),
+        'description' => t('Basic operations for the Node objects.'),
+        'retrieve' => array(
+          'name' => t('Retrieve Nodes'),
+          'description' => t('Use this endpoint to retrieve a specific node.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/node/retrieve?nid',
+            ),
+          ),
+        ),
+      ),
+      'relationships' => array(
+        'name' => t('Node Relationships'),
+        'description' => t('Retrieve objects that are related to nodes.'),
+      ),
+    ),
+    'taxonomy_term' => array(
+      'name' => t('Taxonomy Terms'),
+      'description' => t('Taxonomies are ways of grouping objects, like nodes, and the terms are the specific category terms.'),
+      'operations' => array(
+        'name' => t('Term Operations'),
+        'description' => t('Basic operations for Taxonomy Term objects.'),
+      ),
+      'actions' => array(
+        'name' => t('Term Actions'),
+        'description' => t('Actions for the Term objects.'),
+      ),
+    ),
+  );
+  
+  // Merge
+  foreach ($resources as $r => $resource) {
+    if (!is_array($resources[$r])) {
+      $resources[$r] = array('enabled' => $resources[$r]);
+    }
+    // array_merge_recursive kind of sucks, so be careful.
+    $resources[$r] = array_merge_recursive($resources[$r], $resources_meta[$r]);
   }
 }
