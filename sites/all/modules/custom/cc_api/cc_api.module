@@ -55,7 +55,6 @@ function cc_api_menu() {
  * Main callback for API documentation page.
  */
 function cc_api_documentation_page() {
-  $output = '';
   $api = array();
   
   // Let's get the API data.  We will assume that we only
@@ -67,16 +66,6 @@ function cc_api_documentation_page() {
   // Call _services_build_resources() directly instead of
   // services_get_resources to bypass caching.
   $resources = _services_build_resources();
-  $method_map = array(
-    'retrieve'         => 'GET',
-    'update'           => 'PUT',
-    'delete'           => 'DELETE',
-    'index'            => 'GET',
-    'create'           => 'POST',
-    'actions'          => 'POST',
-    'targeted actions' => 'POST',
-    'relationships'    => 'GET',
-  );
   
   // Go through available endpoints.
   $endpoints = services_endpoint_load_all();
@@ -112,7 +101,100 @@ function cc_api_documentation_page() {
     }
   }
   
-  $output .= 'Hi';
+  // Allow for alter
+  drupal_alter('cc_api', $api);
+  
+  // Create output
+  return cc_api_display_documentation($api);
+}
 
+/**
+ * Implements hook_cc_api_alter().
+ */
+function cc_api_cc_api_alter(&$apis) {
+  foreach ($apis as $api_id => $api) {
+    // Add title and description
+    $apis[$api_id]->title = t('Version 01');
+    $apis[$api_id]->description = '<p>' . t('The first version of the Marketplace API is focused on providing basic mechanisms for data input and output.  It may be a bit rough around the edges.') . '</p>';
+    $apis[$api_id]->base_url = url($api->path, array('absolute' => TRUE));
+  }
+  
+  $method_map = array(
+    'retrieve'         => 'GET',
+    'update'           => 'PUT',
+    'delete'           => 'DELETE',
+    'index'            => 'GET',
+    'create'           => 'POST',
+    'actions'          => 'POST',
+    'targeted actions' => 'POST',
+    'relationships'    => 'GET',
+  );
+}
+
+/**
+ * Main display operation for documentation
+ */
+function cc_api_display_documentation($apis) {
+  $output = '';
+  
+  // There could be multiple (versions) apis.
+  foreach ($apis as $api_id => $api) {
+    //dpm($api);
+    
+    $output .= '
+      <h2 class="api-title">' . $api->title . '</h2>
+      <div class="api-description">
+        ' . $api->description . '
+      </div>
+      
+      <h3>' . t('URLs') . '</h3>
+      <div class="api-description-url">
+        <p>' . t('This API is a RESTful API, where URLs will be formed like the following:') . '</p>
+        <code>' . $api->base_url . '/:entity.:format?:key=:value</code>
+        <p>' . t('For instance:') . '</p>
+        <code>' . $api->base_url . '/node.json?page=3</code>
+      </div>
+      
+      <h3>' . t('Authentication') . '</h3>
+      <div class="api-description-auth">
+        <p>' . t('…') . '</p>
+      </div>
+    ';
+    
+    // Formatters.  Assuming rest servers.
+    // Note that the Server settings need to be saved
+    // for these options to be in the endpoint
+    // object.
+    $output .= '
+      <h3>' . t('Output Formaters') . '</h3>
+      <div class="api-description-formatters">
+        <p>' . t('The following are the output formatters that are available with the API.') . '</p>
+        <ul>
+    ';
+    foreach ($api->server_settings['rest_server']['formatters'] as $f => $enabled) {
+      $output .= '<li>' . check_plain($f) . '</li>';
+    }
+    $output .= '
+        </ul>
+      </div>
+    ';
+      
+    // Parsers.  Assuming Rest server.
+    $output .= '
+      <h3>' . t('Input Parsers') . '</h3>
+      <div class="api-description-parsers">
+        <p>' . t('…') . '</p>
+      </div>
+    ';
+      
+    $output .= '
+      <h3>' . t('Limitations') . '</h3>
+      <div class="api-description-limitation">
+        <p>' . t('…') . '</p>
+      </div>
+    ';
+    
+  }
+  
   return $output;
 }
