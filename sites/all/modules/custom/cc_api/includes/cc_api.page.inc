@@ -96,6 +96,12 @@ function cc_api_cc_api_alter(&$apis) {
  * Main display operation for documentation
  */
 function cc_api_display_documentation($apis) {
+  // Check for Syntaxhighlighter module
+  $class = '';
+  if (module_exists('syntaxhighlighter')) {
+    $class = 'brush:plain';
+  }
+
   $output = '
     <ul class="api-toc-container"></ul>
     <div class="api-container">
@@ -103,7 +109,6 @@ function cc_api_display_documentation($apis) {
   
   // There could be multiple (versions) apis.
   foreach ($apis as $api_id => $api) {
-    dpm($api);
     
     $output .= '
       <h2 class="api-title">' . $api->title . '</h2>
@@ -113,15 +118,19 @@ function cc_api_display_documentation($apis) {
       
       <h3>' . t('URLs') . '</h3>
       <div class="api-description-url">
-        <p>' . t('This API is a RESTful API, where URLs will be formed like the following:') . '</p>
-        <code>' . $api->base_url . '/:entity.:format?:key=:value</code>
+        <p>' . t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')) . '</p>
+        <code><pre class="' . $class . '">
+          ' . $api->base_url . '/:entity.:format?:key=:value
+        </pre></code>
         <p>' . t('For instance:') . '</p>
-        <code>' . $api->base_url . '/node.json?page=3</code>
+        <code><pre class="' . $class . '">
+          ' . $api->base_url . '/node.json?page=3
+        </pre></code>
       </div>
       
       <h3>' . t('Authentication') . '</h3>
       <div class="api-description-auth">
-        <p>' . t('…') . '</p>
+        <p>' . t('coming soon.') . '</p>
       </div>
     ';
     
@@ -139,9 +148,10 @@ function cc_api_display_documentation($apis) {
       $output .= '
         <li>
           <strong>' . check_plain($f) . '</strong>: ' . $enabled['description'] . '
-          <ul><li>
-            ' . t('Example URL') . ': <code>' . $enabled['example_url'] . '</code>
-          </li></ul>
+          ' . t('Example URL') . ': 
+          <code><pre class="' . $class . '">
+              ' . $enabled['example_url'] . '
+          </pre></code>
         </li>';
     }
     $output .= '
@@ -173,7 +183,7 @@ function cc_api_display_documentation($apis) {
     $output .= '
       <h3>' . t('Limitations') . '</h3>
       <div class="api-description-limitation">
-        <p>' . t('…') . '</p>
+        <p>' . t('coming soon.') . '</p>
       </div>
     ';
       
@@ -276,7 +286,7 @@ function cc_api_documentation_page_formatters(&$formatters, $base_url) {
     ),
     'xml' => array(
       'description' => t('<a href="@url">XML</a> is a markup language similar to HTML.', array ('@url' => 'http://en.wikipedia.org/wiki/Xml')),
-      'example_url' => $base_url . '.rss',
+      'example_url' => $base_url . '.xml',
     ),
     'yaml' => array(
       'description' => t('<a href="@url">YAML</a> is a markup language meant for simplicity.  (seems to be always empty)', array ('@url' => 'http://en.wikipedia.org/wiki/Yaml')),
