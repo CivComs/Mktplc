@@ -145,12 +145,16 @@ aside .content {
  *
  */
 #section-header {
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/body-bg.png') 0 0 repeat-x;
+  background: url('../images/header-bg.png') 0 0 repeat-x;
 }
 #zone-branding-wrapper {
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/header-bg.png') center top no-repeat;
+ position:relative;
+ padding-top: 40px;
+  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/header-bg.png') center 40px no-repeat;
+
 }
 #zone-branding {
+  
   background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/tagline.png') 248px 29px no-repeat;
 }
 #zone-branding .logo-img {
@@ -249,6 +253,7 @@ ul.nice-menu:hover a.active {
 /* Navigation */
 #region-search-bar {
   position: relative;
+
 } 
 body.page-preview #region-search-bar {
   display: none;
@@ -1221,23 +1226,20 @@ body.front #zone-content .region-content {
 }
 
 .beta{
+  position: absolute;
   vertical-align: top;
-  width: 918px;
-  padding: 4px 10px;
-  border-left: 2px solid #eee;
-  border-right: 2px solid #eee;
-  background: url(../images/betabg.png);
-  /*margin-left: -180px;*/
+  width: 996px;
+  padding: 4px 0px;
+  margin-left: auto;
+  margin-right: auto;
   text-transform: uppercase;
   font-weight: bold;
-  /*-webkit-box-shadow: -5px 0px 8px #aaa;
-  -moz-box-shadow: -5px 0px 8px #aaa;
-  box-shadow: -5px 0px 8px #aaa;
-  margin-bottom: 7px;
-  */
+  margin-top: -147px;
   margin-bottom: 0;
   font-family: 'PT Sans', Helvetica, Arial;
   font-size: 1.2em;
+  
+  
 }
 .beta span{
   padding-right: #fafadf;
@@ -1253,7 +1255,7 @@ body.front #zone-content .region-content {
 }
 
 .beta .build {
-  margin-left: 260px;
+  margin-left: 217px;
 }
 
 .beta .red {
