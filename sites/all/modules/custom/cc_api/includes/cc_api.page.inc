@@ -57,6 +57,10 @@ function cc_api_documentation_page() {
   // Allow for alter
   drupal_alter('cc_api', $api);
   
+  // Include some CSS and JS
+  drupal_add_css(drupal_get_path('module', 'cc_api') . '/cc_api.css');
+  drupal_add_js(drupal_get_path('module', 'cc_api') . '/js/cc_api.page.js');
+  
   // Create output
   return cc_api_display_documentation($api);
 }
@@ -205,6 +209,28 @@ function cc_api_display_documentation($apis) {
                 <h6>' . $action['name'] . '</h6>
                 <p>' . $action['description'] . '</p>
               ';
+              
+              // Arguments
+              if (!empty($action['args'])) {
+                $output .= '<strong>' . t('Arguments') . '</strong>';
+                $rows = array();
+                $headers = array(t('Key'), t('Type'), t('Description'), t('Optional'), t('Source'));
+                foreach ($action['args'] as $arg) {
+                  $rows[] = array(
+                    $arg['name'], 
+                    $arg['type'], 
+                    $arg['description'], 
+                    ($arg['optional']) ? t('yes') : t('no'),
+                    $arg['source']
+                  );
+                }
+                $output .= theme('table', array(
+                  'header' => $headers,
+                  'rows' => $rows,
+                ));
+              }
+              
+              // Examples
               if (!empty($action['examples'])) {
                 $output .= '<ul>';
                 foreach ($action['examples'] as $e => $example) {
