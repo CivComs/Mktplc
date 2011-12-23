@@ -778,13 +778,13 @@ h2.block-title,
          box-shadow: 0 1px 8px 1px #DED8D8;
 }
 
-.add-to-marketplace{
+.add-to-marketplace, .edit_block{
   border: 3px dashed #FDE9BC;
   text-align: center;
 }
 
 
-.add-to-marketplace .add-button{
+.add-to-marketplace .add-button, .edit_block .add-button{
   display: block;
   background-image: url('../images/buttonbg.png');
   width: 220px;
@@ -808,7 +808,7 @@ h2.block-title,
   border-right: 2px solid #D68C14;
 }
 
-.block.add-to.marketplace div{
+.block.add-to.marketplace div, .block.edit_block div{
   text-align: center;
   display: inline-block;
   padding-left:;
@@ -817,17 +817,29 @@ h2.block-title,
   margin-bottom: 10px;
 }
 
-.block.add-to-marketplace h2{
+.block.edit_block p{
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.block.edit_block div{
+ margin-left: 0px;
+ margin-bottom: 0px;
+ padding: 3px 9px;
+}
+
+
+.block.add-to-marketplace h2, .block.edit_block h2{
   color:#555;
    background-image: none;
     background-color: transparent;
     border: none;
 }
-.block.add-to-marketplace li{
+.block.add-to-marketplace li, .block.edit_block li {
   list-style:none;
 }
 
-.block.add-to.marketplace  p{
+.block.add-to.marketplace p, .block.edit_block p{
   margin 15px 0px 0px 0px;
   font-size: 1.2em;
 }
@@ -836,6 +848,11 @@ h2.block-title,
   margin-bottom: 10px;
 }
 
+.edit_date {
+ display: block;
+ margin-top: 2px;
+ font-style: italic;
+}
 
 #region-sidebar-second{
   margin-top: 16px;
