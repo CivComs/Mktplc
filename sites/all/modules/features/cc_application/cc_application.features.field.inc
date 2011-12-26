@@ -14,7 +14,7 @@ function cc_application_field_default_fields() {
   $fields['node-application-field_application_civfunction'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_application_civfunction',
@@ -72,7 +72,7 @@ function cc_application_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_application_civfunction',
-      'label' => 'Civic Function',
+      'label' => 'Primary Civic Function',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -81,8 +81,8 @@ function cc_application_field_default_fields() {
         'active' => 1,
         'module' => 'options',
         'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '9',
+        'type' => 'options_select',
+        'weight' => '7',
       ),
     ),
   );
@@ -1795,6 +1795,86 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
     ),
   );
 
+  // Exported field: 'node-application-field_application_tags'
+  $fields['node-application-field_application_tags'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_application_tags',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'parent' => '0',
+            'vocabulary' => 'tags',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'application',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Separate tags w/ a comma.',
+      'display' => array(
+        'cc_business_card' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '28',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_application_tags',
+      'label' => 'Tags',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'autocomplete_deluxe',
+        'settings' => array(
+          'autocomplete_deluxe_path' => 'autocomplete_deluxe/taxonomy',
+          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'size' => '60',
+        ),
+        'type' => 'autocomplete_deluxe_taxonomy',
+        'weight' => '8',
+      ),
+    ),
+  );
+
   // Exported field: 'node-application-field_application_tutors'
   $fields['node-application-field_application_tutors'] = array(
     'field_config' => array(
@@ -2151,7 +2231,6 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   t('App Description');
   t('App Homepage');
   t('CC Researchers only: If the item has an entry in shortstack.codeforamerica.org, add it here.');
-  t('Civic Function');
   t('Demo URL');
   t('Don\'t see a term you need? Add it <a href="https://docs.google.com/a/codeforamerica.org/spreadsheet/embeddedform?formkey=dEtwOHRvOV9JdmVXNTBMXzNoNGdtUnc6MQ">here</a>');
   t('Enter the URL of the application homepage where people can go to find more information');
@@ -2161,18 +2240,21 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   t('Key features');
   t('License');
   t('Logo');
+  t('Primary Civic Function');
   t('Project this app resulted from');
   t('Rating');
   t('Related Projects');
   t('Related apps');
   t('Releases');
   t('Screenshots');
+  t('Separate tags w/ a comma.');
   t('Short Description for Search Results');
   t('Short Stack ID');
   t('Software Function');
   t('Software Requirements');
   t('Software Type');
   t('Standards Implemented');
+  t('Tags');
   t('Technology Type');
   t('Tutorials');
   t('What do you think of the application? Is it easy to use? Is it easy to implement? (Your rating will be aggregated with others).');
