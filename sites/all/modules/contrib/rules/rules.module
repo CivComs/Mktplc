@@ -4,20 +4,6 @@
  * @file Rules engine module
  */
 
-// Add the rules autoloader, which cares about auto-loading the faces include.
-// @see http://drupal.org/project/faces
-spl_autoload_register('rules_autoload');
-
-/**
- * Autoload API includes. Note that the code registry autoload is used only
- * by the providing API module.
- */
-function rules_autoload($class) {
-  if (stripos($class, 'faces') === 0) {
-    module_load_include('inc', 'rules', 'includes/faces');
-  }
-}
-
 /**
  * Implements hook_init().
  */
@@ -316,19 +302,13 @@ function rules_flush_caches() {
 
 /**
  * Clears the rule set cache
- *
- * @param $immediate
- *   If FALSE, the static cache will be kept until the next page
- *   load. If set to TRUE static caches will be cleared too.
  */
-function rules_clear_cache($immediate = FALSE) {
+function rules_clear_cache() {
   cache_clear_all('*', 'cache_rules', TRUE);
   variable_del('rules_empty_sets');
-  if ($immediate) {
-    drupal_static_reset('rules_get_cache');
-    drupal_static_reset('rules_fetch_data');
-    entity_get_controller('rules_config')->resetCache();
-  }
+  drupal_static_reset('rules_get_cache');
+  drupal_static_reset('rules_fetch_data');
+  entity_get_controller('rules_config')->resetCache();
 }
 
 /**
@@ -406,18 +386,32 @@ function rules_unwrap_data(array $data, $info = array()) {
   foreach ($data as $key => $entry) {
     // If it's a wrapper, unwrap unless specified otherwise.
     if ($entry instanceof EntityMetadataWrapper) {
-      if (isset($info[$key]) && (!empty($info[$key]['wrapped']) || (is_string($info[$key]['type']) && !empty($cache['data_info'][$info[$key]['type']]['is wrapped'])))) {
-        continue;
+      if (!isset($info[$key]['allow null'])) {
+        $info[$key]['allow null'] = FALSE;
       }
-      $options = (isset($info[$key]) ? $info[$key] : array()) + array('decode' => empty($info[$key]['sanitize']));
+      if (!isset($info[$key]['wrapped'])) {
+        // By default, do not unwrap special data types that are always wrapped.
+        $info[$key]['wrapped'] = (isset($info[$key]['type']) && is_string($info[$key]['type']) && !empty($cache['data_info'][$info[$key]['type']]['is wrapped']));
+      }
+      // Activate the decode option by default if 'sanitize' is not enabled, so
+      // any text is either sanitized or decoded.
+      // @see EntityMetadataWrapper::value()
+      $options = $info[$key] + array('decode' => empty($info[$key]['sanitize']));
+
       try {
-        $data[$key] = $entry->value($options);
+        if (!($info[$key]['allow null'] && $info[$key]['wrapped'])) {
+          $value = $entry->value($options);
+
+          if (!$info[$key]['wrapped']) {
+            $data[$key] = $value;
+          }
+          if (!$info[$key]['allow null'] && !isset($value)) {
+            throw new RulesEvaluationException('The variable or parameter %name is empty.', array('%name' => $key));
+          }
+        }
       }
       catch (EntityMetadataWrapperException $e) {
         throw new RulesEvaluationException('Unable to get the data value for the variable or parameter %name. Error: !error', array('%name' => $key, '!error' => $e->getMessage()));
-      }
-      if (!isset($data[$key]) && empty($info[$key]['allow null'])) {
-        throw new RulesEvaluationException('The variable or parameter %name is empty.', array('%name' => $key));
       }
     }
   }
@@ -766,7 +760,7 @@ function rules_invoke_all() {
  *   Pass parameters for the variables provided by this event, as defined in
  *   hook_rules_event_info(). Example given:
  *   @code
- *     rules_invoke_event('node_insert', $node);
+ *     rules_invoke_event('node_view', $node, $view_mode);
  *   @endcode
  *
  * @see rules_invoke_event_by_args()
@@ -796,7 +790,7 @@ function rules_invoke_event() {
  *   passed parameters has to match the order of the specified variables.
  *   Example given:
  *   @code
- *     rules_invoke_event('node_insert', array('node' => $node));
+ *     rules_invoke_event_by_args('node_view', array('node' => $node, 'view_mode' => $view_mode));
  *   @endcode
  *
  * @see rules_invoke_event()
@@ -1253,3 +1247,57 @@ function rules_menu() {
   );
   return $items;
 }
+
+/**
+ * Helper function to keep track of external documentation pages for Rules.
+ *
+ * @param $topic
+ *   The topic key for used for identifying help pages.
+ *
+ * @return
+ *   Either a URL for the given page, or the full list of external help pages.
+ */
+function rules_external_help($topic = NULL) {
+  $help = array(
+    'rules' =>                'http://drupal.org/node/298480',
+    'terminology' =>          'http://drupal.org/node/1299990',
+    'condition-components' => 'http://drupal.org/node/1300034',
+    'data-selection' =>       'http://drupal.org/node/1300042',
+    'chained-tokens' =>       'http://drupal.org/node/1300042',
+    'loops' =>                'http://drupal.org/node/1300058',
+    'components' =>           'http://drupal.org/node/1300024',
+    'component-types' =>      'http://drupal.org/node/1300024',
+    'variables' =>            'http://drupal.org/node/1300024',
+    'scheduler' =>            'http://drupal.org/node/1300068',
+    'coding' =>               'http://drupal.org/node/878720',
+  );
+
+  if (isset($topic)) {
+    return isset($help[$topic]) ? $help[$topic] : FALSE;
+  }
+  return $help;
+}
+
+/**
+ * Implements hook_help().
+ */
+function rules_help($path, $arg) {
+  // Only enable the help if the admin module is active.
+  if ($path == 'admin/help#rules' && module_exists('rules_admin')) {
+
+    $output['header'] = array(
+      '#markup' => t('Rules documentation is kept online. Please use the links below for more information about Rules. Feel free to contribute to improving the online documentation!'),
+    );
+    // Build a list of essential Rules help pages, formatted as a bullet list.
+    $link_list['rules'] = l(t('Rules introduction'), rules_external_help('rules'));
+    $link_list['terminology'] = l(t('Rules terminology'), rules_external_help('terminology'));
+    $link_list['scheduler'] = l(t('Rules Scheduler'), rules_external_help('scheduler'));
+    $link_list['coding'] = l(t('Coding for Rules'), rules_external_help('coding'));
+
+    $output['topic-list'] = array(
+      '#markup' => theme('item_list', array('items' => $link_list)),
+    );
+    return render($output);
+  }
+}
+
