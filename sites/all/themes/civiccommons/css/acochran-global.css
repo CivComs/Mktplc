@@ -1164,18 +1164,18 @@ body.front #zone-content .region-content {
   width: 110px;
   display: inline-block;
 }
-.view-apps-browse-by .views-field-php-3 .cc-org-apps {
+.view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps {
   /*background: transparent url('../images/created-inactive.png') top left no-repeat;*/
   /*height: 44px;*/
   padding: 0px;
   margin: 0px;
 }
-.view-apps-browse-by .views-field-php-3 .cc-org-apps:first-child {
+.view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps:first-child {
   /*background: transparent url('../images/hammer-wrench-inactive.png') top left no-repeat;*/
 }
 
-.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-using,
-.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
+.view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps .cc-org-prefix-using,
+.view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps .cc-org-prefix-sharing {
   color: transparent;
   background: transparent url('../images/hammer-wrench-active-24.png') 12px 0 no-repeat;
   width: 40px;
@@ -1186,11 +1186,11 @@ body.front #zone-content .region-content {
   margin-right: 5px;
   font-size: 0;
 }
-.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-prefix-sharing {
+.view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps .cc-org-prefix-sharing {
   /*background: transparent url('../images/created-active.png') top left no-repeat;*/
   background: transparent url('../images/gov-gov-gray-24.png') 12px 0 no-repeat;
 }
-.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-count {
+.view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps .cc-org-count {
   /*padding-top: 3px;
   font-size: 2em;*/
   font-size: 1.2em;
@@ -1198,7 +1198,7 @@ body.front #zone-content .region-content {
   line-height: 1.2em;
   color: #777777;
 }
-.view-apps-browse-by .views-field-php-3 .cc-org-apps .cc-org-postfix {
+.view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps .cc-org-postfix {
   display: none;
 }
 

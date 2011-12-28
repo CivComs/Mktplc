@@ -89,7 +89,7 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
       $org['administrative_area'] = _cc_helper_field_first_value($entity_type, $entity, $fn, 'administrative_area');
     }
     $ap = isset($display['settings']['appearance']) ? $display['settings']['appearance'] : FALSE;
-    $o = _cc_helper_using_sharing($org, '', $tids);
+    $o = _cc_helper_using_sharing($org, $ap, $tids);
     if(!empty($o)) {
       $r[0]['#markup'] = $o;
     }

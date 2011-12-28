@@ -1181,40 +1181,39 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   );
   $handler->display->display_options['fields']['field_organization_address']['field_api_classes'] = 0;
   /* Field: Using / Sharing */
-  $handler->display->display_options['fields']['php']['id'] = 'php';
-  $handler->display->display_options['fields']['php']['table'] = 'views';
-  $handler->display->display_options['fields']['php']['field'] = 'php';
-  $handler->display->display_options['fields']['php']['ui_name'] = 'Using / Sharing';
-  $handler->display->display_options['fields']['php']['label'] = '';
-  $handler->display->display_options['fields']['php']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['path'] = '[path]';
-  $handler->display->display_options['fields']['php']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['php']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['php']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['php']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['php']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['php']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_output'] = '<?php
-//Used _cc_helper_using_sharing and _cc_helper_view_count from custom cc_helper.module.
-echo _cc_helper_using_sharing($data->nid, \'\');
-/*echo(_cc_helper_using_sharing(
-  _cc_helper_get_references_count($data->nid, \'interaction\', \'field_interaction_organization\', array(156)),
-  _cc_helper_sharing($data->nid)//_cc_helper_get_references_count($data->nid, \'interaction\', \'field_interaction_organization\', array(154,155))
-));*/
-?>';
-  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  $handler->display->display_options['fields']['field_organization_interactions']['id'] = 'field_organization_interactions';
+  $handler->display->display_options['fields']['field_organization_interactions']['table'] = 'field_data_field_organization_interactions';
+  $handler->display->display_options['fields']['field_organization_interactions']['field'] = 'field_organization_interactions';
+  $handler->display->display_options['fields']['field_organization_interactions']['ui_name'] = 'Using / Sharing';
+  $handler->display->display_options['fields']['field_organization_interactions']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_interactions']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_organization_interactions']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['type'] = 'using_sharing';
+  $handler->display->display_options['fields']['field_organization_interactions']['settings'] = array(
+    'count_by' => 'organization',
+    'filter_by' => array(),
+    'appearance' => '',
+  );
+  $handler->display->display_options['fields']['field_organization_interactions']['group_rows'] = 1;
+  $handler->display->display_options['fields']['field_organization_interactions']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_organization_interactions']['delta_reversed'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['delta_first_last'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Street address (field_organization_address:locality) */
   $handler->display->display_options['arguments']['field_organization_address_locality']['id'] = 'field_organization_address_locality';
@@ -1378,40 +1377,39 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   );
   $handler->display->display_options['fields']['field_organization_address']['field_api_classes'] = 0;
   /* Field: Using / Sharing */
-  $handler->display->display_options['fields']['php']['id'] = 'php';
-  $handler->display->display_options['fields']['php']['table'] = 'views';
-  $handler->display->display_options['fields']['php']['field'] = 'php';
-  $handler->display->display_options['fields']['php']['ui_name'] = 'Using / Sharing';
-  $handler->display->display_options['fields']['php']['label'] = '';
-  $handler->display->display_options['fields']['php']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['path'] = '[path]';
-  $handler->display->display_options['fields']['php']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['php']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['php']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['php']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['php']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['php']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['php']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_output'] = '<?php
-//Used _cc_helper_using_sharing and _cc_helper_view_count from custom cc_helper.module.
-echo _cc_helper_using_sharing($data->nid, \'\');
-/*echo(_cc_helper_using_sharing(
-  _cc_helper_get_references_count($data->nid, \'interaction\', \'field_interaction_organization\', array(156)),
-  _cc_helper_sharing($data->nid)//_cc_helper_get_references_count($data->nid, \'interaction\', \'field_interaction_organization\', array(154,155))
-));*/
-?>';
-  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  $handler->display->display_options['fields']['field_organization_interactions']['id'] = 'field_organization_interactions';
+  $handler->display->display_options['fields']['field_organization_interactions']['table'] = 'field_data_field_organization_interactions';
+  $handler->display->display_options['fields']['field_organization_interactions']['field'] = 'field_organization_interactions';
+  $handler->display->display_options['fields']['field_organization_interactions']['ui_name'] = 'Using / Sharing';
+  $handler->display->display_options['fields']['field_organization_interactions']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_interactions']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_organization_interactions']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['type'] = 'using_sharing';
+  $handler->display->display_options['fields']['field_organization_interactions']['settings'] = array(
+    'count_by' => 'organization',
+    'filter_by' => array(),
+    'appearance' => '',
+  );
+  $handler->display->display_options['fields']['field_organization_interactions']['group_rows'] = 1;
+  $handler->display->display_options['fields']['field_organization_interactions']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_organization_interactions']['delta_reversed'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['delta_first_last'] = 0;
+  $handler->display->display_options['fields']['field_organization_interactions']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Street address (field_organization_address:locality) */
   $handler->display->display_options['arguments']['field_organization_address_locality']['id'] = 'field_organization_address_locality';
