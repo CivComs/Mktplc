@@ -1206,7 +1206,12 @@ echo _cc_helper_using_sharing(arg(1), \'full\');
   $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
+//Used _cc_helper_using_sharing and _cc_helper_view_count from custom cc_helper.module.
 echo _cc_helper_using_sharing($data->nid, \'\');
+/*echo(_cc_helper_using_sharing(
+  _cc_helper_get_references_count($data->nid, \'interaction\', \'field_interaction_organization\', array(156)),
+  _cc_helper_sharing($data->nid)//_cc_helper_get_references_count($data->nid, \'interaction\', \'field_interaction_organization\', array(154,155))
+));*/
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -1398,7 +1403,12 @@ echo _cc_helper_using_sharing($data->nid, \'\');
   $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
+//Used _cc_helper_using_sharing and _cc_helper_view_count from custom cc_helper.module.
 echo _cc_helper_using_sharing($data->nid, \'\');
+/*echo(_cc_helper_using_sharing(
+  _cc_helper_get_references_count($data->nid, \'interaction\', \'field_interaction_organization\', array(156)),
+  _cc_helper_sharing($data->nid)//_cc_helper_get_references_count($data->nid, \'interaction\', \'field_interaction_organization\', array(154,155))
+));*/
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';

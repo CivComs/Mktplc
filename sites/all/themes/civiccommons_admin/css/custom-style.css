@@ -40,7 +40,7 @@
   color: #444;
 }
 
-.form-checkboxes div{
+.page-node .form-checkboxes div{
   display: inline-block;
   width: 290px; /*22em*/
   vertical-align: middle;

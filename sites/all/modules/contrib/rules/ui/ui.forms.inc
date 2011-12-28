@@ -162,15 +162,17 @@ function rules_ui_form_execute_rules_config_submit($form, &$form_state) {
  * Gets the confirmation question for valid operations, or else FALSE.
  */
 function rules_ui_confirm_operations($op, $rules_config) {
+  $vars = array('%plugin' => $rules_config->plugin(), '%label' => $rules_config->label());
+
   switch ($op) {
     case 'enable':
-      return t('Are you sure you want to enable the %plugin %label?', array('%plugin' => $rules_config->plugin(), '%label' => $rules_config->label()));
+      return array(t('Are you sure you want to enable the %plugin %label?', $vars), '');
     case 'disable':
-      return t('Are you sure you want to disable the %plugin %label?', array('%plugin' => $rules_config->plugin(), '%label' => $rules_config->label()));
+      return array(t('Are you sure you want to disable the %plugin %label?', $vars), '');
     case 'revert':
-      return t('Are you sure you want to revert the %plugin %label?', array('%plugin' => $rules_config->plugin(), '%label' => $rules_config->label()));
+      return array(t('Are you sure you want to revert the %plugin %label?', $vars), t('This action cannot be undone.'));
     case 'delete':
-      return t('Are you sure you want to delete the %plugin %label?', array('%plugin' => $rules_config->plugin(), '%label' => $rules_config->label()));
+      return array(t('Are you sure you want to delete the %plugin %label?', $vars), t('This action cannot be undone.'));
     default:
       return FALSE;
   }
@@ -180,10 +182,10 @@ function rules_ui_confirm_operations($op, $rules_config) {
  * Confirmation form for applying the operation to the config.
  */
 function rules_ui_form_rules_config_confirm_op($form, &$form_state, $rules_config, $op, $base_path) {
-  if ($confirm_question = rules_ui_confirm_operations($op, $rules_config)) {
+  if (list($confirm_question, $description) = rules_ui_confirm_operations($op, $rules_config)) {
     RulesPluginUI::$basePath = $base_path;
     $form_state += array('rules_config' => $rules_config, 'op' => $op);
-    return confirm_form($form, $confirm_question, $base_path, t('This action cannot be undone.'), t('Confirm'), t('Cancel'));
+    return confirm_form($form, $confirm_question, $base_path, $description, t('Confirm'), t('Cancel'));
   }
   else {
     drupal_not_found();
@@ -314,31 +316,41 @@ function rules_ui_add_element_submit($form, &$form_state) {
  */
 function rules_ui_delete_element($form, &$form_state, $rules_config, $rules_element, $base_path) {
   RulesPluginUI::$basePath = $base_path;
-  $form_state += array('rules_config' => $rules_config, 'rules_element' => $rules_element);
+
+  if (empty($form_state['rules_config'])) {
+    // Before modifying the rules config we have to clone it, so any
+    // modifications won't appear in the static cache of the loading controller.
+    $rules_config = clone $rules_config;
+    // Also get the element from the cloned config.
+    $rules_element = $rules_config->elementMap()->lookup($rules_element->elementId());
+
+    $form_state['rules_config'] = $rules_config;
+    $form_state['rules_element'] = $rules_element;
+    $form_state['element_parent'] = $rules_element->parentElement();
+  }
+
+  // Try deleting the element and warn the user if something breaks, but
+  // save the parent for determining the right redirect target on submit.
+  $removed_plugin = $form_state['rules_element']->plugin();
+  $rules_element->delete();
+
+  if (empty($rules_config->dirty) && empty($form_state['input'])) {
+    try {
+      $rules_config->integrityCheck();
+    }
+    catch (RulesIntegrityException $e) {
+      $args = array(
+        '@plugin' => $e->element->plugin(),
+        '%label' => $e->element->label(),
+        '@removed-plugin' => $removed_plugin,
+        '!url' => url(RulesPluginUI::path($form_state['rules_config']->name, 'edit', $e->element)),
+      );
+      drupal_set_message(t('Deleting this @removed-plugin would break your configuration as some of its provided variables are utilized by the @plugin <a href="!url">%label</a>.', $args), 'warning');
+    }
+  }
+
   $confirm_question = t('Are you sure you want to delete the %element_plugin %element_name?', array('%element_plugin' => $rules_element->plugin(), '%element_name' => $rules_element->label(), '%plugin' => $rules_config->plugin(), '%label' => $rules_config->label()));
   return confirm_form($form, $confirm_question, RulesPluginUI::path($rules_config->name), t('This action cannot be undone.'), t('Delete'), t('Cancel'));
-}
-
-/**
- * Rule config deletion form validation callback.
- */
-function rules_ui_delete_element_validate($form, &$form_state) {
-  // Save the parent for determining the right redirect target on submit.
-  $form_state['element_parent'] = $form_state['rules_element']->parentElement();
-  $removed_plugin = $form_state['rules_element']->plugin();
-  $form_state['rules_element']->delete();
-  try {
-    $form_state['rules_config']->integrityCheck();
-  }
-  catch (RulesIntegrityException $e) {
-    $args = array(
-      '@plugin' => $e->element->plugin(),
-      '%label' => $e->element->label(),
-      '@removed-plugin' => $removed_plugin,
-      '!url' => url(RulesPluginUI::path($form_state['rules_config']->name, 'edit', $e->element)),
-    );
-    form_set_error('', t('Unable to delete the @removed-plugin as some of its provided variables are utilized by the @plugin <a href="!url">%label</a>.', $args));
-  }
 }
 
 /**
@@ -390,7 +402,7 @@ function rules_ui_add_event($form, &$form_state, RulesReactionRule $rules_config
   $events = array_diff_key(rules_fetch_data('event_info'), array_flip($rules_config->events()));
 
   $form['help'] = array(
-    '#markup' => t('Select the event to add, however note that only events providing all utilized variables can be added.'),
+    '#markup' => t('Select the event to add. However note that all added events need to provide all variables that should be available to your rule.'),
   );
   $form['event'] = array(
     '#type' => 'select',
@@ -407,34 +419,36 @@ function rules_ui_add_event($form, &$form_state, RulesReactionRule $rules_config
 }
 
 /**
- * Validate the event configuration.
+ * Submit callback that just adds the selected event.
+ *
+ * @see rules_admin_add_reaction_rule()
  */
-function rules_ui_add_event_validate($form, &$form_state) {
-  if (!empty($form_state['values']['event'])) {
-    $rules_config = $form_state['rules_config'];
-    $rules_config->event($form_state['values']['event']);
-    try {
-      $rules_config->integrityCheck();
-    }
-    catch (RulesIntegrityException $e) {
-      $args = array(
-        '@plugin' => $e->element->plugin(),
-        '%label' => $e->element->label(),
-        '!url' => url(RulesPluginUI::path($form_state['rules_config']->name, 'edit', $e->element)),
-      );
-      form_set_error('', t('Unable to add this event as it does not provide all variables utilized by the @plugin <a href="!url">%label</a>.', $args));
-    }
-  }
+function rules_ui_add_event_apply($form, &$form_state) {
+  $form_state['rules_config']->event($form_state['values']['event']);
 }
 
 /**
  * Submit the event configuration.
  */
 function rules_ui_add_event_submit($form, &$form_state) {
-  if (!empty($form_state['values']['event'])) {
-    $rules_config = $form_state['rules_config'];
-    $rules_config->save();
-    drupal_set_message(t('Added event to rule %label', array('%label' => $rules_config->label())));
+  rules_ui_add_event_apply($form, $form_state);
+  $rules_config = $form_state['rules_config'];
+
+  // Tell the user if this breaks something, but let him proceed.
+  if (empty($rules_config->dirty)) {
+    try {
+      $rules_config->integrityCheck();
+    }
+    catch (RulesIntegrityException $e) {
+      $warning = TRUE;
+      drupal_set_message(t('Added the event, but it does not provide all variables utilized.'), 'warning');
+    }
+  }
+  $rules_config->save();
+  if (!isset($warning)) {
+    $events = rules_fetch_data('event_info');
+    $label = $events[$form_state['values']['event']]['label'];
+    drupal_set_message(t('Added event %event.', array('%event' => $label)));
   }
 }
 
@@ -445,40 +459,32 @@ function rules_ui_remove_event($form, &$form_state, $rules_config, $event, $base
   RulesPluginUI::$basePath = $base_path;
   $form_state += array('rules_config' => $rules_config, 'rules_event' => $event);
   $events = rules_fetch_data('event_info');
-  $event_label = $events[$event]['label'];
-  $confirm_question = t('Are you sure you want to remove the event %event from the %plugin %label?', array('%plugin' => $rules_config->plugin(), '%label' => $rules_config->label(), '%event' => $event_label));
-  return confirm_form($form, $confirm_question, RulesPluginUI::path($rules_config->name), t('This action cannot be undone.'), t('Remove'), t('Cancel'));
-}
-
-/**
- * Validate the event configuration.
- */
-function rules_ui_remove_event_validate($form, &$form_state) {
-  $rules_config = $form_state['rules_config'];
-  $rules_config->removeEvent($form_state['rules_event']);
-  try {
-    $rules_config->integrityCheck();
-  }
-  catch (RulesIntegrityException $e) {
-    $args = array(
-      '@plugin' => $e->element->plugin(),
-      '%label' => $e->element->label(),
-      '!url' => url(RulesPluginUI::path($form_state['rules_config']->name, 'edit', $e->element)),
-    );
-    form_set_error('', t('Unable to remove the event as some of its provided variables are utilized by the @plugin <a href="!url">%label</a>.', $args));
-  }
+  $form_state['event_label'] = $events[$event]['label'];
+  $confirm_question = t('Are you sure you want to remove the event?');
+  return confirm_form($form, $confirm_question, RulesPluginUI::path($rules_config->name), t('You are about to remove the event %event.', array('%event' => $form_state['event_label'])), t('Remove'), t('Cancel'));
 }
 
 /**
  * Submit the event configuration.
  */
 function rules_ui_remove_event_submit($form, &$form_state) {
-  if ($form_state['values']['confirm']) {
-    $rules_config = $form_state['rules_config'];
-    $rules_config->save();
-    $form_state['redirect'] = RulesPluginUI::path($rules_config->name);
-    drupal_set_message(t('Event %event was removed from %plugin %label', array('%event' => $form_state['rules_event'], '%label' => $rules_config->label(), '%plugin' => $rules_config->plugin())));
+  $rules_config = $form_state['rules_config'];
+  $rules_config->removeEvent($form_state['rules_event']);
+  // Tell the user if this breaks something, but let him proceed.
+  if (empty($rules_config->dirty)) {
+    try {
+      $rules_config->integrityCheck();
+    }
+    catch (RulesIntegrityException $e) {
+      $warning = TRUE;
+      drupal_set_message(t('Removed the event, but it had provided some variables which are now missing.'), 'warning');
+    }
   }
+  $rules_config->save();
+  if (!isset($warning)) {
+    drupal_set_message(t('Event %event has been removed.', array('%event' => $form_state['event_label'])));
+  }
+  $form_state['redirect'] = RulesPluginUI::path($rules_config->name);
 }
 
 /**
@@ -602,7 +608,7 @@ function rules_ui_form_data_selection_auto_completion($parameter, $form_build_id
       $attributes = array();
       if (!$last_part || strpos($selector, $string) === 0) {
         $attributes['class'][] = 'rules-dsac-item';
-        $attributes['title'] = isset($info['description']) ? check_plain($info['description']) : '';
+        $attributes['title'] = isset($info['description']) ? strip_tags($info['description']) : '';
         if ($selector[strlen($selector) - 1] == ':') {
           $attributes['class'][] = 'rules-dsac-group';
           $text = check_plain($selector) . '... (' . check_plain($info['label']) . ')';
@@ -718,7 +724,7 @@ function rules_ui_element_duration_multipliers() {
 function rules_ui_element_duration_value($element, $input = FALSE) {
   // This runs before child elements are processed, so we cannot calculate the
   // value here. But we have to make sure the value is an array, so the form
-  // API is able to proccess the children to set their values in the array. Thus
+  // API is able to process the children to set their values in the array. Thus
   // once the form API has finished processing the element, the value is an
   // array containing the child element values. Then finally the after build
   // callback converts it back to the numeric value and sets that.
