@@ -79,11 +79,11 @@ function cc_organization_field_group_info() {
     'label' => 'Main',
     'weight' => '0',
     'children' => array(
-      0 => 'group_organization_contact',
-      1 => 'group_organization_info',
-      2 => 'group_organization_misc',
-      3 => 'group_organization_relationships',
-      4 => 'group_organization_stats',
+      0 => 'group_organization_info',
+      1 => 'group_organization_stats',
+      2 => 'group_organization_relationships',
+      3 => 'group_organization_misc',
+      4 => 'group_organization_contact',
     ),
     'format_type' => 'tabs',
     'format_settings' => array(

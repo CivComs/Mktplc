@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Provides any required installation or upgrade path requirements.
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function disqus_schema() {
+  $schema = array();
+  $schema['disqus'] = array(
+    'fields' => array(
+      'did' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),  
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'status' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('did'),
+    'indexes' => array(
+      'nid' => array('nid'),
+      'status' => array('status'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function disqus_uninstall() {
+  // Remove all Disqus-related variables.
+  db_delete('variable')->condition('name', 'disqus_%', 'LIKE')->execute();
+}
+
+/**
+ * Updates from Drupal 6 to 7.
+ */
+function disqus_update_7000() {
+  // Nothing.
+}
+
+/**
+ * Updates Disqus with support for toggling comments per node.
+ */
+function disqus_update_7001() {
+  if (!db_table_exists('disqus')) {
+    drupal_install_schema('disqus');
+  }
+}
+
