@@ -11,8 +11,15 @@ function cc_formatters_field_formatter_info() {
       'description' => t('Output just the city, state and country part of an address field as a single line of comma-separated text.'),
       'field types' => array('addressfield'),
     ),
+    'using_sharing' => array(
+      'label' => t('Using / Sharing'),
+      'description' => t('Count interactions'),
+      'field types' => array('node_reference', 'addressfield'),
+      'settings' => array('count_by' => 'organization', 'filter_by' => array(), 'appearance' => '')
+    )
   );
 }
+
 function cc_formatters_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   module_load_include('inc', 'cc_formatters', 'cc_formatters');
   if($display['type'] == 'image_content_ref') {
@@ -35,7 +42,7 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
       $a = array_filter($s);
       $e[$delta]['#markup'] = implode(', ', $a);
     }
-  return $e;
+    return $e;
 /*    $element = array();
     $includes = array('dependent_locality', 'locality', 'sub_administrative_area', 'administrative_area', 'country');
     foreach ($items as $delta => $item) {
@@ -60,4 +67,91 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
       return $element;
     }*/
   }
+  else if($display['type'] == 'using_sharing') {
+    if($entity_type != 'node') {
+      return FALSE;
+    }
+    if($entity->type != 'organization') {
+      return FALSE;
+    }
+    module_load_include('inc', 'cc_helper', 'cc_helper');
+    $count_by = isset($display['settings']['count_by']) ? $display['settings']['count_by'] : FALSE;
+    if($count_by == 'organization') {
+      $org = $entity;
+      $tids = array();
+    }
+    else if ($count_by == 'city') {
+      $tids = isset($display['settings']['filter_by']) ? $display['settings']['filter_by'] : FALSE;
+      $org = array();;
+      $fn = 'field_organization_address';
+      $org['locality'] = _cc_helper_field_first_value($entity_type, $entity, $fn, 'locality');
+      $org['country'] = _cc_helper_field_first_value($entity_type, $entity, $fn, 'country');
+      $org['administrative_area'] = _cc_helper_field_first_value($entity_type, $entity, $fn, 'administrative_area');
+    }
+    $ap = isset($display['settings']['appearance']) ? $display['settings']['appearance'] : FALSE;
+    $o = _cc_helper_using_sharing($org, '', $tids);
+    if(!empty($o)) {
+      $r[0]['#markup'] = $o;
+    }
+    else {
+      $r = FALSE;
+    }
+    return $r;
+  }
+}
+
+function cc_formatters_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $disp = $instance['display'][$view_mode];
+  if($disp['type'] == 'using_sharing') {
+    $opts = array(
+      'organization' => t('By organization'),
+      'city' => t('By organizations in the same city')
+    );
+    return t('How to count: "!by".', array('!by' => $opts[$disp['settings']['count_by']]));
+  }
+}
+
+function cc_formatters_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $r = array();
+  $disp = $instance['display'][$view_mode];
+  if($disp['type'] == 'using_sharing') {
+    $sets = $disp['settings'];
+    $class = drupal_html_class($field['field_name'] . '-count-by');
+    $r['count_by'] = array(
+      '#title' => t('How To Count'),
+      '#type' => 'select',
+      '#multiple' => FALSE,
+      '#default_value' => $sets['count_by'],
+      '#attributes' => array('class' => array($class))
+    );
+    $r['count_by']['#options'] = array(
+      'organization' => t('By organization'),
+      'city' => t('By organizations in the same city')
+    );
+    $r['filter_by'] = array(
+      '#title' => t('Filter'),
+      '#type' => 'select',
+      '#description' => t('Count only by organizations of selected types.'),
+      '#multiple' => TRUE,
+      '#default_value' => $sets['filter_by'],
+      '#states' => array('invisible' => array('.' . $class => array('value' => 'organization')))
+    );
+    $r['appearance'] = array(
+      '#title' => t('Appearance'),
+      '#type' => 'select',
+      '#multiple' => FALSE,
+      '#default_value' => $sets['appearance']
+    );
+    $r['appearance']['#options'] = array(
+      '' => t('Default'),
+      'full' => t('Full')
+    );
+    $types = taxonomy_get_tree('13');//13 - "Organization Type" vid.
+    $opts = array();
+    foreach($types as $type) {
+      $opts[$type->tid] = $type->name;
+    }
+    $r['filter_by']['#options'] = $opts;
+  }
+  return $r;
 }

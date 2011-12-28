@@ -430,9 +430,9 @@ function _cc_helper_interactions_in_the_place($place = array(), $types = array()
       $value
     );
   }
-	if(!empty($org_types)){
-		$query->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
-	}
+  if(!empty($org_types)){
+    $query->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
+  }
   $entities = $query->execute();
   $orgs = array();
   if(isset($entities['node'])) {
