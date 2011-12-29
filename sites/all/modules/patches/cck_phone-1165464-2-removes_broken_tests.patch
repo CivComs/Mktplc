@@ -1,0 +1,259 @@
+diff --git a/cck_phone.info b/cck_phone.info
+index a9a0317..c9cb641 100644
+--- a/cck_phone.info
++++ b/cck_phone.info
+@@ -12,8 +12,6 @@ files[] = includes/phone.gb.inc
+ files[] = includes/phone.my.inc
+ files[] = includes/phone.pl.inc
+ files[] = includes/phone.us.inc
+-files[] = tests/cck_phone.crud.test
+-files[] = tests/cck_phone.crud_input.test
+ files[] = tests/phone.gb.test
+ files[] = tests/phone.my.test
+ files[] = tests/phone.us.test
+diff --git a/tests/cck_phone.crud.test b/tests/cck_phone.crud.test
+deleted file mode 100644
+index 5e4d976..0000000
+--- a/tests/cck_phone.crud.test
++++ /dev/null
+@@ -1,48 +0,0 @@
+-<?php
+-
+-/**
+- * @file
+- * Basic CRUD simpletests for the cck_phone module, based off of content.crud.test in CCK.
+- */
+-
+-// Need to include content.crud.test so we can inherit from it's ContentCrudTestCase.
+-require_once(drupal_get_path('module', 'content') . '/tests/content.crud.test');
+-
+-class PhoneNumberContentCrudTest extends ContentCrudTestCase {
+-
+-  function getInfo() {
+-    return array(
+-      'name' => t('Phone Number CRUD - Basic API tests'),
+-      'description' => t('Tests the field CRUD (create, read, update, delete) API. <strong>Requires <a href="@schema_link">Schema module</a>.</strong>', array('@schema_link' => 'http://www.drupal.org/project/schema')),
+-      'group' => t('Phone Number'),
+-    );
+-  }
+-
+-  function setUp() {
+-    parent::setUp('cck_phone');
+-    $this->loginWithPermissions();
+-  }
+-
+-  /**
+-   * All we're doing here is creating a content type, creating a simple
+-   * cck_phone field on that content type, and making sure said field
+-   * exists in the database.
+-   */
+-  function testPhoneNumberCreateFieldAPI() {
+-    $this->acquireContentTypes(1);
+-
+-    $field = $this->createField(array('type' => 'phone_number', 'widget_type' => 'phone_number'), 0);
+-
+-    //$this->pass(print_r($this->content_types, TRUE));
+-    //$this->pass(print_r($field, TRUE));
+-
+-    $table_schema = drupal_get_schema();
+-    //$this->pass(print_r(array_keys($table_schema), TRUE));
+-    // Check the schema - the values should be in the per-type table.
+-    $this->assertSchemaMatchesTables(array(
+-      'per_type' => array(
+-        $this->content_types[0]->type => array($field['field_name'] => array('number', 'country_codes', 'extension')),
+-      ),
+-    ));
+-  }
+-}
+\ No newline at end of file
+diff --git a/tests/cck_phone.crud_input.test b/tests/cck_phone.crud_input.test
+deleted file mode 100644
+index 2155396..0000000
+--- a/tests/cck_phone.crud_input.test
++++ /dev/null
+@@ -1,184 +0,0 @@
+-<?php
+-
+-/**
+- * @file
+- * Testing CRUD API for user input.
+- */
+-
+-// TODO: How to test as mobile user agent?
+-
+-module_load_include('inc', 'cck_phone', 'cck_phone_countrycodes');
+-
+-/**
+- * Testing that users can not input bad phone number or country code
+- */
+-class PhoneNumberUITest extends DrupalWebTestcase {
+-  /**
+-   * Phone number supposed to be good.
+-   */
+-  const PHONENUMBER_INPUT_TYPE_GOOD = 0;
+-
+-  /**
+-   * Phone number supposed to have a bad number.
+-   */
+-  const PHONENUMBER_INPUT_TYPE_BAD_NUMBER = 1;
+-
+-  /**
+-   * Phone number supposed to have a bad country code.
+-   */
+-  const PHONENUMBER_INPUT_TYPE_BAD_CC = 2;
+-
+-  function getInfo() {
+-    return array(
+-      'name' => t('Phone Number CRUD - User input'),
+-      'description' => t('Tests the field CRUD (create, read, update, delete) API input by user.'),
+-      'group' => t('Phone Number'),
+-    );
+-  }
+-
+-  function setUp() {
+-    parent::setUp('content', 'cck_phone');
+-  }
+-
+-  /**
+-   * If we're creating a new field and just hit 'save' on the default options, we want to make
+-   * sure they are set to the expected results.
+-   */
+-  function testPhoneNumberDefaults() {
+-    $account = $this->drupalCreateUser(array('administer content types', 'access content', 'create page content'));
+-    $this->drupalLogin($account);
+-
+-    // create field
+-    $name = drupal_strtolower($this->randomName());
+-    $edit = array(
+-      '_add_new_field[label]' => $name,
+-      '_add_new_field[field_name]' => $name,
+-      '_add_new_field[type]' => 'phone_number',
+-      '_add_new_field[widget_type]' => 'phone_number',
+-    );
+-    $this->drupalPost('admin/content/node-type/page/fields', $edit, t('Save'));
+-    $this->drupalPost(NULL, array(), t('Save field settings'));
+-
+-    // Is field created?
+-    $this->assertRaw(t('Added field %label.', array('%label' => $name)), 'Field added');
+-    _content_type_info(TRUE);
+-    $fields = content_fields();
+-    $field = $fields['field_' . $name];
+-    $this->assertFalse($field['required'], 'Make sure field is not required.');
+-    $this->assertEqual($field['default_country'], 'af', 'Default country is first in list, af.');
+-    $this->assertTrue(1 === $field['all_country_codes'], 'Make sure Show all country codes is on.');
+-    $this->assertTrue($field['enable_custom_country'], 'Custom country level is on by default.');
+-    $this->assertFalse($field['enable_extension'], 'Phone extension is off by default.');
+-    $this->assertFalse($field['enable_mobile'], 'Mobile detection is off by default.');
+-//    $this->assertFalse($field['enable_tokens'], 'Enable Tokens should be off by default.');
+-  }
+-
+-  /**
+-   * Creates a cck_phone field for the "page" type and creates a page with a cck_phone.
+-   */
+-  function testPhoneNumberCreate() {
+-    $account = $this->drupalCreateUser(array('administer content types', 'access content', 'create page content'));
+-    $this->drupalLogin($account);
+-
+-    // create field
+-    $name = drupal_strtolower($this->randomName());
+-    $edit = array(
+-      '_add_new_field[label]' => $name,
+-      '_add_new_field[field_name]' => $name,
+-      '_add_new_field[type]' => 'phone_number',
+-      '_add_new_field[widget_type]' => 'phone_number',
+-    );
+-    $this->drupalPost('admin/content/node-type/page/fields', $edit, t('Save'));
+-    $this->drupalPost(NULL, array(
+-      'all_country_codes' => TRUE,
+-      'enable_custom_country' => TRUE,
+-    ), t('Save field settings'));
+-
+-    // Is field created?
+-    $this->assertRaw(t('Added field %label.', array('%label' => $name)), 'Field added');
+-
+-    // Create page form
+-    $this->drupalGet('node/add/page');
+-    $field_name = 'field_' . $name;
+-    $this->assertField($field_name . '[0][number]', 'Number found');
+-    $this->assertField($field_name . '[0][country_codes]', 'Country codes found');
+-
+-    // Select a random country code
+-    $countrycodes = cck_phone_countrycodes();
+-    $cc_keys = array_keys($countrycodes);
+-    $cc = $cc_keys[mt_rand(0, count($cc_keys))];
+-
+-    $bad_cc = $this->randomString(2);
+-    while (in_array($bad_cc, $cc_keys)) {
+-      $bad_cc = $this->randomString(2);
+-    }
+-
+-    $input_test_cases = array(
+-      array(
+-        'number' => strval(mt_rand(10000, 9999999999)),
+-        'cc' => $cc,
+-        'msg' => 'Number found',
+-        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+-      ),
+-      array(
+-        'number' => strval(mt_rand(100, 999)) . '-' . strval(mt_rand(1000, 9999)),
+-        'cc' => $cc,
+-        'msg' => 'Number found',
+-        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+-      ),
+-      array(
+-        'number' => '(' . strval(mt_rand(100, 999)) . ') ' . strval(mt_rand(1000, 9999)),
+-        'cc' => $cc,
+-        'msg' => 'Number found',
+-        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+-      ),
+-      array(
+-        'number' => strval(mt_rand(100, 999)) . ' ' . strval(mt_rand(1000, 9999)),
+-        'cc' => $cc,
+-        'msg' => 'Number found',
+-        'type' => self::PHONENUMBER_INPUT_TYPE_GOOD
+-      ),
+-      array(
+-        'number' => strval(mt_rand(1000000000000000, 99999999999999999)),
+-        'cc' => $cc,
+-        'msg' => 'Number too long',
+-        'type' => self::PHONENUMBER_INPUT_TYPE_BAD_NUMBER
+-      ),
+-      array(
+-        'number' => $this->randomString(8),
+-        'cc' => $cc,
+-        'msg' => 'non digit',
+-        'type' => self::PHONENUMBER_INPUT_TYPE_BAD_NUMBER
+-      ),
+-    );
+-    foreach ($input_test_cases as $input) {
+-      $this->drupalLogin($account);
+-      $this->drupalGet('node/add/page');
+-
+-      $edit = array(
+-        'title' => $input['number'],
+-        $field_name . '[0][number]' => $input['number'],
+-        $field_name . '[0][country_codes]' => $input['cc'],
+-      );
+-      $this->drupalPost(NULL, $edit, t('Save'));
+-      if ($input['type'] == self::PHONENUMBER_INPUT_TYPE_BAD_NUMBER) {
+-        $this->assertRaw(t('number must be digit only.', array('%input' => $input['number'])), 'Not a valid number: ' . $input['number']);
+-        continue;
+-      }
+-      else {
+-        $this->assertRaw(t('@type %title has been created.', array('@type' => 'Page', '%title' => $edit['title'])), 'Page created: ' . $input['number']);
+-      }
+-      $url = $this->getUrl();
+-
+-      // Change to anonymous user
+-      $this->drupalLogout();
+-
+-      $this->drupalGet($url);
+-
+-      if ($input['type'] == self::PHONENUMBER_INPUT_TYPE_GOOD) {
+-        $phone_output = $countrycodes[$input['cc']]['code'] . '-' . cck_phone_clean_number($input['number']);
+-        $this->assertRaw($phone_output);
+-      }
+-    }
+-  }
+-}
+\ No newline at end of file

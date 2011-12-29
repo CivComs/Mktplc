@@ -167,7 +167,7 @@ function cc_organization_field_default_fields() {
           'size' => '7',
         ),
         'type' => 'text_textfield',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -661,7 +661,7 @@ function cc_organization_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '11',
+        'weight' => '10',
       ),
     ),
   );

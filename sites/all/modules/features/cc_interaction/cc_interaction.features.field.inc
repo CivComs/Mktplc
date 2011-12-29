@@ -67,7 +67,7 @@ function cc_interaction_field_default_fields() {
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'inline',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -144,7 +144,7 @@ function cc_interaction_field_default_fields() {
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -159,7 +159,7 @@ function cc_interaction_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_interaction_content',
-      'label' => 'The story',
+      'label' => 'Details',
       'required' => 0,
       'settings' => array(
         'text_processing' => '1',
@@ -323,7 +323,7 @@ function cc_interaction_field_default_fields() {
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'inline',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -413,7 +413,7 @@ function cc_interaction_field_default_fields() {
           'weight' => 0,
         ),
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_plain',
@@ -447,7 +447,7 @@ function cc_interaction_field_default_fields() {
   $fields['node-interaction-field_url'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_url',
@@ -499,7 +499,7 @@ function cc_interaction_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_url',
-      'label' => 'Link',
+      'label' => 'Link(s)',
       'required' => 0,
       'settings' => array(
         'attributes' => array(
@@ -528,10 +528,10 @@ function cc_interaction_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Details');
   t('Did what');
-  t('Link');
+  t('Link(s)');
   t('The Application involved in this story -- start typing to choose from a list, or click "Create Application" to add a new one.');
-  t('The story');
   t('What did they do?');
   t('What happened?  Optionally, describe this story in a bit more detail. ');
   t('What organization or company is involved in this story?  Start typing to choose from existing options, or click "Create Organization" to create a new one.');

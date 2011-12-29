@@ -114,7 +114,8 @@ function cc_application_field_group_info() {
       3 => 'field_application_description',
       4 => 'field_application_civfunction',
       5 => 'field_application_homepage',
-      6 => 'title',
+      6 => 'field_application_tags',
+      7 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -252,8 +253,8 @@ function cc_application_field_group_info() {
     'weight' => '1',
     'children' => array(
       0 => 'field_application_type',
-      1 => 'field_application_rating',
-      2 => 'field_application_ss_id',
+      1 => 'field_application_ss_id',
+      2 => 'field_application_rating',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

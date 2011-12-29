@@ -5,6 +5,12 @@
  * Rules base classes and interfaces needed for any rule evaluation.
  */
 
+// This is not necessary as the classes are autoloaded via the registry. However
+// it saves some possible update headaches until the registry is rebuilt.
+// @todo
+//   Remove for a future release.
+require_once dirname(__FILE__) . '/faces.inc';
+
 /**
  * Make sure loaded rule configs are instantiated right.
  */
@@ -16,6 +22,22 @@ class RulesEntityController extends EntityAPIControllerExportable {
    */
   protected function attachLoad(&$queried_entities, $revision_id = FALSE) {
     // Retrieve stdClass records and turn them in rules objects stored in 'data'
+    $ids = array_keys($queried_entities);
+    $result = db_select('rules_tags')
+      ->fields('rules_tags', array('id', 'tag'))
+      ->condition('id', $ids, 'IN')
+      ->execute();
+    foreach ($result as $row) {
+      $tags[$row->id][] = $row->tag;
+    }
+    $result = db_select('rules_dependencies')
+      ->fields('rules_dependencies', array('id', 'module'))
+      ->condition('id', $ids, 'IN')
+      ->execute();
+    foreach ($result as $row) {
+      $modules[$row->id][] = $row->module;
+    }
+
     $entities = array();
     foreach ($queried_entities as $record) {
       $entity = $record->data;
@@ -24,17 +46,9 @@ class RulesEntityController extends EntityAPIControllerExportable {
         $entity->$field = $record->$field;
       }
       unset($entity->data, $entity->plugin);
-      // Load possible tags.
-      $entity->tags = db_select('rules_tags')
-        ->fields('rules_tags', array('tag'))
-        ->condition('id', $entity->id)
-        ->execute()
-        ->fetchCol('tag');
-      $entity->dependencies = db_select('rules_dependencies')
-        ->fields('rules_dependencies', array('module'))
-        ->condition('id', $entity->id)
-        ->execute()
-        ->fetchCol('module');
+      // Add any tags or dependencies.
+      $entity->dependencies = isset($modules[$entity->id]) ? $modules[$entity->id] : array();
+      $entity->tags = isset($tags[$entity->id]) ? $tags[$entity->id] : array();
       $entities[$entity->id] = $entity;
     }
     $queried_entities = $entities;
@@ -427,6 +441,7 @@ abstract class RulesPlugin extends RulesExtendable {
 
   /**
    * Gets the element map helper object, which helps mapping elements to ids.
+   *
    * @return RulesElementMap
    */
   public function elementMap() {
@@ -435,6 +450,15 @@ abstract class RulesPlugin extends RulesExtendable {
       $config->map = new RulesElementMap($config);
     }
     return $config->map;
+  }
+
+  /**
+   * Do a deep clone.
+   */
+  public function __clone() {
+    // Make sure the element map is cleared.
+    // @see self::elementMap()
+    unset($this->map);
   }
 
   /**
@@ -1343,7 +1367,7 @@ abstract class RulesAbstractPlugin extends RulesPlugin {
     // Make sure the element is known.
     $this->forceSetUp();
     if (!isset($this->cache[$this->itemName . '_info'][$this->elementName])) {
-      throw new RulesIntegrityException(t('Unkown @plugin %name.', array('@plugin' => $this->plugin(), '%name' => $this->elementName)));
+      throw new RulesIntegrityException(t('Unknown @plugin %name.', array('@plugin' => $this->plugin(), '%name' => $this->elementName)));
     }
     $this->validate();
     return $this;
@@ -1946,6 +1970,7 @@ abstract class RulesContainerPlugin extends RulesPlugin implements IteratorAggre
    * By default we do a deep clone.
    */
   public function __clone() {
+    parent::__clone();
     foreach ($this->children as $key => $child) {
       $this->children[$key] = clone $child;
       $this->children[$key]->parent = $this;
