@@ -147,7 +147,7 @@ body.page-preview input[type="submit"] {
 .views-row .views-field-created,
 .view-cc-organizations .views-field-php,
 #block-views-places-block-2 .views-field-php,
-#block-views-places-block-1 .views-field-php-3,
+#block-views-places-block-1 .views-field-field-organization-address-2,
 .views-field-count,
 .views-field-field-interaction-date {
   position: absolute;
@@ -1621,7 +1621,7 @@ button:visited, input[type="reset"]:visited, input[type="submit"]:visited, input
 }
 
 /* Homepage Grid sharing/using icons */
-.views-view-grid .views-field-php-3 {
+.views-view-grid .views-field-field-organization-address-2 {
   top: 2px; /* homepage grid needs to be tighter */
 }
 
@@ -1722,7 +1722,7 @@ body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.view
   width:45%;
 }
 
-body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3{
+body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-field-organization-address-2{
   color: #808080;
   float: right;
   overflow: hidden;
@@ -2259,7 +2259,7 @@ body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.view
 	}
 	/*.view-cc-organizations .views-field-php,
 	#block-views-places-block-2 .views-field-php,
-	#block-views-places-block-1 .views-field-php-3{
+	#block-views-places-block-1 .views-field-field-organization-address-2{
 		float:right;
 		margin-top:-40px;
 	}*/
@@ -2273,18 +2273,18 @@ body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.view
 		text-transform: lowercase;
 	}
 	.view-cc-organizations .views-field-php .cc-org-prefix-sharing,
-	#block-views-places-block-1 .views-field-php-3 .cc-org-prefix-sharing,
+	#block-views-places-block-1 .views-field-field-organization-address-2 .cc-org-prefix-sharing,
 	#block-views-places-block-2 .views-field-php .cc-org-prefix-sharing	{
 		background-position: center top;
 	}
 	.view-cc-organizations .views-field-php .cc-org-count,
-	#block-views-places-block-1 .views-field-php-3 .cc-org-count,
+	#block-views-places-block-1 .views-field-field-organization-address-2 .cc-org-count,
 	#block-views-places-block-2 .views-field-php .cc-org-count{
 		color: #808080;
 		font-weight: bold;
 	}
 	.view-cc-organizations .views-field-php .cc-org-postfix,
-	#block-views-places-block-1 .views-field-php-3 .cc-org-postfix,
+	#block-views-places-block-1 .views-field-field-organization-address-2 .cc-org-postfix,
 	#block-views-places-block-2 .views-field-php .cc-org-postfix{
 		display:none;
 	}
@@ -2462,24 +2462,24 @@ body.front .container-16 .grid-11 #block-views-apps-browse-by-block-2 table.view
 		min-height:60px;
 		width:55%;
 	}
-	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3{
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-field-organization-address-2{
 		float: right;
 		overflow: hidden;
 		width: 150px;
 		color:#808080;
 	}
 	.view-places .views-field-php,
-	.view-places .views-field-php-3,
+	.view-places .views-field-field-organization-address-2,
 	.view-cc-organizations .views-field-php{
 		width:150px;
 	}
-	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3 .cc-org-count {
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-field-organization-address-2 .cc-org-count {
 		color:#808080;
 	}
-	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3 .cc-org-postfix{
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-field-organization-address-2 .cc-org-postfix{
 		display:none;
 	}
-	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-php-3 .cc-org-apps {   
+	.container-16 .grid-11 #block-views-apps-browse-by-block-2 table.views-view-grid .col-1 .views-field-field-organization-address-2 .cc-org-apps {   
 		margin-bottom: 0;
 	}
 /* --------- Sidebar Second ------------ */
