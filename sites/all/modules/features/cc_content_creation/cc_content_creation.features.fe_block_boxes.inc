@@ -11,6 +11,19 @@ function cc_content_creation_default_fe_block_boxes() {
   $export = array();
 
   $fe_block_boxes = new stdClass;
+  $fe_block_boxes->info = 'beta';
+  $fe_block_boxes->format = 'full_html';
+  $fe_block_boxes->machine_name = 'betablock';
+  $fe_block_boxes->body = '<span class="construction">Under Construction: <span class="red">We\'re in Beta</span>
+</span>
+<span class="build">You should help us Build:
+<a href="/node/add/application">add an app</a>
+<a href="/node/add/organization">add an org</a>
+</span>';
+
+  $export['betablock'] = $fe_block_boxes;
+
+  $fe_block_boxes = new stdClass;
   $fe_block_boxes->info = 'Add to the Market Place';
   $fe_block_boxes->format = 'full_html';
   $fe_block_boxes->machine_name = 'cc_add_to_marketplace';
