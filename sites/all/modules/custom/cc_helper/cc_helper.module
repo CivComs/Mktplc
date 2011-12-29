@@ -230,6 +230,54 @@ function cc_helper_user_view_alter(&$build) {
   }
 }
 
+function _cc_helper_field_first_value($entity_type, $entity, $field_name, $key = 'value') {
+  $items = field_get_items($entity_type, $entity, $field_name);
+  return isset($items[0][$key]) ? $items[0][$key] : FALSE;
+}
+
+/* $node - node ID or object. */
+function _cc_helper_published($node) {
+  if(is_object($node)) {
+    if(property_exists($node, 'status') == TRUE) {//Object.
+      return $node->status;
+    }else {
+      return FALSE;
+    }
+  }
+  else {
+    if(ctype_digit($node)) {//ID.
+      $q = new EntityFieldQuery();
+      $q->entityCondition('entity_type', 'node');
+      $q->propertyCondition('status', 1);
+      $q->propertyCondition('nid', $node);
+      $ents = $q->execute();
+      return !empty($ents); 
+    }
+    else {
+      return FALSE;
+    }
+  }
+  return $p;
+}
+
+/* $int - interaction id or object. */
+function  _cc_helper_interaction_validate($int) {
+  $node = ctype_digit($int) ? node_load($int) : $int;
+  $org = _cc_helper_field_first_value('node', $node, 'field_interaction_organization', 'nid');
+  $type = _cc_helper_field_first_value('node', $node, 'field_interaction_type', 'tid');
+  $app = _cc_helper_field_first_value('node', $node, 'field_interaction_application', 'nid');
+  if(
+    empty($org)
+    || empty($type)
+    || empty($app)
+  ) {
+    return FALSE;
+  }
+  else {
+    return _cc_helper_published($org) && _cc_helper_published($app);
+  }
+}
+
 /* Helper stats functions */
 function _cc_helper_get_references_count($nid = NULL, $ref_content_type = 'interaction', $ref_field = 'field_interaction_application', $tids = array()) {
   $count = 0;
@@ -244,8 +292,15 @@ function _cc_helper_get_references_count($nid = NULL, $ref_content_type = 'inter
     $entities = $query
       ->propertyCondition('status', 1)
       ->execute();
+    if($ref_content_type == 'interaction') {
+      $nids = array_keys(isset($entities['node']) ? $entities['node'] : array());
+      $ints = array_filter($nids, '_cc_helper_interaction_validate');
+    }
+    else {
+      $ints = array_keys($entities['node']);
+    }
     if($entities) {
-      $count += count($entities['node']);
+      $count += count($ints);
     }
   }
   else {
@@ -261,8 +316,15 @@ function _cc_helper_get_references_count($nid = NULL, $ref_content_type = 'inter
       $entities = $query
         ->propertyCondition('status', 1)
         ->execute();
+      if($ref_content_type == 'interaction') {
+        $nids = array_keys(isset($entities['node']) ? $entities['node'] : array());
+        $ints = array_filter($nids, '_cc_helper_interaction_validate');
+      }
+      else {
+        $ints = array_keys($entities['node']);
+      }
       if($entities) {
-        $count += count($entities['node']);
+        $count += count($ints);
       }
     }
   }
@@ -368,9 +430,9 @@ function _cc_helper_interactions_in_the_place($place = array(), $types = array()
       $value
     );
   }
-	if(!empty($org_types)){
-		$query->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
-	}
+  if(!empty($org_types)){
+    $query->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
+  }
   $entities = $query->execute();
   $orgs = array();
   if(isset($entities['node'])) {
@@ -472,6 +534,16 @@ function cc_helper_block_view_alter(&$data, $block){
 }*/
 
 function cc_helper_form_interaction_node_form_alter(&$form, &$form_state) {
+  if(
+    request_path() == 'node/add/interaction'
+    && array_key_exists('interaction_id', $_GET)
+    && array_key_exists('app_id', $_GET)
+    && array_key_exists('field_interaction_application', $form)
+    && array_key_exists('field_interaction_type', $form)
+  ) {
+    $form['field_interaction_application']['und'][0]['nid']['#default_value'] = $_GET['app_id'];
+    $form['field_interaction_type']['und']['#default_value'] = $_GET['interaction_id'];
+  }
   // Redirect form to referrer if there is already one not
   // set.
   if ($_SERVER['HTTP_REFERER']) {

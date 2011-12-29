@@ -1,0 +1,35 @@
+/**
+ * @file
+ * Main CSS file for the CC API module.
+ */
+ 
+h2 {
+  font-size: 3em !important;
+}
+h3 {
+  font-size: 2.5em !important;
+}
+h4 {
+  font-size: 2em !important;
+}
+h5 {
+  font-size: 1.5em !important;
+}
+h6 {
+  font-size: 1.1em !important;
+}
+
+.toc-top-link {
+  float: left;
+  font-size: 12px;
+  margin-left: -33px;
+  padding: 0 5px;
+  margin-top: 12px;
+}
+
+.api-toc-container {
+  font-size: .8em;
+  background-color: #EEEEEE;
+  border-radius: 3px;
+  padding: 10px 10px 10px 40px;
+}

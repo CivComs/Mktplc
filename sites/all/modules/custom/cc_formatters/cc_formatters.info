@@ -6,4 +6,5 @@ files[] = cc_formatters.module
 files[] = cc_formatters.js
 files[] = cc_formatters.inc
 dependencies[] = shadowbox
+dependencies[] = cc_helper
 package = Warecorp

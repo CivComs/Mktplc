@@ -1,5 +1,13 @@
 /* Nicks CSS */
 
+/* Homepage */
+
+body.front .view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps {
+  /*margin-left: 110px;
+  width: 120px;*/
+}
+
+
 .region-content .field-name-field-application-screenshots .field-items .field-item img {
   margin: 10px 0;
 }

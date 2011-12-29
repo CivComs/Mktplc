@@ -3560,7 +3560,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '4';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '6';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'grid';
@@ -3761,51 +3761,41 @@ return _cc_helper_using($place);';
 return _cc_helper_sharing($place);';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
-  /* Field: PHP: Using / Sharing */
-  $handler->display->display_options['fields']['php_3']['id'] = 'php_3';
-  $handler->display->display_options['fields']['php_3']['table'] = 'views';
-  $handler->display->display_options['fields']['php_3']['field'] = 'php';
-  $handler->display->display_options['fields']['php_3']['ui_name'] = 'PHP: Using / Sharing';
-  $handler->display->display_options['fields']['php_3']['label'] = '';
-  $handler->display->display_options['fields']['php_3']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['text'] = '<div class="cc-org-apps"><div class="cc-org-postfix">apps</div><div class="cc-org-prefix-using">Using</div> <div class="cc-org-count cc-using">[php]</div> </div>';
-  $handler->display->display_options['fields']['php_3']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['path'] = '[field_organization_address_1]';
-  $handler->display->display_options['fields']['php_3']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['php_3']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['php_3']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['php_3']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['php_3']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['php_3']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['php_3']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['php_3']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['php_3']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
-$place = array(
-  \'locality\' =>
-    isset($data->field_data_field_organization_address_field_organization_add)
-    ? $data->field_data_field_organization_address_field_organization_add
-    : NULL,
-  \'country\' =>
-    isset($data->field_data_field_organization_address_field_organization_add_1)
-    ? $data->field_data_field_organization_address_field_organization_add_1
-    : NULL,
-  \'administrative_area\' =>
-    isset($data->field_data_field_organization_address_field_organization_add_2)
-    ? $data->field_data_field_organization_address_field_organization_add_2
-    : NULL
-);
-echo _cc_helper_using_sharing($place, \'full\');
-?>';
-  $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
+  /* Field: Content: Street address */
+  $handler->display->display_options['fields']['field_organization_address_2']['id'] = 'field_organization_address_2';
+  $handler->display->display_options['fields']['field_organization_address_2']['table'] = 'field_data_field_organization_address';
+  $handler->display->display_options['fields']['field_organization_address_2']['field'] = 'field_organization_address';
+  $handler->display->display_options['fields']['field_organization_address_2']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_address_2']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_organization_address_2']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['click_sort_column'] = 'country';
+  $handler->display->display_options['fields']['field_organization_address_2']['type'] = 'using_sharing';
+  $handler->display->display_options['fields']['field_organization_address_2']['settings'] = array(
+    'count_by' => 'city',
+    'filter_by' => array(),
+    'appearance' => '',
+  );
+  $handler->display->display_options['fields']['field_organization_address_2']['group_column'] = 'locality';
+  $handler->display->display_options['fields']['field_organization_address_2']['group_columns'] = array(
+    'country' => 'country',
+    'administrative_area' => 'administrative_area',
+  );
+  $handler->display->display_options['fields']['field_organization_address_2']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Global: PHP */
   $handler->display->display_options['sorts']['php']['id'] = 'php';
@@ -5421,7 +5411,6 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['field_application_softfunction']['table'] = 'field_data_field_application_softfunction';
   $handler->display->display_options['fields']['field_application_softfunction']['field'] = 'field_application_softfunction';
   $handler->display->display_options['fields']['field_application_softfunction']['label'] = '';
-  $handler->display->display_options['fields']['field_application_softfunction']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_application_softfunction']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_application_softfunction']['alter']['text'] = '[field_application_civfunction]';
   $handler->display->display_options['fields']['field_application_softfunction']['alter']['make_link'] = 0;
@@ -5696,8 +5685,6 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['field_application_civfunction']['id'] = 'field_application_civfunction';
   $handler->display->display_options['fields']['field_application_civfunction']['table'] = 'field_data_field_application_civfunction';
   $handler->display->display_options['fields']['field_application_civfunction']['field'] = 'field_application_civfunction';
-  $handler->display->display_options['fields']['field_application_civfunction']['label'] = 'Civic function';
-  $handler->display->display_options['fields']['field_application_civfunction']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_application_civfunction']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_application_civfunction']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['field_application_civfunction']['alter']['absolute'] = 0;
@@ -5725,7 +5712,8 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = 'Tags';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Categories';
+  $handler->display->display_options['fields']['nothing']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nothing']['alter']['text'] = '[field_application_civfunction] [field_application_softfunction]';
   $handler->display->display_options['fields']['nothing']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['nothing']['alter']['absolute'] = 0;
@@ -5744,6 +5732,32 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['fields']['nothing']['hide_empty'] = 0;
   $handler->display->display_options['fields']['nothing']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nothing']['hide_alter_empty'] = 0;
+  /* Field: Content: Tags */
+  $handler->display->display_options['fields']['field_application_tags']['id'] = 'field_application_tags';
+  $handler->display->display_options['fields']['field_application_tags']['table'] = 'field_data_field_application_tags';
+  $handler->display->display_options['fields']['field_application_tags']['field'] = 'field_application_tags';
+  $handler->display->display_options['fields']['field_application_tags']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['element_label_colon'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_application_tags']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['group_rows'] = 1;
+  $handler->display->display_options['fields']['field_application_tags']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_application_tags']['delta_reversed'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['delta_first_last'] = 0;
+  $handler->display->display_options['fields']['field_application_tags']['field_api_classes'] = 0;
   $handler->display->display_options['block_description'] = 'At a glance (Apps)';
 
   /* Display: Places / add a place (App) */
@@ -5898,9 +5912,10 @@ echo(\'<div class="views-field views-field-field-application-used-in"> <span cla
   /* Display: Block: Civic Function (Apps page) */
   $handler = $view->new_display('block', 'Block: Civic Function (Apps page)', 'block');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Browse by Function';
+  $handler->display->display_options['title'] = 'Browse Apps by Function';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'grid';
+  $handler->display->display_options['style_options']['columns'] = '3';
   $handler->display->display_options['style_options']['fill_single_line'] = 1;
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
