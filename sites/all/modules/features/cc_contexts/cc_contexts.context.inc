@@ -490,13 +490,13 @@ function cc_contexts_context_default_contexts() {
           'module' => 'views',
           'delta' => 'cc_organizations-block_3',
           'region' => 'content_leftcolumn',
-          'weight' => '-8',
+          'weight' => '-9',
         ),
         'views-cc_organizations-block_1' => array(
           'module' => 'views',
           'delta' => 'cc_organizations-block_1',
           'region' => 'content_leftcolumn',
-          'weight' => '-7',
+          'weight' => '-8',
         ),
         'views-interactions-block_4' => array(
           'module' => 'views',
