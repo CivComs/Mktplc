@@ -783,13 +783,17 @@ h2.block-title,
          box-shadow: 0 1px 8px 1px #DED8D8;
 }
 
-.add-to-marketplace, .edit_block{
+.add-to-marketplace,
+.edit_block,
+.block-cc-editing {
   border: 3px dashed #FDE9BC;
   text-align: center;
 }
 
 
-.add-to-marketplace .add-button, .edit_block .add-button{
+.add-to-marketplace .add-button,
+.edit_block .add-button,
+.block-cc-editing .add-button {
   display: block;
   background-image: url('../images/buttonbg.png');
   width: 220px;
@@ -844,9 +848,21 @@ h2.block-title,
   list-style:none;
 }
 
-.block.add-to.marketplace p, .block.edit_block p{
+.block.add-to.marketplace p,
+.block.edit_block p, {
   margin 15px 0px 0px 0px;
   font-size: 1.2em;
+}
+
+.block-cc-editing {
+  font-size: 1.2em;
+  text-align: center;
+}
+.block-cc-editing .cc-editing-node-edit-button {
+  margin-bottom: 10px;
+}
+.block-cc-editing .cc-editing-node-edit-revision-count {
+  font-style: italic;
 }
 
 .example {
