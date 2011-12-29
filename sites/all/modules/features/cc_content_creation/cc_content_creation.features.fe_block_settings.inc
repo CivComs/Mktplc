@@ -44,6 +44,20 @@ software-licenses/*',
     'machine_name' => 'cc_jm_add_content',
   );
 
+  $theme['block-betablock'] = array(
+    'module' => 'block',
+    'theme' => 'alpha',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
+    'machine_name' => 'betablock',
+  );
+
   $theme['menu-menu-add-content'] = array(
     'module' => 'menu',
     'delta' => 'menu-add-content',
@@ -92,6 +106,20 @@ software-licenses/*',
     'title' => '<none>',
     'cache' => -1,
     'machine_name' => 'cc_jm_add_content',
+  );
+
+  $theme['block-betablock'] = array(
+    'module' => 'block',
+    'theme' => 'bartik',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
+    'machine_name' => 'betablock',
   );
 
   $theme['menu-menu-add-content'] = array(
@@ -144,6 +172,20 @@ software-licenses/*',
     'machine_name' => 'cc_jm_add_content',
   );
 
+  $theme['block-betablock'] = array(
+    'module' => 'block',
+    'theme' => 'civiccommons',
+    'status' => '1',
+    'weight' => '0',
+    'region' => 'branding',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
+    'machine_name' => 'betablock',
+  );
+
   $theme['menu-menu-add-content'] = array(
     'module' => 'menu',
     'delta' => 'menu-add-content',
@@ -194,6 +236,20 @@ software-licenses/*',
     'machine_name' => 'cc_jm_add_content',
   );
 
+  $theme['block-betablock'] = array(
+    'module' => 'block',
+    'theme' => 'omega',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
+    'machine_name' => 'betablock',
+  );
+
   $theme['menu-menu-add-content'] = array(
     'module' => 'menu',
     'delta' => 'menu-add-content',
@@ -242,6 +298,20 @@ software-licenses/*',
     'title' => '<none>',
     'cache' => -1,
     'machine_name' => 'cc_jm_add_content',
+  );
+
+  $theme['block-betablock'] = array(
+    'module' => 'block',
+    'theme' => 'seven',
+    'status' => 0,
+    'weight' => '0',
+    'region' => '',
+    'custom' => '0',
+    'visibility' => '0',
+    'pages' => '',
+    'title' => '',
+    'cache' => -1,
+    'machine_name' => 'betablock',
   );
 
   $theme['menu-menu-add-content'] = array(
