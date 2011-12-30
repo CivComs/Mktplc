@@ -247,6 +247,7 @@ function cc_api_display_documentation($apis) {
               $output .= '
                 <h6>' . $action['name'] . '</h6>
                 <p>' . $action['description'] . '</p>
+                <p><strong>Method:</strong> ' . $action['method'] . '</p>
               ';
               
               // Arguments
@@ -404,16 +405,15 @@ Content-Type: text/plain
  * Add meta data to resources.
  */
 function cc_api_documentation_page_resources(&$resources, $url) {
-  
   $method_map = array(
-    'retrieve'         => 'GET',
-    'update'           => 'PUT',
-    'delete'           => 'DELETE',
-    'index'            => 'GET',
-    'create'           => 'POST',
-    'actions'          => 'POST',
+    'retrieve' => 'GET',
+    'update' => 'PUT',
+    'delete' => 'DELETE',
+    'index' => 'GET',
+    'create' => 'POST',
+    'actions' => 'POST',
     'targeted actions' => 'POST',
-    'relationships'    => 'GET',
+    'relationships' => 'GET',
   );
   
   $resources_meta = array(
@@ -434,6 +434,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment/ ????',
             ),
           ),
+          'method' => $method_map['create'],
         ),
         'retrieve' => array(
           'name' => t('Retrieve Comments'),
@@ -445,6 +446,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment/:cid',
             ),
           ),
+          'method' => $method_map['retrieve'],
         ),
         'update' => array(
           'name' => t('Update Comment'),
@@ -456,6 +458,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment/ ?????',
             ),
           ),
+          'method' => $method_map['update'],
         ),
         'delete' => array(
           'name' => t('Delete Comment'),
@@ -467,6 +470,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment/ ?????',
             ),
           ),
+          'method' => $method_map['delete'],
         ),
         'index' => array(
           'name' => t('Search Comment'),
@@ -478,6 +482,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
       'actions' => array(
@@ -493,6 +498,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
         'countNew' => array(
           'name' => t('Count New Comments per Node'),
@@ -504,6 +510,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
     ),
@@ -524,6 +531,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node/ ????',
             ),
           ),
+          'method' => $method_map['create'],
         ),
         'retrieve' => array(
           'name' => t('Retrieve Nodes'),
@@ -535,6 +543,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node/:nid',
             ),
           ),
+          'method' => $method_map['retrieve'],
         ),
         'update' => array(
           'name' => t('Update Node'),
@@ -546,6 +555,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node/ ?????',
             ),
           ),
+          'method' => $method_map['update'],
         ),
         'delete' => array(
           'name' => t('Delete Node'),
@@ -557,6 +567,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node/ ?????',
             ),
           ),
+          'method' => $method_map['delete'],
         ),
         'index' => array(
           'name' => t('Search Nodes'),
@@ -568,6 +579,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
       'relationships' => array(
@@ -583,6 +595,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node ?????',
             ),
           ),
+          'method' => $method_map['index'], // ???
         ),
         'comments' => array(
           'name' => t('New Comments Attached to Node'),
@@ -594,6 +607,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
     ),
@@ -613,6 +627,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term/ ????',
             ),
           ),
+          'method' => $method_map['create'],
         ),
         'retrieve' => array(
           'name' => t('Retrieve Term'),
@@ -624,6 +639,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term/:tid',
             ),
           ),
+          'method' => $method_map['retrieve'],
         ),
         'update' => array(
           'name' => t('Update Term'),
@@ -635,6 +651,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
             ),
           ),
+          'method' => $method_map['update'],
         ),
         'delete' => array(
           'name' => t('Delete Term'),
@@ -646,6 +663,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
             ),
           ),
+          'method' => $method_map['delete'],
         ),
         'index' => array(
           'name' => t('Search Terms'),
@@ -657,6 +675,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
       'actions' => array(
@@ -672,6 +691,27 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
             ),
           ),
+          'method' => $method_map['index'],
+        ),
+      ),
+    ),
+    'views' => array(
+      'name' => t('Views'),
+      'description' => t('Views are queries of data as defined in configuration.'),
+      'operations' => array(
+        'name' => t('Views Operations'),
+        'description' => t('Basic operations on Views.'),
+        'retrieve' => array(
+          'name' => t('Search Views'),
+          'description' => t('Use this method to search Views.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/views/:view-name.json',
+            ),
+          ),
+          'method' => $method_map['retrieve'],
         ),
       ),
     ),
