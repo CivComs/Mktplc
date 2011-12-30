@@ -96,6 +96,11 @@ function cc_api_cc_api_alter(&$apis) {
     
     // Add data model information.
     cc_api_documentation_page_data_model($apis[$api_id]);
+    
+    // Views data if its enabled
+    if (isset($api->resources['views']) && !empty($api->resources['views'])) {
+      cc_api_documentation_page_views($apis[$api_id]);
+    }
   }
 }
 
@@ -203,6 +208,7 @@ function cc_api_display_documentation($apis) {
         )) . '</p>
       </div>
     ';
+
     foreach ($api->data_model as $mid => $model) {
       $output .= '
         <h4>' . check_plain($model['name']) . '</h4>
@@ -216,8 +222,37 @@ function cc_api_display_documentation($apis) {
             <h5>' . check_plain($bundle['name']) . '</h5>
             <p>' . filter_xss($bundle['description']) . '</p>
           ';
+              
+          // Custom fields
+          if (!empty($bundle['fields'])) {
+            $output .= '<strong>' . t('Custom Fields') . '</strong>';
+            $rows = array();
+            $headers = array(t('id'), t('Label'), t('Description'), t('Type'));
+            foreach ($bundle['fields'] as $f) {
+              $rows[] = array(
+                $f['id'], 
+                filter_xss($f['label']), 
+                filter_xss($f['description']),
+                $f['type'],
+              );
+            }
+            $output .= theme('table', array(
+              'header' => $headers,
+              'rows' => $rows,
+            ));
+          }
         }
       }
+    }
+    
+    dpm($api);
+    if (isset($api->views_searching) && is_array($api->views_searching)) { 
+      $output .= '
+        <h3>' . t('Searching') . '</h3>
+        <div class="api-description-searching">
+          <p>' . t('Utilizing the Views methods as described below, you can find specific content.') . '</p>
+        </div>
+      ';
     }
       
     $output .= '
@@ -734,8 +769,16 @@ function cc_api_documentation_page_data_model(&$api) {
     'description' => t('Nodes, often referred to as content, are the building blocks of the application and Drupal in general.'),
   );
   
+  // Check node type configuration
+  $enabled = variable_get('cc_api_doc_page_data_model_content_types', array('application', 'interaction', 'organization'));
+  
   // Add node type data to $api object
   foreach ($node_types as $type_id => $node_type) {
+    // Check configuration
+    if (!in_array($type_id, $enabled)) {
+      continue;
+    }
+    
     $api->data_model['nodes'][$type_id] = array(
       'id' => $type_id,
       'name' => $node_type->name,
@@ -754,8 +797,14 @@ function cc_api_documentation_page_data_model(&$api) {
       );
     }
   }
-  
-  //dpm($api);
+}
+
+
+/**
+ * Add meta data to data model.
+ */
+function cc_api_documentation_page_views(&$api) {
+  $api->views_searching = isset($api->views_searching) ? $api->views_searching : array();
 }
 
 /**
