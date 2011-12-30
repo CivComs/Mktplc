@@ -2,6 +2,10 @@
 /**
  * @file
  * File containing code for the public API page.
+ *
+ * TODO: It would make sense to utilize
+ * render arrays for this and just make a huge
+ * renderable array.
  */
  
 /**
@@ -89,6 +93,9 @@ function cc_api_cc_api_alter(&$apis) {
     
     // Add resource meta data
     cc_api_documentation_page_resources($apis[$api_id]->resources, $apis[$api_id]->base_url);
+    
+    // Add data model information.
+    cc_api_documentation_page_data_model($apis[$api_id]);
   }
 }
 
@@ -188,7 +195,36 @@ function cc_api_display_documentation($apis) {
     ';
       
     $output .= '
-      <h3>' . t('Resources') . '</h3>
+      <h3>' . t('Data Model') . '</h3>
+      <div class="api-description-data-model">
+        <p>' . t('Without knowing much about the data model, working with the API will be difficult.  The following is a list of entities and fields available on the site.  For reference, checkout what <a href="@field_url">Fields</a> and <a href="@entity_url">Entities</a> are in Drupal.  Note that often the name and description of the data model fields and entities are taken from their user-focused counter parts and may not fully be appropriate for this context.', array(
+          '@entity_url' => 'http://drupal.org/node/1261744',
+          '@field_url' => 'http://drupal.org/node/443536',
+        )) . '</p>
+      </div>
+    ';
+    foreach ($api->data_model as $mid => $model) {
+      $output .= '
+        <h4>' . check_plain($model['name']) . '</h4>
+        <p>' . filter_xss($model['description']) . '</p>
+      ';
+      
+      // Model types, aka entity bundles
+      foreach ($model as $b => $bundle) {
+        if (!in_array($b, array('name', 'description'))) {
+          $output .= '
+            <h5>' . check_plain($bundle['name']) . '</h5>
+            <p>' . filter_xss($bundle['description']) . '</p>
+          ';
+        }
+      }
+    }
+      
+    $output .= '
+      <h3>' . t('Resources/Methods') . '</h3>
+      <div class="api-description-resources">
+        <p>' . t('Resource, or methods, are the specific RESTful API calls for manipulating data.') . '</p>
+      </div>
       <div class="api-description-resources">
     ';
     foreach ($api->resources as $r => $resource) {
@@ -222,8 +258,8 @@ function cc_api_display_documentation($apis) {
                   $rows[] = array(
                     $arg['name'], 
                     $arg['type'], 
-                    $arg['description'], 
-                    ($arg['optional']) ? t('no') : t('yes'),
+                    (isset($arg['description'])) ? $arg['description'] : '', 
+                    (!empty($arg['optional'])) ? t('no') : t('yes'),
                     (is_array($arg['source'])) ? implode(', ', array_flip($arg['source'])) : 
                       t('post body'),
                   );
@@ -643,6 +679,43 @@ function cc_api_documentation_page_resources(&$resources, $url) {
   
   // Merge
   $resources = cc_api_merge_arrays($resources_meta, $resources);
+}
+
+/**
+ * Add meta data to data model.
+ */
+function cc_api_documentation_page_data_model(&$api) {
+  $api->data_model = isset($api->data_model) ? $api->data_model : array();
+  
+  // Nodes
+  $node_types = node_type_get_types();
+  $api->data_model['nodes'] = array(
+    'name' => t('Nodes'),
+    'description' => t('Nodes, often referred to as content, are the building blocks of the application and Drupal in general.'),
+  );
+  
+  // Add node type data to $api object
+  foreach ($node_types as $type_id => $node_type) {
+    $api->data_model['nodes'][$type_id] = array(
+      'id' => $type_id,
+      'name' => $node_type->name,
+      'description' => $node_type->description,
+    );
+    
+    // Add field data to $api object
+    $fields = field_info_instances('node', $type_id);
+    foreach ($fields as $fid => $field) {
+      $field_details = field_info_field($fid);
+      $api->data_model['nodes'][$type_id]['fields'][$fid] = array(
+        'id' => $field['field_name'],
+        'label' => $field['label'],
+        'description' => $field['description'],
+        'type' => $field_details['type'],
+      );
+    }
+  }
+  
+  //dpm($api);
 }
 
 /**

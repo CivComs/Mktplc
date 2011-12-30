@@ -19,12 +19,16 @@ h6 {
   font-size: 1.1em !important;
 }
 
-.toc-top-link {
+a.toc-top-link,
+a.toc-top-link:link,
+a.toc-top-link:visited,
+a.toc-top-link:active {
   float: left;
   font-size: 12px;
   margin-left: -33px;
   padding: 0 5px;
   margin-top: 12px;
+  color: #DDDDDD;
 }
 
 .api-toc-container {
