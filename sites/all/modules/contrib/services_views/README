@@ -1,0 +1,1 @@
+Drupal module making it possible to expose Views from Views.module through Service.module's API:s
