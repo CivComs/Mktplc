@@ -78,6 +78,14 @@ function services_views_services_resources() {
         'optional' => TRUE,
         'default value' => FALSE,
       ),
+      'filters' => array(
+        'name' => 'filters',
+        'type' => 'array',
+        'description' => 'A list of filters to pass to the view.  These are defined by the exposed filters on your view.  Example call: <code>/views/your_view?filters[nid]=12345</code>',
+        'source' => array('param' => 'filters'),
+        'optional' => TRUE,
+        'default value' => array(),
+      ),
     ),
   );
 
