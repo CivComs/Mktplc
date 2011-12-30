@@ -19,17 +19,21 @@
  *   Array (optional). A list of arguments to pass to the view.
  * @param $return_type
  *   String (optional). Whether to return the raw data results (FALSE), the entire views object ('view') or themed results ('theme').
+ * @param $args
+ *   Array (optional). A list of exposed filters to pass to the view.
  *
  * @return
  *  Array. The views return.
  */
-function services_views_retrieve($view_name, $display_id = 'default', $args = array(), $offset = 0, $limit = 10, $return_type = FALSE) {
+function services_views_retrieve($view_name, $display_id = 'default', $args = array(), $offset = 0, $limit = 10, $return_type = FALSE, $filters = array()) {
   $result = array();
   $view = views_get_view($view_name);
 
-  // Put all arguments and then execute.
+  // Put all arguments and filters and then execute.
   $view->set_arguments($args, FALSE);
+  $view->set_exposed_input($filters);
   $view->set_offset($offset);
+
   // Support for Views 2
   if (method_exists($view, 'set_use_pager')) {
     // If offset is set we can't have a user pager.
