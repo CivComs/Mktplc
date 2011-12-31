@@ -39,5 +39,13 @@ function cc_api_admin_settings($form, &$form_state) {
     '#description' => t('Determine which content types will show up on the API page.  This does not affect the API access, just what the user sees in the documentation section.  Leaving all of them blank will default to showing all content types.'),
   );
   
+  // Create form
+  $form['cc_api_doc_page_views_tag'] = array(
+    '#type' => 'textfield',
+    '#title' => t('API Documentation Page Views Tag'),
+    '#default_value' => variable_get('cc_api_doc_page_views_tag', 'api'),
+    '#description' => t('Setting a tag here will limit the documentation to show only Views with those tags.  Leaving blank will show documentation for all Views.  Again, this will not actually limit the access of any data.'),
+  );
+  
   return system_settings_form($form);
 }

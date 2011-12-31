@@ -245,14 +245,57 @@ function cc_api_display_documentation($apis) {
       }
     }
     
-    dpm($api);
-    if (isset($api->views_searching) && is_array($api->views_searching)) { 
+    if (isset($api->views_searching) && is_array($api->views_searching)
+       && count($api->views_searching) > 0) { 
       $output .= '
         <h3>' . t('Searching') . '</h3>
         <div class="api-description-searching">
           <p>' . t('Utilizing the Views methods as described below, you can find specific content.') . '</p>
         </div>
       ';
+      
+      // Go through Views
+      foreach ($api->views_searching as $v => $view) {
+        if (!in_array($v, array('name', 'description'))) {
+          $title = !empty($view['name']) ? $view['name'] : t('-no title-');
+          $output .= '
+            <h4>' . $title . '</h4>
+            <p>' . $view['description'] . '</p>
+            <ul>
+              <li><strong>' . t('Identifier') . '</strong>: ' . $view['id'] . '</li>
+              <li><strong>' . t('Base table') . '</strong>: ' . $view['base_table'] . '</li>
+            </ul>
+          ';
+          
+          // Displays
+          foreach ($view['displays'] as $d => $display) {
+            $output .= '
+              <h5>' . $display['name'] . '</h5>
+            ';
+            
+            // Filters
+            if (isset($display['filters'])) {
+              $output .= '
+                <strong>' . t('Filters') . '</strong>
+              ';
+            
+              $rows = array();
+              $headers = array(t('Name'), t('Identifier'), t('Required'));
+              foreach ($display['filters'] as $filter) {
+                $rows[] = array(
+                  $filter['name'], 
+                  $filter['id'], 
+                  (empty($filter['required'])) ? t('no') : t('yes'),
+                );
+              }
+              $output .= theme('table', array(
+                'header' => $headers,
+                'rows' => $rows,
+              ));
+            }
+          }
+        }
+      }
     }
       
     $output .= '
@@ -805,6 +848,47 @@ function cc_api_documentation_page_data_model(&$api) {
  */
 function cc_api_documentation_page_views(&$api) {
   $api->views_searching = isset($api->views_searching) ? $api->views_searching : array();
+  $tag = variable_get('cc_api_doc_page_views_tag', 'api');
+  
+  $views = views_get_all_views();
+  foreach ($views as $view) {
+    // Check tag
+    if (!empty($tag) && $view->tag != $tag) {
+      continue;
+    }
+
+    $data = array();
+    $data['id'] = $view->name;
+    $data['name'] = $view->human_name;
+    $data['description'] = $view->description;
+    $data['base_table'] = $view->base_table;
+  
+    // Get displays
+    $data['displays'] = array();
+    foreach ($view->display as $d => $display) {
+      $data['displays'][$d] = array(
+        'id' => $display->id,
+        'name' => ($d == 'default') ? t('Default') : $display->display_title,
+      );
+      
+      // Filters
+      if (isset($display->display_options['filters'])) {
+        $data['displays'][$d]['filters'] = array();
+        foreach ($display->display_options['filters'] as $f => $filter) {
+          if (isset($filter['exposed']) && $filter['exposed']) {
+            $data['displays'][$d]['filters'][$d] = array(
+              'name' => $filter['expose']['label'],
+              'id' => $filter['expose']['identifier'],
+              'required' => $filter['expose']['required'],
+            );
+          }
+        }
+      }
+    }
+    
+    // Attach data
+    $api->views_searching[$view->name] = $data;
+  }
 }
 
 /**
