@@ -879,7 +879,8 @@ function cc_api_documentation_page_views(&$api) {
             $data['displays'][$d]['filters'][$d] = array(
               'name' => $filter['expose']['label'],
               'id' => $filter['expose']['identifier'],
-              'required' => $filter['expose']['required'],
+              'required' => isset($filter['expose']['required']) ? 
+                $filter['expose']['required'] : 0,
             );
           }
         }
