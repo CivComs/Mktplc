@@ -592,23 +592,87 @@ h2.block-title,
   text-decoration: none;
 }
 .cc-org-apps {
-  float: left;
-  width: 50%;
-  margin-right: 2%;
+/*  width: 100px;*/
+float: left;
+width: 50%;
 }
+
+.page-places .cc-org-apps {
+width:inherit;
+}
+
 .cc-org-apps > div {
   /*margin-right: 0.3em;*/
 }
 .cc-org-prefix-using,
 .cc-org-prefix-sharing {
+/*  padding-left: 4px; */
+  font-size: 12px;
+/*  width: 20px;*/
+  display: inline-block;
+  height: 20px;
+  float: left;
 }
-.cc-org-count {
+
+.page-places .views-field-field-organization-address-2 .field-content, .page-places .views-field-field-organization-interactions .field-content {
+  width: 440px;
+  color: #666;
+  line-height: 2;
+  display: block;
+  margin-left: 0;
+  clear: left;
+  background: #F8F8F8;
+  border: 1px solid #E4E4E4;
+  height: 20px;
+  margin-top: 18px;
+  background: #F8F8F8 url('../images/icon_place_18_gray.png')  1px 1px no-repeat;
+  padding: 0px 0px 0px 20px;
+
 }
-.cc-using,
-.cc-sharing {
+
+.page-places .views-field-field-organization-address-2 .field-content
+{
+  padding: 0px 0px 0px 18px;
+}
+.page-places .views-field-field-organization-interactions .field-content {
+  background: #F8F8F8 url('../images/civic-18.png')  1px 1px no-repeat;
+
+}
+
+.page-places .view-id-places .views-row {
+border-bottom: none;
+}
+
+.page-places .cc-org-prefix-using {
+  background: url('../images/hammer-wrench-active-18.png') 3.4em 2px no-repeat;
+  padding-right: 2.4em;
+  border-left: 1px solid #E4E4E4;
+  padding-left: 4px;
+}
+
+.page-places .cc-org-prefix-sharing {
+  background: url('../images/gov-gov-gray-18.png') 4.3em 2px no-repeat;
+  padding-right: 2.0em;
+  border-left: 1px solid #e4e4e4;
+  padding-left: 4px;
+}
+
+.page-places .cc-org-count {
+  font-size: 12px;
+  margin-right: 7px;
+  float:left;
+}
+.page-places .cc-using,
+.page-places .cc-sharing {
+  height: 20px;
 }
 .cc-org-postfix { 
   display: none;
+  font-size:0px;
+}
+
+.page-places .view-id-places .cc-org-apps {
+ margin-right:0px;
 }
 
 /* List: By Function */
@@ -686,7 +750,7 @@ h2.block-title,
   font-size: 12px;
   margin-bottom: 10px;
 }
-.apps-list .meta {
+.meta {
   color: #666;
   font-size: 12px;
   text-align: center;
@@ -1004,7 +1068,7 @@ h2.block-title,
   margin-right: 2%;*/
 }
 .view-id-places .views-row div {
-  display: inline;
+/*  display: inline; */
 }
 .view-id-places .views-row div.views-field-title  {
   display: block;
@@ -1019,14 +1083,16 @@ h2.block-title,
 }
 
 .view-id-places .using-sharing {
-  display: block;
+  display: inline;
 }
+
+
 .view-id-places .cc-org-apps {
   /*float: left;
   width: 48%;
   margin-right: 2%;*/
   float: none;
-  display: inline;
+  display: inline-block;
   margin-right: 10px;
   }
 
