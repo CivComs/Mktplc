@@ -12,54 +12,63 @@
  * Main callback for API documentation page.
  */
 function cc_api_documentation_page() {
-  $api = array();
-  
   // Let's get the API data.  We will assume that we only
   // want services resources that are in the format:
   // "mktplc_api_"
   $prefix = 'mktplc_api_';
   
-  module_load_include('resource_build.inc', 'services');
-  // Call _services_build_resources() directly instead of
-  // services_get_resources to bypass caching.
-  $resources = _services_build_resources();
+  // Let's put this all behind a cache, so check first
+  $api = cache_get('cc_api_doc_page');
+  if (!$api) {
   
-  // Go through available endpoints.
-  $endpoints = services_endpoint_load_all();
-  foreach ($endpoints as $ep_id => $ep) {
-    // Check prefix first
-    if (strpos($ep_id, $prefix) !== 0) {
-      continue;
-    }
+    module_load_include('resource_build.inc', 'services');
+    // Call _services_build_resources() directly instead of
+    // services_get_resources to bypass caching.
+    $resources = _services_build_resources();
     
-    // Start the data
-    $api[$ep_id] = $ep;
-    
-    // Go through resources and add details
-    $config_types = array('actions', 'relationships', 'operations');
-    foreach ($ep->resources as $entity => $config) {
-      foreach ($config as $config_type => $config_set) {
-        if (is_array($config_set) && in_array($config_type, $config_types)) {
-          foreach ($config_set as $k => $v) {
-          
-            // These don't match up one to one, so there
-            // is some custom logic.
-            if ($config_type == 'operations') {
-              $api[$ep_id]->resources[$entity][$config_type][$k] += 
-                $resources[$entity][$k];
-            }
-            else {
-              $api[$ep_id]->resources[$entity][$config_type][$k] += 
-                $resources[$entity][$config_type][$k];
+    // Go through available endpoints.
+    $endpoints = services_endpoint_load_all();
+    foreach ($endpoints as $ep_id => $ep) {
+      // Check prefix first
+      if (strpos($ep_id, $prefix) !== 0) {
+        continue;
+      }
+      
+      // Start the data
+      $api[$ep_id] = $ep;
+      
+      // Go through resources and add details
+      $config_types = array('actions', 'relationships', 'operations');
+      foreach ($ep->resources as $entity => $config) {
+        foreach ($config as $config_type => $config_set) {
+          if (is_array($config_set) && in_array($config_type, $config_types)) {
+            foreach ($config_set as $k => $v) {
+            
+              // These don't match up one to one, so there
+              // is some custom logic.
+              if ($config_type == 'operations') {
+                $api[$ep_id]->resources[$entity][$config_type][$k] += 
+                  $resources[$entity][$k];
+              }
+              else {
+                $api[$ep_id]->resources[$entity][$config_type][$k] += 
+                  $resources[$entity][$config_type][$k];
+              }
             }
           }
         }
       }
     }
+    
+    // Allow for alter
+    drupal_alter('cc_api', $api);
+    
+    // Set the cache
+    cache_set('cc_api_doc_page', $api);
   }
-  
-  // Allow for alter
-  drupal_alter('cc_api', $api);
+  else {
+    $api = $api->data;
+  }
   
   // Include some CSS and JS
   drupal_add_css(drupal_get_path('module', 'cc_api') . '/cc_api.css');
