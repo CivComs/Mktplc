@@ -108,13 +108,24 @@ function cc_api_cc_api_alter(&$apis) {
  * Main display operation for documentation
  */
 function cc_api_display_documentation($apis) {
+  $output = '';
+  
   // Check for Syntaxhighlighter module
   $class = '';
   if (module_exists('syntaxhighlighter')) {
     $class = 'brush:plain';
   }
+  
+  // Put a top level example link
+  if ($example = variable_get('cc_api_doc_page_examples_path', 'api/examples')) {
+    $output .= '
+      <p>' . t('This page is focused on providing a complete technical overview of the API.  For a set of examples, please go to the <a href="@url">example page</a>.', array(
+        '@url' => url($example),
+      )) . '</p>
+    ';
+  }
 
-  $output = '
+  $output .= '
     <ul class="api-toc-container"></ul>
     <div class="api-container">
   ';
@@ -130,9 +141,9 @@ function cc_api_display_documentation($apis) {
       
       <h3>' . t('URLs') . '</h3>
       <div class="api-description-url">
-        <p>' . t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')) . '</p>
+        <p>' . t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed (most often) like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')) . '</p>
         <code><pre class="' . $class . '">
-          ' . $api->base_url . '/:entity.:format?:key=:value
+          ' . $api->base_url . '/:method.:format?:key=:value
         </pre></code>
         <p>' . t('For instance:') . '</p>
         <code><pre class="' . $class . '">
@@ -926,8 +937,8 @@ function cc_api_documentation_page_views(&$api) {
         'search_filters' => array(
           'title' => t('Search with filters'),
           'data' => ($d == 'default') ?
-            $api->base_url . '/views/' . $data['id'] . '.json&filters[:id]=:value' :
-            $api->base_url . '/views/' . $data['id'] . '.json?display_id=' . $d . '&filters[:id]=:value',
+            $api->base_url . '/views/' . $data['id'] . '.json&filters[:id1]=:value1&filters[:id2]=:value2' :
+            $api->base_url . '/views/' . $data['id'] . '.json?display_id=' . $d . '&filters[:id1]=:value1&filters[:id2]=:value2',
           'class' => 'brush:plain',
         ),
       );

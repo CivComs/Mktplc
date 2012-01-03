@@ -31,6 +31,12 @@ function cc_api_admin_settings($form, &$form_state) {
     '#default_value' => variable_get('cc_api_doc_page_path', 'api'),
     '#description' => t('The path to the API documentation.  This should be a Drupal path, which means to trailing or leading slashes, something like <em>developers</em> or <em>example/api</em>.  If you change this you will have to <strong>Clear the menu cache</strong>.'),
   );
+  $form['cc_api_doc_page_examples_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('API Examples Path'),
+    '#default_value' => variable_get('cc_api_doc_page_examples_path', 'api/examples'),
+    '#description' => t('The path to an Examples page.  This will be linked to from the API documentation page if configured.'),
+  );
   $form['cc_api_doc_page_data_model_content_types'] = array(
     '#type' => 'checkboxes',
     '#title' => t('API Documentation Page Content Types'),
