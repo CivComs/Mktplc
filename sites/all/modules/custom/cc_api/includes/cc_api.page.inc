@@ -12,54 +12,63 @@
  * Main callback for API documentation page.
  */
 function cc_api_documentation_page() {
-  $api = array();
-  
   // Let's get the API data.  We will assume that we only
   // want services resources that are in the format:
   // "mktplc_api_"
   $prefix = 'mktplc_api_';
   
-  module_load_include('resource_build.inc', 'services');
-  // Call _services_build_resources() directly instead of
-  // services_get_resources to bypass caching.
-  $resources = _services_build_resources();
+  // Let's put this all behind a cache, so check first
+  $api = cache_get('cc_api_doc_page');
+  if (!$api) {
   
-  // Go through available endpoints.
-  $endpoints = services_endpoint_load_all();
-  foreach ($endpoints as $ep_id => $ep) {
-    // Check prefix first
-    if (strpos($ep_id, $prefix) !== 0) {
-      continue;
-    }
+    module_load_include('resource_build.inc', 'services');
+    // Call _services_build_resources() directly instead of
+    // services_get_resources to bypass caching.
+    $resources = _services_build_resources();
     
-    // Start the data
-    $api[$ep_id] = $ep;
-    
-    // Go through resources and add details
-    $config_types = array('actions', 'relationships', 'operations');
-    foreach ($ep->resources as $entity => $config) {
-      foreach ($config as $config_type => $config_set) {
-        if (is_array($config_set) && in_array($config_type, $config_types)) {
-          foreach ($config_set as $k => $v) {
-          
-            // These don't match up one to one, so there
-            // is some custom logic.
-            if ($config_type == 'operations') {
-              $api[$ep_id]->resources[$entity][$config_type][$k] += 
-                $resources[$entity][$k];
-            }
-            else {
-              $api[$ep_id]->resources[$entity][$config_type][$k] += 
-                $resources[$entity][$config_type][$k];
+    // Go through available endpoints.
+    $endpoints = services_endpoint_load_all();
+    foreach ($endpoints as $ep_id => $ep) {
+      // Check prefix first
+      if (strpos($ep_id, $prefix) !== 0) {
+        continue;
+      }
+      
+      // Start the data
+      $api[$ep_id] = $ep;
+      
+      // Go through resources and add details
+      $config_types = array('actions', 'relationships', 'operations');
+      foreach ($ep->resources as $entity => $config) {
+        foreach ($config as $config_type => $config_set) {
+          if (is_array($config_set) && in_array($config_type, $config_types)) {
+            foreach ($config_set as $k => $v) {
+            
+              // These don't match up one to one, so there
+              // is some custom logic.
+              if ($config_type == 'operations') {
+                $api[$ep_id]->resources[$entity][$config_type][$k] += 
+                  $resources[$entity][$k];
+              }
+              else {
+                $api[$ep_id]->resources[$entity][$config_type][$k] += 
+                  $resources[$entity][$config_type][$k];
+              }
             }
           }
         }
       }
     }
+    
+    // Allow for alter
+    drupal_alter('cc_api', $api);
+    
+    // Set the cache
+    cache_set('cc_api_doc_page', $api);
   }
-  
-  // Allow for alter
-  drupal_alter('cc_api', $api);
+  else {
+    $api = $api->data;
+  }
   
   // Include some CSS and JS
   drupal_add_css(drupal_get_path('module', 'cc_api') . '/cc_api.css');
@@ -108,13 +117,24 @@ function cc_api_cc_api_alter(&$apis) {
  * Main display operation for documentation
  */
 function cc_api_display_documentation($apis) {
+  $output = '';
+  
   // Check for Syntaxhighlighter module
   $class = '';
   if (module_exists('syntaxhighlighter')) {
     $class = 'brush:plain';
   }
+  
+  // Put a top level example link
+  if ($example = variable_get('cc_api_doc_page_examples_path', 'api/examples')) {
+    $output .= '
+      <p>' . t('This page is focused on providing a complete technical overview of the API.  For a set of examples, please go to the <a href="@url">example page</a>.', array(
+        '@url' => url($example),
+      )) . '</p>
+    ';
+  }
 
-  $output = '
+  $output .= '
     <ul class="api-toc-container"></ul>
     <div class="api-container">
   ';
@@ -130,9 +150,9 @@ function cc_api_display_documentation($apis) {
       
       <h3>' . t('URLs') . '</h3>
       <div class="api-description-url">
-        <p>' . t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')) . '</p>
+        <p>' . t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed (most often) like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')) . '</p>
         <code><pre class="' . $class . '">
-          ' . $api->base_url . '/:entity.:format?:key=:value
+          ' . $api->base_url . '/:method.:format?:key=:value
         </pre></code>
         <p>' . t('For instance:') . '</p>
         <code><pre class="' . $class . '">
@@ -251,6 +271,7 @@ function cc_api_display_documentation($apis) {
         <h3>' . t('Searching') . '</h3>
         <div class="api-description-searching">
           <p>' . t('Utilizing the Views methods as described below, you can find specific content.') . '</p>
+          <p>' . t('Please see the <a href="#views">Views</a> section to get a general description of using the Searching API.') . '</p>
         </div>
       ';
       
@@ -271,7 +292,28 @@ function cc_api_display_documentation($apis) {
           foreach ($view['displays'] as $d => $display) {
             $output .= '
               <h5>' . $display['name'] . '</h5>
+              <p>' . $display['description'] . '</p>
             ';
+            
+            // Examples
+            if (isset($display['examples'])) {
+              $output .= '
+                <strong>' . t('Examples') . '</strong>
+                <ul>
+              ';
+              foreach ($display['examples'] as $example) {
+                $output .= '
+                  <li>' . $example['title'] . ':
+                  <code><pre class="' . $example['class'] . '">
+                    ' . $example['data'] . '
+                  </pre></code>
+                  </li>
+                ';
+              }
+              $output .= '
+                </ul>
+              ';
+            }
             
             // Filters
             if (isset($display['filters'])) {
@@ -865,10 +907,13 @@ function cc_api_documentation_page_views(&$api) {
   
     // Get displays
     $data['displays'] = array();
+    $default_filters = array();
     foreach ($view->display as $d => $display) {
       $data['displays'][$d] = array(
         'id' => $display->id,
         'name' => ($d == 'default') ? t('Default') : $display->display_title,
+        'description' => isset($display->display_options['display_description']) ?
+          $display->display_options['display_description'] : '',
       );
       
       // Filters
@@ -876,7 +921,7 @@ function cc_api_documentation_page_views(&$api) {
         $data['displays'][$d]['filters'] = array();
         foreach ($display->display_options['filters'] as $f => $filter) {
           if (isset($filter['exposed']) && $filter['exposed']) {
-            $data['displays'][$d]['filters'][$d] = array(
+            $data['displays'][$d]['filters'][$f] = array(
               'name' => $filter['expose']['label'],
               'id' => $filter['expose']['identifier'],
               'required' => isset($filter['expose']['required']) ? 
@@ -885,8 +930,35 @@ function cc_api_documentation_page_views(&$api) {
           }
         }
       }
+      
+      // Merge with defaults
+      if ($d != 'default') {
+        $data['displays'][$d]['filters'] = isset($data['displays'][$d]['filters']) ?
+          $data['displays'][$d]['filters'] : array();
+        $data['displays'][$d]['filters'] = array_merge($data['displays'][$d]['filters'], $default_filters);
+      }
+      else {
+        $default_filters = $data['displays'][$d]['filters'];
+      }
+      
+      // An example
+      $data['displays'][$d]['examples'] = array(
+        'search_filters' => array(
+          'title' => t('Search with filters'),
+          'data' => ($d == 'default') ?
+            $api->base_url . '/views/' . $data['id'] . '.json&filters[:id1]=:value1&filters[:id2]=:value2' :
+            $api->base_url . '/views/' . $data['id'] . '.json?display_id=' . $d . '&filters[:id1]=:value1&filters[:id2]=:value2',
+          'class' => 'brush:plain',
+        ),
+      );
+      
+      // Don't display default for now, unless theres a better way
+      // to handle it
+      if ($d == 'default') {
+        unset($data['displays'][$d]);
+      }
     }
-    
+
     // Attach data
     $api->views_searching[$view->name] = $data;
   }

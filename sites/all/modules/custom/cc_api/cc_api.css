@@ -3,26 +3,36 @@
  * Main CSS file for the CC API module.
  */
  
-h2 {
+.page-api h2 {
   font-size: 3em !important;
+  margin-top: 1em;
 }
-h3 {
+.page-api h3 {
   font-size: 2.5em !important;
+  margin-top: 2em;
+  background-color: #AAAAAA;
+  padding: 2px 2px;
 }
-h4 {
+.page-api h4 {
   font-size: 2em !important;
+  margin-top: 1em;
+  border-bottom: 1px solid #888888;
 }
-h5 {
+.page-api h5 {
   font-size: 1.5em !important;
+  border-bottom: 1px dotted #AAAAAA;
+  margin-top: 1em;
 }
-h6 {
+.page-api h6 {
   font-size: 1.1em !important;
+  background-color: #EEEEEE;
+  padding: 2px 5px;
 }
 
-a.toc-top-link,
-a.toc-top-link:link,
-a.toc-top-link:visited,
-a.toc-top-link:active {
+.page-api a.toc-top-link,
+.page-api a.toc-top-link:link,
+.page-api a.toc-top-link:visited,
+.page-api a.toc-top-link:active {
   float: left;
   font-size: 12px;
   margin-left: -33px;
@@ -31,9 +41,19 @@ a.toc-top-link:active {
   color: #DDDDDD;
 }
 
-.api-toc-container {
+.page-api .api-toc-container {
   font-size: .8em;
   background-color: #EEEEEE;
   border-radius: 3px;
   padding: 10px 10px 10px 40px;
+}
+.page-api td {
+  padding: 2px 4px;
+}
+
+.syntaxhighlighter a.toolbar_item.command_help.help {
+  display: none !important;
+}
+.syntaxhighlighter .toolbar {
+  background-color: transparent !important;
 }
