@@ -90,7 +90,6 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_application_civfunction_tid']['expose']['label'] = 'Civic Function (Taxonomy Term ID)';
   $handler->display->display_options['filters']['field_application_civfunction_tid']['expose']['operator'] = 'field_application_civfunction_tid_op';
   $handler->display->display_options['filters']['field_application_civfunction_tid']['expose']['identifier'] = 'civicfunction';
-  $handler->display->display_options['filters']['field_application_civfunction_tid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_application_civfunction_tid']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['field_application_civfunction_tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['field_application_civfunction_tid']['type'] = 'select';
@@ -105,7 +104,6 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_application_license_tid']['expose']['label'] = 'License (Taxonomy Term ID)';
   $handler->display->display_options['filters']['field_application_license_tid']['expose']['operator'] = 'field_application_license_tid_op';
   $handler->display->display_options['filters']['field_application_license_tid']['expose']['identifier'] = 'application_license';
-  $handler->display->display_options['filters']['field_application_license_tid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_application_license_tid']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['field_application_license_tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['field_application_license_tid']['type'] = 'select';
@@ -222,7 +220,6 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_interaction_type_tid']['expose']['label'] = 'Interaction Type (Taxonomy Term ID)';
   $handler->display->display_options['filters']['field_interaction_type_tid']['expose']['operator'] = 'field_interaction_type_tid_op';
   $handler->display->display_options['filters']['field_interaction_type_tid']['expose']['identifier'] = 'interaction_type';
-  $handler->display->display_options['filters']['field_interaction_type_tid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_interaction_type_tid']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['field_interaction_type_tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['field_interaction_type_tid']['type'] = 'select';
@@ -237,7 +234,6 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_interaction_organization_nid']['expose']['label'] = 'Organization (Node ID)';
   $handler->display->display_options['filters']['field_interaction_organization_nid']['expose']['operator'] = 'field_interaction_organization_nid_op';
   $handler->display->display_options['filters']['field_interaction_organization_nid']['expose']['identifier'] = 'organization';
-  $handler->display->display_options['filters']['field_interaction_organization_nid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_interaction_organization_nid']['expose']['reduce'] = 0;
   /* Filter criterion: Content: With what (field_interaction_application) */
   $handler->display->display_options['filters']['field_interaction_application_nid']['id'] = 'field_interaction_application_nid';
@@ -248,7 +244,6 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_interaction_application_nid']['expose']['label'] = 'Application (Node ID)';
   $handler->display->display_options['filters']['field_interaction_application_nid']['expose']['operator'] = 'field_interaction_application_nid_op';
   $handler->display->display_options['filters']['field_interaction_application_nid']['expose']['identifier'] = 'application';
-  $handler->display->display_options['filters']['field_interaction_application_nid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_interaction_application_nid']['expose']['reduce'] = 0;
 
   /* Display: Field View */
@@ -349,7 +344,6 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_organization_interactions_nid']['expose']['label'] = 'Interaction (Node ID)';
   $handler->display->display_options['filters']['field_organization_interactions_nid']['expose']['operator'] = 'field_organization_interactions_nid_op';
   $handler->display->display_options['filters']['field_organization_interactions_nid']['expose']['identifier'] = 'interactions';
-  $handler->display->display_options['filters']['field_organization_interactions_nid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_organization_interactions_nid']['expose']['reduce'] = 0;
   /* Filter criterion: Content: for Vendors: What Application Services do they provide? (field_organization_services) */
   $handler->display->display_options['filters']['field_organization_services_tid']['id'] = 'field_organization_services_tid';
@@ -360,7 +354,6 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_organization_services_tid']['expose']['label'] = 'Application Services (Taxonomy Term ID)';
   $handler->display->display_options['filters']['field_organization_services_tid']['expose']['operator'] = 'field_organization_services_tid_op';
   $handler->display->display_options['filters']['field_organization_services_tid']['expose']['identifier'] = 'services';
-  $handler->display->display_options['filters']['field_organization_services_tid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_organization_services_tid']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['field_organization_services_tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['field_organization_services_tid']['type'] = 'select';
@@ -375,7 +368,6 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_organization_type_tid']['expose']['label'] = 'Kind of Organization? (Taxonomy Term ID)';
   $handler->display->display_options['filters']['field_organization_type_tid']['expose']['operator'] = 'field_organization_type_tid_op';
   $handler->display->display_options['filters']['field_organization_type_tid']['expose']['identifier'] = 'organization_type';
-  $handler->display->display_options['filters']['field_organization_type_tid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['field_organization_type_tid']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['field_organization_type_tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['field_organization_type_tid']['type'] = 'select';
