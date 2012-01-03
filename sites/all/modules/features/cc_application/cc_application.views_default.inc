@@ -168,6 +168,7 @@ function cc_application_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Recently added apps';
   $handler->display->display_options['css_class'] = 'apps-list';
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['link_display'] = 'page_5';
   $handler->display->display_options['access']['type'] = 'perm';
@@ -2737,6 +2738,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Apps This !org_type Has Used (!count)';
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['defaults']['link_display'] = FALSE;
   $handler->display->display_options['link_display'] = 'page_3';
@@ -3069,6 +3071,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Apps made in !place';
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['defaults']['link_display'] = FALSE;
   $handler->display->display_options['link_display'] = 'page_3';
