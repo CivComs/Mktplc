@@ -714,3 +714,10 @@ function theme_using_sharing($variables) {
   return $o;
 }
 
+function cc_helper_menu_alter(&$items) {
+  $items['taxonomy/term/%taxonomy_term']['page callback'] = '_cc_helper_empty';
+}
+
+function _cc_helper_empty($any) {
+  return array('empty' => array('#markup' => ''));
+}
