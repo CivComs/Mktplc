@@ -157,35 +157,37 @@ function _cc_helper_using($org = 0, $org_types = array(), $query = FALSE) {
   return _cc_helper_interactions_in_the_place($org, array(156), $org_types);
 }
 
+//Dynamic titles for some blocks.
 function cc_helper_views_pre_render(&$view) {
+  $name = property_exists($view, 'name') ? $view->name : NULL;
+  $disp = property_exists($view, 'current_display') ? $view->current_display : NULL;
   if(!(
     (
-      $view->name == 'apps_this_organization_has_creat'
-      && $view->current_display == 'block'
+      $name == 'apps_this_organization_has_creat'
+      && $disp == 'block'
     ) || (
-      $view->name == 'apps_this_organization_has_used'
-      && $view->current_display == 'block'
+      $name == 'apps_this_organization_has_used'
+      && $disp == 'block'
     ) || (
-			$view->name == 'applications'
-			&& ($view->current_display == 'block_5' || $view->current_display = 'block_6')
-		)
+      $name == 'applications'
+      && ($disp == 'block_5' || $disp = 'block_6')
+    )
   )) {
     return FALSE;
   }
   $org = node_load(isset($view->args[0]) ? $view->args[0] : 0);
   if($org){
-		$f = field_get_items('node', $org, 'field_organization_type');
-		$term = isset($f[0]['tid']) ? taxonomy_term_load($f[0]['tid']) : FALSE;
-		$org_type = isset($term->field_watchname['und'][0]['safe_value']) ? $term->field_watchname['und'][0]['safe_value'] : '';
-		$c = isset($view->total_rows) ? $view->total_rows : count($view->result);
-		if(isset($view->build_info['title'])) {
-			$view->build_info['title'] = strtr(
-				$view->build_info['title'],
-				array('!count' => $c, '!org_type' => $org_type)
-			);
-		}
-	}
-	return TRUE;
+    $f = field_get_items('node', $org, 'field_organization_type');
+    $term = isset($f[0]['tid']) ? taxonomy_term_load($f[0]['tid']) : FALSE;
+    $org_type = isset($term->field_watchname['und'][0]['safe_value']) ? $term->field_watchname['und'][0]['safe_value'] : '';
+    $c = isset($view->total_rows) ? $view->total_rows : count($view->result);
+    if(isset($view->build_info['title'])) {
+      $view->build_info['title'] = strtr(
+        $view->build_info['title'],
+        array('!count' => $c, '!org_type' => $org_type)
+      );
+    }
+  }
 }
 
 
