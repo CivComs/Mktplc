@@ -55,6 +55,44 @@ function _cc_helper_sharing($org = 0, $org_types = array(), $query = FALSE) {
   $is_id = ctype_digit($org);
   $is_place = _cc_helper_is_place($org);
   $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
+  if($is_id || $is_node) {
+    $node = $is_id ? node_load($org) : $org;
+    $apps = field_get_items('node', $node, 'field_organization_apps_created');
+    $nids = array();
+    foreach($apps as $app) {
+      $nids[] = array_key_exists('nid', $app) ? $app['nid'] : NULL;
+    }
+    $ids = array_filter($nids, '_cc_helper_published');
+    $count = count($ids);
+    return $count;
+  }
+  elseif($is_place) {
+    $orgs = _cc_helper_orgs(TRUE)
+      ->fieldCondition('field_organization_address', 'locality', $org['locality'])
+      ->fieldCondition('field_organization_address', 'administrative_area', $org['administrative_area'])
+      ->fieldCondition('field_organization_address', 'country', $org['country']);
+    if(!empty($org_types)){
+      $orgs->fieldCondition('field_organization_type', 'tid', $org_types, 'IN');
+    }
+    $orgs = $orgs->execute();
+    $org_ids = array_keys(isset($orgs['node']) ? $orgs['node'] : array());
+    $r = 0;
+    foreach($org_ids as $org_id) {
+      $node = node_load($org_id);
+      $apps = field_get_items('node', $node, 'field_organization_apps_created');
+      $nids = array();
+      foreach(($apps ? $apps : array()) as $app) {
+        $nids[] = array_key_exists('nid', $app) ? $app['nid'] : NULL;
+      }
+      $ids = array_filter($nids,'_cc_helper_published');
+      $count = count($ids);
+      $r = $r + $count;
+    }
+    return $r;
+  }
+/*  $is_id = ctype_digit($org);
+  $is_place = _cc_helper_is_place($org);
+  $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
   if(!$is_id && !$is_place && !$is_node) {
     return FALSE;
   }
@@ -66,7 +104,7 @@ function _cc_helper_sharing($org = 0, $org_types = array(), $query = FALSE) {
     return _cc_helper_get_references_count($org->nid, 'interaction', 'field_interaction_organization', array(154));
   }
   return _cc_helper_interactions_in_the_place($org, array(154), $org_types);
-/*  $is_id = ctype_digit($org);
+  $is_id = ctype_digit($org);
   $is_place = _cc_helper_is_place($org);
   $is_node = isset($org->nid) && (isset($org->type) ? $org->type == 'organization' : FALSE);
   if(!$is_id && !$is_place && !$is_node) {
