@@ -251,6 +251,7 @@ function cc_api_display_documentation($apis) {
         <h3>' . t('Searching') . '</h3>
         <div class="api-description-searching">
           <p>' . t('Utilizing the Views methods as described below, you can find specific content.') . '</p>
+          <p>' . t('Please see the <a href="#views">Views</a> section to get a general description of using the Searching API.') . '</p>
         </div>
       ';
       
@@ -271,7 +272,28 @@ function cc_api_display_documentation($apis) {
           foreach ($view['displays'] as $d => $display) {
             $output .= '
               <h5>' . $display['name'] . '</h5>
+              <p>' . $display['description'] . '</p>
             ';
+            
+            // Examples
+            if (isset($display['examples'])) {
+              $output .= '
+                <strong>' . t('Examples') . '</strong>
+                <ul>
+              ';
+              foreach ($display['examples'] as $example) {
+                $output .= '
+                  <li>' . $example['title'] . ':
+                  <code><pre class="' . $example['class'] . '">
+                    ' . $example['data'] . '
+                  </pre></code>
+                  </li>
+                ';
+              }
+              $output .= '
+                </ul>
+              ';
+            }
             
             // Filters
             if (isset($display['filters'])) {
@@ -865,10 +887,13 @@ function cc_api_documentation_page_views(&$api) {
   
     // Get displays
     $data['displays'] = array();
+    $default_filters = array();
     foreach ($view->display as $d => $display) {
       $data['displays'][$d] = array(
         'id' => $display->id,
         'name' => ($d == 'default') ? t('Default') : $display->display_title,
+        'description' => isset($display->display_options['display_description']) ?
+          $display->display_options['display_description'] : '',
       );
       
       // Filters
@@ -876,7 +901,7 @@ function cc_api_documentation_page_views(&$api) {
         $data['displays'][$d]['filters'] = array();
         foreach ($display->display_options['filters'] as $f => $filter) {
           if (isset($filter['exposed']) && $filter['exposed']) {
-            $data['displays'][$d]['filters'][$d] = array(
+            $data['displays'][$d]['filters'][$f] = array(
               'name' => $filter['expose']['label'],
               'id' => $filter['expose']['identifier'],
               'required' => isset($filter['expose']['required']) ? 
@@ -885,8 +910,35 @@ function cc_api_documentation_page_views(&$api) {
           }
         }
       }
+      
+      // Merge with defaults
+      if ($d != 'default') {
+        $data['displays'][$d]['filters'] = isset($data['displays'][$d]['filters']) ?
+          $data['displays'][$d]['filters'] : array();
+        $data['displays'][$d]['filters'] = array_merge($data['displays'][$d]['filters'], $default_filters);
+      }
+      else {
+        $default_filters = $data['displays'][$d]['filters'];
+      }
+      
+      // An example
+      $data['displays'][$d]['examples'] = array(
+        'search_filters' => array(
+          'title' => t('Search with filters'),
+          'data' => ($d == 'default') ?
+            $api->base_url . '/views/' . $data['id'] . '.json&filters[:id]=:value' :
+            $api->base_url . '/views/' . $data['id'] . '.json?display_id=' . $d . '&filters[:id]=:value',
+          'class' => 'brush:plain',
+        ),
+      );
+      
+      // Don't display default for now, unless theres a better way
+      // to handle it
+      if ($d == 'default') {
+        unset($data['displays'][$d]);
+      }
     }
-    
+
     // Attach data
     $api->views_searching[$view->name] = $data;
   }
