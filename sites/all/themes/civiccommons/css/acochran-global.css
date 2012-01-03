@@ -849,12 +849,13 @@ border-bottom: none;
 
 .add-to-marketplace,
 .edit_block,
-.block-cc-editing {
+.block-cc-editing,
+.block-cc-api {
   border: 3px dashed #FDE9BC;
   text-align: center;
 }
 
-
+.region-sidebar-second .add-button,
 .add-to-marketplace .add-button,
 .edit_block .add-button,
 .block-cc-editing .add-button {
