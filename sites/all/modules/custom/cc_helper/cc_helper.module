@@ -59,7 +59,7 @@ function _cc_helper_sharing($org = 0, $org_types = array(), $query = FALSE) {
     $node = $is_id ? node_load($org) : $org;
     $apps = field_get_items('node', $node, 'field_organization_apps_created');
     $nids = array();
-    foreach($apps as $app) {
+    foreach((!empty($apps) ? $apps : array()) as $app) {
       $nids[] = array_key_exists('nid', $app) ? $app['nid'] : NULL;
     }
     $ids = array_filter($nids, '_cc_helper_published');
@@ -714,3 +714,10 @@ function theme_using_sharing($variables) {
   return $o;
 }
 
+function cc_helper_menu_alter(&$items) {
+  $items['taxonomy/term/%taxonomy_term']['page callback'] = '_cc_helper_empty';
+}
+
+function _cc_helper_empty($any) {
+  return array('empty' => array('#markup' => ''));
+}

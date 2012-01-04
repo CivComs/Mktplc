@@ -90,13 +90,18 @@ function cc_formatters_field_formatter_view($entity_type, $entity, $field, $inst
     }
     $ap = isset($display['settings']['appearance']) ? $display['settings']['appearance'] : FALSE;
     $o = _cc_helper_using_sharing($org, $ap, $tids);
-    if(!empty($o)) {
-      $r[0]['#markup'] = $o;
+    if(!empty($items)) {
+      return array(0 => array('#markup' => $o));
     }
-    else {
-      $r = FALSE;
+  }
+}
+
+//Error fix. See http://drupal.org/node/1175838 for details.
+function cc_formatters_field_formatter_prepare_view($entity_type, $entities, $field, $instances, $langcode, &$items, $displays) {
+  foreach($entities as $id => $entity) {
+    if(empty($items[$id])) {
+      $items[$id][] = array();
     }
-    return $r;
   }
 }
 
