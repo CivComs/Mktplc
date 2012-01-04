@@ -638,6 +638,10 @@ width:inherit;
   background: #F8F8F8 url('../images/civic-18.png')  1px 1px no-repeat;
 
 }
+.page-places .company .views-field-field-organization-interactions .field-content {
+  background: #F8F8F8 url('../images/bldg-grey.gif')  1px 1px no-repeat;
+}
+
 
 .page-places .view-id-places .views-row {
 border-bottom: none;
@@ -656,6 +660,8 @@ border-bottom: none;
   border-left: 1px solid #e4e4e4;
   padding-left: 4px;
 }
+
+
 
 .page-places .cc-org-count {
   font-size: 12px;
