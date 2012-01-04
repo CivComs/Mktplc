@@ -1,0 +1,109 @@
+<?php
+/**
+ * @file
+ * Main module file for the CC Editing module.
+ * 
+ * This module is aimed at providing (user focused) 
+ * editing enhancements for the Marketplace application.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function cc_editing_help($path, $arg) {
+  switch ($path) {
+    // Main module help for the CC Editing module
+    case 'admin/help#cc_editing':
+      return '<p>' . t('The CC Editing module provides (user focused) editing enhancements for the Marketplace application.') . '</p>';
+  
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cc_editing_theme() {
+  $items['cc_editing_node_edit_block'] = array(
+    'variables' => array(
+      'node' => NULL,
+      'revisions' => array(),
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function cc_editing_block_info() {
+  $blocks['cc_editing_node_edit'] = array(
+    'info' => t('CC Editing Nodes'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cc_editing_block_view($delta) {
+  $block = array();
+
+  switch ($delta) {
+    case 'cc_editing_node_edit':
+      $block['content'] = cc_editing_node_edit_block();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Node Editing Block content.
+ */
+function cc_editing_node_edit_block() {
+  $output = '';
+  
+  // First let's make sure there is a node
+  $node = menu_get_object();
+  if (is_object($node) && !empty($node->nid)) {
+    $revisions = node_revision_list($node);
+    $output .= theme('cc_editing_node_edit_block', array(
+      'node' => $node,
+      'revisions' => $revisions,
+    ));
+  }  
+  
+  return $output;
+}
+
+/**
+ * Theme implementation for cc_editing_node_edit_block
+ */
+function theme_cc_editing_node_edit_block($vars) {
+  $output = '';
+  $node = $vars['node'];
+  $revisions = $vars['revisions'];
+  $revision_count = count($revisions);
+    
+  $output .= '
+    ' . l(t('Edit this'), 'node/' . $node->nid . '/edit', array('attributes' => array(
+      'class' => array('cc-editing-node-edit-button', 'add-button'),
+    ))) . '
+  <div class="cc-editing-node-edit-description">' . t('The Marketplace is a wiki: you should <strong>fix mistakes</strong>, <strong>add what\'s missing</strong>.') . '</div>
+  ';
+  
+  // Show revisions if there is more than 1 (1 is the creation)
+  if ($revision_count > 1) {
+    $output .= '
+      <div class="cc-editing-node-edit-revision-count">
+        ' . t('Last of @num edits: @date', array(
+          '@num' => $revision_count,
+          '@date' => format_date($node->changed, 'custom', 'F d, Y'),
+        )) . '
+      </div>
+    ';
+  }
+    
+  return $output;
+}

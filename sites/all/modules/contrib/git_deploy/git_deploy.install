@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * Helper function to figure out the Glip path.
+ *
+ * @see _git_deploy_include_glip()
+ */
+function _git_deploy_get_glip_path() {
+  if (module_exists('libraries')) {
+    return libraries_get_path('glip');
+  }
+  else {
+    return drupal_get_path('module', 'git_deploy') . '/glip';
+  }
+}
+
+function git_deploy_requirements($phase) {
+  $requirements = array();
+
+  $file_exists = file_exists(_git_deploy_get_glip_path() . '/lib/glip.php');
+  if ($phase == 'runtime') {
+    $requirements['Glip'] = array(
+      'title' => t('Glip Library'),
+      'value' => t('See the instructions in !README', array('!README' => drupal_get_path('module', 'git_deploy') . '/README.txt')),
+      'description' => t('The Glip library must be present to use git_deploy.'),
+      'severity' => $file_exists ? REQUIREMENT_OK : REQUIREMENT_ERROR,
+    );
+  }
+  return $requirements;
+}

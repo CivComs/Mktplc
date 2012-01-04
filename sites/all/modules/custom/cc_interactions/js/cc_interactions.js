@@ -20,9 +20,11 @@
 Drupal.behaviors.cc_interactions_organizations = {
   attach: function(context, settings) {
     
-    // Check if user has any orgs.
+    // Check if user has any orgs, or if editing
     if (Drupal.settings.hasOwnProperty('cc_interactions') && 
-      Drupal.settings.cc_interactions.hasOwnProperty('user_orgs')) {
+      Drupal.settings.cc_interactions.hasOwnProperty('user_orgs') && 
+      Drupal.settings.cc_interactions.hasOwnProperty('editing') &&
+      !Drupal.settings.cc_interactions.editing) {
       
       // Create drop down
       var userOrgs = Drupal.settings.cc_interactions.user_orgs;
@@ -35,7 +37,7 @@ Drupal.behaviors.cc_interactions_organizations = {
       $wrapper.before($dropdown);
       $innerWrapper.hide();
       
-      // Create chang event and fill in the first organization.
+      // Create chang event and fill in the first organization, if new.
       $dropdown.change(function(e) {
         var id = $(this).find('option:selected').val();
         if (id != 'search') {

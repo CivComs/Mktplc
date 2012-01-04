@@ -118,6 +118,13 @@ function cc_api_service_default_services_endpoint() {
         ),
       ),
     ),
+    'views' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
   );
   $endpoint->debug = 1;
   $export['mktplc_api_v1'] = $endpoint;
