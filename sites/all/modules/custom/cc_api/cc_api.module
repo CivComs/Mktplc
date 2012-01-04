@@ -95,6 +95,12 @@ function cc_api_block_view($delta = '') {
  */
 function cc_api_block_output() {
   $output = '';
+  
+  // Make sure the API is available
+  if (!module_exists('cc_api_service')) {
+    return $output;
+  }
+  
   $path = current_path();
   $link_options = array(
     'attributes' => array(
