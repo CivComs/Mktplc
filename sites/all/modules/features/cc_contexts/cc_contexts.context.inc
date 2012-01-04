@@ -667,25 +667,25 @@ function cc_contexts_context_default_contexts() {
   $context->description = 'Taxonomy listing pages';
   $context->tag = '';
   $context->conditions = array(
-    'views' => array(
+    'path' => array(
       'values' => array(
-        'taxonomy_term_listing' => 'taxonomy_term_listing',
+        'taxonomy/term/*' => 'taxonomy/term/*',
       ),
     ),
   );
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'views--exp-taxonomy_term_listing-page' => array(
-          'module' => 'views',
-          'delta' => '-exp-taxonomy_term_listing-page',
-          'region' => 'sidebar_second',
-          'weight' => '-9',
-        ),
         'views-taxonomy_term_listing-block_1' => array(
           'module' => 'views',
           'delta' => 'taxonomy_term_listing-block_1',
-          'region' => 'sidebar_second',
+          'region' => 'content',
+          'weight' => '-10',
+        ),
+        'views-taxonomy_term_listing-block_2' => array(
+          'module' => 'views',
+          'delta' => 'taxonomy_term_listing-block_2',
+          'region' => 'content',
           'weight' => '-10',
         ),
       ),
