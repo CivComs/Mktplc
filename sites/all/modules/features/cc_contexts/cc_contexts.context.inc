@@ -13,6 +13,49 @@ function cc_contexts_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'api_block';
+  $context->description = 'Context for the API block.';
+  $context->tag = 'api';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'application' => 'application',
+        'interaction' => 'interaction',
+        'organization' => 'organization',
+      ),
+      'options' => array(
+        'node_form' => '0',
+      ),
+    ),
+    'views' => array(
+      'values' => array(
+        'taxonomy_term_listing' => 'taxonomy_term_listing',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'cc_api-cc_api' => array(
+          'module' => 'cc_api',
+          'delta' => 'cc_api',
+          'region' => 'sidebar_second',
+          'weight' => '56',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Context for the API block.');
+  t('api');
+  $export['api_block'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'apps';
   $context->description = '';
   $context->tag = 'theme';
@@ -624,25 +667,25 @@ function cc_contexts_context_default_contexts() {
   $context->description = 'Taxonomy listing pages';
   $context->tag = '';
   $context->conditions = array(
-    'views' => array(
+    'path' => array(
       'values' => array(
-        'taxonomy_term_listing' => 'taxonomy_term_listing',
+        'taxonomy/term/*' => 'taxonomy/term/*',
       ),
     ),
   );
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'views--exp-taxonomy_term_listing-page' => array(
-          'module' => 'views',
-          'delta' => '-exp-taxonomy_term_listing-page',
-          'region' => 'sidebar_second',
-          'weight' => '-9',
-        ),
         'views-taxonomy_term_listing-block_1' => array(
           'module' => 'views',
           'delta' => 'taxonomy_term_listing-block_1',
-          'region' => 'sidebar_second',
+          'region' => 'content',
+          'weight' => '-10',
+        ),
+        'views-taxonomy_term_listing-block_2' => array(
+          'module' => 'views',
+          'delta' => 'taxonomy_term_listing-block_2',
+          'region' => 'content',
           'weight' => '-10',
         ),
       ),
@@ -654,6 +697,45 @@ function cc_contexts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Taxonomy listing pages');
   $export['taxonomy'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'user_content';
+  $context->description = 'Provides a context for all significant node types.  For instance, having an Edit block on node pages.';
+  $context->tag = 'content';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'application' => 'application',
+        'interaction' => 'interaction',
+        'organization' => 'organization',
+        'project' => 'project',
+      ),
+      'options' => array(
+        'node_form' => '0',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'cc_editing-cc_editing_node_edit' => array(
+          'module' => 'cc_editing',
+          'delta' => 'cc_editing_node_edit',
+          'region' => 'sidebar_second',
+          'weight' => '-64',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Provides a context for all significant node types.  For instance, having an Edit block on node pages.');
+  t('content');
+  $export['user_content'] = $context;
 
   return $export;
 }

@@ -16,12 +16,12 @@
  * Implements hook_init().
  */
 function cc_interactions_init() {
-if (isset($_GET['compact_overlay'])){
-  if ($_GET['compact-overlay'] == true) {
-    drupal_add_css(drupal_get_path('module', 'cc_interactions') . 
-      '/css/cc_interactions.overlay.css');
+  if (isset($_GET['compact_overlay'])) {
+    if ($_GET['compact-overlay'] == true) {
+      drupal_add_css(drupal_get_path('module', 'cc_interactions') . 
+        '/css/cc_interactions.overlay.css');
+    }
   }
-}
 }
 
 /**
@@ -98,7 +98,6 @@ function cc_interactions_apps_block() {
  * Implements hook_form_FORM_ID_alter().
  */
 function cc_interactions_form_interaction_node_form_alter(&$form, &$form_state, $form_id) {
-  
   // Get list of users organizations to send over to JS.
   $fieldname = 'field_user_organization';
   global $user;
@@ -119,6 +118,7 @@ function cc_interactions_form_interaction_node_form_alter(&$form, &$form_state, 
   $js_data = array(
     'cc_interactions' => array(
       'user_orgs' => $organizations,
+      'editing' => (isset($form['nid']) && !empty($form['nid']['#value'])) ? TRUE : FALSE,
     ),
   );
   

@@ -1,5 +1,6 @@
 core = "7.x"
 dependencies[] = "services"
+dependencies[] = "services_views"
 description = "Export of Services configuration for API."
 features[ctools][] = "services:services:3"
 features[services_endpoint][] = "mktplc_api_v1"

@@ -1,0 +1,12 @@
+name = Services Views
+description = Build service endpoints with Views.
+package = Services
+core = 7.x
+dependencies[] = services
+dependencies[] = views
+; Information added by drupal.org packaging script on 2011-11-04
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "services_views"
+datestamp = "1320366379"
+

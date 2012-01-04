@@ -2,60 +2,73 @@
 /**
  * @file
  * File containing code for the public API page.
+ *
+ * TODO: It would make sense to utilize
+ * render arrays for this and just make a huge
+ * renderable array.
  */
  
 /**
  * Main callback for API documentation page.
  */
 function cc_api_documentation_page() {
-  $api = array();
-  
   // Let's get the API data.  We will assume that we only
   // want services resources that are in the format:
   // "mktplc_api_"
   $prefix = 'mktplc_api_';
   
-  module_load_include('resource_build.inc', 'services');
-  // Call _services_build_resources() directly instead of
-  // services_get_resources to bypass caching.
-  $resources = _services_build_resources();
+  // Let's put this all behind a cache, so check first
+  $api = cache_get('cc_api_doc_page');
+  if (!$api) {
   
-  // Go through available endpoints.
-  $endpoints = services_endpoint_load_all();
-  foreach ($endpoints as $ep_id => $ep) {
-    // Check prefix first
-    if (strpos($ep_id, $prefix) !== 0) {
-      continue;
-    }
+    module_load_include('resource_build.inc', 'services');
+    // Call _services_build_resources() directly instead of
+    // services_get_resources to bypass caching.
+    $resources = _services_build_resources();
     
-    // Start the data
-    $api[$ep_id] = $ep;
-    
-    // Go through resources and add details
-    $config_types = array('actions', 'relationships', 'operations');
-    foreach ($ep->resources as $entity => $config) {
-      foreach ($config as $config_type => $config_set) {
-        if (is_array($config_set) && in_array($config_type, $config_types)) {
-          foreach ($config_set as $k => $v) {
-          
-            // These don't match up one to one, so there
-            // is some custom logic.
-            if ($config_type == 'operations') {
-              $api[$ep_id]->resources[$entity][$config_type][$k] += 
-                $resources[$entity][$k];
-            }
-            else {
-              $api[$ep_id]->resources[$entity][$config_type][$k] += 
-                $resources[$entity][$config_type][$k];
+    // Go through available endpoints.
+    $endpoints = services_endpoint_load_all();
+    foreach ($endpoints as $ep_id => $ep) {
+      // Check prefix first
+      if (strpos($ep_id, $prefix) !== 0) {
+        continue;
+      }
+      
+      // Start the data
+      $api[$ep_id] = $ep;
+      
+      // Go through resources and add details
+      $config_types = array('actions', 'relationships', 'operations');
+      foreach ($ep->resources as $entity => $config) {
+        foreach ($config as $config_type => $config_set) {
+          if (is_array($config_set) && in_array($config_type, $config_types)) {
+            foreach ($config_set as $k => $v) {
+            
+              // These don't match up one to one, so there
+              // is some custom logic.
+              if ($config_type == 'operations') {
+                $api[$ep_id]->resources[$entity][$config_type][$k] += 
+                  $resources[$entity][$k];
+              }
+              else {
+                $api[$ep_id]->resources[$entity][$config_type][$k] += 
+                  $resources[$entity][$config_type][$k];
+              }
             }
           }
         }
       }
     }
+    
+    // Allow for alter
+    drupal_alter('cc_api', $api);
+    
+    // Set the cache
+    cache_set('cc_api_doc_page', $api);
   }
-  
-  // Allow for alter
-  drupal_alter('cc_api', $api);
+  else {
+    $api = $api->data;
+  }
   
   // Include some CSS and JS
   drupal_add_css(drupal_get_path('module', 'cc_api') . '/cc_api.css');
@@ -89,6 +102,14 @@ function cc_api_cc_api_alter(&$apis) {
     
     // Add resource meta data
     cc_api_documentation_page_resources($apis[$api_id]->resources, $apis[$api_id]->base_url);
+    
+    // Add data model information.
+    cc_api_documentation_page_data_model($apis[$api_id]);
+    
+    // Views data if its enabled
+    if (isset($api->resources['views']) && !empty($api->resources['views'])) {
+      cc_api_documentation_page_views($apis[$api_id]);
+    }
   }
 }
 
@@ -96,13 +117,24 @@ function cc_api_cc_api_alter(&$apis) {
  * Main display operation for documentation
  */
 function cc_api_display_documentation($apis) {
+  $output = '';
+  
   // Check for Syntaxhighlighter module
   $class = '';
   if (module_exists('syntaxhighlighter')) {
     $class = 'brush:plain';
   }
+  
+  // Put a top level example link
+  if ($example = variable_get('cc_api_doc_page_examples_path', 'api/examples')) {
+    $output .= '
+      <p>' . t('This page is focused on providing a complete technical overview of the API.  For a set of examples, please go to the <a href="@url">example page</a>.', array(
+        '@url' => url($example),
+      )) . '</p>
+    ';
+  }
 
-  $output = '
+  $output .= '
     <ul class="api-toc-container"></ul>
     <div class="api-container">
   ';
@@ -118,9 +150,9 @@ function cc_api_display_documentation($apis) {
       
       <h3>' . t('URLs') . '</h3>
       <div class="api-description-url">
-        <p>' . t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')) . '</p>
+        <p>' . t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed (most often) like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')) . '</p>
         <code><pre class="' . $class . '">
-          ' . $api->base_url . '/:entity.:format?:key=:value
+          ' . $api->base_url . '/:method.:format?:key=:value
         </pre></code>
         <p>' . t('For instance:') . '</p>
         <code><pre class="' . $class . '">
@@ -188,7 +220,131 @@ function cc_api_display_documentation($apis) {
     ';
       
     $output .= '
-      <h3>' . t('Resources') . '</h3>
+      <h3>' . t('Data Model') . '</h3>
+      <div class="api-description-data-model">
+        <p>' . t('Without knowing much about the data model, working with the API will be difficult.  The following is a list of entities and fields available on the site.  For reference, checkout what <a href="@field_url">Fields</a> and <a href="@entity_url">Entities</a> are in Drupal.  Note that often the name and description of the data model fields and entities are taken from their user-focused counter parts and may not fully be appropriate for this context.', array(
+          '@entity_url' => 'http://drupal.org/node/1261744',
+          '@field_url' => 'http://drupal.org/node/443536',
+        )) . '</p>
+      </div>
+    ';
+
+    foreach ($api->data_model as $mid => $model) {
+      $output .= '
+        <h4>' . check_plain($model['name']) . '</h4>
+        <p>' . filter_xss($model['description']) . '</p>
+      ';
+      
+      // Model types, aka entity bundles
+      foreach ($model as $b => $bundle) {
+        if (!in_array($b, array('name', 'description'))) {
+          $output .= '
+            <h5>' . check_plain($bundle['name']) . '</h5>
+            <p>' . filter_xss($bundle['description']) . '</p>
+          ';
+              
+          // Custom fields
+          if (!empty($bundle['fields'])) {
+            $output .= '<strong>' . t('Custom Fields') . '</strong>';
+            $rows = array();
+            $headers = array(t('id'), t('Label'), t('Description'), t('Type'));
+            foreach ($bundle['fields'] as $f) {
+              $rows[] = array(
+                $f['id'], 
+                filter_xss($f['label']), 
+                filter_xss($f['description']),
+                $f['type'],
+              );
+            }
+            $output .= theme('table', array(
+              'header' => $headers,
+              'rows' => $rows,
+            ));
+          }
+        }
+      }
+    }
+    
+    if (isset($api->views_searching) && is_array($api->views_searching)
+       && count($api->views_searching) > 0) { 
+      $output .= '
+        <h3>' . t('Searching') . '</h3>
+        <div class="api-description-searching">
+          <p>' . t('Utilizing the Views methods as described below, you can find specific content.') . '</p>
+          <p>' . t('Please see the <a href="#views">Views</a> section to get a general description of using the Searching API.') . '</p>
+        </div>
+      ';
+      
+      // Go through Views
+      foreach ($api->views_searching as $v => $view) {
+        if (!in_array($v, array('name', 'description'))) {
+          $title = !empty($view['name']) ? $view['name'] : t('-no title-');
+          $output .= '
+            <h4>' . $title . '</h4>
+            <p>' . $view['description'] . '</p>
+            <ul>
+              <li><strong>' . t('Identifier') . '</strong>: ' . $view['id'] . '</li>
+              <li><strong>' . t('Base table') . '</strong>: ' . $view['base_table'] . '</li>
+            </ul>
+          ';
+          
+          // Displays
+          foreach ($view['displays'] as $d => $display) {
+            $output .= '
+              <h5>' . $display['name'] . '</h5>
+              <p>' . $display['description'] . '</p>
+            ';
+            
+            // Examples
+            if (isset($display['examples'])) {
+              $output .= '
+                <strong>' . t('Examples') . '</strong>
+                <ul>
+              ';
+              foreach ($display['examples'] as $example) {
+                $output .= '
+                  <li>' . $example['title'] . ':
+                  <code><pre class="' . $example['class'] . '">
+                    ' . $example['data'] . '
+                  </pre></code>
+                  </li>
+                ';
+              }
+              $output .= '
+                </ul>
+              ';
+            }
+            
+            // Filters
+            if (isset($display['filters'])) {
+              $output .= '
+                <strong>' . t('Filters') . '</strong>
+              ';
+            
+              $rows = array();
+              $headers = array(t('Name'), t('Identifier'), t('Required'));
+              foreach ($display['filters'] as $filter) {
+                $rows[] = array(
+                  $filter['name'], 
+                  $filter['id'], 
+                  (empty($filter['required'])) ? t('no') : t('yes'),
+                );
+              }
+              $output .= theme('table', array(
+                'header' => $headers,
+                'rows' => $rows,
+              ));
+            }
+          }
+        }
+      }
+    }
+      
+    $output .= '
+      <h3>' . t('Resources/Methods') . '</h3>
+      <div class="api-description-resources">
+        <p>' . t('Resource, or methods, are the specific RESTful API calls for manipulating data.') . '</p>
+      </div>
       <div class="api-description-resources">
     ';
     foreach ($api->resources as $r => $resource) {
@@ -211,6 +367,7 @@ function cc_api_display_documentation($apis) {
               $output .= '
                 <h6>' . $action['name'] . '</h6>
                 <p>' . $action['description'] . '</p>
+                <p><strong>Method:</strong> ' . $action['method'] . '</p>
               ';
               
               // Arguments
@@ -222,8 +379,8 @@ function cc_api_display_documentation($apis) {
                   $rows[] = array(
                     $arg['name'], 
                     $arg['type'], 
-                    $arg['description'], 
-                    ($arg['optional']) ? t('no') : t('yes'),
+                    (isset($arg['description'])) ? $arg['description'] : '', 
+                    (!empty($arg['optional'])) ? t('no') : t('yes'),
                     (is_array($arg['source'])) ? implode(', ', array_flip($arg['source'])) : 
                       t('post body'),
                   );
@@ -368,16 +525,15 @@ Content-Type: text/plain
  * Add meta data to resources.
  */
 function cc_api_documentation_page_resources(&$resources, $url) {
-  
   $method_map = array(
-    'retrieve'         => 'GET',
-    'update'           => 'PUT',
-    'delete'           => 'DELETE',
-    'index'            => 'GET',
-    'create'           => 'POST',
-    'actions'          => 'POST',
+    'retrieve' => 'GET',
+    'update' => 'PUT',
+    'delete' => 'DELETE',
+    'index' => 'GET',
+    'create' => 'POST',
+    'actions' => 'POST',
     'targeted actions' => 'POST',
-    'relationships'    => 'GET',
+    'relationships' => 'GET',
   );
   
   $resources_meta = array(
@@ -398,6 +554,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment/ ????',
             ),
           ),
+          'method' => $method_map['create'],
         ),
         'retrieve' => array(
           'name' => t('Retrieve Comments'),
@@ -409,6 +566,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment/:cid',
             ),
           ),
+          'method' => $method_map['retrieve'],
         ),
         'update' => array(
           'name' => t('Update Comment'),
@@ -420,6 +578,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment/ ?????',
             ),
           ),
+          'method' => $method_map['update'],
         ),
         'delete' => array(
           'name' => t('Delete Comment'),
@@ -431,6 +590,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment/ ?????',
             ),
           ),
+          'method' => $method_map['delete'],
         ),
         'index' => array(
           'name' => t('Search Comment'),
@@ -442,6 +602,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
       'actions' => array(
@@ -457,6 +618,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
         'countNew' => array(
           'name' => t('Count New Comments per Node'),
@@ -468,6 +630,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/comment ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
     ),
@@ -488,6 +651,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node/ ????',
             ),
           ),
+          'method' => $method_map['create'],
         ),
         'retrieve' => array(
           'name' => t('Retrieve Nodes'),
@@ -499,6 +663,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node/:nid',
             ),
           ),
+          'method' => $method_map['retrieve'],
         ),
         'update' => array(
           'name' => t('Update Node'),
@@ -510,6 +675,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node/ ?????',
             ),
           ),
+          'method' => $method_map['update'],
         ),
         'delete' => array(
           'name' => t('Delete Node'),
@@ -521,6 +687,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node/ ?????',
             ),
           ),
+          'method' => $method_map['delete'],
         ),
         'index' => array(
           'name' => t('Search Nodes'),
@@ -532,6 +699,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
       'relationships' => array(
@@ -547,6 +715,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node ?????',
             ),
           ),
+          'method' => $method_map['index'], // ???
         ),
         'comments' => array(
           'name' => t('New Comments Attached to Node'),
@@ -558,6 +727,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/node ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
     ),
@@ -577,6 +747,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term/ ????',
             ),
           ),
+          'method' => $method_map['create'],
         ),
         'retrieve' => array(
           'name' => t('Retrieve Term'),
@@ -588,6 +759,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term/:tid',
             ),
           ),
+          'method' => $method_map['retrieve'],
         ),
         'update' => array(
           'name' => t('Update Term'),
@@ -599,6 +771,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
             ),
           ),
+          'method' => $method_map['update'],
         ),
         'delete' => array(
           'name' => t('Delete Term'),
@@ -610,6 +783,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
             ),
           ),
+          'method' => $method_map['delete'],
         ),
         'index' => array(
           'name' => t('Search Terms'),
@@ -621,6 +795,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
             ),
           ),
+          'method' => $method_map['index'],
         ),
       ),
       'actions' => array(
@@ -636,6 +811,27 @@ function cc_api_documentation_page_resources(&$resources, $url) {
               'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
             ),
           ),
+          'method' => $method_map['index'],
+        ),
+      ),
+    ),
+    'views' => array(
+      'name' => t('Views'),
+      'description' => t('Views are queries of data as defined in configuration.'),
+      'operations' => array(
+        'name' => t('Views Operations'),
+        'description' => t('Basic operations on Views.'),
+        'retrieve' => array(
+          'name' => t('Search Views'),
+          'description' => t('Use this method to search Views.'),
+          'examples' => array(
+            'curl_retrieve' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -data ' . $url . '/views/:view-name.json',
+            ),
+          ),
+          'method' => $method_map['retrieve'],
         ),
       ),
     ),
@@ -643,6 +839,129 @@ function cc_api_documentation_page_resources(&$resources, $url) {
   
   // Merge
   $resources = cc_api_merge_arrays($resources_meta, $resources);
+}
+
+/**
+ * Add meta data to data model.
+ */
+function cc_api_documentation_page_data_model(&$api) {
+  $api->data_model = isset($api->data_model) ? $api->data_model : array();
+  
+  // Nodes
+  $node_types = node_type_get_types();
+  $api->data_model['nodes'] = array(
+    'name' => t('Nodes'),
+    'description' => t('Nodes, often referred to as content, are the building blocks of the application and Drupal in general.'),
+  );
+  
+  // Check node type configuration
+  $enabled = variable_get('cc_api_doc_page_data_model_content_types', array('application', 'interaction', 'organization'));
+  
+  // Add node type data to $api object
+  foreach ($node_types as $type_id => $node_type) {
+    // Check configuration
+    if (!in_array($type_id, $enabled)) {
+      continue;
+    }
+    
+    $api->data_model['nodes'][$type_id] = array(
+      'id' => $type_id,
+      'name' => $node_type->name,
+      'description' => $node_type->description,
+    );
+    
+    // Add field data to $api object
+    $fields = field_info_instances('node', $type_id);
+    foreach ($fields as $fid => $field) {
+      $field_details = field_info_field($fid);
+      $api->data_model['nodes'][$type_id]['fields'][$fid] = array(
+        'id' => $field['field_name'],
+        'label' => $field['label'],
+        'description' => $field['description'],
+        'type' => $field_details['type'],
+      );
+    }
+  }
+}
+
+
+/**
+ * Add meta data to data model.
+ */
+function cc_api_documentation_page_views(&$api) {
+  $api->views_searching = isset($api->views_searching) ? $api->views_searching : array();
+  $tag = variable_get('cc_api_doc_page_views_tag', 'api');
+  
+  $views = views_get_all_views();
+  foreach ($views as $view) {
+    // Check tag
+    if (!empty($tag) && $view->tag != $tag) {
+      continue;
+    }
+
+    $data = array();
+    $data['id'] = $view->name;
+    $data['name'] = $view->human_name;
+    $data['description'] = $view->description;
+    $data['base_table'] = $view->base_table;
+  
+    // Get displays
+    $data['displays'] = array();
+    $default_filters = array();
+    foreach ($view->display as $d => $display) {
+      $data['displays'][$d] = array(
+        'id' => $display->id,
+        'name' => ($d == 'default') ? t('Default') : $display->display_title,
+        'description' => isset($display->display_options['display_description']) ?
+          $display->display_options['display_description'] : '',
+      );
+      
+      // Filters
+      if (isset($display->display_options['filters'])) {
+        $data['displays'][$d]['filters'] = array();
+        foreach ($display->display_options['filters'] as $f => $filter) {
+          if (isset($filter['exposed']) && $filter['exposed']) {
+            $data['displays'][$d]['filters'][$f] = array(
+              'name' => $filter['expose']['label'],
+              'id' => $filter['expose']['identifier'],
+              'required' => isset($filter['expose']['required']) ? 
+                $filter['expose']['required'] : 0,
+            );
+          }
+        }
+      }
+      
+      // Merge with defaults
+      if ($d != 'default') {
+        $data['displays'][$d]['filters'] = isset($data['displays'][$d]['filters']) ?
+          $data['displays'][$d]['filters'] : array();
+        $data['displays'][$d]['filters'] = array_merge($data['displays'][$d]['filters'], $default_filters);
+      }
+      else {
+        $default_filters = $data['displays'][$d]['filters'];
+      }
+      
+      // An example
+      $data['displays'][$d]['examples'] = array(
+        'search_filters' => array(
+          'title' => t('Search with filters'),
+          'data' => ($d == 'default') ?
+            $api->base_url . '/views/' . $data['id'] . '.json&filters[:id1]=:value1&filters[:id2]=:value2' :
+            $api->base_url . '/views/' . $data['id'] . '.json?display_id=' . $d . '&filters[:id1]=:value1&filters[:id2]=:value2',
+          'class' => 'brush:plain',
+        ),
+      );
+      
+      // Don't display default for now, unless theres a better way
+      // to handle it
+      if ($d == 'default') {
+        unset($data['displays'][$d]);
+      }
+    }
+
+    // Attach data
+    $api->views_searching[$view->name] = $data;
+  }
 }
 
 /**
