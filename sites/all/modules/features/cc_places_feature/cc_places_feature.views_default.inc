@@ -623,6 +623,32 @@ print _cc_places_wkt($place[\'locality\'], $place[\'country\'], $place[\'adminis
     'administrative_area' => 'administrative_area',
   );
   $handler->display->display_options['fields']['field_organization_address_1']['field_api_classes'] = 0;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['group_type'] = 'count';
+  $handler->display->display_options['fields']['nid']['label'] = 'Organizations Here:';
+  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['nid']['element_label_type'] = 'span';
+  $handler->display->display_options['fields']['nid']['element_label_class'] = 'orgs-here';
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['nid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['nid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['nid']['format_plural'] = 0;
   /* Field: Using / Sharing */
   $handler->display->display_options['fields']['field_organization_address_2']['id'] = 'field_organization_address_2';
   $handler->display->display_options['fields']['field_organization_address_2']['table'] = 'field_data_field_organization_address';
@@ -643,8 +669,9 @@ print _cc_places_wkt($place[\'locality\'], $place[\'country\'], $place[\'adminis
   $handler->display->display_options['fields']['field_organization_address_2']['alter']['html'] = 0;
   $handler->display->display_options['fields']['field_organization_address_2']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_organization_address_2']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_organization_address_2']['empty'] = 'Unknown';
   $handler->display->display_options['fields']['field_organization_address_2']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_organization_address_2']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_organization_address_2']['empty_zero'] = 1;
   $handler->display->display_options['fields']['field_organization_address_2']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_organization_address_2']['click_sort_column'] = 'country';
   $handler->display->display_options['fields']['field_organization_address_2']['type'] = 'using_sharing';
