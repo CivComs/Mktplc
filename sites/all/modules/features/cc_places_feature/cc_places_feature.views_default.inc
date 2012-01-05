@@ -677,7 +677,15 @@ print _cc_places_wkt($place[\'locality\'], $place[\'country\'], $place[\'adminis
   $handler->display->display_options['fields']['field_organization_address_2']['type'] = 'using_sharing';
   $handler->display->display_options['fields']['field_organization_address_2']['settings'] = array(
     'count_by' => 'city',
-    'filter_by' => array(),
+    'filter_by' => array(
+      124 => '124',
+      132 => '132',
+      131 => '131',
+      128 => '128',
+      130 => '130',
+      129 => '129',
+      127 => '127',
+    ),
     'appearance' => 'full',
   );
   $handler->display->display_options['fields']['field_organization_address_2']['group_column'] = 'locality';
