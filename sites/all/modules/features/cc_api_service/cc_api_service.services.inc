@@ -24,18 +24,18 @@ function cc_api_service_default_services_endpoint() {
       'formatters' => array(
         'bencode' => TRUE,
         'json' => TRUE,
+        'jsonp' => TRUE,
         'php' => TRUE,
         'rss' => TRUE,
         'xml' => TRUE,
         'yaml' => TRUE,
-        'jsonp' => FALSE,
       ),
       'parsers' => array(
         'application/json' => TRUE,
         'application/vnd.php.serialized' => TRUE,
+        'application/x-www-form-urlencoded' => TRUE,
         'application/x-yaml' => TRUE,
         'multipart/form-data' => TRUE,
-        'application/x-www-form-urlencoded' => FALSE,
       ),
     ),
   );
@@ -114,6 +114,16 @@ function cc_api_service_default_services_endpoint() {
       ),
       'actions' => array(
         'selectNodes' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => 1,
+        ),
+        'logout' => array(
           'enabled' => 1,
         ),
       ),
