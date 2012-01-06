@@ -1205,8 +1205,6 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['strip_tags'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['element_type'] = 'span';
-  $handler->display->display_options['fields']['field_interaction_organization']['element_class'] = 'org-name';
   $handler->display->display_options['fields']['field_interaction_organization']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_interaction_organization']['element_default_classes'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['hide_empty'] = 0;
@@ -1320,9 +1318,9 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['alter']['html'] = 0;
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['created']['hide_empty'] = 1;
+  $handler->display->display_options['fields']['created']['hide_empty'] = 0;
   $handler->display->display_options['fields']['created']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['created']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['created']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['created']['date_format'] = 'cc_date_short';
   /* Field: Content: Link(s) */
   $handler->display->display_options['fields']['field_url']['id'] = 'field_url';
