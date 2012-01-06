@@ -48,6 +48,15 @@ function cc_api_menu() {
     'file' =>  'includes/cc_api.admin.inc',
     'type' => MENU_NORMAL_ITEM,
   );
+  $items['api/test'] = array(
+    'title' => 'Test the Marketplace API',
+    'page callback' => 'drupal_get_form', 
+    'page arguments' => array('cc_api_test'),
+    'description' => 'Test the marketplace API.',
+    'access arguments' => array('administer site configuration'), 
+    'file' =>  'includes/cc_api.test.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
 
   return $items;
 }
