@@ -162,7 +162,24 @@ function cc_api_display_documentation($apis) {
       
       <h3>' . t('Authentication') . '</h3>
       <div class="api-description-auth">
-        <p>' . t('coming soon.') . '</p>
+        <p>' . t('You will need to authenticate in some way if you want to create, update or delete data in the system.') . '</p>
+        <h4>' . t('Session/Cookie Based') . '</h4>
+        <p>' . t('Session based authentication is a method in which you post your username and password to an endpoint, and you will be given a <strong>session name</strong> and <strong>session ID</strong> that can be used for requests that require specific authenticated access (such as creating an Organization).  Please see the User Actions below for more in-depth look at the methods.') . '</p>
+        <strong>' . t('CURL example') . '</strong>
+        <p>' . t('Use the following command to get back the session data.  We use the verbose flag just so that you can see what is going on.') . '</p>
+        <code><pre>
+          curl -v --data \'{"username":"[[your_username]]","password":"[[your_password]]"}\' --header "Content-Type:application/json" ' . $api->base_url . '/user/login
+        </pre></code>
+        <p>' . t('You should recieve an object back that is similar to the following:') . '</p>
+        <code><pre>
+          sessid: XXXXXXXXXXXXXXX
+          session_name: YYYYYYYYYYYYY
+          user: |
+        </pre></code>
+        <p>' . t('These can then be used in a call to create a node within the cookie.') . '</p>
+        <code><pre>
+          curl -v --data \'{"title":"New Organization","type":"organization"}\' --header "Content-Type:application/json" --header "Cookie: [[session_name]]=[[Session_id]]" ' . $api->base_url . '/node
+        </pre></code>
       </div>
     ';
     
@@ -742,9 +759,9 @@ function cc_api_documentation_page_resources(&$resources, $url) {
           'description' => t('Use this method to create a specific Taxonomy Term.'),
           'examples' => array(
             'curl_retrieve' => array(
-              'title' => t('CURL'),
+              'title' => t('CURL (Session auth)'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term/ ????',
+              'data' => 'curl -v -X POST --data \'{"title":"new title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/taxonomy_term',
             ),
           ),
           'method' => $method_map['create'],
@@ -756,7 +773,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term/:tid',
+              'data' => 'curl -v ' . $url . '/taxonomy_term/[[tid]].json',
             ),
           ),
           'method' => $method_map['retrieve'],
@@ -766,9 +783,9 @@ function cc_api_documentation_page_resources(&$resources, $url) {
           'description' => t('Use this method to update a specific term.'),
           'examples' => array(
             'curl_retrieve' => array(
-              'title' => t('CURL'),
+              'title' => t('CURL (Session auth)'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
+              'data' => 'curl -v -X PUT --data \'{"title":"new title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/taxonomy_term/[[tid]]',
             ),
           ),
           'method' => $method_map['update'],
@@ -778,9 +795,9 @@ function cc_api_documentation_page_resources(&$resources, $url) {
           'description' => t('Use this method to delete a specific term.'),
           'examples' => array(
             'curl_retrieve' => array(
-              'title' => t('CURL'),
+              'title' => t('CURL (Session auth)'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
+              'data' => 'curl -v -X DELETE --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/taxonomy_term/[[tid]]',
             ),
           ),
           'method' => $method_map['delete'],
@@ -792,7 +809,12 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
+              'data' => 'curl -v ' . $url . '/taxonomy_term.json',
+            ),
+            'curl_parameters' => array(
+              'title' => t('CURL with parameters'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v ' . $url . '/taxonomy_term.json?parameters%5Bvid%5D=[[vid]]',
             ),
           ),
           'method' => $method_map['index'],
@@ -805,10 +827,10 @@ function cc_api_documentation_page_resources(&$resources, $url) {
           'name' => t('Nodes with Term'),
           'description' => t('Use this method to get all nodes with specific Term.'),
           'examples' => array(
-            'curl_retrieve' => array(
+            'curl_select' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
+              'data' => 'curl -v ' . $url . '/taxonomy_term/selectNodes.json?tid=[[tid]]',
             ),
           ),
           'method' => $method_map['index'],
@@ -828,10 +850,42 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/views/:view-name.json',
+              'data' => 'curl -v --data ' . $url . '/views/[[view-name]].json',
             ),
           ),
           'method' => $method_map['retrieve'],
+        ),
+      ),
+    ),
+    'user' => array(
+      'name' => t('User'),
+      'description' => t('User methods.'),
+      'actions' => array(
+        'name' => t('User Actions'),
+        'description' => t('User actions like logging in and logging out.'),
+        'login' => array(
+          'name' => t('User Login'),
+          'description' => t('Use this method to login into the site with a username and password.  you will recieve a session name and session ID that can then be used within a cookie to make requests that require authentication.'),
+          'examples' => array(
+            'curl_login' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v --data \'{"username":"[[your_username]]","password":"[[your_password]]"}\' --header "Content-Type:application/json" ' . $url .'/user/login ',
+            ),
+          ),
+          'method' => $method_map['actions'],
+        ),
+        'logout' => array(
+          'name' => t('User Logout'),
+          'description' => t('Logout a user, given the session.'),
+          'examples' => array(
+            'curl_login' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/user/logout',
+            ),
+          ),
+          'method' => $method_map['actions'],
         ),
       ),
     ),
