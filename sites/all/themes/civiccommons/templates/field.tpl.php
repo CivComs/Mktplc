@@ -79,7 +79,7 @@ if($element['#field_name']=='field_organization_decs'){ ?>
 
 <?php }
 if($element['#field_name']=='field_application_tutors'){?>
-<div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots-und-table"><?php print t('+ add a photo or video');?></a></div>
+<div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-application-screenshots"><?php print t('+ add a photo or video');?></a></div>
 <?php }
 if($element['#field_name']=='field_videos'){?>
 <div class="edit-content-button"><a href="/node/<?php print arg(1);?>/edit#edit-field-screenshots"><?php print t('+ add a photo or video');?></a></div>
