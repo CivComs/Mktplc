@@ -137,10 +137,6 @@ function cc_api_display_documentation($apis) {
       )) . '</p>
     ';
   }
-
-  $output .= '
-    <div class="api-container">
-  ';
   
   // There could be multiple (versions) apis.
   foreach ($apis as $api_id => $api) {
@@ -252,7 +248,41 @@ function cc_api_display_documentation($apis) {
         'data-model-' . $mid,
         array(),
         array(
-          'data_model' => cc_api_display_documentation_bundles($model),
+          'bundles' => cc_api_display_documentation_bundles($model),
+        )
+      );
+    }
+    
+    // Views searching API
+    if (isset($api->views_searching) && is_array($api->views_searching)
+       && count($api->views_searching) > 0) {
+      $output .= cc_api_display_documentation_top_level(
+        t('Searching'),
+        t('Utilizing the Views methods as described below, you can find specific content.  Please see the <a href="#views">Views</a> section to get a general description of using the Searching API.'),
+        'views-searching',
+        array(),
+        array(
+          'views' => cc_api_display_documentation_views($api->views_searching),
+        )
+      );
+    }
+    
+    // Resource/Methods
+    $output .= cc_api_display_documentation_top_level(
+      t('Resources'),
+      t('Resource, or methods, are the specific RESTful API calls for manipulating data.'),
+      'resources'
+    );
+    
+    // Make each resource a top level item
+    foreach ($api->resources as $r => $resource) {
+      $output .= cc_api_display_documentation_top_level(
+        t('Resource: %type', array('%type' =>  $resource['name'])),
+        $resource['description'],
+        'resources-' . $r,
+        array(),
+        array(
+          'resource_items' => cc_api_display_documentation_resources($resource),
         )
       );
     }
@@ -261,159 +291,8 @@ function cc_api_display_documentation($apis) {
     $output .= '
       <div class="vertical-tabs-panes">
     ';
-    
-    if (isset($api->views_searching) && is_array($api->views_searching)
-       && count($api->views_searching) > 0) { 
-      $output .= '
-        <h3>' . t('Searching') . '</h3>
-        <div class="api-description-searching">
-          <p>' . t('Utilizing the Views methods as described below, you can find specific content.') . '</p>
-          <p>' . t('Please see the <a href="#views">Views</a> section to get a general description of using the Searching API.') . '</p>
-        </div>
-      ';
-      
-      // Go through Views
-      foreach ($api->views_searching as $v => $view) {
-        if (!in_array($v, array('name', 'description'))) {
-          $title = !empty($view['name']) ? $view['name'] : t('-no title-');
-          $output .= '
-            <h4>' . $title . '</h4>
-            <p>' . $view['description'] . '</p>
-            <ul>
-              <li><strong>' . t('Identifier') . '</strong>: ' . $view['id'] . '</li>
-              <li><strong>' . t('Base table') . '</strong>: ' . $view['base_table'] . '</li>
-            </ul>
-          ';
-          
-          // Displays
-          foreach ($view['displays'] as $d => $display) {
-            $output .= '
-              <h5>' . $display['name'] . '</h5>
-              <p>' . $display['description'] . '</p>
-            ';
-            
-            // Examples
-            if (isset($display['examples'])) {
-              $output .= '
-                <strong>' . t('Examples') . '</strong>
-                <ul>
-              ';
-              foreach ($display['examples'] as $example) {
-                $output .= '
-                  <li>' . $example['title'] . ':
-                  <code><pre class="' . $example['class'] . '">
-                    ' . $example['data'] . '
-                  </pre></code>
-                  </li>
-                ';
-              }
-              $output .= '
-                </ul>
-              ';
-            }
-            
-            // Filters
-            if (isset($display['filters'])) {
-              $output .= '
-                <strong>' . t('Filters') . '</strong>
-              ';
-            
-              $rows = array();
-              $headers = array(t('Name'), t('Identifier'), t('Required'));
-              foreach ($display['filters'] as $filter) {
-                $rows[] = array(
-                  $filter['name'], 
-                  $filter['id'], 
-                  (empty($filter['required'])) ? t('no') : t('yes'),
-                );
-              }
-              $output .= theme('table', array(
-                'header' => $headers,
-                'rows' => $rows,
-              ));
-            }
-          }
-        }
-      }
-    }
-      
-    $output .= '
-      <h3>' . t('Resources/Methods') . '</h3>
-      <div class="api-description-resources">
-        <p>' . t('Resource, or methods, are the specific RESTful API calls for manipulating data.') . '</p>
-      </div>
-      <div class="api-description-resources">
-    ';
-    foreach ($api->resources as $r => $resource) {
-      $output .= '
-        <h4>' . $resource['name'] . '</h4>
-        <p>' . $resource['description'] . '</p>
-      ';
-      
-      // Resource object types
-      foreach ($resource as $t => $type) {
-        if (!in_array($t, array('name', 'description'))) {
-          $output .= '
-            <h5>' . $type['name'] . '</h5>
-            <p>' . $type['description'] . '</p>
-          ';
-          
-          // Methods
-          foreach ($type as $a => $action) {
-            if (!in_array($a, array('name', 'description'))) {
-              $output .= '
-                <h6>' . $action['name'] . '</h6>
-                <p>' . $action['description'] . '</p>
-                <p><strong>Method:</strong> ' . $action['method'] . '</p>
-              ';
-              
-              // Arguments
-              if (!empty($action['args'])) {
-                $output .= '<strong>' . t('Arguments') . '</strong>';
-                $rows = array();
-                $headers = array(t('Key'), t('Type'), t('Description'), t('Required'), t('Source'));
-                foreach ($action['args'] as $arg) {
-                  $rows[] = array(
-                    $arg['name'], 
-                    $arg['type'], 
-                    (isset($arg['description'])) ? $arg['description'] : '', 
-                    (!empty($arg['optional'])) ? t('no') : t('yes'),
-                    (is_array($arg['source'])) ? implode(', ', array_flip($arg['source'])) : 
-                      t('post body'),
-                  );
-                }
-                $output .= theme('table', array(
-                  'header' => $headers,
-                  'rows' => $rows,
-                ));
-              }
-              
-              // Examples
-              if (!empty($action['examples'])) {
-                $output .= '<strong>' . t('Examples') . '</strong>';
-                $output .= '<ul>';
-                foreach ($action['examples'] as $e => $example) {
-                  $output .= '
-                    <li>' . $example['title'] . ':
-                    <code><pre class="' . $example['class'] . '">
-                      ' . $example['data'] . '
-                    </pre></code>
-                    </li>
-                  ';
-                }
-                $output .= '</ul>';
-              }
-            }
-          }
-        }
-      }      
-    }
-    $output .= '
-      </div>
-    ';
   }
   
-  $output .= '</div>';
   return $output;
 }
 
@@ -553,6 +432,120 @@ function cc_api_display_documentation_bundles($bundles = array()) {
   }
   
   return $output;
+}
+
+/**
+ * Views sub items
+ */
+function cc_api_display_documentation_views($views) {
+  $output = '';
+  
+  // Go through Views
+  foreach ($views as $v => $view) {
+    if (!in_array($v, array('name', 'description'))) {
+      $title = !empty($view['name']) ? $view['name'] : t('-no title-');
+      $output .= '
+        <h4>' . $title . '</h4>
+        <p>' . $view['description'] . '</p>
+        <ul>
+          <li><strong>' . t('Identifier') . '</strong>: ' . $view['id'] . '</li>
+          <li><strong>' . t('Base table') . '</strong>: ' . $view['base_table'] . '</li>
+        </ul>
+      ';
+      
+      // Displays
+      foreach ($view['displays'] as $d => $display) {
+        $output .= '
+          <h5>' . $display['name'] . '</h5>
+          <p>' . $display['description'] . '</p>
+        ';
+        
+        // Examples
+        if (isset($display['examples'])) {
+          $output .= cc_api_display_documentation_examples($display['examples']);
+        }
+        
+        // Filters
+        if (isset($display['filters'])) {
+          $output .= '
+            <strong>' . t('Filters') . '</strong>
+          ';
+        
+          $rows = array();
+          $headers = array(t('Name'), t('Identifier'), t('Required'));
+          foreach ($display['filters'] as $filter) {
+            $rows[] = array(
+              $filter['name'], 
+              $filter['id'], 
+              (empty($filter['required'])) ? t('no') : t('yes'),
+            );
+          }
+          $output .= theme('table', array(
+            'header' => $headers,
+            'rows' => $rows,
+          ));
+        }
+      }
+    }
+  }
+  
+  return $output;
+}
+
+/**
+ * Resource items
+ */
+function cc_api_display_documentation_resources($resource) {
+  $output = '';
+      
+  // Resource object types
+  foreach ($resource as $t => $type) {
+    if (!in_array($t, array('name', 'description'))) {
+      $output .= '
+        <h4>' . $type['name'] . '</h4>
+        <p>' . $type['description'] . '</p>
+      ';
+      
+      // Methods
+      foreach ($type as $a => $action) {
+        if (!in_array($a, array('name', 'description'))) {
+          $output .= '
+            <h5>' . $action['name'] . '</h5>
+            <p>' . $action['description'] . '</p>
+            <p><strong>Method:</strong> ' . $action['method'] . '</p>
+          ';
+          
+          // Arguments
+          if (!empty($action['args'])) {
+            $output .= '<strong>' . t('Arguments') . '</strong>';
+            $rows = array();
+            $headers = array(t('Key'), t('Type'), t('Description'), t('Required'), t('Source'));
+            foreach ($action['args'] as $arg) {
+              $rows[] = array(
+                $arg['name'], 
+                $arg['type'], 
+                (isset($arg['description'])) ? $arg['description'] : '', 
+                (!empty($arg['optional'])) ? t('no') : t('yes'),
+                (is_array($arg['source'])) ? implode(', ', array_flip($arg['source'])) : 
+                  t('post body'),
+              );
+            }
+            $output .= theme('table', array(
+              'header' => $headers,
+              'rows' => $rows,
+            ));
+          }
+          
+          // Examples
+          if (!empty($action['examples'])) {
+            $output .= cc_api_display_documentation_examples($$action['examples']);
+          }
+        }
+      }
+    }
+  }
+  
+  return $output;   
 }
 
 /**
