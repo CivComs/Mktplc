@@ -9,6 +9,7 @@
 /**
  * Drupal behavior for the documentation page.
  */
+/*
 Drupal.behaviors.ccAPIDocPageTOC = {
   attach: function(context, settings) {
     $('body').once('cc-api-toc', function() {
@@ -20,5 +21,6 @@ Drupal.behaviors.ccAPIDocPageTOC = {
     });
   }
 };
+*/
 	
 })(jQuery);
