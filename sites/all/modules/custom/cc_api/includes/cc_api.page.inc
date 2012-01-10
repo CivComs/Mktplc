@@ -348,7 +348,7 @@ function cc_api_display_documentation_examples($examples = array()) {
   foreach ($examples as $e => $example) {
     $output .= '
       <li>' . $example['title'] . ':
-      <code><pre class="' . $example['class'] . '">
+      <code><pre class="brush:plain">
         ' . $example['data'] . '
       </pre></code>
       </li>
@@ -362,14 +362,14 @@ function cc_api_display_documentation_examples($examples = array()) {
 /**
  * Formatters output
  */
-function cc_api_display_documentation_formatters($formatters = array()) {    
-  $output .= '<dl>';
+function cc_api_display_documentation_formatters($formatters = array()) {   
+  $output = '<dl>';
   foreach ($formatters as $f => $enabled) {
     $output .= '
       <dt>' . check_plain($f) . '</dt>
       <dd><p>' . $enabled['description'] . '</p>
         ' . t('Example URL') . ': 
-        <code><pre class="' . $class . '">
+        <code><pre class="brush:plain">
           ' . $enabled['example_url'] . '
         </pre></code>
       </dd>';
@@ -383,13 +383,13 @@ function cc_api_display_documentation_formatters($formatters = array()) {
  * Parsers output
  */
 function cc_api_display_documentation_parsers($parsers = array()) {    
-  $output .= '<dl>';
+  $output = '<dl>';
   foreach ($parsers as $p => $enabled) {
     $output .= '
       <dt>' . check_plain($p) . '</dt>
       <dd><p>' . $enabled['description'] . '</p>
         ' . t('Example data') . ': 
-        <code><pre class="' . $class . '">
+        <code><pre class="brush:plain">
           ' . $enabled['example_data'] . '
         </pre></code>
       </dd>';
