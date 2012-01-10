@@ -1923,7 +1923,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'entity_type' => 'node',
       'field_name' => 'field_application_tutors',
-      'label' => 'Tutorials',
+      'label' => 'Videos',
       'required' => 0,
       'settings' => array(
         'file_extensions' => 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp mp3 mov m4v mp4 mpeg avi ogg wmv ico',
@@ -1934,7 +1934,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
         'module' => 'media',
         'settings' => array(
           'allowed_schemes' => array(
-            'public' => 0,
+            'public' => 'public',
             'youtube' => 'youtube',
           ),
           'allowed_types' => array(
@@ -1943,6 +1943,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
             'image' => 0,
             'video' => 'video',
           ),
+          'file_extensions' => 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp mp3 mov m4v mp4 mpeg avi ogg wmv ico',
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
@@ -2256,7 +2257,7 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   t('Standards Implemented');
   t('Tags');
   t('Technology Type');
-  t('Tutorials');
+  t('Videos');
   t('What do you think of the application? Is it easy to use? Is it easy to implement? (Your rating will be aggregated with others).');
   t('What does the app do? What should people know about the app?');
   t('Which Vendors Provide Support?');

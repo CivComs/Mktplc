@@ -125,6 +125,13 @@ function cc_api_display_documentation($apis) {
     $class = 'brush:plain';
   }
   
+  // Vertical tabs stuff
+  drupal_add_js('misc/vertical-tabs.js');
+  drupal_add_css('misc/vertical-tabs.css');
+  
+  // jQuery UI tabs for second level tabs
+  drupal_add_library('system', 'ui.tabs');
+  
   // Put a top level example link
   if ($example = variable_get('cc_api_doc_page_examples_path', 'api/examples')) {
     $output .= '
@@ -133,127 +140,403 @@ function cc_api_display_documentation($apis) {
       )) . '</p>
     ';
   }
-
-  $output .= '
-    <ul class="api-toc-container"></ul>
-    <div class="api-container">
-  ';
   
   // There could be multiple (versions) apis.
   foreach ($apis as $api_id => $api) {
     
+    // Top level title
     $output .= '
       <h2 class="api-title">' . $api->title . '</h2>
       <div class="api-description">
         ' . $api->description . '
       </div>
-      
-      <h3>' . t('URLs') . '</h3>
-      <div class="api-description-url">
-        <p>' . t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed (most often) like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')) . '</p>
-        <code><pre class="' . $class . '">
-          ' . $api->base_url . '/:method.:format?:key=:value
-        </pre></code>
-        <p>' . t('For instance:') . '</p>
-        <code><pre class="' . $class . '">
-          ' . $api->base_url . '/node.json?page=3
-        </pre></code>
-      </div>
-      
-      <h3>' . t('Authentication') . '</h3>
-      <div class="api-description-auth">
-        <p>' . t('coming soon.') . '</p>
-      </div>
     ';
+    
+    // Start vertical tabs
+    $output .= '
+      <div class="vertical-tabs-panes">
+    ';
+      
+    // URLs
+    $output .= cc_api_display_documentation_top_level(
+      t('URLs'),
+      t('This API is a <a href="@url">RESTful API</a>, where URLs will be formed (most often) like the following:', array('@url' => 'http://en.wikipedia.org/wiki/Representational_state_transfer')),
+      'url',
+      array(
+        1 => array(
+          'title' => t('URL formation'),
+          'class' => $class,
+          'data' => $api->base_url . '/[[method]].[[format]]?[[key]]=[[value]]',
+        ),
+        2 => array(
+          'title' => t('URL example'),
+          'class' => $class,
+          'data' => $api->base_url . '/node.json?page=3',
+        )
+      )
+    );
+    
+    $output .= cc_api_display_documentation_top_level(
+      t('Authentication'),
+      '<div class="api-description-auth">
+        <p>' . t('You will need to authenticate in some way if you want to create, update or delete data in the system.') . '</p>
+        <h4>' . t('Session/Cookie Based') . '</h4>
+        <p>' . t('Session based authentication is a method in which you post your username and password to an endpoint, and you will be given a <strong>session name</strong> and <strong>session ID</strong> that can be used for requests that require specific authenticated access (such as creating an Organization).  Please see the User Actions below for more in-depth look at the methods.') . '</p>
+        <strong>' . t('CURL example') . '</strong>
+        <p>' . t('Use the following command to get back the session data.  We use the verbose flag just so that you can see what is going on.') . '</p>
+        <code><pre>
+          curl -v --data \'{"username":"[[your_username]]","password":"[[your_password]]"}\' --header "Content-Type:application/json" ' . $api->base_url . '/user/login
+        </pre></code>
+        <p>' . t('You should recieve an object back that is similar to the following:') . '</p>
+        <code><pre>
+          sessid: XXXXXXXXXXXXXXX
+          session_name: YYYYYYYYYYYYY
+          user: |
+        </pre></code>
+        <p>' . t('These can then be used in a call to create a node within the cookie.') . '</p>
+        <code><pre>
+          curl -v --data \'{"title":"New Organization","type":"organization"}\' --header "Content-Type:application/json" --header "Cookie: [[session_name]]=[[Session_id]]" ' . $api->base_url . '/node
+        </pre></code>
+      </div>',
+      'authentication'
+    );
     
     // Formatters.  Assuming rest servers.
     // Note that the Server settings need to be saved
     // for these options to be in the endpoint
     // object.
-    $output .= '
-      <h3>' . t('Output Formatters') . '</h3>
-      <div class="api-description-formatters">
-        <p>' . t('The following are the output formatters that are available with the API.') . '</p>
-        <ul>
-    ';
-    foreach ($api->server_settings['rest_server']['formatters'] as $f => $enabled) {
-      $output .= '
-        <li>
-          <strong>' . check_plain($f) . '</strong>: ' . $enabled['description'] . '
-          ' . t('Example URL') . ': 
-          <code><pre class="' . $class . '">
-              ' . $enabled['example_url'] . '
-          </pre></code>
-        </li>';
-    }
-    $output .= '
-        </ul>
-      </div>
-    ';
-      
+    $output .= cc_api_display_documentation_top_level(
+      t('Output Formatters'),
+      t('The following are the output formatters that are available with the API.'),
+      'output-formatters',
+      array(),
+      array(
+        'formatters' => cc_api_display_documentation_formatters($api->server_settings['rest_server']['formatters']),
+      )
+    );
+    
     // Parsers.  Assuming Rest server.
-    $output .= '
-      <h3>' . t('Input Parsers') . '</h3>
-      <div class="api-description-parsers">
-        <p>' . t('The following are the output formatters that are available with the API.') . '</p>
-        <ul>
-    ';
-    foreach ($api->server_settings['rest_server']['parsers'] as $p => $enabled) {
-      $output .= '
-        <li>
-          <strong>' . check_plain($p) . '</strong>: ' . $enabled['description'] . '
-          <ul><li>
-            ' . t('Example data') . ': <code><pre class="brush: plain">' . $enabled['example_data'] . '</pre></code>
-          </li></ul>
-        </li>';
-    }
-    $output .= '
-        </ul>
-      </div>
-    ';
-      
-    $output .= '
-      <h3>' . t('Limitations') . '</h3>
-      <div class="api-description-limitation">
-        <p>' . t('coming soon.') . '</p>
-      </div>
-    ';
-      
-    $output .= '
-      <h3>' . t('Data Model') . '</h3>
-      <div class="api-description-data-model">
-        <p>' . t('Without knowing much about the data model, working with the API will be difficult.  The following is a list of entities and fields available on the site.  For reference, checkout what <a href="@field_url">Fields</a> and <a href="@entity_url">Entities</a> are in Drupal.  Note that often the name and description of the data model fields and entities are taken from their user-focused counter parts and may not fully be appropriate for this context.', array(
-          '@entity_url' => 'http://drupal.org/node/1261744',
-          '@field_url' => 'http://drupal.org/node/443536',
-        )) . '</p>
-      </div>
-    ';
-
+    $output .= cc_api_display_documentation_top_level(
+      t('Input Parsers'),
+      t('The following are the output formatters that are available with the API.'),
+      'input-parsers',
+      array(),
+      array(
+        'parsers' => cc_api_display_documentation_parsers($api->server_settings['rest_server']['parsers']),
+      )
+    );
+    
+    // Parsers.  Assuming Rest server.
+    $output .= cc_api_display_documentation_top_level(
+      t('Limitations'),
+      t('coming soon.'),
+      'limitations'
+    );
+    
+    // Data Model top level
+    $output .= cc_api_display_documentation_top_level(
+      t('Data Model'),
+      t('Without knowing much about the data model, working with the API will be difficult.  The following is a list of entities and fields available on the site.  For reference, checkout what <a href="@field_url">Fields</a> and <a href="@entity_url">Entities</a> are in Drupal.  Note that often the name and description of the data model fields and entities are taken from their user-focused counter parts and may not fully be appropriate for this context.', array(
+        '@entity_url' => 'http://drupal.org/node/1261744',
+        '@field_url' => 'http://drupal.org/node/443536',
+      )),
+      'data-model'
+    );
+    
+    // Go through each data model type
     foreach ($api->data_model as $mid => $model) {
+      $output .= cc_api_display_documentation_top_level(
+        t('Data Model: %type', array('%type' => $model['name'])),
+        filter_xss($model['description']),
+        'data-model-' . $mid,
+        array(),
+        array(
+          'bundles' => cc_api_display_documentation_bundles($model),
+        )
+      );
+    }
+    
+    // Views searching API
+    if (isset($api->views_searching) && is_array($api->views_searching)
+       && count($api->views_searching) > 0) {
+      $output .= cc_api_display_documentation_top_level(
+        t('Searching'),
+        t('Utilizing the Views methods as described below, you can find specific content.  Please see the <a href="#views">Views</a> section to get a general description of using the Searching API.'),
+        'views-searching',
+        array(),
+        array(
+          'views' => cc_api_display_documentation_views($api->views_searching),
+        )
+      );
+    }
+    
+    // Resource/Methods
+    $output .= cc_api_display_documentation_top_level(
+      t('Resources'),
+      t('Resource, or methods, are the specific RESTful API calls for manipulating data.'),
+      'resources'
+    );
+    
+    // Make each resource a top level item
+    foreach ($api->resources as $r => $resource) {
+      $output .= cc_api_display_documentation_top_level(
+        t('Resource: %type', array('%type' =>  $resource['name'])),
+        $resource['description'],
+        'resources-' . $r,
+        array(),
+        array(
+          'resource_items' => cc_api_display_documentation_resources($resource, $r),
+        )
+      );
+    }
+    
+    // Stop vertical tabs
+    $output .= '
+      <div class="vertical-tabs-panes">
+    ';
+  }
+  
+  return $output;
+}
+
+/**
+ * Sub theme function for top level section
+ */
+function cc_api_display_documentation_top_level($title, $description, $class, $examples = array(), $children = array()) {
+  $examples_output = '';
+  if ($examples) {
+    $examples_output .= '
+      <div class="' . $class . '-examples">
+        ' . cc_api_display_documentation_examples($examples) . '
+      </div>
+    ';
+  }
+  
+  // Children
+  $children_output = '';
+  if ($children) {
+    $children_output .= '<div class="' . $class . '-children children-tabs">';
+    foreach ($children as $c => $child) {
+      $children_output .= $child;
+    }
+    $children_output .= '</div>';
+  }
+  
+  $output = '
+    <fieldset>
+      <legend>' . $title . '</legend>
+      <div class="' . $class . '-container">
+        <h3 id="id-' . $class . '">' . $title . '</h3>
+        <div class="' . $class . '-description">
+          <p>' . $description . '</p>
+        </div>
+        ' . $children_output . '
+        ' . $examples_output . '
+      </div>
+    </fieldset>
+  ';
+      
+  return $output;
+}
+
+/**
+ * Render examples
+ */
+function cc_api_display_documentation_examples($examples = array()) {
+  $output = '<strong>' . t('Examples') . '</strong>';
+  $output .= '<ul>';
+  foreach ($examples as $e => $example) {
+    $output .= '
+      <li>' . $example['title'] . ':
+      <code><pre class="brush:plain">
+        ' . $example['data'] . '
+      </pre></code>
+      </li>
+    ';
+  }
+  $output .= '</ul>';
+  
+  return $output;
+}
+
+/**
+ * Formatters output
+ */
+function cc_api_display_documentation_formatters($formatters = array()) {   
+  $output = '<dl>';
+  foreach ($formatters as $f => $enabled) {
+    $output .= '
+      <dt>' . check_plain($f) . '</dt>
+      <dd><p>' . $enabled['description'] . '</p>
+        ' . t('Example URL') . ': 
+        <code><pre class="brush:plain">
+          ' . $enabled['example_url'] . '
+        </pre></code>
+      </dd>';
+  }
+  $output .= '</dl>';
+  
+  return $output;
+}
+
+/**
+ * Parsers output
+ */
+function cc_api_display_documentation_parsers($parsers = array()) {    
+  $output = '<dl>';
+  foreach ($parsers as $p => $enabled) {
+    $output .= '
+      <dt>' . check_plain($p) . '</dt>
+      <dd><p>' . $enabled['description'] . '</p>
+        ' . t('Example data') . ': 
+        <code><pre class="brush:plain">
+          ' . $enabled['example_data'] . '
+        </pre></code>
+      </dd>';
+  }
+  $output .= '</dl>';
+  
+  return $output;
+}
+
+/**
+ * Data model
+ */
+function cc_api_display_documentation_bundles($bundles = array()) {
+  $output = '';
+    
+  // Model types, aka entity bundles
+  foreach ($bundles as $b => $bundle) {
+    if (!in_array($b, array('name', 'description'))) {
+      $output .= '<div class="children-tab" id="children-tab-data-bundle-' . $b . '">';
       $output .= '
-        <h4>' . check_plain($model['name']) . '</h4>
-        <p>' . filter_xss($model['description']) . '</p>
+        <h4>' . check_plain($bundle['name']) . '</h4>
+        <p>' . filter_xss($bundle['description']) . '</p>
+      ';
+          
+      // Custom fields
+      if (!empty($bundle['fields'])) {
+        $output .= '<strong>' . t('Custom Fields') . '</strong>';
+        $rows = array();
+        $headers = array(t('id'), t('Label'), t('Description'), t('Type'));
+        foreach ($bundle['fields'] as $f) {
+          $rows[] = array(
+            $f['id'], 
+            filter_xss($f['label']), 
+            filter_xss($f['description']),
+            $f['type'],
+          );
+        }
+        $output .= theme('table', array(
+          'header' => $headers,
+          'rows' => $rows,
+        ));
+      }
+      
+      $output .= '</div>';
+    }
+  }
+  
+  return $output;
+}
+
+/**
+ * Views sub items
+ */
+function cc_api_display_documentation_views($views) {
+  $output = '';
+  
+  // Go through Views
+  foreach ($views as $v => $view) {
+    if (!in_array($v, array('name', 'description'))) {
+      $output .= '<div class="children-tab" id="children-tab-views-' . $v . '">';
+      $title = !empty($view['name']) ? $view['name'] : t('-no title-');
+      $output .= '
+        <h4>' . $title . '</h4>
+        <p>' . $view['description'] . '</p>
+        <ul>
+          <li><strong>' . t('Identifier') . '</strong>: ' . $view['id'] . '</li>
+          <li><strong>' . t('Base table') . '</strong>: ' . $view['base_table'] . '</li>
+        </ul>
       ';
       
-      // Model types, aka entity bundles
-      foreach ($model as $b => $bundle) {
-        if (!in_array($b, array('name', 'description'))) {
+      // Displays
+      foreach ($view['displays'] as $d => $display) {
+        $output .= '
+          <h5>' . $display['name'] . '</h5>
+          <p>' . $display['description'] . '</p>
+        ';
+        
+        // Examples
+        if (isset($display['examples'])) {
+          $output .= cc_api_display_documentation_examples($display['examples']);
+        }
+        
+        // Filters
+        if (isset($display['filters'])) {
           $output .= '
-            <h5>' . check_plain($bundle['name']) . '</h5>
-            <p>' . filter_xss($bundle['description']) . '</p>
+            <strong>' . t('Filters') . '</strong>
           ';
-              
-          // Custom fields
-          if (!empty($bundle['fields'])) {
-            $output .= '<strong>' . t('Custom Fields') . '</strong>';
+        
+          $rows = array();
+          $headers = array(t('Name'), t('Identifier'), t('Required'));
+          foreach ($display['filters'] as $filter) {
+            $rows[] = array(
+              $filter['name'], 
+              $filter['id'], 
+              (empty($filter['required'])) ? t('no') : t('yes'),
+            );
+          }
+          $output .= theme('table', array(
+            'header' => $headers,
+            'rows' => $rows,
+          ));
+        }
+      }
+      $output .= '</div>';
+    }
+  }
+  
+  return $output;
+}
+
+/**
+ * Resource items
+ */
+function cc_api_display_documentation_resources($resource, $resource_id) {
+  $output = '';
+
+  // Resource object types
+  foreach ($resource as $t => $type) {
+    if (!in_array($t, array('name', 'description'))) {
+      $output .= '<div class="children-tab" id="children-tab-resources-' . $resource_id . '-' . $t . '">';
+      $output .= '
+        <h4>' . $type['name'] . '</h4>
+        <p>' . $type['description'] . '</p>
+      ';
+      
+      // Methods
+      foreach ($type as $a => $action) {
+        if (!in_array($a, array('name', 'description'))) {
+          $output .= '
+            <h5>' . $action['name'] . '</h5>
+            <p>' . $action['description'] . '</p>
+            <p><strong>' . t('Method') . '</strong>: ' . $action['method'] . '</p>
+          ';
+          
+          // Arguments
+          if (!empty($action['args'])) {
+            $output .= '<strong>' . t('Arguments') . '</strong>';
             $rows = array();
-            $headers = array(t('id'), t('Label'), t('Description'), t('Type'));
-            foreach ($bundle['fields'] as $f) {
+            $headers = array(t('Key'), t('Type'), t('Description'), t('Required'), t('Source'));
+            foreach ($action['args'] as $arg) {
               $rows[] = array(
-                $f['id'], 
-                filter_xss($f['label']), 
-                filter_xss($f['description']),
-                $f['type'],
+                $arg['name'], 
+                $arg['type'], 
+                (isset($arg['description'])) ? $arg['description'] : '', 
+                (!empty($arg['optional'])) ? t('no') : t('yes'),
+                (is_array($arg['source'])) ? implode(', ', array_flip($arg['source'])) : 
+                  t('post body'),
               );
             }
             $output .= theme('table', array(
@@ -261,163 +544,19 @@ function cc_api_display_documentation($apis) {
               'rows' => $rows,
             ));
           }
-        }
-      }
-    }
-    
-    if (isset($api->views_searching) && is_array($api->views_searching)
-       && count($api->views_searching) > 0) { 
-      $output .= '
-        <h3>' . t('Searching') . '</h3>
-        <div class="api-description-searching">
-          <p>' . t('Utilizing the Views methods as described below, you can find specific content.') . '</p>
-          <p>' . t('Please see the <a href="#views">Views</a> section to get a general description of using the Searching API.') . '</p>
-        </div>
-      ';
-      
-      // Go through Views
-      foreach ($api->views_searching as $v => $view) {
-        if (!in_array($v, array('name', 'description'))) {
-          $title = !empty($view['name']) ? $view['name'] : t('-no title-');
-          $output .= '
-            <h4>' . $title . '</h4>
-            <p>' . $view['description'] . '</p>
-            <ul>
-              <li><strong>' . t('Identifier') . '</strong>: ' . $view['id'] . '</li>
-              <li><strong>' . t('Base table') . '</strong>: ' . $view['base_table'] . '</li>
-            </ul>
-          ';
           
-          // Displays
-          foreach ($view['displays'] as $d => $display) {
-            $output .= '
-              <h5>' . $display['name'] . '</h5>
-              <p>' . $display['description'] . '</p>
-            ';
-            
-            // Examples
-            if (isset($display['examples'])) {
-              $output .= '
-                <strong>' . t('Examples') . '</strong>
-                <ul>
-              ';
-              foreach ($display['examples'] as $example) {
-                $output .= '
-                  <li>' . $example['title'] . ':
-                  <code><pre class="' . $example['class'] . '">
-                    ' . $example['data'] . '
-                  </pre></code>
-                  </li>
-                ';
-              }
-              $output .= '
-                </ul>
-              ';
-            }
-            
-            // Filters
-            if (isset($display['filters'])) {
-              $output .= '
-                <strong>' . t('Filters') . '</strong>
-              ';
-            
-              $rows = array();
-              $headers = array(t('Name'), t('Identifier'), t('Required'));
-              foreach ($display['filters'] as $filter) {
-                $rows[] = array(
-                  $filter['name'], 
-                  $filter['id'], 
-                  (empty($filter['required'])) ? t('no') : t('yes'),
-                );
-              }
-              $output .= theme('table', array(
-                'header' => $headers,
-                'rows' => $rows,
-              ));
-            }
+          // Examples
+          if (!empty($action['examples'])) {
+            $output .= cc_api_display_documentation_examples($action['examples']);
           }
         }
       }
-    }
       
-    $output .= '
-      <h3>' . t('Resources/Methods') . '</h3>
-      <div class="api-description-resources">
-        <p>' . t('Resource, or methods, are the specific RESTful API calls for manipulating data.') . '</p>
-      </div>
-      <div class="api-description-resources">
-    ';
-    foreach ($api->resources as $r => $resource) {
-      $output .= '
-        <h4>' . $resource['name'] . '</h4>
-        <p>' . $resource['description'] . '</p>
-      ';
-      
-      // Resource object types
-      foreach ($resource as $t => $type) {
-        if (!in_array($t, array('name', 'description'))) {
-          $output .= '
-            <h5>' . $type['name'] . '</h5>
-            <p>' . $type['description'] . '</p>
-          ';
-          
-          // Methods
-          foreach ($type as $a => $action) {
-            if (!in_array($a, array('name', 'description'))) {
-              $output .= '
-                <h6>' . $action['name'] . '</h6>
-                <p>' . $action['description'] . '</p>
-                <p><strong>Method:</strong> ' . $action['method'] . '</p>
-              ';
-              
-              // Arguments
-              if (!empty($action['args'])) {
-                $output .= '<strong>' . t('Arguments') . '</strong>';
-                $rows = array();
-                $headers = array(t('Key'), t('Type'), t('Description'), t('Required'), t('Source'));
-                foreach ($action['args'] as $arg) {
-                  $rows[] = array(
-                    $arg['name'], 
-                    $arg['type'], 
-                    (isset($arg['description'])) ? $arg['description'] : '', 
-                    (!empty($arg['optional'])) ? t('no') : t('yes'),
-                    (is_array($arg['source'])) ? implode(', ', array_flip($arg['source'])) : 
-                      t('post body'),
-                  );
-                }
-                $output .= theme('table', array(
-                  'header' => $headers,
-                  'rows' => $rows,
-                ));
-              }
-              
-              // Examples
-              if (!empty($action['examples'])) {
-                $output .= '<strong>' . t('Examples') . '</strong>';
-                $output .= '<ul>';
-                foreach ($action['examples'] as $e => $example) {
-                  $output .= '
-                    <li>' . $example['title'] . ':
-                    <code><pre class="' . $example['class'] . '">
-                      ' . $example['data'] . '
-                    </pre></code>
-                    </li>
-                  ';
-                }
-                $output .= '</ul>';
-              }
-            }
-          }
-        }
-      }      
+      $output .= '</div>';
     }
-    $output .= '
-      </div>
-    ';
   }
   
-  $output .= '</div>';
-  return $output;
+  return $output;   
 }
 
 /**
@@ -551,7 +690,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment/ ????',
+              'data' => 'curl -v -X POST --data \'{"title":"comment title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/comment',
             ),
           ),
           'method' => $method_map['create'],
@@ -563,7 +702,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment/:cid',
+              'data' => 'curl -v  ' . $url . '/comment/[[cid]].json',
             ),
           ),
           'method' => $method_map['retrieve'],
@@ -575,7 +714,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment/ ?????',
+              'data' => 'curl -v -X PUT --data \'{"title":"new title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/comment/[[cid]]',
             ),
           ),
           'method' => $method_map['update'],
@@ -587,7 +726,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment/ ?????',
+              'data' => 'curl -v -X DELETE --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/comment/[[cid]]',
             ),
           ),
           'method' => $method_map['delete'],
@@ -599,7 +738,12 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment ?????',
+              'data' => 'curl -v ' . $url . '/comment.json',
+            ),
+            'curl_parmaters' => array(
+              'title' => t('CURL (with parameters)'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v ' . $url . '/comment.json?parameters%5Bcid%5D=[[cid]]',
             ),
           ),
           'method' => $method_map['index'],
@@ -615,7 +759,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment ?????',
+              'data' => 'curl  -X GET -v --data \'{"nid":"1234"}\' ' . $url . '/comment/countAll',
             ),
           ),
           'method' => $method_map['index'],
@@ -627,7 +771,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment ?????',
+              'data' => 'curl  -X GET -v --data \'{"nid":"1234", "since":"123456789"}\' ' . $url . '/comment/countNew',
             ),
           ),
           'method' => $method_map['index'],
@@ -648,7 +792,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/ ????',
+              'data' => 'curl -v -X POST --data \'{"title":"node title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/node',
             ),
           ),
           'method' => $method_map['create'],
@@ -660,7 +804,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/:nid',
+              'data' => 'curl -v -X GET ' . $url . '/node/[[nid]].json',
             ),
           ),
           'method' => $method_map['retrieve'],
@@ -672,7 +816,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/ ?????',
+              'data' => 'curl -v -X PUT --data \'{"title":"new title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/node/[[nid]]',
             ),
           ),
           'method' => $method_map['update'],
@@ -684,7 +828,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/ ?????',
+              'data' => 'curl -v -X DELETE --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/node/[[nid]]',
             ),
           ),
           'method' => $method_map['delete'],
@@ -696,7 +840,12 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node ?????',
+              'data' => 'curl -v -X GET ' . $url . '/node.json',
+            ),
+            'curl_parmaters' => array(
+              'title' => t('CURL (with parameters)'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v -X GET ' . $url . '/node.json?parameters%5Bcid%5D=[[cid]]',
             ),
           ),
           'method' => $method_map['index'],
@@ -712,10 +861,10 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node ?????',
+              'data' => 'curl -v -X GET --data \'{"nid":"1234"}\' ' . $url . '/node.json',
             ),
           ),
-          'method' => $method_map['index'], // ???
+          'method' => $method_map['index'],
         ),
         'comments' => array(
           'name' => t('New Comments Attached to Node'),
@@ -724,7 +873,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node ?????',
+              'data' => 'curl -v -X GET ' . $url . '/node/[[nid]].json?count=3',
             ),
           ),
           'method' => $method_map['index'],
@@ -742,9 +891,9 @@ function cc_api_documentation_page_resources(&$resources, $url) {
           'description' => t('Use this method to create a specific Taxonomy Term.'),
           'examples' => array(
             'curl_retrieve' => array(
-              'title' => t('CURL'),
+              'title' => t('CURL (Session auth)'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term/ ????',
+              'data' => 'curl -v -X POST --data \'{"title":"new title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/taxonomy_term',
             ),
           ),
           'method' => $method_map['create'],
@@ -756,7 +905,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term/:tid',
+              'data' => 'curl -v ' . $url . '/taxonomy_term/[[tid]].json',
             ),
           ),
           'method' => $method_map['retrieve'],
@@ -766,9 +915,9 @@ function cc_api_documentation_page_resources(&$resources, $url) {
           'description' => t('Use this method to update a specific term.'),
           'examples' => array(
             'curl_retrieve' => array(
-              'title' => t('CURL'),
+              'title' => t('CURL (Session auth)'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
+              'data' => 'curl -v -X PUT --data \'{"title":"new title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/taxonomy_term/[[tid]]',
             ),
           ),
           'method' => $method_map['update'],
@@ -778,9 +927,9 @@ function cc_api_documentation_page_resources(&$resources, $url) {
           'description' => t('Use this method to delete a specific term.'),
           'examples' => array(
             'curl_retrieve' => array(
-              'title' => t('CURL'),
+              'title' => t('CURL (Session auth)'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term/ ?????',
+              'data' => 'curl -v -X DELETE --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/taxonomy_term/[[tid]]',
             ),
           ),
           'method' => $method_map['delete'],
@@ -792,7 +941,12 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
+              'data' => 'curl -v ' . $url . '/taxonomy_term.json',
+            ),
+            'curl_parameters' => array(
+              'title' => t('CURL with parameters'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v ' . $url . '/taxonomy_term.json?parameters%5Bvid%5D=[[vid]]',
             ),
           ),
           'method' => $method_map['index'],
@@ -805,10 +959,10 @@ function cc_api_documentation_page_resources(&$resources, $url) {
           'name' => t('Nodes with Term'),
           'description' => t('Use this method to get all nodes with specific Term.'),
           'examples' => array(
-            'curl_retrieve' => array(
+            'curl_select' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/taxonomy_term ?????',
+              'data' => 'curl -v ' . $url . '/taxonomy_term/selectNodes.json?tid=[[tid]]',
             ),
           ),
           'method' => $method_map['index'],
@@ -828,10 +982,42 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/views/:view-name.json',
+              'data' => 'curl -v --data ' . $url . '/views/[[view-name]].json',
             ),
           ),
           'method' => $method_map['retrieve'],
+        ),
+      ),
+    ),
+    'user' => array(
+      'name' => t('User'),
+      'description' => t('User methods.'),
+      'actions' => array(
+        'name' => t('User Actions'),
+        'description' => t('User actions like logging in and logging out.'),
+        'login' => array(
+          'name' => t('User Login'),
+          'description' => t('Use this method to login into the site with a username and password.  you will recieve a session name and session ID that can then be used within a cookie to make requests that require authentication.'),
+          'examples' => array(
+            'curl_login' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v --data \'{"username":"[[your_username]]","password":"[[your_password]]"}\' --header "Content-Type:application/json" ' . $url .'/user/login ',
+            ),
+          ),
+          'method' => $method_map['actions'],
+        ),
+        'logout' => array(
+          'name' => t('User Logout'),
+          'description' => t('Logout a user, given the session.'),
+          'examples' => array(
+            'curl_login' => array(
+              'title' => t('CURL'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/user/logout',
+            ),
+          ),
+          'method' => $method_map['actions'],
         ),
       ),
     ),
