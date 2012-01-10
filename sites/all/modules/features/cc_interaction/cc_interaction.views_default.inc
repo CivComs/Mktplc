@@ -1192,6 +1192,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_organization']['table'] = 'field_data_field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['field'] = 'field_interaction_organization';
   $handler->display->display_options['fields']['field_interaction_organization']['label'] = '';
+  $handler->display->display_options['fields']['field_interaction_organization']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['absolute'] = 0;
@@ -1204,13 +1205,12 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['strip_tags'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_interaction_organization']['element_type'] = 'span';
-  $handler->display->display_options['fields']['field_interaction_organization']['element_class'] = 'org-name';
   $handler->display->display_options['fields']['field_interaction_organization']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_interaction_organization']['element_default_classes'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_interaction_organization']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_interaction_organization']['type'] = 'node_reference_plain';
   $handler->display->display_options['fields']['field_interaction_organization']['field_api_classes'] = 0;
   /* Field: Content: Did what */
   $handler->display->display_options['fields']['field_interaction_type']['id'] = 'field_interaction_type';
@@ -1242,7 +1242,8 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_application']['table'] = 'field_data_field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['field'] = 'field_interaction_application';
   $handler->display->display_options['fields']['field_interaction_application']['label'] = '';
-  $handler->display->display_options['fields']['field_interaction_application']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['field_interaction_application']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_interaction_application']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_interaction_application']['alter']['text'] = '<span class="interaction [field_interaction_type]">[field_interaction_type]</span> <span class="app-name">[field_interaction_application]</span>';
   $handler->display->display_options['fields']['field_interaction_application']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['field_interaction_application']['alter']['absolute'] = 0;
@@ -1260,6 +1261,7 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_interaction_application']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_interaction_application']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_interaction_application']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_interaction_application']['type'] = 'node_reference_plain';
   $handler->display->display_options['fields']['field_interaction_application']['field_api_classes'] = 0;
   /* Field: Content: Street address */
   $handler->display->display_options['fields']['field_organization_address']['id'] = 'field_organization_address';
@@ -1300,7 +1302,8 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = '';
-  $handler->display->display_options['fields']['created']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['created']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['created']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['created']['alter']['text'] = '<br />added [created]';
   $handler->display->display_options['fields']['created']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['created']['alter']['absolute'] = 0;
@@ -1348,6 +1351,53 @@ function cc_interaction_views_default_views() {
   $handler->display->display_options['fields']['field_url']['click_sort_column'] = 'url';
   $handler->display->display_options['fields']['field_url']['type'] = 'url';
   $handler->display->display_options['fields']['field_url']['field_api_classes'] = 0;
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path']['id'] = 'path';
+  $handler->display->display_options['fields']['path']['table'] = 'node';
+  $handler->display->display_options['fields']['path']['field'] = 'path';
+  $handler->display->display_options['fields']['path']['label'] = '';
+  $handler->display->display_options['fields']['path']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['path']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['path']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['path']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['path']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['path']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['path']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['path']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['path']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['path']['absolute'] = 0;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="[path]"><span class="org-name">[field_interaction_organization]</span> <span class="interaction [field_interaction_type]">[field_interaction_type]</span> <span class="app-name">[field_interaction_application]</span></a> <br />
+<em>added [created]</em>';
+  $handler->display->display_options['fields']['nothing']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['nothing']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['nothing']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nothing']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['nothing']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['nothing']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['nothing']['hide_alter_empty'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
