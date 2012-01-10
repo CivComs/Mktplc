@@ -3,59 +3,46 @@
  * Main CSS file for the CC API module.
  */
 
-/*
-.page-api h2 {
-  font-size: 3em !important;
-  margin-top: 1em;
+.page-api .ui-tabs {
+  font-size: 90%;
+  font-family: inherit;
 }
-.page-api h3 {
-  font-size: 2.5em !important;
-  margin-top: 2em;
-  background-color: #AAAAAA;
-  padding: 2px 2px;
+
+.page-api .vertical-tabs-pane {
+  width: 680px;
 }
-.page-api h4 {
-  font-size: 2em !important;
-  margin-top: 1em;
-  border-bottom: 1px solid #888888;
-}
+
 .page-api h5 {
-  font-size: 1.5em !important;
-  border-bottom: 1px dotted #AAAAAA;
-  margin-top: 1em;
-}
-.page-api h6 {
-  font-size: 1.1em !important;
-  background-color: #EEEEEE;
-  padding: 2px 5px;
+  border-bottom: 1px solid #222222;
+  margin: 1em 0 1.5em 0;
 }
 
-.page-api a.toc-top-link,
-.page-api a.toc-top-link:link,
-.page-api a.toc-top-link:visited,
-.page-api a.toc-top-link:active {
-  float: left;
-  font-size: 12px;
-  margin-left: -33px;
-  padding: 0 5px;
-  margin-top: 12px;
-  color: #DDDDDD;
+.page-api .ui-widget-content {
+  border: none;
 }
 
-.page-api .api-toc-container {
-  font-size: .8em;
-  background-color: #EEEEEE;
-  border-radius: 3px;
-  padding: 10px 10px 10px 40px;
+.page-api table {
+  maring-bottom: 1em;
 }
-.page-api td {
-  padding: 2px 4px;
-}
-*/
 
-.syntaxhighlighter a.toolbar_item.command_help.help {
+.page-api dt {
+  font-weight: bold;
+}
+
+.page-api dd {
+  margin-left: 2em;
+  font-style: normal;
+  margin-bottom: 1em;
+}
+
+.page-api .vertical-tabs-pane h3 {
+  font-size: 2em;
+  margin-top: .5em;
+}
+
+.page-api .syntaxhighlighter a.toolbar_item.command_help.help {
   display: none !important;
 }
-.syntaxhighlighter .toolbar {
+.page-api .syntaxhighlighter .toolbar {
   background-color: transparent !important;
 }

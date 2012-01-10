@@ -129,6 +129,9 @@ function cc_api_display_documentation($apis) {
   drupal_add_js('misc/vertical-tabs.js');
   drupal_add_css('misc/vertical-tabs.css');
   
+  // jQuery UI tabs for second level tabs
+  drupal_add_library('system', 'ui.tabs');
+  
   // Put a top level example link
   if ($example = variable_get('cc_api_doc_page_examples_path', 'api/examples')) {
     $output .= '
@@ -282,7 +285,7 @@ function cc_api_display_documentation($apis) {
         'resources-' . $r,
         array(),
         array(
-          'resource_items' => cc_api_display_documentation_resources($resource),
+          'resource_items' => cc_api_display_documentation_resources($resource, $r),
         )
       );
     }
@@ -312,7 +315,7 @@ function cc_api_display_documentation_top_level($title, $description, $class, $e
   // Children
   $children_output = '';
   if ($children) {
-    $children_output .= '<div class="' . $class . '-children">';
+    $children_output .= '<div class="' . $class . '-children children-tabs">';
     foreach ($children as $c => $child) {
       $children_output .= $child;
     }
@@ -405,6 +408,7 @@ function cc_api_display_documentation_bundles($bundles = array()) {
   // Model types, aka entity bundles
   foreach ($bundles as $b => $bundle) {
     if (!in_array($b, array('name', 'description'))) {
+      $output .= '<div class="children-tab" id="children-tab-data-bundle-' . $b . '">';
       $output .= '
         <h4>' . check_plain($bundle['name']) . '</h4>
         <p>' . filter_xss($bundle['description']) . '</p>
@@ -428,6 +432,8 @@ function cc_api_display_documentation_bundles($bundles = array()) {
           'rows' => $rows,
         ));
       }
+      
+      $output .= '</div>';
     }
   }
   
@@ -443,6 +449,7 @@ function cc_api_display_documentation_views($views) {
   // Go through Views
   foreach ($views as $v => $view) {
     if (!in_array($v, array('name', 'description'))) {
+      $output .= '<div class="children-tab" id="children-tab-views-' . $v . '">';
       $title = !empty($view['name']) ? $view['name'] : t('-no title-');
       $output .= '
         <h4>' . $title . '</h4>
@@ -486,6 +493,7 @@ function cc_api_display_documentation_views($views) {
           ));
         }
       }
+      $output .= '</div>';
     }
   }
   
@@ -495,12 +503,13 @@ function cc_api_display_documentation_views($views) {
 /**
  * Resource items
  */
-function cc_api_display_documentation_resources($resource) {
+function cc_api_display_documentation_resources($resource, $resource_id) {
   $output = '';
-      
+
   // Resource object types
   foreach ($resource as $t => $type) {
     if (!in_array($t, array('name', 'description'))) {
+      $output .= '<div class="children-tab" id="children-tab-resources-' . $resource_id . '-' . $t . '">';
       $output .= '
         <h4>' . $type['name'] . '</h4>
         <p>' . $type['description'] . '</p>
@@ -538,10 +547,12 @@ function cc_api_display_documentation_resources($resource) {
           
           // Examples
           if (!empty($action['examples'])) {
-            $output .= cc_api_display_documentation_examples($$action['examples']);
+            $output .= cc_api_display_documentation_examples($action['examples']);
           }
         }
       }
+      
+      $output .= '</div>';
     }
   }
   
