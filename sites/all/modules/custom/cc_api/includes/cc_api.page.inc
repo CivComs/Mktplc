@@ -166,7 +166,7 @@ function cc_api_display_documentation($apis) {
         1 => array(
           'title' => t('URL formation'),
           'class' => $class,
-          'data' => $api->base_url . '/:method.:format?:key=:value',
+          'data' => $api->base_url . '/[[method]].[[format]]?[[key]]=[[value]]',
         ),
         2 => array(
           'title' => t('URL example'),
@@ -521,7 +521,7 @@ function cc_api_display_documentation_resources($resource, $resource_id) {
           $output .= '
             <h5>' . $action['name'] . '</h5>
             <p>' . $action['description'] . '</p>
-            <p><strong>Method:</strong> ' . $action['method'] . '</p>
+            <p><strong>' . t('Method') . '</strong>: ' . $action['method'] . '</p>
           ';
           
           // Arguments
@@ -690,7 +690,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment/ ????',
+              'data' => 'curl -v -X POST --data \'{"title":"comment title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/comment',
             ),
           ),
           'method' => $method_map['create'],
@@ -702,7 +702,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment/:cid',
+              'data' => 'curl -v  ' . $url . '/comment/[[cid]].json',
             ),
           ),
           'method' => $method_map['retrieve'],
@@ -714,7 +714,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment/ ?????',
+              'data' => 'curl -v -X PUT --data \'{"title":"new title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/comment/[[cid]]',
             ),
           ),
           'method' => $method_map['update'],
@@ -726,7 +726,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment/ ?????',
+              'data' => 'curl -v -X DELETE --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/comment/[[cid]]',
             ),
           ),
           'method' => $method_map['delete'],
@@ -738,7 +738,12 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment ?????',
+              'data' => 'curl -v ' . $url . '/comment.json',
+            ),
+            'curl_parmaters' => array(
+              'title' => t('CURL (with parameters)'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v ' . $url . '/comment.json?parameters%5Bcid%5D=[[cid]]',
             ),
           ),
           'method' => $method_map['index'],
@@ -754,7 +759,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment ?????',
+              'data' => 'curl  -X GET -v --data \'{"nid":"1234"}\' ' . $url . '/comment/countAll',
             ),
           ),
           'method' => $method_map['index'],
@@ -766,7 +771,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/comment ?????',
+              'data' => 'curl  -X GET -v --data \'{"nid":"1234", "since":"123456789"}\' ' . $url . '/comment/countNew',
             ),
           ),
           'method' => $method_map['index'],
@@ -787,7 +792,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/ ????',
+              'data' => 'curl -v -X POST --data \'{"title":"node title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/node',
             ),
           ),
           'method' => $method_map['create'],
@@ -799,7 +804,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/:nid',
+              'data' => 'curl -v -X GET ' . $url . '/node/[[nid]].json',
             ),
           ),
           'method' => $method_map['retrieve'],
@@ -811,7 +816,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/ ?????',
+              'data' => 'curl -v -X PUT --data \'{"title":"new title"}\' --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/node/[[nid]]',
             ),
           ),
           'method' => $method_map['update'],
@@ -823,7 +828,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node/ ?????',
+              'data' => 'curl -v -X DELETE --header "Cookie: [[session_name]]=[[session_id]]" ' . $url . '/node/[[nid]]',
             ),
           ),
           'method' => $method_map['delete'],
@@ -835,7 +840,12 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node ?????',
+              'data' => 'curl -v -X GET ' . $url . '/node.json',
+            ),
+            'curl_parmaters' => array(
+              'title' => t('CURL (with parameters)'),
+              'class' => 'brush:plain',
+              'data' => 'curl -v -X GET ' . $url . '/node.json?parameters%5Bcid%5D=[[cid]]',
             ),
           ),
           'method' => $method_map['index'],
@@ -851,10 +861,10 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node ?????',
+              'data' => 'curl -v -X GET --data \'{"nid":"1234"}\' ' . $url . '/node.json',
             ),
           ),
-          'method' => $method_map['index'], // ???
+          'method' => $method_map['index'],
         ),
         'comments' => array(
           'name' => t('New Comments Attached to Node'),
@@ -863,7 +873,7 @@ function cc_api_documentation_page_resources(&$resources, $url) {
             'curl_retrieve' => array(
               'title' => t('CURL'),
               'class' => 'brush:plain',
-              'data' => 'curl -data ' . $url . '/node ?????',
+              'data' => 'curl -v -X GET ' . $url . '/node/[[nid]].json?count=3',
             ),
           ),
           'method' => $method_map['index'],
