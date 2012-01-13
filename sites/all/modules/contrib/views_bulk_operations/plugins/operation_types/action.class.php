@@ -106,7 +106,7 @@ class ViewsBulkOperationsAction extends ViewsBulkOperationsBaseOperation {
    * @param $form_state
    *   An array containing the current state of the form.
    */
-  public function formSubmit($form, $form_state) {
+  public function formSubmit($form, &$form_state) {
     $submit_callback = $this->operationInfo['callback'] . '_submit';
     $this->formOptions = $submit_callback($form, $form_state);
   }
@@ -129,6 +129,7 @@ class ViewsBulkOperationsAction extends ViewsBulkOperationsBaseOperation {
    */
   public function execute($entity, array $context) {
     $context['entity_type'] = $this->entityType;
+    $context['settings'] = $this->getAdminOption('settings', array());
     $context += $this->formOptions;
     $context += $this->operationInfo['parameters'];
 
