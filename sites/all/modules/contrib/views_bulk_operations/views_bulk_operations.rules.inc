@@ -139,10 +139,58 @@ function views_bulk_operations_action_load_list($view, $args) {
 }
 
 /**
+ * Info alteration callback for the 'views_bulk_operations_action_views_load_list' action.
+ *
+ * The info hook specifies that the action returns a generic list of entities
+ * (list<entity>). All actions that require entities of specific type can't
+ * use such entities, so this alter hook specifies the exact entity type
+ * after the action has been configured, allowing the view to be loaded
+ * and its entity type extracted.
+ */
+function views_bulk_operations_action_load_list_info_alter(&$element_info, RulesAbstractPlugin $element) {
+  // The action hasn't been configured yet, hence no view. Abort.
+  if (empty($element->settings['view'])) {
+    return;
+  }
+
+  $entity_type = _views_bulk_operations_rules_get_entity_type($element->settings['view']);
+  if ($entity_type) {
+    $element_info['provides']['entity_list']['type'] = "list<$entity_type>";
+  }
+}
+
+/**
+ * Helper function that loads and builds (but doesn't execute) the specified view,
+ * then determines the entity type on which the VBO field operates.
+ *
+ * @param $view_target
+ *   A string in the format "$view_name|$display_name".
+ *
+ * @return
+ *   The entity type on which the VBO field operates.
+ */
+function _views_bulk_operations_rules_get_entity_type($view_target) {
+  $entity_types = &drupal_static(__FUNCTION__);
+
+  if (!isset($entity_types[$view_target])) {
+    $views_settings = explode('|', $view_target);
+    $view = views_get_view($views_settings[0]);
+    $view->set_display($views_settings[1]);
+    $view->build();
+
+    $vbo = _views_bulk_operations_get_field($view);
+    $entity_type = !empty($vbo) ? $vbo->get_entity_type() : '';
+    $entity_types[$view_target] = $entity_type;
+  }
+
+  return $entity_types[$view_target];
+}
+
+/**
  * Helper function that loads, builds and executes the specified view,
  * then returns its VBO field.
  *
- * @param $view
+ * @param $view_target
  *   A string in the format "$view_name|$display_name".
  * @param $args
  *   Arguments that should be passed to the View.
@@ -150,17 +198,32 @@ function views_bulk_operations_action_load_list($view, $args) {
  * @return
  *   The VBO field. Contains a reference to the View.
  */
-function _views_bulk_operations_rules_get_field($view, $args) {
-  $views_settings = explode('|', $view);
+function _views_bulk_operations_rules_get_field($view_target, $args) {
+  $views = &drupal_static(__FUNCTION__);
+
+  $views_settings = explode('|', $view_target);
   $view_name = $views_settings[0];
   $display_name = $views_settings[1];
-  $view_arguments = explode("\r", $args);
+  // Create an array of arguments.
+  $view_arguments = explode("\n", $args);
+  $view_arguments = array_map('trim', $view_arguments);
+  $view_arguments = array_filter($view_arguments, 'strlen');
+  // Append the filtered list of arguments to $views_target, so that the correct
+  // View is fetched from cache.
+  if (!empty($view_arguments)) {
+    $view_target .= '|' . implode('&', $view_arguments);
+  }
+
+  // Don't execute the requested View more than once in a single page request.
+  if (isset($views[$view_target])) {
+    $vbo = _views_bulk_operations_get_field($views[$view_target]);
+    return $vbo;
+  }
 
   // Load the view and set the properties.
   $view = views_get_view($view_name);
   $view->set_display($display_name);
   $view->set_arguments($view_arguments);
-  $view->display_handler->set_option('pager', array('type' => 'none', 'options' => array()));
   $view->build();
   $vbo = _views_bulk_operations_get_field($view);
   // Unset every field except the VBO one (which holds the entity id).
@@ -172,6 +235,8 @@ function _views_bulk_operations_rules_get_field($view, $args) {
     }
   }
   $view->execute($view->current_display);
+  // Save the view in the static cache.
+  $views[$view_target] = $view;
 
   return $vbo;
 }
