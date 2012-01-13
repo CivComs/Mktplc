@@ -1,0 +1,35 @@
+<?php
+
+
+/**
+ * Implementation of hook_requirements().
+ */
+function hacked_requirements($phase) {
+  $requirements = array();
+
+  $t = get_t();
+
+  if ($phase == 'runtime') {
+    $version = hacked_cvs_executable_get_version();
+
+    $requirements['hacked_cvs'] = array(
+      'title' => $t('Hacked'),
+      'severity' => ($version) ? REQUIREMENT_OK : REQUIREMENT_WARNING,
+      'value' => ($version) ? $t('CVS executable found: %cvs_version', array('%cvs_version' => $version)) : $t("Could not find the 'cvs' executable. Checking CVS projects will not work correctly."),
+    );
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function hacked_schema() {
+  $tables = array();
+
+  $tables['cache_hacked'] = drupal_get_schema_unprocessed('system', 'cache');
+  $tables['cache_hacked']['description'] = 'Cache table for the Hacked! module. Holds hashes for the various projects.';
+
+  return $tables;
+}
