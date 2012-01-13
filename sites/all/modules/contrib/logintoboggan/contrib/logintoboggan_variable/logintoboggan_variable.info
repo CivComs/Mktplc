@@ -1,11 +1,9 @@
-
-name = "LoginToboggan"
-description = "Improves Drupal's login system."
+name = "LoginToboggan Variable Integration"
+description = "Integrates LoginToboggan with Variable module"
 core = "7.x"
-configure = admin/config/system/logintoboggan
 
-stylesheets[all][] = logintoboggan.css
-
+dependencies[] = logintoboggan
+dependencies[] = variable
 
 ; Information added by drupal.org packaging script on 2011-11-09
 version = "7.x-1.3"
