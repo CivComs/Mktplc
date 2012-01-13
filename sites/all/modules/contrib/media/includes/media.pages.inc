@@ -40,6 +40,7 @@ function media_page_multiedit($files) {
     drupal_set_message(t('To edit multiple media items, you must install the multiform module.'));
   }
   $i = 0;
+  $forms = array();
   foreach ($files as $file) {
     // To maintain unique form_ids, increment this counter.
     // @see media_forms().

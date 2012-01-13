@@ -137,7 +137,7 @@ function media_admin_list() {
       'author' => theme('username', array('account' => $file)),
       'timestamp' => format_date($file->timestamp, 'short'),
     );
-    $options[$file->fid]['operations'] = l(t('edit'), 'media/' . $file->fid . '/edit', array('query' => $destination));
+    $options[$file->fid]['operations'] = l(t('Edit'), 'media/' . $file->fid . '/edit', array('query' => $destination));
   }
 
   $form['files'] = array(
@@ -430,9 +430,15 @@ function media_import($form, &$form_state) {
       '#description' => 'Only files matching this pattern will be imported.',
     );
 
-    $form['submit'] = array(
+    $form['actions'] = array('#type' => 'actions');
+    $form['actions']['submit'] = array(
       '#type' => 'submit',
       '#value' => t('Preview')
+    );
+    $form['actions']['cancel'] = array(
+      '#type' => 'link',
+      '#title' => t('Cancel'),
+      '#href' => isset($_GET['destination']) ? $_GET['destination'] : 'admin/content/media',
     );
   }
   else {

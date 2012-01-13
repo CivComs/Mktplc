@@ -63,6 +63,7 @@ function cc_project_views_default_views() {
   $handler->display->display_options['fields']['field_project_url']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_project_url']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_project_url']['click_sort_column'] = 'url';
+  $handler->display->display_options['fields']['field_project_url']['group_column'] = 'url';
   $handler->display->display_options['fields']['field_project_url']['field_api_classes'] = 0;
   /* Field: Content: Date Created */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
@@ -204,6 +205,7 @@ function cc_project_views_default_views() {
     'image_style' => '',
     'image_link' => '',
   );
+  $handler->display->display_options['fields']['field_screenshots']['group_column'] = 'fid';
   $handler->display->display_options['fields']['field_screenshots']['group_rows'] = 1;
   $handler->display->display_options['fields']['field_screenshots']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_screenshots']['delta_reversed'] = 0;
@@ -324,6 +326,7 @@ function cc_project_views_default_views() {
   $handler->display->display_options['fields']['field_project_url']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_project_url']['click_sort_column'] = 'url';
   $handler->display->display_options['fields']['field_project_url']['type'] = 'url';
+  $handler->display->display_options['fields']['field_project_url']['group_column'] = 'url';
   $handler->display->display_options['fields']['field_project_url']['field_api_classes'] = 0;
   /* Field: Content: Date Created */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';

@@ -32,6 +32,7 @@ class views_bulk_operations_handler_field_operations extends views_handler_field
       'contains' => array(
         'entity_load_capacity' => array('default' => 10),
         'operations' => array('default' => array()),
+        'enable_select_all_pages' => array('default' => TRUE),
         'display_type' => array('default' => 0),
         'display_result' => array('default' => TRUE),
         'merge_single_action' => array('default' => FALSE),
@@ -60,6 +61,12 @@ class views_bulk_operations_handler_field_operations extends views_handler_field
         t('Dropdown selectbox with Submit button'),
         t('Each action as a separate button'),
       ),
+    );
+    $form['vbo']['enable_select_all_pages'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable "Select all items on all pages"'),
+      '#default_value' => $this->options['vbo']['enable_select_all_pages'],
+      '#description' => t('Check this box to enable the ability to select all items on all pages.'),
     );
     $form['vbo']['force_single'] = array(
       '#type' => 'checkbox',
@@ -222,17 +229,6 @@ class views_bulk_operations_handler_field_operations extends views_handler_field
       return;
     }
 
-    // If there's a session variable on this view, pre-load the old values.
-    if (isset($_SESSION['vbo_values'][$_GET['q']])) {
-      $session_rows = $_SESSION['vbo_values'][$_GET['q']]['rows'];
-      $default_rows = array(
-        'selection' => $session_rows['selection'], 'select_all' => $session_rows['select_all']
-      );
-    }
-    else {
-      $default_rows = array('selection' => array(), 'select_all' => FALSE);
-    }
-
     $form[$this->options['id']] = array(
       '#tree' => TRUE,
     );
@@ -249,17 +245,10 @@ class views_bulk_operations_handler_field_operations extends views_handler_field
         );
       }
       else {
-        if ($default_rows['select_all'] || (isset($default_rows['selection'][$row_index]) && $default_rows['selection'][$row_index] == $entity_id)) {
-          $default_value = TRUE;
-        }
-        else {
-          $default_value = FALSE;
-        }
-
         $form[$this->options['id']][$row_index] = array(
           '#type' => 'checkbox',
           '#return_value' => $entity_id,
-          '#default_value' => $default_value,
+          '#default_value' => FALSE,
           '#attributes' => array('class' => array('vbo-select')),
         );
       }
