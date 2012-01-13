@@ -982,7 +982,7 @@ function media_element_process(&$element, &$form_state, $form) {
   // Media browser attach code.
   $element['#attached']['js'][] = drupal_get_path('module', 'media') . '/js/media.js';
 
-  $settings = array();
+  $setting = array();
   $setting['media']['elements'][$element['#id']] = $element['#media_options'];
 
   $element['#attached']['js'][] = array(

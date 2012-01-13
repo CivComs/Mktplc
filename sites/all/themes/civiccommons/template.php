@@ -68,7 +68,19 @@ function civiccommons_preprocess_search_result (&$vars) {
 }
 
 
-
+function civiccommons_process_region(&$vars) {
+  if(isset($vars['elements']['#region']['branding'])){
+    $theme = alpha_get_theme();
+    $vars['site_name'] = $theme->page['site_name'];
+    $vars['linked_site_name'] = l($vars['site_name'], '<front>', array('attributes' => array('rel' => 'home', 'title' => t('Home')), 'html' => TRUE));
+    $vars['site_slogan'] = $theme->page['site_slogan'];      
+    $vars['site_name_hidden'] = $theme->page['site_name_hidden'];
+    $vars['site_slogan_hidden'] = $theme->page['site_slogan_hidden'];
+    $vars['logo'] = $theme->page['logo'];
+    $vars['logo_img'] = $vars['logo'] ? '<img src="' . $vars['logo'] . '" alt="' . $vars['site_name'] . '" id="logo" />' : '';
+    $vars['linked_logo_img'] = $vars['logo'] ? l($vars['logo_img'], 'http://civiccommons.org', array('attributes' => array('rel' => 'home', 'title' => t($vars['site_name'])), 'html' => TRUE)) : '';
+  }
+}
 
 
 function civiccommons_preprocess_region(&$vars) {

@@ -8,9 +8,9 @@ dependencies[] = delta
 dependencies[] = color
 
 
-; Information added by drupal.org packaging script on 2011-08-19
-version = "7.x-3.0-beta8"
+; Information added by drupal.org packaging script on 2011-11-12
+version = "7.x-3.0-beta9"
 core = "7.x"
 project = "delta"
-datestamp = "1313771815"
+datestamp = "1321062331"
 
