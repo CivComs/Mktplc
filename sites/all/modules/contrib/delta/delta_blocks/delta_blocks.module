@@ -410,19 +410,19 @@ function _delta_blocks_get_blocks() {
     ),
     'page-title' => array(
       'title' => t('Page title'),
-      'cache' => DRUPAL_CACHE_GLOBAL,
+      'cache' => DRUPAL_CACHE_PER_PAGE,
     ),
     'breadcrumb' => array(
       'title' => t('Breadcrumb'),
-      'cache' => DRUPAL_CACHE_GLOBAL,
+      'cache' => DRUPAL_CACHE_PER_PAGE,
     ),
     'tabs' => array(
       'title' => t('Tabs'),
-      'cache' => DRUPAL_CACHE_GLOBAL,
+      'cache' => DRUPAL_CACHE_PER_PAGE,
     ),
     'messages' => array(
       'title' => t('Messages'),
-      'cache' => DRUPAL_CACHE_GLOBAL,
+      'cache' => DRUPAL_NO_CACHE,
     ),
     'action-links' => array(
       'title' => t('Action links'),
