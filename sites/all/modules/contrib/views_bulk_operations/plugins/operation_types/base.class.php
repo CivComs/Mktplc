@@ -48,8 +48,8 @@ abstract class ViewsBulkOperationsBaseOperation {
   /**
    * Returns the value of an admin option.
    */
-  public function getAdminOption($key) {
-    return isset($this->adminOptions[$key]) ? $this->adminOptions[$key] : NULL;
+  public function getAdminOption($key, $default = NULL) {
+    return isset($this->adminOptions[$key]) ? $this->adminOptions[$key] : $default;
   }
 
   /**
@@ -127,7 +127,7 @@ abstract class ViewsBulkOperationsBaseOperation {
    * @param $form_state
    *   An array containing the current state of the form.
    */
-  abstract function formSubmit($form, $form_state);
+  abstract function formSubmit($form, &$form_state);
 
   /**
    * Returns whether the selected entities should be aggregated

@@ -33,6 +33,28 @@ function media_field_is_empty($item, $field) {
 }
 
 /**
+ * Implements hook_field_instance_settings_form().
+ */
+function media_field_instance_settings_form($field, $instance) {
+  $settings = $instance['settings'];
+
+  // Make the extension list a little more human-friendly by comma-separation.
+  $extensions = str_replace(' ', ', ', $settings['file_extensions']);
+  $form['file_extensions'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Allowed file extensions for uploaded files'),
+    '#default_value' => $extensions,
+    '#description' => t('Separate extensions with a space or comma and do not include the leading dot.'),
+    '#element_validate' => array('_file_generic_settings_extensions'),
+    // By making this field required, we prevent a potential security issue
+    // that would allow files of any type to be uploaded.
+    '#required' => TRUE,
+  );
+
+  return $form;
+}
+
+/**
  * Implement hook_field_widget_info().
  */
 function media_field_widget_info() {
@@ -58,18 +80,18 @@ function media_field_widget_info() {
  */
 function media_field_formatter_info() {
   $formatters = array(
-    'media' => array(
-      'label' => t('Media'),
-      'field types' => array('media'),
-      'settings' => array('file_view_mode' => 'default'),
+    'media_large_icon' => array(
+      'label' => t('Large filetype icon'),
+      'field types' => array('file'),
     ),
     // This was originally used when media entities contained file fields. The
     // current file entity architecture no longer needs this, but people may
     // have used this formatter for other file fields on their website.
     // @todo Some day, remove this.
-    'media_large_icon' => array(
-      'label' => t('Large filetype icon'),
-      'field types' => array('file'),
+    'media' => array(
+      'label' => t('Media'),
+      'field types' => array('media'),
+      'settings' => array('file_view_mode' => 'default'),
     ),
   );
 
@@ -152,8 +174,8 @@ function media_field_prepare_view($entity_type, $entities, $field, $instances, $
  * Implement hook_field_formatter_view().
  */
 function media_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  // @todo Legacy support for the extra formatter added to file fields. See
-  //   media_field_formatter_info().
+  $element = array();
+
   if ($display['type'] == 'media_large_icon') {
     foreach ($items as $delta => $item) {
       $element[$delta] = array(
@@ -161,14 +183,22 @@ function media_field_formatter_view($entity_type, $entity, $field, $instance, $l
         '#file' => $item,
       );
     }
-    return $element;
   }
 
-  $files = array();
-  foreach ($items as $delta => $item) {
-    $files[$item['fid']] = $item['file'];
+  // Legacy support for the extra formatter added to file fields. See
+  // media_field_formatter_info().
+  if ($display['type'] == 'media') {
+    $files = array();
+    foreach ($items as $delta => $item) {
+      $files[$item['fid']] = $item['file'];
+    }
+
+    if (!empty($files)) {
+      $element = file_view_multiple($files, $display['settings']['file_view_mode'], 0, $langcode);
+    }
   }
-  return file_view_multiple($files, $display['settings']['file_view_mode'], 0, $langcode);
+
+  return $element;
 }
 
 /**
@@ -179,21 +209,6 @@ function media_field_widget_settings_form($field, $instance) {
   $widget = $instance['widget'];
   $settings = $widget['settings'];
   $form = array();
-
-  if ($field['type'] == 'media') {
-    // Make the extension list a little more human-friendly by comma-separation.
-    $extensions = str_replace(' ', ', ', $instance['settings']['file_extensions']);
-    $form['file_extensions'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Allowed file extensions for uploaded files'),
-      '#default_value' => $extensions,
-      '#description' => t('Separate extensions with a space or comma and do not include the leading dot.'),
-      '#element_validate' => array('_file_generic_settings_extensions'),
-      // By making this field required, we prevent a potential security issue
-      // that would allow files of any type to be uploaded.
-      '#required' => TRUE,
-    );
-  }
 
   // Setup type selection form
   $types = media_type_get_types();
@@ -237,12 +252,6 @@ function media_field_widget_form(&$form, &$form_state, $field, $instance, $langc
   $field_settings = $instance['settings'];
   $widget_settings = $instance['widget']['settings'];
 
-  $permission = user_access('edit media');
-  if (!$permission) {
-    // @todo: show the default file upload field.
-    return;
-  }
-
   // @todo The Field API supports automatic serialization / unserialization, so
   //   this should no longer be needed. After verifying with a module that uses
   //   the 'data' column, remove this.
@@ -272,7 +281,7 @@ function media_field_widget_form(&$form, &$form_state, $field, $instance, $langc
         'file_directory' => isset($field_settings['file_directory']) ? $field_settings['file_directory'] : NULL,
         'file_extensions' => isset($field_settings['file_extensions']) ? $field_settings['file_extensions'] : media_variable_get('file_extensions'),
         'max_filesize' => isset($field_settings['max_filesize']) ? $field_settings['max_filesize'] : NULL,
-        'uri_scheme' => !empty($field_settings['uri_scheme']) ? $field_settings['uri_scheme'] : file_default_scheme(),
+        'uri_scheme' => !empty($field['settings']['uri_scheme']) ? $field['settings']['uri_scheme'] : file_default_scheme(),
       ),
     ),
   );
@@ -403,18 +412,14 @@ function media_field_update($entity_type, $entity, $field, $instance, $langcode,
     $current_fids[] = $item['fid'];
   }
 
-  // Create a bare-bones entity so that we can load its previous values.
-  $original = entity_create_stub_entity($entity_type, array($id, $vid, $bundle));
-  field_attach_load($entity_type, array($id => $original), FIELD_LOAD_CURRENT, array('field_id' => $field['id']));
-
   // Compare the original field values with the ones that are being saved.
   $original_fids = array();
-  if (!empty($original->{$field['field_name']}[$langcode])) {
-    foreach ($original->{$field['field_name']}[$langcode] as $original_item) {
+  if (!empty($entity->original->{$field['field_name']}[$langcode])) {
+    foreach ($entity->original->{$field['field_name']}[$langcode] as $original_item) {
       $original_fids[] = $original_item['fid'];
       if (isset($original_item['fid']) && !in_array($original_item['fid'], $current_fids)) {
         // Decrement the file usage count by 1.
-        $file = (object)$original_item;
+        $file = (object) $original_item;
         file_usage_delete($file, 'media', $entity_type, $id, 1);
       }
     }
