@@ -1039,6 +1039,10 @@ border-bottom: none;
 
 }
 
+.cc-org-contact{
+   clear:both;
+}
+
 .views-label {
   font-size: 14px;
   font-weight: bold;
@@ -1102,6 +1106,65 @@ border-bottom: none;
   display: inline-block;
   margin-right: 10px;
   }
+  
+/* Organization Page */
+
+.view-at-a-glance .cc-org-apps {
+float: left;
+width: 48%;
+display: inline-block;
+/* border: 1px solid brown; */
+height: 70px;
+
+}
+
+.view-at-a-glance .using-sharing .cc-org-apps .cc-using {
+ background: url('../images/hammer-wrench-active-18.png') 1px 1px no-repeat;
+}
+
+.view-at-a-glance .using-sharing .cc-org-apps .cc-sharing {
+ background: url('../images/gov-gov-gray-18.png') 1px 1px no-repeat;
+}
+
+
+
+.view-at-a-glance .cc-org-apps > div {
+display: inline-block;
+}
+
+.view-at-a-glance .cc-org-prefix-using, .view-at-a-glance  .cc-org-prefix-sharing {
+font-size: 12px;
+display: block;
+height: 20px;
+float: left;
+width: 100%;
+text-transform: uppercase;
+
+
+}
+
+
+
+.view-at-a-glance .using-sharing .cc-org-apps .cc-org-count {
+font-size: 2em;
+line-height: .9em;
+height: 20px;
+float: left; /* maybe. remove to switch */
+text-align: left;
+padding-left: 20px;
+}
+
+.view-at-a-glance .view-header {
+  display: block;
+  width: 280px;
+}
+.view-at-a-glance .using-sharing {
+  display: block;
+  width: 280px;
+
+}
+
+
 
 /* Applications Page */
 .page-applications #region-content {
