@@ -369,6 +369,17 @@ abstract class MediaInternetBaseHandler {
   public function preSave(&$file_obj) {
 
   }
+
+  /**
+   * Recognize if this handler should take the the item with the embed
+   * coded passed as argument.
+   *
+   * @param string $embed_code
+   *
+   * @return boolean
+   *   Whether or not this handler is resposible for the give embed code.
+   */
+  abstract public function claim($embed_code);
 }
 
 class MediaInternetValidationException extends Exception {
