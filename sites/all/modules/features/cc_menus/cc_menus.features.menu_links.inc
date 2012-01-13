@@ -205,25 +205,7 @@ function cc_menus_menu_default_menu_links() {
     'external' => '1',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '0',
-  );
-  // Exported menu link: menu-meta-nav:http://civiccommons.org/blog
-  $menu_links['menu-meta-nav:http://civiccommons.org/blog'] = array(
-    'menu_name' => 'menu-meta-nav',
-    'link_path' => 'http://civiccommons.org/blog',
-    'router_path' => '',
-    'link_title' => 'Blog',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-    ),
-    'module' => 'menu',
-    'hidden' => '0',
-    'external' => '1',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '0',
+    'weight' => '-50',
   );
   // Exported menu link: menu-meta-nav:http://civiccommons.org/community
   $menu_links['menu-meta-nav:http://civiccommons.org/community'] = array(
@@ -241,7 +223,7 @@ function cc_menus_menu_default_menu_links() {
     'external' => '1',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '0',
+    'weight' => '-48',
   );
   // Exported menu link: menu-meta-nav:http://civiccommons.org/contact
   $menu_links['menu-meta-nav:http://civiccommons.org/contact'] = array(
@@ -259,7 +241,7 @@ function cc_menus_menu_default_menu_links() {
     'external' => '1',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '0',
+    'weight' => '-47',
   );
   // Exported menu link: menu-mktplc-section-nav:<front>
   $menu_links['menu-mktplc-section-nav:<front>'] = array(
@@ -458,7 +440,6 @@ function cc_menus_menu_default_menu_links() {
   t('About');
   t('App');
   t('Apps');
-  t('Blog');
   t('Community');
   t('Contact');
   t('Dashboard');
