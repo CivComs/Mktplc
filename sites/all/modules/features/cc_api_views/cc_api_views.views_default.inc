@@ -310,7 +310,7 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
@@ -319,10 +319,12 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'organization' => 'organization',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Search: Search Terms */
   $handler->display->display_options['filters']['keys']['id'] = 'keys';
   $handler->display->display_options['filters']['keys']['table'] = 'search_index';
   $handler->display->display_options['filters']['keys']['field'] = 'keys';
+  $handler->display->display_options['filters']['keys']['group'] = 1;
   $handler->display->display_options['filters']['keys']['exposed'] = TRUE;
   $handler->display->display_options['filters']['keys']['expose']['operator_id'] = 'keys_op';
   $handler->display->display_options['filters']['keys']['expose']['label'] = 'Search Terms (String)';
@@ -333,6 +335,7 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_organization_interactions_nid']['id'] = 'field_organization_interactions_nid';
   $handler->display->display_options['filters']['field_organization_interactions_nid']['table'] = 'field_data_field_organization_interactions';
   $handler->display->display_options['filters']['field_organization_interactions_nid']['field'] = 'field_organization_interactions_nid';
+  $handler->display->display_options['filters']['field_organization_interactions_nid']['group'] = 1;
   $handler->display->display_options['filters']['field_organization_interactions_nid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_organization_interactions_nid']['expose']['operator_id'] = 'field_organization_interactions_nid_op';
   $handler->display->display_options['filters']['field_organization_interactions_nid']['expose']['label'] = 'Interaction (Node ID)';
@@ -343,6 +346,7 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_organization_services_tid']['id'] = 'field_organization_services_tid';
   $handler->display->display_options['filters']['field_organization_services_tid']['table'] = 'field_data_field_organization_services';
   $handler->display->display_options['filters']['field_organization_services_tid']['field'] = 'field_organization_services_tid';
+  $handler->display->display_options['filters']['field_organization_services_tid']['group'] = 1;
   $handler->display->display_options['filters']['field_organization_services_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_organization_services_tid']['expose']['operator_id'] = 'field_organization_services_tid_op';
   $handler->display->display_options['filters']['field_organization_services_tid']['expose']['label'] = 'Application Services (Taxonomy Term ID)';
@@ -357,6 +361,7 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_organization_type_tid']['id'] = 'field_organization_type_tid';
   $handler->display->display_options['filters']['field_organization_type_tid']['table'] = 'field_data_field_organization_type';
   $handler->display->display_options['filters']['field_organization_type_tid']['field'] = 'field_organization_type_tid';
+  $handler->display->display_options['filters']['field_organization_type_tid']['group'] = 1;
   $handler->display->display_options['filters']['field_organization_type_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_organization_type_tid']['expose']['operator_id'] = 'field_organization_type_tid_op';
   $handler->display->display_options['filters']['field_organization_type_tid']['expose']['label'] = 'Kind of Organization? (Taxonomy Term ID)';
@@ -367,6 +372,32 @@ function cc_api_views_views_default_views() {
   $handler->display->display_options['filters']['field_organization_type_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_organization_type_tid']['vocabulary'] = 'organization_type';
   $handler->display->display_options['filters']['field_organization_type_tid']['error_message'] = 1;
+  /* Filter criterion: Content: Street address (field_organization_address:administrative_area) */
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['id'] = 'field_organization_address_administrative_area';
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['table'] = 'field_data_field_organization_address';
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['field'] = 'field_organization_address_administrative_area';
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['operator'] = 'contains';
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['group'] = 1;
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['expose']['operator_id'] = 'field_organization_address_administrative_area_op';
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['expose']['label'] = 'State (2 Letter)';
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['expose']['operator'] = 'field_organization_address_administrative_area_op';
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['expose']['identifier'] = 'address_administrative_area_state';
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['expose']['required'] = 0;
+  $handler->display->display_options['filters']['field_organization_address_administrative_area']['expose']['multiple'] = FALSE;
+  /* Filter criterion: Content: Street address (field_organization_address:locality) */
+  $handler->display->display_options['filters']['field_organization_address_locality']['id'] = 'field_organization_address_locality';
+  $handler->display->display_options['filters']['field_organization_address_locality']['table'] = 'field_data_field_organization_address';
+  $handler->display->display_options['filters']['field_organization_address_locality']['field'] = 'field_organization_address_locality';
+  $handler->display->display_options['filters']['field_organization_address_locality']['operator'] = 'contains';
+  $handler->display->display_options['filters']['field_organization_address_locality']['group'] = 1;
+  $handler->display->display_options['filters']['field_organization_address_locality']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_address_locality']['expose']['operator_id'] = 'field_organization_address_locality_op';
+  $handler->display->display_options['filters']['field_organization_address_locality']['expose']['label'] = 'City';
+  $handler->display->display_options['filters']['field_organization_address_locality']['expose']['operator'] = 'field_organization_address_locality_op';
+  $handler->display->display_options['filters']['field_organization_address_locality']['expose']['identifier'] = 'address_locality_city';
+  $handler->display->display_options['filters']['field_organization_address_locality']['expose']['required'] = 0;
+  $handler->display->display_options['filters']['field_organization_address_locality']['expose']['multiple'] = FALSE;
 
   /* Display: Field View */
   $handler = $view->new_display('page', 'Field View', 'field_view');
