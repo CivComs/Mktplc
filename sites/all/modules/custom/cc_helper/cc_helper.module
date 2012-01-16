@@ -566,7 +566,16 @@ function cc_helper_block_view_alter(&$data, $block){
 
 function cc_helper_form_alter(&$form, &$form_state, $form_id) {
   if($form_id == 'custom_search_blocks_form_1') {
-    $form['#action'] = url('<front>');
+    $item = menu_get_item();
+    $path = isset($item['href']) ? $item['href'] : '';
+    $access = isset($item['access']) ? $item['access'] : FALSE;
+    if(
+      variable_get('site_404') == $path
+      || variable_get('site_403') == $path
+      || !$access
+    ) {
+      $form['#action'] = url('<front>');
+    }
   }
 }
 
