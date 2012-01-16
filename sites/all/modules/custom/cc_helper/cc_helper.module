@@ -566,7 +566,7 @@ function cc_helper_block_view_alter(&$data, $block){
 
 function cc_helper_form_alter(&$form, &$form_state, $form_id) {
   if($form_id == 'custom_search_blocks_form_1') {
-    $form['#action'] = '/';
+    $form['#action'] = url('<front>');
   }
 }
 
