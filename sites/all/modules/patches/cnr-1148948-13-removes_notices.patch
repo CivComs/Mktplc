@@ -1,0 +1,45 @@
+diff --git a/sites/all/modules/contrib/cnr/corresponding_node_references.crud.inc b/sites/all/modules/contrib/cnr/corresponding_node_references.crud.inc
+index fbbd5b0..9f03ab9 100644
+--- a/sites/all/modules/contrib/cnr/corresponding_node_references.crud.inc
++++ b/sites/all/modules/contrib/cnr/corresponding_node_references.crud.inc
+@@ -27,14 +27,22 @@ function corresponding_node_references_insert($home_node, $home_field, $away_nod
+             if ($referenced_node->type == $away_node_type) {
+               // Add the new reference.
+               // If there are no other references, we need to make sure this is delta 0
+-              if ($referenced_node->{$away_field}[$lang][0]['nid'] == NULL) {
++              if (
++                isset($referenced_node->{$away_field}[$lang][0]['nid'])
++                ? $referenced_node->{$away_field}[$lang][0]['nid'] == NULL
++                : FALSE
++              ) {
+                 $referenced_node->{$away_field}[$lang][0]['nid'] = $home_node->nid;
+               }
+               else {
+                 // Add the new reference.
+                 //Check for doubles, could happen when nodes of same type are referenced
+                 $exists = FALSE;
+-                foreach ($referenced_node->{$away_field}[$lang] as $key => $value) {
++                foreach ((
++                  isset($referenced_node->{$away_field}[$lang])
++                  ? $referenced_node->{$away_field}[$lang]
++                  : array()
++                ) as $key => $value) {
+                   if ($value['nid'] == $home_node->nid) {
+                     $exists = TRUE;
+                     break;
+@@ -226,7 +234,14 @@ function corresponding_node_references_delete($home_node, $home_field, $away_nod
+         if ($referenced_node = node_load($reference['nid'], NULL, FALSE)) {
+           if ($referenced_node->type == $away_node_type) {
+             // Iterate through the away node's references.
+-            foreach ($referenced_node->{$away_field}[$lang] as $key => $value) {
++            foreach (
++              (
++                isset($referenced_node->{$away_field}[$lang])
++                ? $referenced_node->{$away_field}[$lang]
++                : array()
++              )
++              as $key => $value
++            ) {
+               // Remove references to the deleted node.
+               if ($value['nid'] && $value['nid'] == $home_node->nid) {
+                 unset($referenced_node->{$away_field}[$lang][$key]);
