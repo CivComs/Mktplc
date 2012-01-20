@@ -405,7 +405,6 @@ input#edit-go {
   float: right;
   margin-bottom: 0px;
   margin-top: -3px;
-  z-index: -1;
 }
 #block-system-user-menu ul {
   border: 1px solid #E4E4E4;
@@ -490,7 +489,7 @@ body.front #region-content {
   font-size: 20px;
   text-align: center;
 }
-#section-content .tabs {
+.page-node #section-content .tabs {
   /* editing tabs hide via JS but w/ a flicker */
   display: none;
 }
@@ -1455,6 +1454,7 @@ article.node-interaction {
   font-weight: bold;
   text-align: right;
 }
+
 /*
 body.node-type-interaction .field-name-field-interaction-date {
   margin-top: 25px;
