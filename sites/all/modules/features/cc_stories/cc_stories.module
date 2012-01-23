@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC Stories feature.
+ */
+
+include_once('cc_stories.features.inc');
