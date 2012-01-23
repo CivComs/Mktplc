@@ -564,14 +564,20 @@ function cc_helper_block_view_alter(&$data, $block){
   
 }
 
-/*function cc_helper_form_alter(&$form, &$form_state, $form_id) {
-  $c_editor = in_array('content editor', $GLOBALS['user']->roles);
-  if(isset($form['#entity_type']) && $c_editor) {
-    if($form['#entity_type'] == 'node') {
-      $form['additional_settings']['#theme'] = '';
+function cc_helper_form_alter(&$form, &$form_state, $form_id) {
+  if($form_id == 'custom_search_blocks_form_1') {
+    $item = menu_get_item();
+    $path = isset($item['href']) ? $item['href'] : '';
+    $access = isset($item['access']) ? $item['access'] : FALSE;
+    if(
+      variable_get('site_404') == $path
+      || variable_get('site_403') == $path
+      || !$access
+    ) {
+      $form['#action'] = url('<front>');
     }
   }
-}*/
+}
 
 function cc_helper_form_interaction_node_form_alter(&$form, &$form_state) {
   if(
