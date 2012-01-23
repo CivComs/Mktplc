@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * Implements of hook_permission().
+ */
+function uuid_services_permission() {
+  return array(
+    'use entity resource' => array(
+      'title' => t('Use entity resource'),
+      'description' => t('Grants access to the entity service resource.'),
+    ),
+  );
+}
+
+/**
+  * Implements of hook_services_resources().
+  */
+function uuid_services_services_resources() {
+ return array(
+    'uuid_entity' => array(
+      'update' => array(
+        'help' => 'Save or update an entity by its UUID',
+        'callback' => '_uuid_services_entity_update',
+        'access callback' => 'user_access',
+        'access arguments' => array('use entity resource'),
+        'args' => array(
+          array(
+            'name' => 'uuid',
+            'description' => 'The UUID of the entity.',
+            'optional' => FALSE,
+            'type' => 'text',
+            'source' => array('path' => 0),
+          ),
+          array(
+            'name' => 'type',
+            'description' => 'The entity type.',
+            'optional' => FALSE,
+            'type' => 'text',
+            'source' => 'data',
+          ),
+          array(
+            'name' => 'data',
+            'description' => 'The entity object',
+            'optional' => FALSE,
+            'type' => 'struct',
+            'source' => 'data',
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Callback for saving or updating an entity by its UUID.
+ */
+function _uuid_services_entity_update($uuid, $entity_type, $entity) {
+  $entity = (object)$entity;
+  entity_uuid_save($entity_type, $entity);
+  return (object)array(
+    'id' => $uuid,
+    'uri' => 'entity/' . $uuid,
+  );
+}
