@@ -23,7 +23,7 @@
  * @ingroup views_templates
  */
 ?>
-<div class="cc-org-contact"><div class="cc-org-contact-title">Contact</div>
+<div class="cc-org-contact">
 <?php foreach ($fields as $id => $field): ?>
  <?php if(in_array($id, array('field_organization_address', 'field_organization_link'))): ?>
   <?php if (!empty($field->separator)): ?>

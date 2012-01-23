@@ -28,5 +28,6 @@
   <?php print $pager; ?>
 <?php else : ?>
   <h2><?php print t('Your search yielded no results');?></h2>
+  <p class="add-app-on-no-results"><?php print l('You can add an app now.', 'node/add/application'); ?></p>
   <?php print search_help('search#noresults', drupal_help_arg()); ?>
 <?php endif; ?>
