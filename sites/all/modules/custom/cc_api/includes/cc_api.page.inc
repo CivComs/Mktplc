@@ -589,7 +589,7 @@ function cc_api_documentation_page_formatters(&$formatters, $base_url) {
       'example_url' => $base_url . '.yaml',
     ),
     'jsonp' => array(
-      'description' => t('<a href="@url">JSONP</a> is similar to JSON but is meant to get around Javascript cross-domain limitations.  This format takes an extra argument in the query string, <code>callback</code>, which is a Javascript callback function on your client-side code.  (seems to be responding with empty set)', array ('@url' => 'http://en.wikipedia.org/wiki/JSONP')),
+      'description' => t('<a href="@url">JSONP</a> is similar to JSON but is meant to get around Javascript cross-domain limitations.  This format takes an extra argument in the query string, <code>callback</code>, which is a Javascript callback function on your client-side code.  <strong>You must add the <code>Accept: application/javascript</code> HTTP header</strong> (not application/json).', array ('@url' => 'http://en.wikipedia.org/wiki/JSONP')),
       'example_url' => $base_url . '.jsonp?callback=ExampleCallback',
     ),
   );
