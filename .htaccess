@@ -38,11 +38,6 @@ DirectoryIndex index.php index.html index.htm
   php_value mbstring.http_input             pass
   php_value mbstring.http_output            pass
   php_flag mbstring.encoding_translation    off
-  php_value upload_max_filesize     25M
-  php_value post_max_size           25M
-  php_value memory_limit            200M
-  php_value upload_tmp_dir          25M
-  php_value max_execution_time      50000
 </IfModule>
 
 # Requires mod_expires to be enabled.
