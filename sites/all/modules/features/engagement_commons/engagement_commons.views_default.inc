@@ -122,6 +122,16 @@ function engagement_commons_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'story' => 'story',
   );
+  /* Filter criterion: Content: Site Section (field_site_section) */
+  $handler->display->display_options['filters']['field_site_section_tid']['id'] = 'field_site_section_tid';
+  $handler->display->display_options['filters']['field_site_section_tid']['table'] = 'field_data_field_site_section';
+  $handler->display->display_options['filters']['field_site_section_tid']['field'] = 'field_site_section_tid';
+  $handler->display->display_options['filters']['field_site_section_tid']['value'] = array(
+    235 => '235',
+  );
+  $handler->display->display_options['filters']['field_site_section_tid']['reduce_duplicates'] = 0;
+  $handler->display->display_options['filters']['field_site_section_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_site_section_tid']['vocabulary'] = 'site_section';
 
   /* Display: Engagement Commons Page */
   $handler = $view->new_display('page', 'Engagement Commons Page', 'page');
