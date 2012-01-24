@@ -1,22 +1,19 @@
-# Ignore paths that contain user-generated content.
+# Drupal #
+##########
 sites/*/files
-sites/*/private
 sites/*/files/*
 files/*
-cache
 
 # Packages #
 ############
 *.7z
 *.dmg
 *.gz
-*.bz2
 *.iso
 *.jar
 *.rar
 *.tar
 *.zip
-*.tgz
 
 # Logs and databases #
 ######################
@@ -30,3 +27,4 @@ ehthumbs.db
 Icon?
 Thumbs.db
 ._*
+
