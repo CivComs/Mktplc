@@ -263,6 +263,90 @@ function cc_stories_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-story-field_story_image'
+  $fields['node-story-field_story_image'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_story_image',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'image',
+      'settings' => array(
+        'default_image' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'image',
+    ),
+    'field_instance' => array(
+      'bundle' => 'story',
+      'deleted' => '0',
+      'description' => 'An image to represent the Story.',
+      'display' => array(
+        'cc_business_card' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => '',
+          ),
+          'type' => 'image',
+          'weight' => 4,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_story_image',
+      'label' => 'Story Image',
+      'required' => 0,
+      'settings' => array(
+        'alt_field' => 0,
+        'file_directory' => 'story_images',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '10MB',
+        'max_resolution' => '',
+        'min_resolution' => '200x200',
+        'title_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'image',
+        'settings' => array(
+          'preview_image_style' => 'thumbnail',
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'image_image',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Exported field: 'node-story-field_story_orgs'
   $fields['node-story-field_story_orgs'] = array(
     'field_config' => array(
@@ -361,12 +445,14 @@ function cc_stories_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('An image to represent the Story.');
   t('Apps references');
   t('Org references');
   t('Organizations that are significant to this story.');
   t('References to Applications that are relevant to the story.');
   t('Site Section');
   t('Story');
+  t('Story Image');
   t('This field will put the content in a specific section of the site.');
 
   return $fields;
