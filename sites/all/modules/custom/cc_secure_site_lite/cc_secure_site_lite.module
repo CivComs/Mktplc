@@ -1,0 +1,132 @@
+<?php
+
+function cc_secure_site_lite_init() {
+  global $user;
+  
+  // This is a hack way of ensuring that only certain
+  // pages are available to anonymous users for
+  // beta invite testing.  Check that user is not
+  // logged in, the form has been submitted (ie session),
+  // and that we are not on these specific pages.
+  //
+  // For some reasons drush does not appreciate the
+  // user check and the goto.  The following is a
+  // work around.
+  if (function_exists('drush_verify_cli') && drush_verify_cli()) {
+    return;
+  }
+  
+  $allowed_pages = array(
+    'preview',
+    'user',
+    'user/password',
+  );
+  if (!$user->uid && !isset($_SESSION['secure-site-lite-login-ok']) &&
+    !in_array($_GET['q'], $allowed_pages)) {
+    drupal_goto('preview', array(), 307);
+  }
+}
+
+function cc_secure_site_lite_menu() {
+    $items = array();
+    $items['preview'] = array(
+      'title' => variable_get('secure_site_lite_page_title','Civic Commons Marketplace Preview'),
+      'access callback' => TRUE,
+      'page callback' => 'cc_secure_site_lite_display_page',
+    );
+    $items['admin/config/secure-site-lite'] = array(
+      'title' => 'Secure Site Lite',
+      'type' => MENU_NORMAL_ITEM,
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('cc_secure_site_lite_admin_menu'),
+      'access arguments' => array('administer users')
+    );
+    return $items;
+  }
+
+function cc_secure_site_lite_display_page() {
+  // This shoudl be using Drupal Form API properly and the 
+  // Session API properly.
+
+  // Check to see if the form has been submitted
+  if (isset($_POST['password'])) {
+		$passcodes = explode(' ', strtolower(variable_get('secure_site_lite_password')));
+		if (in_array(strtolower($_POST['password']), $passcodes)) {
+    //if (strtolower($_POST['password']) == strtolower(variable_get('secure_site_lite_password'))) {
+      $_SESSION['secure-site-lite-login-ok'] = true;
+      if (variable_get('secure_site_lite_login_successful'))
+        drupal_set_message(variable_get('secure_site_lite_login_successful'));
+      drupal_goto(variable_get('secure_site_lite_redirect_path'), array(), 301);  
+    } else {
+      if (variable_get('secure_site_lite_login_not_successful'))
+      drupal_set_message(variable_get('secure_site_lite_login_not_successful',''), 'warning');
+    }
+  }
+
+  
+  // If not, draw the form
+  // Could add a check to see if the default password is not blank here
+  $path = url('preview', array('absolute' => TRUE));
+  $val = variable_get('secure_site_lite_welcome_message', '[FORM]');
+  $form_html = <<<EOT
+  <form action="{$path}" method="post" class="secure-site-lite-form">
+    <input type="text" class="secure-site-lite-password" name="password">
+    <input type="submit" value="Go" />
+  </form>
+EOT;
+$val = str_replace('[FORM]', $form_html, $val);
+
+  return $val;
+}
+
+function cc_secure_site_lite_admin_menu() {
+  $form = array();
+  /*
+  // Not Used:
+  $form['secure_site_lite_on'] = array(
+    '#type' => 'radios', 
+    '#title' => t('Protect Site'), 
+    '#default_value' => variable_get('secure_site_lite_on', 0), 
+    '#options' => array(t('Protected'), t('Not Protected'))
+  );
+  */
+
+  $form['secure_site_lite_page_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Page Title'),
+    '#default_value' => variable_get('secure_site_lite_page_title', ''),
+    '#required' => true
+  );
+  $form['secure_site_lite_password'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Passcodes (separated by "Space")'),
+    '#default_value' => variable_get('secure_site_lite_password', ''),
+    '#required' => true
+  );
+  $form['secure_site_lite_login_successful'] = array (
+    '#type' => 'textfield',
+    '#title' => t('Passcode Accepted Message'),            
+    '#default_value' => variable_get('secure_site_lite_login_successful', 'Passcode accepted.')
+  );
+  $form['secure_site_lite_login_not_successful'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('Passcode Not Accepted Message'),   
+    '#default_value' => variable_get('secure_site_lite_login_not_successful', 'Passcode not accepted.')
+  );
+  $form['secure_site_lite_redirect_path'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('Redirect Path On Successful Login'),            
+    '#default_value' => variable_get('secure_site_lite_redirect_path', '/'),
+    '#required' => true
+  );
+  $form['secure_site_lite_welcome_message'] = array(
+    '#type' => 'textarea', 
+    '#title' => t('Welcome Message'),
+    '#description' => t('This message must contain the sequence [FORM] which will be replaced with a single text field.  User must press enter after entering the code.  You may use HTML.'),           
+    '#default_value' => variable_get('secure_site_lite_welcome_message', '[FORM]'),
+    '#required' => true
+    );
+
+  return system_settings_form($form);
+}
+

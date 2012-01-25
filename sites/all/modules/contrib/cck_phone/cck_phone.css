@@ -1,0 +1,34 @@
+.cck-phone-field .form-item {
+  margin: 0;
+}
+
+.cck-phone-column {
+  float: left;
+}
+.cck-phone-field-phone {
+  width: 15em;
+}
+.cck-phone-field-cc {
+  width: 25em;
+}
+
+.cck-phone-field-ext {
+  width: 9em;
+}
+.cck-phone-extension {
+  float: left;
+  margin: 0 .5em;
+}
+.cck-phone-field-ext .form-item {
+  float: left;
+}
+
+.cck-phone-settings .form-checkboxes .form-item {
+  float: left;
+  width: 33%;
+}
+
+.cck-phone-settings .cck-phone-default-country {
+  background: #eee;
+  font-weight: bold;
+}

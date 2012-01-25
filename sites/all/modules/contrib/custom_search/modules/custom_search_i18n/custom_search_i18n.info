@@ -1,0 +1,16 @@
+name = Custom Search Internationalization
+description = Provides Internationalization to Custom Search.
+core = 7.x
+package = Custom Search
+
+dependencies[] = custom_search
+dependencies[] = i18n_string
+
+files[] = custom_search_i18n.module
+files[] = custom_search_i18n.install
+; Information added by drupal.org packaging script on 2011-09-09
+version = "7.x-1.9"
+core = "7.x"
+project = "custom_search"
+datestamp = "1315573902"
+

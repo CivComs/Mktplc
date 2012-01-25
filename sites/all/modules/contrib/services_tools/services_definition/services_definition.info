@@ -1,0 +1,11 @@
+name = Services Definition
+description = Provides an API window and Definition response format for methods
+package = Services
+dependencies[] = services
+core = 7.x
+; Information added by drupal.org packaging script on 2011-11-12
+version = "7.x-3.2"
+core = "7.x"
+project = "services_tools"
+datestamp = "1321056423"
+

@@ -1,0 +1,95 @@
+<?php
+/**
+ * @file
+ * Provide test for services_historical functionality.
+ *
+ * @author Jimmy Berry ("boombatower", http://drupal.org/user/214218)
+ */
+
+class ServicesHistoricalTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Historical',
+      'description' => 'Ensure the services_historical properly versions a service.',
+      'group' => 'Services',
+    );
+  }
+
+  protected function setUp() {
+    parent::setUp(array('services_tools_example_historical'));
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('create paste', 'retrieve paste'));
+  }
+
+  protected function testHistorical() {
+    global $base_url;
+    $url = $base_url . '/example/1.0';
+
+    $data = 'Services are fun!';
+
+    // Setup drupal_http_request() options.
+    $options = array(
+      'headers' => array('Content-Type' => 'application/json'),
+      'method' => 'POST',
+      'data' => json_encode($data),
+    );
+
+    // Perform HTTP request.
+    $response = drupal_http_request($url . '/paste', $options);
+    if ($this->assertEqual($response->code, 200, 'Created a paste')) {
+      $paste = json_decode($response->data, TRUE);
+      $this->assertEqual($paste['id'], 0);
+      $this->assertEqual($paste['text'], $data);
+    }
+
+    $url = $base_url . '/example/1.1';
+
+    $data = array(
+      'text' => 'Services are fun!',
+      'title' => 'Some cool title',
+    );
+
+    // Setup drupal_http_request() options.
+    $options = array(
+      'headers' => array('Content-Type' => 'application/json'),
+      'method' => 'POST',
+      'data' => json_encode($data),
+    );
+
+    // Perform HTTP request.
+    $response = drupal_http_request($url . '/paste', $options);
+    if ($this->assertEqual($response->code, 200, 'Created a paste')) {
+      $paste = json_decode($response->data, TRUE);
+      $this->assertEqual($paste['id'], 1);
+      $this->assertEqual($paste['text'], $data['text']);
+      $this->assertEqual($paste['title'], $data['title']);
+    }
+
+    $url = $base_url . '/example/1.2';
+
+    // Perform HTTP request.
+    $response = drupal_http_request($url . '/paste', $options);
+    if ($this->assertEqual($response->code, 200, 'Created a paste')) {
+      $paste = json_decode($response->data, TRUE);
+      $this->assertEqual($paste['id'], 2);
+      $this->assertEqual($paste['text'], $data['text']);
+      $this->assertEqual($paste['title'], $data['title']);
+    }
+
+    $id = 2;
+
+    // Setup drupal_http_request() options.
+    $options = array(
+      'headers' => array('Content-Type' => 'application/json'),
+      'data' => json_encode($id),
+    );
+
+    // Perform HTTP request.
+    $response = drupal_http_request($url . '/paste/' . $id, $options);
+    if ($this->assertEqual($response->code, 200, 'Retrived a paste')) {
+      $paste = json_decode($response->data, TRUE);
+      $this->assertEqual($paste['id'], $id);
+      $this->assertEqual($paste['text'], $data['text']);
+      $this->assertEqual($paste['title'], $data['title']);
+    }
+  }
+}

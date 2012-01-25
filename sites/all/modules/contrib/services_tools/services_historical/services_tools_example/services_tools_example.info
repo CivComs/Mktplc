@@ -1,0 +1,14 @@
+name = Services tools example
+description = Example using services to provide a paste service.
+package = Services
+version = 1.0
+core = 7.x
+dependencies[] = services
+dependencies[] = rest_server
+
+; Information added by drupal.org packaging script on 2011-11-12
+version = "7.x-3.2"
+core = "7.x"
+project = "services_tools"
+datestamp = "1321056423"
+

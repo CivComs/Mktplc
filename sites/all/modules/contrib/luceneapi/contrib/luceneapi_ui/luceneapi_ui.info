@@ -1,0 +1,12 @@
+name = Search Lucene UI
+description = Provides a graphical interface for building and managing Search Lucene API search pages and indexes.
+dependencies[] = luceneapi
+package = Search
+core = 7.x
+
+; Information added by drupal.org packaging script on 2011-03-26
+version = "7.x-3.0-unstable3"
+core = "7.x"
+project = "luceneapi"
+datestamp = "1301152868"
+

@@ -1,0 +1,14 @@
+name = Services historical
+description = An API for providing historical versions of a services API.
+package = Services
+version = 1.0
+core = 7.x
+dependencies[] = services
+files[] = services_historical.test
+
+; Information added by drupal.org packaging script on 2011-11-12
+version = "7.x-3.2"
+core = "7.x"
+project = "services_tools"
+datestamp = "1321056423"
+

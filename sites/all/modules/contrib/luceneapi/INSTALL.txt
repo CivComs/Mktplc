@@ -1,0 +1,93 @@
+
+-- INSTALLATION --
+
+Before installing Search Lucene API, make sure you review the Installing
+contributed modules tutorial. Search Lucene API is installed like any standard
+Drupal module with one exception; The required Zend Framework components must be
+downloaded separately. Due to Drupal's strict licensing policy regarding non-GPL
+code, the ZF components cannot be bundled with the module on Drupal.org.
+However, no action other than retrieving the files from the Search Lucene API
+Library project on SourceForge.net and moving the extracted directory to the
+correct location is required. Complete installation instructions are as follows:
+
+   1. Download the Search Lucene API module from the project page. Make sure the
+      version of the module matches your version of Drupal. For example, the
+      6.x-2.0 version is suitable for Drupal 6 but will not work for Drupal 5.
+
+   2. Extract the files. Modules downloaded from drupal.org are compressed to
+      reduce their size and must be extracted before they can be used on your
+      website. The result of this action will be a 'luceneapi' directory
+      containing the module's source code files. For a tutorial on how to
+      extract compressed files, please refer to the “Installing contributed
+      modules” tutorial.
+
+   3. Download the required Zend Framework components from the Search Lucene API
+      Library project on SourceForge.net. Match the release of the ZF components
+      to the version of the module downloaded in step 1. For example, the
+      6.x-2.0 version of Search Lucene API requires the 6.x-2.0 version of the
+      ZF components. If there is no exact match, download the latest available
+      version of the ZF components up to, but not exceeding, the the minor
+      version of the downloaded module. The Status report page in the
+      administration section of your website will alert you if the ZF components
+      require updating.
+
+          * Project page: http://sourceforge.net/projects/luceneapi
+ 
+   4. Extract the ZF components files as done in step 2. The result of this
+      action will be a directory named 'lib'.
+
+   5. Move the 'lib' directory into the 'luceneapi' directory. From this point
+      forward, it is assumed the 'luceneapi/lib' directory contains the requires
+      ZF components.
+      
+   6. Upload the 'luceneapi' directory to your Drupal installation. In most
+      cases, the module will reside in 'sites/all/modules'. Please refer to the
+      "Installing contributed modules" tutorial for more information.
+
+   7. Enable the modules. Navigate to Administer > Site building > Modules and
+      check the 'Enabled' box next to Search Lucene API and Search Lucene
+      Content. Scroll down to the bottom of the page and click the 'Save
+      Configuration' button.
+ 
+   8. As of Search Lucene API 6.x-2.0-beta3, the Search Lucene Content index can
+      be populated via a batch process by visiting Administer > Site
+      configuration > Search Lucene Content and clicking on the Index statistics
+      tab. Once there, select the Rebuild index after operation checkbox and
+      click the Re-index button. It is critical that cron is configured
+      otherwise changes to the content will not be reflected in the search
+      index. For more information on configuring cron, please refer to the
+      Configuring cron jobs tutorial. It is worth noting that Search Lucene API
+      is compatible with projects such as Super Cron.
+
+
+-- ALTERNATIVE INSTALLATION OF THE ZF COMPONENTS --
+
+Instead of downloading the ZF Components as a compressed archive, developers
+might find it advantageous to checkout a copy of the code from the subversion
+repository hosted on SourceForge.net. All releases of the ZF components are
+tagged in the following URL:
+
+  https://luceneapi.svn.sourceforge.net/svnroot/luceneapi/tags/
+
+Development versions of the ZF components are available at
+https://luceneapi.svn.sourceforge.net/svnroot/luceneapi/branches. Note that
+development version of the module do not have corresponding ZF component
+releases, so they must be downloaded from the appropriate subversion branch. In
+the event that the ZF components need to be upgraded, developers can simply
+execute a subversion switch command to change their working copy to the desired
+release.
+
+The following example illustrates a checkout processes on Unix-like systems via
+command line, but the same principles can be applied to GUI subversion clients
+and other platforms. It assumes that version 2.0 of the Search Lucene API module
+has been downloaded, extracted, and then uploaded to 'sites/all/modules'.
+
+$ cd sites/all/modules/luceneapi
+$ svn checkout https://luceneapi.svn.sourceforge.net/svnroot/luceneapi/tags/6.x-2.0 lib
+
+In the fictitious scenario where upgrading to the 2.4 release of Search Lucene
+API also requires an upgrade of the ZF components, the next example changes the
+installed version by executing a subversion switch command.
+
+$ cd sites/all/modules/luceneapi/lib
+$ svn switch https://luceneapi.svn.sourceforge.net/svnroot/luceneapi/tags/6.x-2.4 .

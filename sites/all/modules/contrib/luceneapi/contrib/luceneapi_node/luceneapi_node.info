@@ -1,0 +1,13 @@
+name = Search Lucene Node Index
+description = Exposes node data as indexable content to Search Lucene API backends.
+dependencies[] = luceneapi
+package = Search
+core = 7.x
+files[] = plugins/luceneapi/indexer.inc
+
+; Information added by drupal.org packaging script on 2011-03-26
+version = "7.x-3.0-unstable3"
+core = "7.x"
+project = "luceneapi"
+datestamp = "1301152868"
+

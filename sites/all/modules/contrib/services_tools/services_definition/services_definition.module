@@ -1,0 +1,217 @@
+<?php
+/**
+ * Implementation of hook_services_resources().
+ */
+function services_definition_services_resources() {
+  $resources['definition'] = array();
+
+  $resources['definition']['index'] = array(
+    'help' => 'Retrieves the definition of the website.',
+    'file' => array(
+      'type' => 'inc',
+      'module' => 'services_definition',
+      'name' => 'services_definition.resource',
+    ),
+    'callback' => 'services_definition_index',
+    'access callback' => 'user_access',
+    'access arguments append' => FALSE,
+    'access arguments' => array('retrieve definition'),
+    'args' => array(
+    ),
+  );
+  return $resources;
+}
+
+
+/**
+ * Implements hook_perm().
+ */
+function services_definition_permission() {
+  return array(
+    'retrieve definition' => array(
+      'title' => t('Retreive Services definition'),
+      'description' => t('Retrieve Services definition for current endpoint.'),
+    ),
+  );
+}
+
+function services_definition_ctools_plugin_pre_alter(&$plugin, &$info) {
+  // Override a function defined by the plugin.
+  if ($info['type'] == 'export_ui' && (!empty($plugin['schema']) && $plugin['schema'] == 'services_endpoint')) {
+    $plugin['allowed operations']['definition'] = array('title' => 'Definitions');
+    $plugin['menu']['items']['definition'] = array(
+      'path' => 'list/%ctools_export_ui/definition',
+      'title' => 'Definitions',
+      'page callback' => 'services_definition_endpoint',
+      'page arguments' => array(4),
+      'access arguments' => array('administer services'),
+      'type' => MENU_LOCAL_TASK, 
+    );
+    $plugin['menu']['items']['define'] = array(
+      'path' => 'list/%ctools_export_ui/definition/%/%',
+      'title' => 'Define',
+      'page callback' => 'services_definition_define',
+      'page arguments' => array(4, 6, 7),
+      'access arguments' => array('administer services'), 
+      'type' => MENU_CALLBACK,
+    );
+  }
+}
+
+function services_definition_endpoint($endpoint) {
+  if(!count($endpoint->resources)) {
+    drupal_set_message('You have no resources enabled', 'error');
+    return '';
+  } else {
+    drupal_set_message('This is only a list of ENABLED resources and methods giving you a real API Documentation.');
+  }
+
+  //We only want enabled resource methods so we have to loop through and compare to our endpoint
+  module_load_include('resource_build.inc', 'services');
+  // Call _services_build_resources() directly instead of
+  // services_get_resources to bypass caching.
+  $resources = _services_build_resources();
+  $indexes = array('actions', 'relationships', 'targeted actions');
+  foreach($endpoint->resources as $key=>$resource) {
+    $row = array();
+    $opcell = array();
+    foreach($resource as $index => $methods) {
+      if($index == 'operations') {
+        foreach($methods as $method => $enabled) {
+          $resources[$key][$method]['name'] = $method;
+          $resources[$key][$method]['type'] = $index;
+          $opcell[] = $resources[$key][$method]; 
+        } 
+      } elseif(in_array($index, $indexes)) {
+        foreach($methods as $method => $enabled) {
+          $resources[$key][$index][$method]['name'] = $method;
+          $resources[$key][$index][$method]['type'] = $index;
+          $opcell[] = $resources[$key][$index][$method]; 
+        }         
+      }
+    }
+    $tables[$key] = $opcell;
+  }
+  $output = '';
+  $output .= '<h2>API Definition</h2>';
+  $endpoint_path = url('', array('absolute' => TRUE)) . $endpoint->path;
+  $method_map = array(
+    'retrieve'         => 'GET',
+    'update'           => 'PUT',
+    'delete'           => 'DELETE',
+    'index'            => 'GET',
+    'create'           => 'POST',
+    'actions'          => 'POST',
+    'targeted actions' => 'POST',
+    'relationships'    => 'GET',
+  );
+  $cruds = array('create', 'update', 'delete', 'retrieve', 'index');
+  foreach($tables as $title => $methods) {
+    $rows = array();
+    $header = array('controller', 'url', 'method', 'args');
+    foreach($methods as $method) {
+      $name = $method['name'];
+      $url = $endpoint_path . '/' . $title;
+      $args = array();
+      //Get our arguments
+      if(isset($method['args'])) {
+        foreach($method['args'] as $argument) {
+          $argname = '';
+          $argdescription = 'No description available.';
+          $argsource = '';
+          if(isset($argument['name'])) {
+            $argname = $argument['name'];
+          }
+          if(isset($argument['description'])) {
+            $argdescription = $argument['description'];
+          }
+          if(isset($argument['type'])) {
+            $argtype = $argument['type'];
+          }
+          if(isset($argument['source'])) {
+            $argsource = $argument['source'];
+            if(is_array($argsource) && array_key_exists('path', $argsource)) {
+              $argsource = 'path';
+            } elseif(is_array($argsource) && array_key_exists('param', $argsource)) {
+              $argsource = 'param';
+            } else {
+              $argsource = 'post body';
+            }
+          }
+          if(!$argument['optional']) {
+            $args['required'][] = array('title' => $argname, 'description' => $argdescription, 'source' => $argsource, 'type' => $argtype);
+          } else {
+            $args['optional'][] = array('title' => $argname, 'description' => $argdescription, 'source' => $argsource, 'type' => $argtype);
+          }
+        }
+        $arg_output = '';
+        foreach($args as $requirment => $arguments) {
+            $argrows = array();
+            $argheaders = array('title', 'description');
+            $arg_fieldset = '';
+            foreach($arguments as $argument) {
+              $arg_fieldset .= '<b>title</b>&nbsp;' . $argument['title'] . '<br />';
+              $arg_fieldset .= '<b>description</b>&nbsp;' . $argument['description'] . '<br />';
+              $arg_fieldset .= '<b>type</b>&nbsp;' . $argument['type'] . '<br />';
+              $arg_fieldset .= '<b>source</b>&nbsp;' . $argument['source'] . '<hr />';
+
+              $fieldset = array(
+               '#theme' => 'fieldset',
+               '#title' => $requirment,
+               '#children' => $arg_fieldset,
+              );
+            }
+          $arg_output .= theme('fieldset', $fieldset);
+        }  
+      } else {
+        $arg_output = 'None';
+      }
+      
+      //Get our method request type, IE POST, or GET, etc
+      if(in_array($method['type'], $indexes)) {
+        $request_type = $method_map[$method['type']];
+      } else {
+        $request_type = $method_map[$name];
+      }
+
+      //get URL
+      //if we are a crud action
+      if (in_array($name, $cruds)) {
+        if (isset($method['args'])) {
+          $params = '';
+          foreach($method['args'] as $argument) {
+            if (isset($argument['source']['path']) && $argument['source']['path'] == '0' ) {
+              $url = $url . '/' . strtoupper($argument['name']);
+            } elseif (is_array($argument['source']) && array_key_exists('param', $argument['source'])) {
+              $params .= '?' . $argument['source']['param'] . '=' .strtoupper($argument['source']['param']);
+            }
+          }
+          if($params != '') {
+            $url = $url . $params;
+          }
+        }
+      } elseif ($method['type'] == 'actions') {
+        $url = $url . '/' . $name;
+      } elseif ($method['type'] == 'relationships') {
+        $params = '';
+        foreach($method['args'] as $argument) {
+          if (isset($argument['source']['path']) && $argument['source']['path'] == '0' ) {
+            $url = $url . '/' . strtoupper($argument['name']);
+          } elseif (is_array($argument['source']) && array_key_exists('param', $argument['source'])) {
+            $params .= '?' . $argument['source']['param'] . '=' .strtoupper($argument['source']['param']);
+          }
+        }
+        $url = $url . $params;
+      }
+      $rows[] = array($name, $url, $request_type, $arg_output);
+    }
+    $fieldset = array(
+     '#theme' => 'fieldset',
+     '#title' => $title,
+     '#children' => theme('table', array('header' => $header, 'rows' => $rows)),
+    );
+    $output .= theme('fieldset', $fieldset);
+  }
+
+  return $output;
+}

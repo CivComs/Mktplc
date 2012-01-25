@@ -1,0 +1,184 @@
+<?php
+
+/**
+ * @file
+ * Allows for Lucene searches of nodes.
+ *
+ * @ingroup luceneapi
+ */
+
+/**
+ * Implements hook_luceneapi_indexers().
+ */
+function luceneapi_node_luceneapi_indexers() {
+  return array(
+    'node' => array(
+      'handler' => array(
+        'label' => t('Node content'),
+        'description' => t("Indexes the site's node content."),
+        'class' => 'LuceneapiNodeLuceneapiIndexer',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function luceneapi_node_ctools_plugin_api($module, $api) {
+  if ($module == 'luceneapi' && $api == 'luceneapi_defaults') {
+    return array('version' => 3);
+  }
+}
+
+/**
+ * Touches the node in the index queue.
+ *
+ * @param $nid
+ *   The nid of the node that needs reindexing.
+ */
+function luceneapi_node_touch_node($nid) {
+  $index_names = array();
+  foreach (ctools_export_crud_load_all('luceneapi_index') as $index_name => $index_settings) {
+    if ('luceneapi_node' == $index_settings->settings->indexer) {
+      $index_names[] = $index_settings->name;
+    }
+  }
+  if (!empty($index_names)) {
+    db_update('luceneapi_node_index_queue')
+      ->fields(array('changed' => REQUEST_TIME))
+      ->condition('index_name', $index_names, 'IN')
+      ->condition('nid', $nid)
+      ->execute();
+  }
+}
+
+/**
+ * Resets the index queue.
+ */
+function luceneapi_node_reset_queue() {
+  db_update('luceneapi_node_index_queue')
+    ->fields(array('changed' => REQUEST_TIME))
+    ->execute();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function luceneapi_node_form_node_configure_rebuild_confirm_alter(&$form, &$form_state) {
+  $form['#submit'][] = 'luceneapi_node_node_configure_rebuild_confirm_submit';
+}
+
+/**
+ * Processes node_configure_rebuild_confirm form submissions.
+ */
+function luceneapi_node_node_configure_rebuild_confirm_submit($form, &$form_state) {
+  drupal_set_message(t('The Search Lucene API node indexes will be rebuilt.'));
+  luceneapi_node_reset_queue();
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function luceneapi_node_node_update($node) {
+  luceneapi_node_touch_node($node->nid);
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function luceneapi_node_node_delete($node) {
+  db_delete('luceneapi_node_index_queue')
+    ->condition('nid', $node->nid)
+    ->execute();
+
+  $query = array(
+    '#type' => 'term',
+    '#text' => $node->nid,
+    '#field' => 'nid',
+  );
+
+  foreach (ctools_export_crud_load_all('luceneapi_index') as $index_name => $index_settings) {
+    $indexer_name = $index_settings->indexer;
+    if ('luceneapi_node' == $indexer_name && ($index = luceneapi_index_load($index_name))) {
+      $index->getBackend()->deleteDocumentByQuery($query);
+    }
+  }
+}
+
+/**
+ * Implements hook_comment_insert().
+ */
+function luceneapi_node_comment_insert($comment) {
+  luceneapi_node_touch_node($comment->nid);
+}
+
+/**
+ * Implements hook_comment_update().
+ */
+function luceneapi_node_comment_update($comment) {
+  luceneapi_node_touch_node($comment->nid);
+}
+
+/**
+ * Implements hook_comment_delete().
+ */
+function luceneapi_node_comment_delete($comment) {
+  luceneapi_node_touch_node($comment->nid);
+}
+
+/**
+ * Implements hook_comment_publish().
+ */
+function luceneapi_node_comment_publish($comment) {
+  luceneapi_node_touch_node($comment->nid);
+}
+
+/**
+ * Implements hook_comment_unpublish().
+ */
+function luceneapi_node_comment_unpublish($comment) {
+  luceneapi_node_touch_node($comment->nid);
+}
+
+/**
+ * Returns the base node queue query, invokes hook that allows other modules to
+ * add additional filters to the queue.
+ *
+ * @param $index
+ *   A LuceneapiIndex object.
+ * @return
+ *   A SelectQuery object containing the query.
+ */
+function luceneapi_node_get_queue_query(LuceneapiIndex $index) {
+
+  // Initializes queue query.
+  $query = db_select('node', 'n', array('target' => 'slave'))
+    ->condition(db_or()->isNull('q.nid')->condition('q.changed', '0', '<>'))
+    ->orderBy('q.changed')
+    ->orderBy('n.nid');
+
+  // Adapter expects "id" to be returned.
+  $query->addField('n', 'nid', 'id');
+
+  // Adds join to index queue table.
+  $query->leftJoin(
+    'luceneapi_node_index_queue', 'q', 'q.nid = n.nid AND q.index_name = :index_name',
+    array(':index_name' => $index->getName())
+  );
+
+  // Adds our node settings.
+  $excluded_types = array_filter($index->getSetting('excluded_types'));
+  if (!empty($excluded_types)) {
+    $query->condition('n.type', $excluded_types, 'NOT IN');
+  }
+
+  // Adds condition to only index published nodes.
+  if (!$index->getSetting('index_unpublished')) {
+    $query->condition('n.status', 1);
+  }
+
+  // Allows modules to alter query, returns query.
+  drupal_alter('luceneapi_node_queue_query', $query, $index);
+  return $query;
+}

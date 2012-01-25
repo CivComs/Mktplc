@@ -1,0 +1,52 @@
+/* ie-8 Stylesheet */
+
+.region-sidebar-second-inner {
+    display: inline;
+    float: left;
+    margin: 0 10px;
+    position: relative;
+    width: 280px;
+}
+
+#zone-content .region-sidebar-second-inner .block,
+#zone-content .region-sidebar-second-inner .block-block-9{
+	border: 1px solid #DED8D8;
+	margin-bottom: 10px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DED8D8')";
+	background-color: #ffffff !important;
+}
+
+.field-type-text-with-summary ol li {
+	list-style:decimal !important;
+	list-style-position:inside !important;
+}
+
+
+/* Using and sharing fix start => */
+.block-at-a-glance-block .cc-org-prefix-using, .block-at-a-glance-block .cc-org-prefix-sharing {
+    padding-top: 30px !important;
+    text-indent: 0;
+}
+
+#block-custom-search-blocks-2 .block-inner{
+	background-color: #ffffff !important;
+}
+
+#zone-content #block-custom-search-blocks-2 .region-sidebar-second h2.block-title {
+    background: none repeat scroll 0 0 #E1C83D !important;
+}
+
+/*#zone-content .region-sidebar-second h2.block-title{
+  background-color: #E1C83D !important;
+}
+
+#block-views-at-a-glance-application-block{
+	background-color: #ffffff !important;
+}*/
+
+#block-block-26,
+#block-views-at-a-glance-application-block{
+	background-color: #ffffff !important;
+}
+
+/* 

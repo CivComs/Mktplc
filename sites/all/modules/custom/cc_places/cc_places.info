@@ -1,0 +1,13 @@
+name = CC Places
+description = Provides Places functionality
+core = 7.x
+package = Warecorp
+project = 'Civic Commons'
+
+dependencies[] = addressfield
+dependencies[] = geofield
+dependencies[] = openlayers
+
+files[] = cc_places.module
+
+version = "7.x-0.1"

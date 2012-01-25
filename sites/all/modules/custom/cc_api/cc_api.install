@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * This file holds the functions for the installing
+ * and enabling of the CC API module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function cc_api_uninstall() {
+  // Get module variables
+  $variables = db_query("SELECT v.name FROM {variable} AS v WHERE v.name LIKE ':pattern'",
+    array(':pattern' => db_like('cc_api_') . '%'))->fetchAll();
+  // Remove variables
+  foreach ($variables as $v) {
+    variable_del($v);
+  }
+}

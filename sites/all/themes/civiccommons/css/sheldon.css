@@ -1,0 +1,44 @@
+/* Sheldon Stylesheet */
+#block-cc-flag-block-flag-block li.flag-watching_app:after {
+  content: ' / ';
+  margin-right: 8px;
+}
+
+.view-taxonomy-term-listing .views-field-title a {
+	color: #2479CC;
+	font-size: 16px;
+	font-weight: 700;
+	line-height:18px;
+	text-decoration: none;
+}
+
+.view-taxonomy-term-listing .views-field-field-organization-logo {
+  float: left;
+  margin-right: 10px;
+}
+
+body.front .cc-org-prefix-no-using{
+    background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/deployment_icon-25.png") no-repeat scroll 0 0 transparent;
+    padding-top: 30px;
+    width: 33px;
+    color: #ffffff !important;
+}
+
+body.front .cc-org-prefix-no-sharing{
+    background: url("http://dev.cc.warecorp.com/sites/all/themes/civiccommons/images/sharing_icon-25.png") no-repeat scroll 0 0 transparent;
+    padding-top: 30px;
+    width: 33px;
+    color: #ffffff !important;
+}
+
+body.front .cc-org-prefix-no-using, body.front .cc-org-prefix-no-sharing {
+    height: 30px !important;
+    padding: 0 !important;
+    text-indent: -9999px;
+    text-transform: lowercase;
+    width: 57px !important;
+}
+
+#zone-branding ul {
+  list-style: none;
+}

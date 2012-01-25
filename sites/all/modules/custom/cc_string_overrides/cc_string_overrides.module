@@ -1,0 +1,45 @@
+<?php
+/**
+ * @file
+ * Main module file for CC String Override module.
+ *
+ * This module provides very basic string overrides
+ * for the application.
+ *
+ * This could be done with settings.php, but that
+ * file should not be versioned.
+ *
+ * For more robust solutions, see:
+ * http://drupal.org/project/stringoverrides
+ *
+ * Also, this should be changed if the site gets
+ * translated.
+ */
+ 
+/**
+ * Overrides
+ */
+function cc_string_overrides() {
+  $overrides = array(
+    'Show row weights' => 'Manually re-order content',
+    'Hide row weights' => 'Re-order content by dragging',
+  );
+  
+  return $overrides;
+}
+
+
+/**
+ * Implements hook_js_alter().
+ */
+function cc_string_overrides_js_alter(&$javascript) {
+  $overrides = cc_string_overrides();
+  
+  // Add stringoverrides.js to the page, as well as the overrides into the
+  // JavaScript settings.
+  $file = drupal_get_path('module', 'cc_string_overrides') . '/cc_string_overrides.js';
+  $javascript[$file] = drupal_js_defaults($file);
+  $javascript[$file]['weight'] = -9999999;
+  $javascript[$file]['group'] = -100;
+  $javascript['settings']['data'][] = array('cc_string_overrides' => $overrides);
+}

@@ -1,0 +1,40 @@
+# French translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  uuid.module,v 1.1 2008/10/21 16:37:06 recidive
+#  uuid.install,v 1.1 2008/10/21 16:37:06 recidive
+#  uuid.info,v 1.1 2008/10/21 16:37:06 recidive
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: French Translation for drupal uuid module\n"
+"POT-Creation-Date: 2009-02-10 16:26+0100\n"
+"PO-Revision-Date: 2009-02-10 16:30+0100\n"
+"Last-Translator: Sylvain Moreau <sylvain.moreau@ows.fr>\n"
+"Language-Team: Sylvain Moreau, OWS <sylvain.moreau@ows.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-Language: French\n"
+
+#: uuid.module:0
+msgid "uuid"
+msgstr "uuid"
+
+#: uuid.install:44
+msgid "The primary key of the record which this UUID was generated for."
+msgstr "La clé primaire de l'enregistrement pour lequel cet UUID a été généré."
+
+#: uuid.install:51
+msgid "The Universally Unique Identifier."
+msgstr "L'Identifiant Universel Unique (Universally Unique Identifier)."
+
+#: uuid.info:0
+msgid "Universally Unique IDentifier (UUID)"
+msgstr "Universally Unique IDentifier (UUID)"
+
+#: uuid.info:0
+msgid "Generate Universally Unique IDentifier (UUID) for content."
+msgstr "Génére un Universally Unique IDentifier (UUID) pour le contenu."
+

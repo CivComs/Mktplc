@@ -1,0 +1,87 @@
+<?php
+
+/*
+  Make use of the CTools jump menu and grabs from an existing menu.
+  See: modules/ctools/includes/jump-menu.inc
+  // NOTE: Menu items must be checked as "expanded" for traversing to work.
+*/
+function jump_menu($menu, $parent, $btn = false, $maxDepth = 0, $choose = 'Select a destination') {
+    
+    ctools_include('jump-menu');
+    // Load up the menu.
+    $menu = menu_tree_all_data($menu);
+    // Trim to the needed portion, start at parent menuID.
+    foreach($menu as $m) {
+        if ($m['link']['mlid'] == $parent) { // mlid is i18n tranlsation friendly.
+            $menu = $m['below'];
+            break;
+        }
+    }
+    
+    // Initialize for building.
+    $depths = array('current' => 1, 'max' => $maxDepth);
+    $targets = array();
+    // Build the jump options from the menu 
+    _jump_menu_create_options($targets, $menu, $depths);
+
+    // Output...
+    if (count($targets) == 0) {
+        return 'Jump menu contains no items!';
+    } else {
+        
+        $options = array();
+        // Handle button option.
+        if($btn) {
+            $options['hide'] = false;
+            $options['button'] = $btn;
+        } else {
+            $options['hide'] = true;
+        }
+        // Place initial select option value.
+        $options['choose'] = t($choose);
+        
+        // Other available options...
+        //'title' => The text to display for the #title attribute.
+        //'description': The text to display for the #description attribute.
+        //'default_value': The text to display for the #default_value attribute.
+        //'image': If set, an image button will be used instead, and the image set to this.
+        //'inline': If set to TRUE (default) the display will be forced inline.
+        
+        return drupal_render( drupal_get_form('ctools_jump_menu', $targets, $options) );
+    }
+
+}
+
+// Recursive menu to select option building.
+function _jump_menu_create_options(&$t, &$m, &$d) {
+    foreach ($m as $item) { // set the option
+        
+        if($item['link']['hidden'] == 0) { // Kill non-viewable menu items.
+
+            // Add depth indicators to titles.
+            if($d['current'] > 1) {
+                $title = ' '. str_repeat('-', $d['current']) .' '. $item['link']['title'];
+            } else {
+                $title = $item['link']['title'];
+            }
+            
+            // Add targets
+            // Allow for special menu item dummy items for grouping
+            if (module_exists('special_menu_items') && $item['link']['page_callback'] == 'special_menu_items_dummy') {
+                // Create a dummy option using optgroups.
+                $t[ t($title) ] = array();
+            } else {
+                // Create a normal option.
+                $t[ url($item['link']['href']) ] = t($title);
+            }
+
+        }
+        
+         // Loop deeper if there is no max or we haven't reached it.
+        if ($item['below'] && ($d['max'] == 0 || $d['current'] < $d['max'])) {
+            $d['current']++; // Drop current depth.
+            _jump_menu_create_options($t, $item['below'], $d);
+        }   
+    }
+    $d['current']--; // Raise current depth back up.
+}

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the cc_api_views feature.
+ */
+
+include_once('cc_api_views.features.inc');

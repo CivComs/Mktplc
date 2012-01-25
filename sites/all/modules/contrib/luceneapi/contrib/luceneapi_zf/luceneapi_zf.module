@@ -1,0 +1,151 @@
+<?php
+
+/**
+ * @file
+ * Zend Framework adapter for Search Lucene API.
+ */
+
+/**
+ * Implements hook_luceneapi_backends().
+ */
+function luceneapi_zf_luceneapi_backends() {
+  return array(
+    'zend_framework' => array(
+      'handler' => array(
+        'label' => t('Zend Framework'),
+        'description' => t("The Zend Framework's PHP port of Lucene."),
+        'class' => 'LuceneapiZfLuceneapiBackend',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_luceneapi_highlighters().
+ */
+function luceneapi_zf_luceneapi_highlighters() {
+  return array(
+    'zend_framework' => array(
+      'handler' => array(
+        'label' => t('Zend Framework'),
+        'description' => t("Uses the Zend Framework's native highlighter."),
+        'class' => 'LuceneapiZfLuceneapiHighlighter',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_luceneapi_filters().
+ */
+function luceneapi_zf_luceneapi_filters() {
+  return array(
+    'luceneapi_zf_keys' => array(
+      'handler' => array(
+        'class' => 'LuceneapiZfLuceneapiFilterKeys',
+      ),
+    ),
+    'luceneapi_zf_term' => array(
+      'handler' => array(
+        'class' => 'LuceneapiZfLuceneapiFilterTerm',
+      ),
+    ),
+    'luceneapi_zf_wildcard' => array(
+      'handler' => array(
+        'class' => 'LuceneapiZfLuceneapiFilterWildcard',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_flush_caches().
+ */
+function luceneapi_zf_flush_caches() {
+  variable_del('luceneapi_zf:library_path');
+}
+
+/**
+ * Autoload callback for Search Lucene API Library classes.
+ *
+ * This function is modeled after the Zend_Loader::loadClass() method.
+ *
+ * @param $class
+ *   A string containing the class to be loaded.
+ */
+function luceneapi_zf_autoload_callback($class) {
+  if (class_exists($class, FALSE) || interface_exists($class, FALSE)) {
+    return;
+  }
+  if (($library_path = luceneapi_zf_library_path()) && !preg_match('/[^a-z0-9\\/\\\\_.-]/i', $class)) {
+    $file = $library_path . '/' . str_replace('_', '/', $class) . '.php';
+    if (is_file($file)) {
+      include_once $file;
+    }
+  }
+}
+
+/**
+ * Returns the path to the Search Lucene API Library.
+ *
+ * @return
+ *   A string containing the library path, FALSE if path wasn't determined.
+ */
+function luceneapi_zf_library_path() {
+  $library_path = &drupal_static(__FUNCTION__);
+  if (NULL === $library_path && !($library_path = variable_get('luceneapi_zf:library_path', NULL))) {
+    if (is_dir('sites/all/libraries/luceneapi')) {
+      $library_path = 'sites/all/libraries/luceneapi';
+    }
+    elseif (is_dir(conf_path() . '/libraries/luceneapi')) {
+      $library_path = conf_path() . '/libraries/luceneapi';
+    }
+    elseif (is_dir(drupal_get_path('module', 'luceneapi') . '/luceneapi')) {
+      $library_path = drupal_get_path('module', 'luceneapi') . '/luceneapi';
+    }
+    elseif (is_dir(drupal_get_path('module', 'luceneapi') . '/lib')) {
+      $library_path = drupal_get_path('module', 'luceneapi') . '/lib';
+    }
+    else {
+      $library_path = FALSE;
+    }
+    if ($library_path) {
+      variable_set('luceneapi_zf:library_path', $library_path);
+    }
+  }
+  return $library_path;
+}
+
+/**
+ * Initializes the Search Lucene API Library.
+ *
+ * NOTE: On failure, we want to know why the failure happened, even if the
+ * initialization happens twice.
+ */
+function luceneapi_zf_library_initialize() {
+  $initialized = &drupal_static(__FUNCTION__, FALSE);
+  if (FALSE === $initialized) {
+
+    // Makes sure the path to the Search Lucene API library was found.
+    if (!luceneapi_zf_library_path()) {
+      throw new Exception(t('Path to Search Lucene API Library could not be determined.'));
+    }
+
+    // Registers autoload implementation, checks if classes can be loaded.
+    spl_autoload_register('luceneapi_zf_autoload_callback');
+    if (!class_exists('LuceneAPI_Version')) {
+      throw new Exception(t('LuceneAPI_Version class not found.'));
+    }
+
+    // Sets global settings common to all indexes.
+    Zend_Search_Lucene_Storage_Directory_Filesystem::setDefaultFilePermissions(
+      variable_get('file_chmod_directory', 0775)
+    );
+
+    // Library initialized.
+    $initialized = TRUE;
+  }
+
+  // This should only return TRUE;
+  return $initialized;
+}

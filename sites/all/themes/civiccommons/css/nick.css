@@ -1,0 +1,141 @@
+/* Nicks CSS */
+
+/* Homepage */
+
+body.front .view-apps-browse-by .views-field-field-organization-address-2 .cc-org-apps {
+  /*margin-left: 110px;
+  width: 120px;*/
+}
+
+
+.region-content .field-name-field-application-screenshots .field-items .field-item img {
+  margin: 10px 0;
+}
+
+
+#zone-header .block-addtoany {
+text-indent: -9999px !important;
+background: none !important;
+}
+
+/* activity feed */
+
+.view-interactions .interaction {
+  text-transform: lowercase;
+  padding: 1px 3px;
+  background: #ffffcc;
+  color: black;}
+
+/*.view-interactions .interaction.Evaluated {
+  background: #ffffcc;
+  color: black;
+}*/
+
+.view-interactions .interaction.Deployed {
+  background: #D0E664;
+}
+/*
+.view-interactions .interaction.Created {
+  background: yellow;
+  color: black;
+}
+
+.view-interactions .interaction.Contributed.to {
+  background: lightblue;
+  color: #333;
+}
+
+.view-interactions .org-name,
+.view-interactions .app-name {
+  font-weight: bold;
+}
+*/
+
+/* Janrain Engage (LinkedIn)
+-----------------------------*/
+
+#user-login {
+  padding: 20px;
+}
+
+/* hide login bar links */
+#region-search-bar .rpx-links {
+  display: none;
+}
+
+/* make linkedin link big on user login */
+#user-login li.rpx-link {
+  margin-left: 0; /* overrides system style */
+  font-size: 1.3em;
+  display: block;
+  padding: 10px 0;
+}
+
+/* weird that this is there */
+#user-login li.rpx-link br {
+  display: none;
+}
+
+#user-login a.rpxnow {
+  /* linkedin icon */
+  margin-left: 20px;
+}
+
+
+/* 
+ * 
+ * Node edit forms
+ *
+*/
+
+/*
+ THIS NEEDS TO BE MOVED TO 
+ a new CHILD ADMIN THEME of SEVEN
+ so we can customize stuff in the admin forms.
+
+.field-name-field-application-civfunction .form-type-checkbox {
+  float: left;
+  width: 200px;
+  margin-bottom: 5px;
+}
+
+.node-type-application.overlay .form-wrapper {
+  clear: both;
+}
+
+*/ 
+
+
+
+/*
+ * 
+ * TO be merged with Andy's
+ *
+ */
+ 
+#breadcrumb {
+  margin-top: -18px;
+  margin-bottom: 0px;
+  width: 740px;
+}
+ 
+.edit-content-button {
+  text-align: right;
+}
+
+.edit-content-button a:link {
+  background: #eee;
+  padding: 5px 8px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  text-decoration:none;
+  color:#333;
+}
+
+.edit-content-button a:hover {
+  background: #ddd;
+  color:#444;
+  text-decoration: none;
+}
+ 

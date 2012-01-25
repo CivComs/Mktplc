@@ -1,0 +1,446 @@
+<?php
+
+/**
+ * @defgroup luceneapi Search Lucene API
+ * Provides an API and common functionality for modules that wish to use Lucene
+ * as the backend for their searches.
+ */
+
+/**
+ * @file
+ * Provides an API and common functionality for modules that wish to use Lucene
+ * as the backend for their searches.
+ *
+ * @ingroup luceneapi
+ */
+
+/**
+ * Table containing cached luceneapi search results.
+ */
+define('LUCENEAPI_CACHE_TABLE', 'cache_luceneapi');
+
+/**
+ * We encode everything as UTF-8, string recognized by, Zend, iconv, and other
+ * related libraries.
+ */
+define('LUCENEAPI_ENCODING', 'UTF-8');
+
+/**
+ * Implements hook_flush_caches().
+ */
+function luceneapi_flush_caches() {
+  return array(LUCENEAPI_CACHE_TABLE);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function luceneapi_menu() {
+  $items = array();
+
+  try {
+    // Gets search pages directly from the index.
+    // @todo Honor "enabled" settings?
+    $result = db_select('luceneapi_searcher', 's')
+      ->fields('s', array('name', 'search_path', 'page_title'))
+      ->execute();
+  }
+  catch (Exception $e) {
+    watchdog_exception('luceneapi', $e);
+    $result = array();
+  }
+
+  // Gets default search information.
+  // @todo Check if the static reset is required.
+  drupal_static_reset('search_get_info');
+  $default_info = search_get_default_module_info();
+
+  // Iterates over searchers, builds menu items.
+  foreach ($result as $record) {
+
+    // Parses search path into it's various parts, builds menu items dependent
+    // on whether %keys is in the path.
+    $path_info = luceneapi_parse_search_path($record->search_path);
+    if (FALSE !== $path_info['keys position']) {
+
+      // Tests whether we are simulating a core search tab.
+      $core_search = (0 === strpos($path_info['parent'], 'search/'));
+
+      $items[$path_info['parent']] = array(
+        'title' => $record->page_title,
+        'page callback' => 'luceneapi_search_page',
+        'page arguments' => array($record->name, ''),
+        'access arguments' => array('search content'),
+        'type' => ($core_search) ? MENU_LOCAL_TASK : MENU_SUGGESTED_ITEM,
+        'file' => 'luceneapi.pages.inc',
+      );
+
+      $items[$path_info['path']] = array(
+        'title' => $record->page_title,
+        'load arguments' => array('%map', '%index'),
+        'page callback' => 'luceneapi_search_page',
+        'page arguments' => array($record->name, $path_info['keys position']),
+        'access arguments' => array('search content'),
+        'type' => MENU_LOCAL_TASK,
+        'file' => 'luceneapi.pages.inc',
+      );
+
+      if ($core_search) {
+        $items[$path_info['path']]['tab_root'] = 'search/' . $default_info['path'] . '/%';
+        $items[$path_info['path']]['tab_parent'] = 'search/' . $default_info['path'];
+      }
+
+    }
+    else {
+
+      $items[$path_info['path']] = array(
+        'title' => $record->page_title,
+        'page callback' => 'luceneapi_search_page',
+        'page arguments' => array($record->name, ''),
+        'access arguments' => array('search content'), // @todo need more control.
+        'type' => MENU_SUGGESTED_ITEM,
+        'file' => 'luceneapi.pages.inc',
+      );
+    }
+
+  }
+
+  return $items;
+}
+
+/**
+ * Gracefully handles Exceptions.
+ *
+ * @param $e
+ *   An Exception object.
+ * @param $message
+ *   A string containing the generic message to display to users who do not
+ *   have the "administer search" permission. Pass an empty string to not
+ *   display a message.
+ */
+function luceneapi_handle_exception(Exception $e, $message = NULL) {
+  if (!user_access('administer search')) {
+    if (NULL === $message) {
+      $message = t('Search is temporarily unavailable. Please try again later.');
+    }
+  }
+  else {
+    $message = $e->getMessage();
+  }
+  if ($message) {
+    drupal_set_message(filter_xss_admin($message), 'error');
+  }
+  watchdog_exception('luceneapi', $e);
+}
+
+/**
+ * Parses search path, populates with variables.
+ *
+ * @param $path
+ *   A string containing the raw path set in the database.
+ *
+ * @return
+ *   An array containing the search path information.
+ */
+function luceneapi_parse_search_path($path) {
+  $return = array(
+    'raw path' => $path,
+    'path' => '',
+    'parent' => '',
+    'keys position' => FALSE,
+    'variables' => array(),
+    'values' => array(),
+  );
+
+  // Pulls out query string and parses into vars.
+  if ($qstring = parse_url($path, PHP_URL_QUERY)) {
+    parse_str($qstring, $vars);
+  }
+  else {
+    $vars = array();
+  }
+
+  // Pulls out additional information based on the query string.
+  if (FALSE !== ($pos = strpos($path, '/%keys'))) {
+    $return['parent'] = substr($path, 0, $pos);
+    $return['path'] = $return['parent'] . '/%menu_tail';
+    $return['keys position'] = count(explode('/', $return['path'])) - 1;
+  }
+  else {
+    $return['path'] = rtrim(parse_url($path, PHP_URL_PATH), '/');
+    $return['variables']['keys'] = array_search('%keys', $vars);
+    if (isset($_GET[$return['variables']['keys']])) {
+      $return['values']['keys'] = (string) $_GET[$return['variables']['keys']];
+    }
+    else {
+      $return['values']['keys'] = FALSE;
+    }
+  }
+
+  // Builds keys, allows modules to add additional keys.
+  // @todo Create and invoke hook.
+  $keys = array('sort', 'limit');
+  foreach ($keys as $key) {
+    $var = array_search('%' . $key, $vars);
+    $var = (FALSE === $var) ? $key : $var;
+    $return['variables'][$key] = $var;
+    $return['values'][$key] = (isset($_GET[$var])) ? $_GET[$var] : FALSE;
+  }
+
+  return $return;
+}
+
+/**
+ * Filters disabled Search Lucene API field definitions.
+ *
+ * @param $field
+ *   An array containing the entity field instance.
+ *
+ * @return
+ *   A boolean flagging whether the item should remain in the array.
+ */
+function luceneapi_filter_disabled_field(array $field) {
+  return (empty($field['disabled']));
+}
+
+/**
+ * Filters field instances that are non-sortable.
+ *
+ * @param $field
+ *   An array containing the entity field instance.
+ *
+ * @return
+ *   A boolean flagging whether the item should remain in the array.
+ */
+function luceneapi_filter_sortable_field(array $field) {
+  return !empty($field['sortable']);
+}
+
+/**
+ * Filters field instances that cannot have content bias applied.
+ *
+ * @param $field
+ *   An array containing the entity field instance.
+ *
+ * @return
+ *   A boolean flagging whether the item should remain in the array.
+ */
+function luceneapi_filter_bias_field(array $field) {
+  return (FALSE !== $field['default bias']);
+}
+
+/**
+ * Strips tags, but adds spaces before and after to maintain word boundaries.
+ * This snippet of code was forked from the core search module.
+ *
+ * @param $text
+ *   A string containing the text to be processed.
+ *
+ * @return
+ *   A string containing the processed text.
+ */
+function luceneapi_strip_tags($text) {
+  return strip_tags(str_replace(array('<', '>'), array(' <', '> '), $text));
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function luceneapi_ctools_plugin_type() {
+  return array(
+    'backends' => array(
+      'use hooks' => TRUE,
+    ),
+    'indexers' => array(
+      'use hooks' => TRUE,
+    ),
+    'highlighters' => array(
+      'use hooks' => TRUE,
+    ),
+    'normalizers' => array(
+      'use hooks' => TRUE,
+    ),
+    'filters' => array(
+      'use hooks' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function luceneapi_ctools_plugin_directory($owner, $plugin_type) {
+  if ('ctools' == $owner && 'context' == $plugin_type) {
+    return 'plugins/context';
+  }
+}
+
+/**
+ * Implements hook_luceneapi_highlighters().
+ */
+function luceneapi_luceneapi_highlighters() {
+  return array(
+    'summary' => array(
+      'handler' => array(
+        'label' => t('Summary'),
+        'description' => t('A small fragment of the text with no highlighting.'),
+        'class' => 'LuceneapiHighlighterSummary',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_luceneapi_normalizers().
+ */
+function luceneapi_luceneapi_normalizers() {
+  return array(
+    'boolean' => array(
+      'handler' => array('class' => 'LuceneapiNormalizerBoolean')
+    ),
+    'date' => array(
+      'handler' => array('class' => 'LuceneapiNormalizerDate')
+    ),
+    'decimal' => array(
+      'handler' => array('class' => 'LuceneapiNormalizerDecimal')
+    ),
+    'float' => array(
+      'handler' => array('class' => 'LuceneapiNormalizerFloat')
+    ),
+    'integer' => array(
+      'handler' => array('class' => 'LuceneapiNormalizerInteger')
+    ),
+    'string' => array(
+      'handler' => array('class' => 'LuceneapiNormalizerString')
+    ),
+  );
+}
+
+/**
+ * Returns Search Lucene API field definitions associated with an indexer.
+ *
+ * @param $indexer_id
+ *   A string containing the machine readable name of the indexer plugin.
+ *
+ * @return
+ *   An array of Search Lucene API field information.
+ */
+function luceneapi_get_field_info($indexer_id) {
+  $field_info = module_invoke_all('luceneapi_field_info', $indexer_id);
+  foreach ($field_info as $field_name => $field) {
+    $field_info[$field_name] += array(
+      'name' => $field_name,
+      'label' => $field_name,
+      'description' => '',
+      'field type' => 'keyword',
+      'data type' => 'string',
+      'data type options' => array(),
+      'configurable' => TRUE,
+      'sortable' => FALSE,
+      'default bias' => FALSE,
+      'default value' => FALSE,
+      'extract callback' => '',
+      'extract arguments' => array(),
+      'group' => t('Other'),
+    );
+  }
+  drupal_alter('luceneapi_field_info', $field_info, $indexer_id);
+  return $field_info;
+}
+
+/**
+ * Loads an instance of an indexer plugin class.
+ *
+ * @param $id
+ *   The id of the indexer plugin being loaded.
+ *
+ * @return
+ *   A LuceneapiIndexer object, FALSE on errors.
+ */
+function luceneapi_indexer_load($id) {
+  $indexers = &drupal_static(__FUNCTION__, array());
+  if (!isset($indexers[$id])) {
+    $class = luceneapi_get_plugin_class('indexers', $id);
+    $indexers[$id] = ($class) ? new $class($id) : FALSE;
+  }
+  return $indexers[$id];
+}
+
+/**
+ * Loads an index object, stores in drupal_static() to allow only one instance
+ * of an index class per index configuration.
+ *
+ * @param $index_name
+ *   A string containing the index name.
+ *
+ * @return
+ *   A LuceneapiIndex object, FALSE on errors.
+ */
+function luceneapi_index_load($index_name) {
+  $indexes = &drupal_static(__FUNCTION__, array());
+  if (!isset($indexes[$index_name])) {
+    try {
+      $indexes[$index_name] = new LuceneapiIndex($index_name);
+    }
+    catch (Exception $e) {
+      $indexes[$index_name] = FALSE;
+      watchdog_exception('luceneapi', $e);
+    }
+  }
+  return $indexes[$index_name];
+}
+
+/**
+ * Loads a searcher object.
+ *
+ * @param $searcher_name
+ *   A string containing the name of the searcher.
+ *
+ * @return
+ *   A LuceneapiSearcher object, FALSE on errors.
+ */
+function luceneapi_searcher_load($searcher_name) {
+  try {
+    return new LuceneapiSearcher($searcher_name);
+  }
+  catch (Exception $e) {
+    watchdog_exception('luceneapi', $e);
+    return FALSE;
+  }
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Processes one index at a time.
+ *
+ * @todo Weighting of indexes so the processing order can be configured.
+ * @todo Error handling.
+ */
+function luceneapi_cron() {
+  ctools_include('export');
+  foreach (ctools_export_crud_load_all('luceneapi_index') as $index_name => $index_settings) {
+    if (($index = luceneapi_index_load($index_name)) && $index->getSetting('index_on_cron')) {
+      $index->indexItems();
+    }
+  }
+}
+
+/**
+ * Gets a plugin class.
+ *
+ * @param $type
+ *   The type of plugin.
+ * @param $id
+ *   The id of the specific plugin to load.
+ * @param $class_name
+ *   The identifier of the class, defaults to 'handler'.
+ *
+ * @return
+ *   A string containing the class name, NULL if not found.
+ *
+ * @see ctools_plugin_load_class()
+ */
+function luceneapi_get_plugin_class($type, $id, $class_name = 'handler') {
+  return ctools_plugin_load_class('luceneapi', $type, $id, $class_name);
+}

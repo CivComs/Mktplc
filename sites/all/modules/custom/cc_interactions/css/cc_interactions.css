@@ -1,0 +1,31 @@
+/**
+ * @file
+ * CSS for interaction usability improvements.
+ */
+
+.dialog-links {
+  border: 1px solid #AAAAAA;
+  overflow: hidden;
+  position: absolute;
+  z-index: 100;
+  background-color: #EEEEEE;
+  width: 90%;
+  margin-top: 20px;
+}
+
+input.form-autocomplete.interaction-node-reference-found {
+  border: 2px solid green;
+}
+
+.dialog-input-value {
+  display: inline;
+  margin: 5px 10px;
+}
+
+.dialog-input-value .input-value {
+  font-weight: bold;
+}
+
+.dialog-links ul.references-dialog-links {
+  width: 300px;
+}

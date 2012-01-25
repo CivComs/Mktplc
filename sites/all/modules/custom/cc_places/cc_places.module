@@ -1,0 +1,112 @@
+<?php
+
+function cc_places_views_pre_render(&$view) {
+	if($view->name == 'cc_organizations' && $view->current_display == 'block') {
+	$v = views_get_view('cc_organizations');
+	$v->set_display('openlayers_1');
+	$v->execute();
+	$c = count($v->result);
+	if(isset($view->build_info['title'])) {
+		$view->build_info['title'] .=
+			!empty($c)
+			? ' (' . $c . ')'
+			: '';
+	}
+	}
+	
+}
+
+function cc_places_menu(){
+	$items['cc/places/%/%'] = array(
+		'title' => 'Single place',
+		'page callback' => '_cc_places_place_page',
+		'page arguments' => array(1, 2),
+		'access arguments' => 'access content'
+	);
+	return $items;
+}
+
+function _cc_places_place_page($place_type = 'city', $place = 'test'){
+	
+	$geometry = geocode('google',  $place, 'point');
+	$geo_array = geofield_get_values_from_geometry($geometry);
+	$place_wkt = $geo_array['wkt'];
+	$map_preset = openlayers_preset_load('cc_places_map');
+	$output = openlayers_render_map($map_preset->data, $map_preset->name);
+	return $output;
+}
+
+function _cc_places_wkt(
+	$city, $country_code, $region_code, $wkt_type = 'point'
+){
+	if(empty($country_code) || empty($region_code) || empty($city)) {
+		return FALSE;
+	}
+	$q = db_select('cities')
+		->fields('cities', array('latitude', 'longitude'));
+	foreach(array(
+		'accent' => $city,
+		'country' => $country_code,
+		'region' => $region_code
+	) as $col => $val) {
+		if(!empty($val)) {
+			$q->condition('cities.' . $col, $val, '=');
+		}
+	}
+	$r = $q->execute()->fetchAll();
+	if(count($r) > 1) {
+		return FALSE;
+	}
+	$la = isset($r[0]->latitude) ? $r[0]->latitude : 0;
+	$lo = isset($r[0]->longitude) ? $r[0]->longitude : 0;
+	if(empty($la) || empty($lo)) {
+		return FALSE;
+	}else{
+		return 'POINT (' . $lo . ' ' . $la . ')';
+	}
+}
+
+// Function to validate place received from URL against existing places in the system.
+function _cc_places_validate_place($place, $place_type = 'locality', $node_type = 'organization', $field_name = 'field_organization_address'){
+	$query = new EntityFieldQuery();
+	$entities = $query->entityCondition('entity_type', 'node')
+						->entityCondition('bundle', $node_type)
+						->fieldCondition($field_name, $place_type, $place)
+						->propertyCondition('status', 1)
+						->execute();
+	
+	if($entities){
+		return TRUE;
+	}
+	
+	return FALSE;
+}
+
+function _cc_places_address_by_nid($nid, $city = TRUE, $state = TRUE, $country = TRUE){
+	//TODO: add addressfield module check
+
+	$result = db_select('field_data_field_organization_address', 'addr')
+		->fields('addr')
+		->condition('entity_id', $nid, '=')
+		->execute()
+		->fetchAssoc();
+	
+	if(empty($result)){
+		return FALSE;
+	}
+	$address['city'] = $city && !empty($result['field_organization_address_locality']) ? $result['field_organization_address_locality'] : NULL;
+	$address['state'] = $state && !empty($result['field_organization_address_administrative_area']) ? $result['field_organization_address_administrative_area'] : NULL;
+	$address['country'] = $country && !empty($result['field_organization_address_country']) ? $result['field_organization_address_country'] : NULL;
+	$region = 
+			$address['state']
+			&& $address['country'] != 'US'
+			&& $address['country'] != 'CA'
+		? _cc_awe_region($address['state'], $address['country'])
+		: $address['state'];
+	$address['full'] = '';
+	$address['full'] .= $address['city'] ? $address['city'] : '';
+	$address['full'] .= $region ? ', '. $region : '';
+	$address['full'] .= $address['country'] ? ', '. $address['country'] : '';
+	
+	return $address;
+}

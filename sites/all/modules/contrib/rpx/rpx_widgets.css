@@ -1,0 +1,279 @@
+.rpx-icon-small {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 1px;
+  float: left;
+  clear: none !important;
+  background-image: url(images/providers_icons16.png);
+}
+
+.rpx-icon-medium {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 1px;
+  float: left;
+  clear: none !important;
+  background-image: url(images/providers_icons32.png);
+}
+
+.rpx-icon-inline {
+  vertical-align: middle;
+  margin: 0px;
+  display: inline-block;
+  float: none;
+}
+
+.rpx-provider-title {
+  margin-left: 5px;
+}
+
+/* We don't want bullets in the admin/config/people/rpx provider list */
+#rpx-admin-settings * .item-list ul li {
+  list-style-type: none;
+}
+
+.rpx-facebook-small {
+  background-position: 0px 0px;
+}
+
+.rpx-google-small {
+  background-position: 0px -16px;
+}
+
+.rpx-linkedin-small {
+  background-position: 0px -32px;
+}
+
+.rpx-myspace-small {
+  background-position: 0px -48px;
+}
+
+.rpx-twitter-small {
+  background-position: 0px -64px;
+}
+
+.rpx-live_id-small {
+  background-position: 0px -80px;
+}
+
+.rpx-yahoo-small {
+  background-position: 0px -96px;
+}
+
+.rpx-aol-small {
+  background-position: 0px -112px;
+}
+
+.rpx-blogger-small {
+  background-position: 0px -128px;
+}
+
+.rpx-flickr-small {
+  background-position: 0px -144px;
+}
+
+.rpx-hyves-small {
+  background-position: 0px -160px;
+}
+
+.rpx-livejournal-small {
+  background-position: 0px -176px;
+}
+
+.rpx-myopenid-small {
+  background-position: 0px -192px;
+}
+
+.rpx-netlog-small {
+  background-position: 0px -208px;
+}
+
+.rpx-openid-small {
+  background-position: 0px -224px;
+}
+
+.rpx-verisign-small {
+  background-position: 0px -240px;
+}
+
+.rpx-wordpress-small {
+  background-position: 0px -256px;
+}
+
+.rpx-paypal-small {
+  background-position:0px -272px;
+}
+
+.rpx-orkut-small {
+  background-position:0px -288px;
+}
+
+.rpx-vzn-small {
+  background-position:0px -304px;
+}
+
+.rpx-salesforce-small {
+  background-position:0px -320px;
+}
+
+.rpx-foursquare-small {
+  background-position:0px -336px;
+}
+
+.rpx-other-small {
+  background-position:0px -352px;
+}
+
+.rpx-facebook-medium {
+  background-position: 0px 0px;
+}
+
+.rpx-google-medium {
+  background-position: 0px -30px;
+}
+
+.rpx-linkedin-medium {
+  background-position: 0px -60px;
+}
+
+.rpx-myspace-medium {
+  background-position: 0px -90px;
+}
+
+.rpx-twitter-medium {
+  background-position: 0px -120px;
+}
+
+.rpx-live_id-medium {
+  background-position: 0px -150px;
+}
+
+.rpx-yahoo-medium {
+  background-position: 0px -180px;
+}
+
+.rpx-aol-medium {
+  background-position: 0px -210px;
+}
+
+.rpx-blogger-medium {
+  background-position: 0px -240px;
+}
+
+.rpx-flickr-medium {
+  background-position: 0px -270px;
+}
+
+.rpx-hyves-medium {
+  background-position: 0px -300px;
+}
+
+.rpx-livejournal-medium {
+  background-position: 0px -330px;
+}
+
+.rpx-myopenid-medium {
+  background-position: 0px -360px;
+}
+
+.rpx-netlog-medium {
+  background-position: 0px -390px;
+}
+
+.rpx-openid-medium {
+  background-position: 0px -420px;
+}
+
+.rpx-verisign-medium {
+  background-position: 0px -450px;
+}
+
+.rpx-wordpress-medium {
+  background-position: 0px -480px;
+}
+
+.rpx-paypal-medium {
+  background-position:0px -510px;
+}
+
+.rpx-orkut-medium {
+  background-position:0px -540px;
+}
+
+.rpx-vzn-medium {
+  background-position:0px -570px;
+}
+
+.rpx-salesforce-medium {
+  background-position:0px -600px;
+}
+
+.rpx-foursquare-medium {
+  background-position:0px -630px;
+}
+
+.rpx-other-medium {
+  background-position:0px -660px;
+}
+
+#user-login-form .rpx-links,
+#user-login .rpx-links {
+  padding-left: 0;
+  padding-bottom: 15px;
+  overflow: auto;
+  width: 100%
+}
+
+#user-login-form .rpx-links li,
+#user-login .rpx-links li {
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+}
+
+.rpx-button-social {
+  display: inline;
+  font-size: 14px;
+  font-family: sans-serif;
+  color: #FFF;
+  background-color: #074764;
+  background-repeat: no-repeat;
+  background-position: 2px center;
+  padding: 4px 4px 2px 6px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  position: relative;
+}
+
+.rpx-button-social:hover {
+  cursor: pointer;
+}
+
+.rpx-button-social span {
+  margin-left: -999em;
+  position: absolute;
+}
+
+.rpx-button-social:hover span {
+  border-radius: 5px 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  font-family: sans-serif;
+  position: absolute;
+  left: 12px;
+  top: -52px;
+  z-index: 99;
+  width: 76px;
+  margin-left: 0px;
+  border: 1px solid #666;
+}
+
+.rpx-button-social-sharetip {
+  padding: 7px;
+  background: #F0F0F0;
+  color: #666;
+  text-align: left;
+}

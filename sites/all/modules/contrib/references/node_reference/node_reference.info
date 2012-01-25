@@ -1,0 +1,15 @@
+name = Node Reference
+description = Defines a field type for referencing one node from another.
+package = Fields
+core = 7.x
+dependencies[] = field
+dependencies[] = references
+dependencies[] = options
+files[] = node_reference.test
+
+; Information added by drupal.org packaging script on 2011-10-10
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "references"
+datestamp = "1318207390"
+

@@ -1,0 +1,226 @@
+<?php
+
+/**
+ * @file
+ * This module enables Google Fonts on your website.
+ *
+ * This module enables you to load fonts from the Google Fonts API
+ * within your website. After selecting which fonts you want to use 
+ * they will become available as working font-families in your CSS.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function google_fonts_menu() {
+  $items = array();
+
+  $items['admin/config/system/google_fonts'] = array(
+    'title' => 'Google Fonts',
+    'description' => 'Select the Google Fonts to use.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('google_fonts_admin_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'google_fonts.admin.inc',
+  );
+  
+  $items['admin/config/system/google_fonts/update'] = array(
+    'title' => 'Update Google Fonts list',
+    'page callback' => '_google_fonts_update_font_list',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_init().
+ */
+function google_fonts_init() {
+
+  // Check if Google Fonts array has been converted yet
+  $google_fonts_version = db_query("SELECT schema_version FROM {system} WHERE name = :name", array(':name' => 'google_fonts'))->fetchField();
+  if ($google_fonts_version && $google_fonts_version < 7100 && user_access('administer software updates')) {
+    drupal_set_message(t('You need to run the <a href="@link">update script</a> to perform required database updates.', array('@link' => url('update.php'))), 'error');
+    return;
+  }
+  
+  // We don't need to load the fonts twice as the admin interface
+  // loads ALL fonts by default already
+  if ($_GET['q'] == 'admin/config/system/google_fonts') {
+    return;
+  }
+  
+  $fonts_to_load = array();
+  $enabled_fonts = variable_get('google_fonts_enabled_fonts', array());
+  _google_fonts_add_custom_css();
+  
+  foreach ($enabled_fonts as $font) { 
+    $variants = isset($font['variants']) ? $font['variants'] : NULL;
+    $subsets = isset($font['subsets']) ? $font['subsets'] : NULL;
+    $fonts_to_load[] = _google_fonts_family_pathname($font['family'], $variants, $subsets);
+  }
+  if (!empty($fonts_to_load)) {
+    _google_fonts_load_css($fonts_to_load, 1);
+  }
+}
+
+function _google_fonts_add_custom_css() {
+  // Now add it to the list of CSS files to be loaded
+  drupal_add_css(
+    _google_fonts_cache(variable_get("google_fonts_css_contents", '')), 
+    array('type' => 'file', 'every_page' => TRUE, 'group' => CSS_THEME)
+  );
+}
+
+/**
+ * Add the CSS include to the HEAD of the page
+ */
+function _google_fonts_load_css($fonts_to_load, $chunksize = 15) {
+  $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
+  
+  $chunks = array_chunk($fonts_to_load, $chunksize);
+  foreach ($chunks as $chunk) {
+    drupal_add_css($protocol . '://fonts.googleapis.com/css?family=' . implode('|', $chunk), array('type' => 'external', 'weight' => CSS_SYSTEM));
+  }
+}
+
+/**
+ * Provides all needed details about Google fonts.
+ * Thanks at @sreynen to provide this array in his @font-your-face module
+ */
+function _google_fonts_available_fonts($reset = FALSE) {
+  $fontsbuffer = variable_get('google_fonts_webfonts', array());
+  if (empty($fontsbuffer) || $reset) {
+    // Return the JSON object with all available fonts
+    // For now, it uses my (BarisW) API key
+    
+    // This key is limited to 10.000 requests per day, which should
+    // be sufficient as it is only used when selecting fonts in the
+    // admin interface. After that, it's cached in Drupal.
+    $result = drupal_http_request('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBgeqKlFdYj3Y7VwmrEXnXzpnx5TfKXG4o');
+    if ($result->code != 200) {
+      drupal_set_message(t('The list of Google Fonts could not be fetched. Verify that your server can connect the Google Servers (https://www.googleapis.com). Error: %error', array('%error' => $result->error)), 'error');
+    }
+    elseif (isset($result->data)) {
+      $fontsbuffer = json_decode($result->data);
+      variable_set('google_fonts_webfonts', $fontsbuffer->items);
+    }
+  }
+  
+  return $fontsbuffer;
+}
+
+/**
+ * Trigger to reset the locally stored variable and fetch a new font list
+ */
+function _google_fonts_update_font_list() {
+  $fonts = _google_fonts_available_fonts(TRUE);
+  if (!empty($fonts)) {
+    drupal_set_message(t('A new list of fonts have been fetched.'));
+  }
+  drupal_goto('admin/config/system/google_fonts');
+}
+
+/**
+ * Format the font name as saved in the database (underscores instead of spaces)
+ */
+function _google_fonts_system_fontname($string) {
+  return str_replace(' ', '_', $string);
+}
+
+function _google_fonts_family_pathname($family, $variants = NULL, $subsets = NULL) {
+  $string = str_replace(' ', '+', $family);
+  
+  if ($variants) {
+    if (is_array($variants) && sizeof($variants) == 1 && isset($variants['regular'])) {
+      unset($variants['regular']);
+    }
+    if ($variants) {
+      $string .= ':' . implode(',', $variants);
+    }
+  }
+  
+  // for latin, we don't need to declare a subset. 
+  if (!empty($subsets)) {
+    $string .= '&subset=';
+    foreach((array) $subsets as $subset) {
+      if (!empty($subset)) {
+        $string .= $subset . ',';
+      }
+    }
+    $string = substr($string, 0, -1);
+  }
+  
+  return $string;
+}
+
+function _google_fonts_family_array_key_encode($string) {
+  return str_replace(' ', '_', $string);
+}
+
+function _google_fonts_family_array_key_decode($string) {
+  $string = str_replace('__', ':', $string);
+  $string = str_replace('_', ' ', $string);
+  return $string;
+}
+
+/**
+ * Return the path of this font
+ * If it is a child font of a larger family, scan the array to determine its path
+ */
+function _google_fonts_get_font_info($font, $full_font = '') {
+  $available_fonts = _google_fonts_available_fonts();
+    
+  if (empty($full_font)) {
+    $full_font = $font;
+  }
+  if (isset($available_fonts[$font]['fonts'])) {
+    if (isset($available_fonts[$font]['fonts'][$full_font])) {
+      return $available_fonts[$font]['fonts'][$full_font];
+    }
+    else {
+      return $available_fonts[$font];
+    }
+  }
+  else{
+    // Try the string without the last word to determine the parent
+    $font = substr($font, 0, strrpos($font, " "));
+    return _google_fonts_get_font_info($font, $full_font);
+  }
+}
+
+/**
+ * Filter function to filter out the disabled Google Fonts.
+ */
+function _google_fonts_filter_enabled_fonts($value) {
+  if ($value == '0') {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Create the CSS file and store it locally.
+ */
+function _google_fonts_cache($file_contents, $reset = FALSE) {
+  
+  $file_destination = 'public://google_fonts.css';
+
+  if ((!file_exists($file_destination) || $reset) && !empty($file_contents)) {
+    // Append a comment in the CSS code
+    $file_contents = '/* CSS code for the Google Fonts module */' . PHP_EOL . $file_contents;
+
+    // Save as a file (unmanaged) and return it
+    $file = file_unmanaged_save_data($file_contents, $file_destination, FILE_EXISTS_REPLACE);
+    
+    // Set standard file permissions for webserver-generated files.
+    drupal_chmod($file);
+    
+    return TRUE;
+  }
+  else {
+    return $file_destination;
+  }
+}
