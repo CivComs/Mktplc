@@ -52,13 +52,3 @@
   width: 290px;
 }
 
-.node-type-application .tips {
-  visibility: hidden;
-  display: none;
-}
-
-#edit-group_application_misc div{
-  visibility: hidden;
-  display: none;
-}
-
