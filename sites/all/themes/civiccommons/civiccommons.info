@@ -47,34 +47,9 @@ zones[footer] = Footer
 
 ; OPTIONAL STYLESHEETS
 
-css[jonathan.css][name] = Jonathan  custom global styles
-css[jonathan.css][description] = This file holds all the jonathans's active custom CSS of your theme.
-css[jonathan.css][options][weight] = 9
-
-css[nick.css][name] = Nick custom global styles
-css[nick.css][description] = This file holds all the nick's active custom CSS of your theme.
-css[nick.css][options][weight] = 9
-
-css[olga.css][name] = Olga custom global styles
-css[olga.css][description] = This file holds all the olga's active custom CSS of your theme.
-css[olga.css][options][weight] = 10
-
-css[tatiana.css][name] = Tanya custom global styles
-css[tatiana.css][description] = This file holds all the Tatiana's active custom CSS of your theme.
-css[tatiana.css][options][weight] = 11
-
-css[sheldon.css][name] = sheldon custom global styles
-css[sheldon.css][description] = This file holds all sheldon's active custom CSS of your theme.
-css[sheldon.css][options][weight] = 12
-
-css[global.css][name] = Your custom global styles
-css[global.css][description] = This file holds all the globally active custom CSS of your theme.
-css[global.css][options][weight] = 13
-
-css[acochran-global.css][name] = Andy's Stylesheet
-css[acochran-global.css][description] = Make it Right
-css[acochran-global.css][options][weight] = 13
-
+;css[jonathan.css][name] = Jonathan  custom global styles
+;css[jonathan.css][description] = This file holds all the jonathans's active custom CSS of your theme.
+;css[jonathan.css][options][weight] = 9
 
 ; SCRIPTS
 
