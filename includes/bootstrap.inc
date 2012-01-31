@@ -8,7 +8,7 @@
 /**
  * The current system version.
  */
-define('VERSION', '7.7');
+define('VERSION', '7.10');
 
 /**
  * Core API compatibility.
@@ -191,10 +191,14 @@ define('LANGUAGE_LTR', 0);
 define('LANGUAGE_RTL', 1);
 
 /**
- * For convenience, define a short form of the request time global.
+ * Time of the current request in seconds elapsed since the Unix Epoch.
  *
- * REQUEST_TIME is a float with microseconds since PHP 5.4.0, but float
- * timestamps confuses most of the PHP functions (including date_create()).
+ * This differs from $_SERVER['REQUEST_TIME'], which is stored as a float
+ * since PHP 5.4.0. Float timestamps confuse most PHP functions
+ * (including date_create()).
+ *
+ * @see http://php.net/manual/reserved.variables.server.php
+ * @see http://php.net/manual/function.time.php
  */
 define('REQUEST_TIME', (int) $_SERVER['REQUEST_TIME']);
 
@@ -226,10 +230,199 @@ define('REGISTRY_WRITE_LOOKUP_CACHE', 2);
 define('DRUPAL_PHP_FUNCTION_PATTERN', '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*');
 
 /**
+ * Provides a caching wrapper to be used in place of large array structures.
+ *
+ * This class should be extended by systems that need to cache large amounts
+ * of data and have it represented as an array to calling functions. These
+ * arrays can become very large, so ArrayAccess is used to allow different
+ * strategies to be used for caching internally (lazy loading, building caches
+ * over time etc.). This can dramatically reduce the amount of data that needs
+ * to be loaded from cache backends on each request, and memory usage from
+ * static caches of that same data.
+ *
+ * Note that array_* functions do not work with ArrayAccess. Systems using
+ * DrupalCacheArray should use this only internally. If providing API functions
+ * that return the full array, this can be cached separately or returned
+ * directly. However since DrupalCacheArray holds partial content by design, it
+ * should be a normal PHP array or otherwise contain the full structure.
+ *
+ * Note also that due to limitations in PHP prior to 5.3.4, it is impossible to
+ * write directly to the contents of nested arrays contained in this object.
+ * Only writes to the top-level array elements are possible. So if you
+ * previously had set $object['foo'] = array(1, 2, 'bar' => 'baz'), but later
+ * want to change the value of 'bar' from 'baz' to 'foobar', you cannot do so
+ * a targeted write like $object['foo']['bar'] = 'foobar'. Instead, you must
+ * overwrite the entire top-level 'foo' array with the entire set of new
+ * values: $object['foo'] = array(1, 2, 'bar' => 'foobar'). Due to this same
+ * limitation, attempts to create references to any contained data, nested or
+ * otherwise, will fail silently. So $var = &$object['foo'] will not throw an
+ * error, and $var will be populated with the contents of $object['foo'], but
+ * that data will be passed by value, not reference. For more information on
+ * the PHP limitation, see the note in the official PHP documentation at·
+ * http://php.net/manual/en/arrayaccess.offsetget.php on
+ * ArrayAccess::offsetGet().
+ *
+ * By default, the class accounts for caches where calling functions might
+ * request keys in the array that won't exist even after a cache rebuild. This
+ * prevents situations where a cache rebuild would be triggered over and over
+ * due to a 'missing' item. These cases are stored internally as a value of
+ * NULL. This means that the offsetGet() and offsetExists() methods
+ * must be overridden if caching an array where the top level values can
+ * legitimately be NULL, and where $object->offsetExists() needs to correctly
+ * return (equivalent to array_key_exists() vs. isset()). This should not
+ * be necessary in the majority of cases.
+ *
+ * Classes extending this class must override at least the
+ * resolveCacheMiss() method to have a working implementation.
+ *
+ * offsetSet() is not overridden by this class by default. In practice this
+ * means that assigning an offset via arrayAccess will only apply while the
+ * object is in scope and will not be written back to the persistent cache.
+ * This follows a similar pattern to static vs. persistent caching in
+ * procedural code. Extending classes may wish to alter this behaviour, for
+ * example by overriding offsetSet() and adding an automatic call to persist().
+ *
+ * @see SchemaCache
+ */
+abstract class DrupalCacheArray implements ArrayAccess {
+
+  /**
+   * A cid to pass to cache_set() and cache_get().
+   */
+  private $cid;
+
+  /**
+   * A bin to pass to cache_set() and cache_get().
+   */
+  private $bin;
+
+  /**
+   * An array of keys to add to the cache at the end of the request.
+   */
+  protected $keysToPersist = array();
+
+  /**
+   * Storage for the data itself.
+   */
+  protected $storage = array();
+
+  /**
+   * Constructor.
+   *
+   * @param $cid
+   *   The cid for the array being cached.
+   * @param $bin
+   *   The bin to cache the array.
+   */
+  public function __construct($cid, $bin) {
+    $this->cid = $cid;
+    $this->bin = $bin;
+
+    if ($cached = cache_get($this->cid, $this->bin)) {
+     $this->storage = $cached->data;
+    }
+  }
+
+  public function offsetExists($offset) {
+    return $this->offsetGet($offset) !== NULL;
+  }
+
+  public function offsetGet($offset) {
+    if (isset($this->storage[$offset]) || array_key_exists($offset, $this->storage)) {
+      return $this->storage[$offset];
+    }
+    else {
+      return $this->resolveCacheMiss($offset);
+    }
+  }
+
+  public function offsetSet($offset, $value) {
+    $this->storage[$offset] = $value;
+  }
+
+  public function offsetUnset($offset) {
+    unset($this->storage[$offset]);
+  }
+
+  /**
+   * Flags an offset value to be written to the persistent cache.
+   *
+   * If a value is assigned to a cache object with offsetSet(), by default it
+   * will not be written to the persistent cache unless it is flagged with this
+   * method. This allows items to be cached for the duration of a request,
+   * without necessarily writing back to the persistent cache at the end.
+   *
+   * @param $offset
+   *   The array offset that was request.
+   * @param $persist
+   *   Optional boolean to specify whether the offset should be persisted or
+   *   not, defaults to TRUE. When called with $persist = FALSE the offset will
+   *   be unflagged so that it will not written at the end of the request.
+   */
+  protected function persist($offset, $persist = TRUE) {
+    $this->keysToPersist[$offset] = $persist;
+  }
+
+  /**
+   * Resolves a cache miss.
+   *
+   * When an offset is not found in the object, this is treated as a cache
+   * miss. This method allows classes implementing the interface to look up
+   * the actual value and allow it to be cached.
+   *
+   * @param $offset
+   *   The offset that was requested.
+   *
+   * @return
+   *   The value of the offset, or NULL if no value was found.
+   */
+  abstract protected function resolveCacheMiss($offset);
+
+  /**
+   * Immediately write a value to the persistent cache.
+   *
+   * @param $cid
+   *   The cache ID.
+   * @param $bin
+   *   The cache bin.
+   * @param $data
+   *   The data to write to the persistent cache.
+   * @param $lock
+   *   Whether to acquire a lock before writing to cache.
+   */
+  protected function set($cid, $data, $bin, $lock = TRUE) {
+    // Lock cache writes to help avoid stampedes.
+    // To implement locking for cache misses, override __construct().
+    $lock_name = $cid . ':' . $bin;
+    if (!$lock || lock_acquire($lock_name)) {
+      if ($cached = cache_get($cid, $bin)) {
+        $data = $cached->data + $data;
+      }
+      cache_set($cid, $data, $bin);
+      if ($lock) {
+        lock_release($lock_name);
+      }
+    }
+  }
+
+  public function __destruct() {
+    $data = array();
+    foreach ($this->keysToPersist as $offset => $persist) {
+      if ($persist) {
+        $data[$offset] = $this->storage[$offset];
+      }
+    }
+    if (!empty($data)) {
+      $this->set($this->cid, $data, $this->bin);
+    }
+  }
+}
+
+/**
  * Start the timer with the specified name. If you start and stop the same
  * timer multiple times, the measured intervals will be accumulated.
  *
- * @param name
+ * @param $name
  *   The name of the timer.
  */
 function timer_start($name) {
@@ -242,8 +435,9 @@ function timer_start($name) {
 /**
  * Read the current timer value without stopping the timer.
  *
- * @param name
+ * @param $name
  *   The name of the timer.
+ *
  * @return
  *   The current timer value in ms.
  */
@@ -265,8 +459,9 @@ function timer_read($name) {
 /**
  * Stop the timer with the specified name.
  *
- * @param name
+ * @param $name
  *   The name of the timer.
+ *
  * @return
  *   A timer array. The array contains the number of times the timer has been
  *   started and stopped (count) and the accumulated timer value in ms (time).
@@ -300,22 +495,22 @@ function timer_stop($name) {
  * With a site located at http://www.example.com:8080/mysite/test/, the file,
  * settings.php, is searched for in the following directories:
  *
- *  1. $confdir/8080.www.example.com.mysite.test
- *  2. $confdir/www.example.com.mysite.test
- *  3. $confdir/example.com.mysite.test
- *  4. $confdir/com.mysite.test
+ * - $confdir/8080.www.example.com.mysite.test
+ * - $confdir/www.example.com.mysite.test
+ * - $confdir/example.com.mysite.test
+ * - $confdir/com.mysite.test
  *
- *  5. $confdir/8080.www.example.com.mysite
- *  6. $confdir/www.example.com.mysite
- *  7. $confdir/example.com.mysite
- *  8. $confdir/com.mysite
+ * - $confdir/8080.www.example.com.mysite
+ * - $confdir/www.example.com.mysite
+ * - $confdir/example.com.mysite
+ * - $confdir/com.mysite
  *
- *  9. $confdir/8080.www.example.com
- * 10. $confdir/www.example.com
- * 11. $confdir/example.com
- * 12. $confdir/com
+ * - $confdir/8080.www.example.com
+ * - $confdir/www.example.com
+ * - $confdir/example.com
+ * - $confdir/com
  *
- * 13. $confdir/default
+ * - $confdir/default
  *
  * If a file named sites.php is present in the $confdir, it will be loaded
  * prior to scanning for directories. It should define an associative array
@@ -533,6 +728,22 @@ function drupal_settings_initialize() {
   }
   $is_https = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on';
 
+  // Load environmental config, if present.
+  if (isset($_SERVER['PRESSFLOW_SETTINGS'])) {
+    $pressflow_settings = json_decode($_SERVER['PRESSFLOW_SETTINGS'], TRUE);
+    foreach ($pressflow_settings as $key => $value) {
+      // One level of depth should be enough for $conf and $database.
+      if ($key == 'conf') {
+        foreach($value as $conf_key => $conf_value) {
+          $conf[$conf_key] = $conf_value;
+        }
+      }
+      else {
+        $$key = $value;
+      }
+    }
+  }
+
   if (isset($base_url)) {
     // Parse fixed base URL from settings.php.
     $parts = parse_url($base_url);
@@ -635,8 +846,13 @@ function drupal_settings_initialize() {
 function drupal_get_filename($type, $name, $filename = NULL) {
   // The location of files will not change during the request, so do not use
   // drupal_static().
-  static $files = array();
+  static $files = array(), $dirs = array();
 
+  // Profiles are a special case: they have a fixed location and naming.
+  if ($type == 'profile') {
+    $profile_filename = "profiles/$name/$name.profile";
+    $files[$type][$name] = file_exists($profile_filename) ? $profile_filename : FALSE;
+  }
   if (!isset($files[$type])) {
     $files[$type] = array();
   }
@@ -681,16 +897,19 @@ function drupal_get_filename($type, $name, $filename = NULL) {
         $extension = $type;
       }
 
-      if (!function_exists('drupal_system_listing')) {
-        require_once DRUPAL_ROOT . '/includes/common.inc';
-      }
-      // Scan the appropriate directories for all files with the requested
-      // extension, not just the file we are currently looking for. This
-      // prevents unnecessary scans from being repeated when this function is
-      // called more than once in the same page request.
-      $matches = drupal_system_listing("/^" . DRUPAL_PHP_FUNCTION_PATTERN . "\.$extension$/", $dir, 'name', 0);
-      foreach ($matches as $matched_name => $file) {
-        $files[$type][$matched_name] = $file->uri;
+      if (!isset($dirs[$dir][$extension])) {
+        $dirs[$dir][$extension] = TRUE;
+        if (!function_exists('drupal_system_listing')) {
+          require_once DRUPAL_ROOT . '/includes/common.inc';
+        }
+        // Scan the appropriate directories for all files with the requested
+        // extension, not just the file we are currently looking for. This
+        // prevents unnecessary scans from being repeated when this function is
+        // called more than once in the same page request.
+        $matches = drupal_system_listing("/^" . DRUPAL_PHP_FUNCTION_PATTERN . "\.$extension$/", $dir, 'name', 0);
+        foreach ($matches as $matched_name => $file) {
+          $files[$type][$matched_name] = $file->uri;
+        }
       }
     }
   }
@@ -1202,10 +1421,11 @@ function drupal_unpack($obj, $field = 'data') {
  * The t() function serves two purposes. First, at run-time it translates
  * user-visible text into the appropriate language. Second, various mechanisms
  * that figure out what text needs to be translated work off t() -- the text
- * inside t() calls is added to the database of strings to be translated. So,
- * to enable a fully-translatable site, it is important that all human-readable
- * text that will be displayed on the site or sent to a user is passed through
- * the t() function, or a related function. See the
+ * inside t() calls is added to the database of strings to be translated.
+ * These strings are expected to be in English, so the first argument should
+ * always be in English. To enable a fully-translatable site, it is important
+ * that all human-readable text that will be displayed on the site or sent to
+ * a user is passed through the t() function, or a related function. See the
  * @link http://drupal.org/node/322729 Localization API @endlink pages for
  * more information, including recommendations on how to break up or not
  * break up strings for translation.
@@ -1236,15 +1456,7 @@ function drupal_unpack($obj, $field = 'data') {
  *   A string containing the English string to translate.
  * @param $args
  *   An associative array of replacements to make after translation.
- *   Occurrences in $string of any key in $args are replaced with the
- *   corresponding value, after sanitization. The sanitization function depends
- *   on the first character of the key:
- *   - !variable: Inserted as is. Use this for text that has already been
- *     sanitized.
- *   - @variable: Escaped to HTML using check_plain(). Use this for anything
- *     displayed on a page on the site.
- *   - %variable: Escaped as a placeholder for user-submitted content using
- *     drupal_placeholder(), which shows up as <em>emphasized</em> text.
+ *   See format_string().
  * @param $options
  *   An associative array of additional options, with the following elements:
  *   - 'langcode' (defaults to the current language): The language code to
@@ -1290,26 +1502,50 @@ function t($string, array $args = array(), array $options = array()) {
     return $string;
   }
   else {
-    // Transform arguments before inserting them.
-    foreach ($args as $key => $value) {
-      switch ($key[0]) {
-        case '@':
-          // Escaped only.
-          $args[$key] = check_plain($value);
-          break;
-
-        case '%':
-        default:
-          // Escaped and placeholder.
-          $args[$key] = drupal_placeholder($value);
-          break;
-
-        case '!':
-          // Pass-through.
-      }
-    }
-    return strtr($string, $args);
+    return format_string($string, $args);
   }
+}
+
+/**
+ * Replace placeholders with sanitized values in a string.
+ *
+ * @param $string
+ *   A string containing placeholders.
+ * @param $args
+ *   An associative array of replacements to make. Occurrences in $string of
+ *   any key in $args are replaced with the corresponding value, after
+ *   sanitization. The sanitization function depends on the first character of
+ *   the key:
+ *   - !variable: Inserted as is. Use this for text that has already been
+ *     sanitized.
+ *   - @variable: Escaped to HTML using check_plain(). Use this for anything
+ *     displayed on a page on the site.
+ *   - %variable: Escaped as a placeholder for user-submitted content using
+ *     drupal_placeholder(), which shows up as <em>emphasized</em> text.
+ *
+ * @see t()
+ * @ingroup sanitization
+ */
+function format_string($string, array $args = array()) {
+  // Transform arguments before inserting them.
+  foreach ($args as $key => $value) {
+    switch ($key[0]) {
+      case '@':
+        // Escaped only.
+        $args[$key] = check_plain($value);
+        break;
+
+      case '%':
+      default:
+        // Escaped and placeholder.
+        $args[$key] = drupal_placeholder($value);
+        break;
+
+      case '!':
+        // Pass-through.
+    }
+  }
+  return strtr($string, $args);
 }
 
 /**
@@ -1366,11 +1602,12 @@ function drupal_validate_utf8($text) {
 }
 
 /**
- * Since $_SERVER['REQUEST_URI'] is only available on Apache, we
- * generate an equivalent using other environment variables.
+ * Returns the equivalent of Apache's $_SERVER['REQUEST_URI'] variable.
+ *
+ * Because $_SERVER['REQUEST_URI'] is only available on Apache, we generate an
+ * equivalent using other environment variables.
  */
 function request_uri() {
-
   if (isset($_SERVER['REQUEST_URI'])) {
     $uri = $_SERVER['REQUEST_URI'];
   }
@@ -2108,6 +2345,17 @@ function _drupal_bootstrap_database() {
 function _drupal_bootstrap_variables() {
   global $conf;
 
+  // Pressflow Smart Start
+  if (!empty($GLOBALS['databases']) && variable_get('pressflow_smart_start', FALSE)) {
+    try {
+      $result = db_query('SELECT s.name FROM {system} s WHERE s.name = :name', array(':name' => 'system'));
+    } catch (Exception $e) {
+      // Redirect to the installer if an essential table is missing.
+      include_once DRUPAL_ROOT . '/includes/install.inc';
+      install_goto('install.php');
+    }
+  }
+
   // Initialize the lock system.
   require_once DRUPAL_ROOT . '/' . variable_get('lock_inc', 'includes/lock.inc');
   lock_initialize();
@@ -2212,6 +2460,34 @@ function drupal_maintenance_theme() {
 }
 
 /**
+ * Returns a simple 404 Not Found page.
+ *
+ * If fast 404 pages are enabled, and this is a matching page then print a
+ * simple 404 page and exit.
+ *
+ * This function is called from drupal_deliver_html_page() at the time when a
+ * a normal 404 page is generated, but it can also optionally be called directly
+ * from settings.php to prevent a Drupal bootstrap on these pages. See
+ * documentation in settings.php for the benefits and drawbacks of using this.
+ *
+ * Paths to dynamically-generated content, such as image styles, should also be
+ * accounted for in this function.
+ */
+function drupal_fast_404() {
+  $exclude_paths = variable_get('404_fast_paths_exclude', FALSE);
+  if ($exclude_paths && !preg_match($exclude_paths, $_GET['q'])) {
+    $fast_paths = variable_get('404_fast_paths', FALSE);
+    if ($fast_paths && preg_match($fast_paths, $_GET['q'])) {
+      drupal_add_http_header('Status', '404 Not Found');
+      $fast_404_html = variable_get('404_fast_html', '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL "@path" was not found on this server.</p></body></html>');
+      // Replace @path in the variable with the page path.
+      print strtr($fast_404_html, array('@path' => check_plain(request_uri())));
+      exit;
+    }
+  }
+}
+
+/**
  * Return TRUE if a Drupal installation is currently being attempted.
  */
 function drupal_installation_attempted() {
@@ -2230,7 +2506,7 @@ function drupal_installation_attempted() {
  * non-installation time, such as while installing the module from the the
  * module administration page.
  *
- * Example useage:
+ * Example usage:
  * @code
  *   $t = get_t();
  *   $translated = $t('translate this');
@@ -2312,9 +2588,18 @@ function language_types() {
 }
 
 /**
- * Get a list of languages set up indexed by the specified key
+ * Returns a list of installed languages, indexed by the specified key.
  *
- * @param $field The field to index the list with.
+ * @param $field
+ *   (optional) The field to index the list with.
+ *
+ * @return
+ *   An associative array, keyed on the values of $field.
+ *   - If $field is 'weight' or 'enabled', the array is nested, with the outer
+ *     array's values each being associative arrays with language codes as
+ *     keys and language objects as values.
+ *   - For all other values of $field, the array is only one level deep, and
+ *     the array's values are language objects.
  */
 function language_list($field = 'language') {
   $languages = &drupal_static(__FUNCTION__);
@@ -2532,6 +2817,55 @@ function ip_address() {
  *   If true, the schema will be rebuilt instead of retrieved from the cache.
  */
 function drupal_get_schema($table = NULL, $rebuild = FALSE) {
+  static $schema;
+
+  if ($rebuild || !isset($table)) {
+    $schema = drupal_get_complete_schema($rebuild);
+  }
+  elseif (!isset($schema)) {
+    $schema = new SchemaCache();
+  }
+
+  if (!isset($table)) {
+    return $schema;
+  }
+  if (isset($schema[$table])) {
+    return $schema[$table];
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Extends DrupalCacheArray to allow for dynamic building of the schema cache.
+ */
+class SchemaCache extends DrupalCacheArray {
+
+  public function __construct() {
+    // Cache by request method.
+    parent::__construct('schema:runtime:' . ($_SERVER['REQUEST_METHOD'] == 'GET'), 'cache');
+  }
+
+  protected function resolveCacheMiss($offset) {
+    $complete_schema = drupal_get_complete_schema();
+    $value = isset($complete_schema[$offset]) ? $complete_schema[$offset] :  NULL;
+    $this->storage[$offset] = $value;
+    $this->persist($offset);
+    return $value;
+  }
+}
+
+/**
+ * Get the whole database schema.
+ *
+ * The returned schema will include any modifications made by any
+ * module that implements hook_schema_alter().
+ *
+ * @param $rebuild
+ *   If true, the schema will be rebuilt instead of retrieved from the cache.
+ */
+function drupal_get_complete_schema($rebuild = FALSE) {
   static $schema = array();
 
   if (empty($schema) || $rebuild) {
@@ -2573,18 +2907,13 @@ function drupal_get_schema($table = NULL, $rebuild = FALSE) {
       if (!empty($schema) && (drupal_get_bootstrap_phase() == DRUPAL_BOOTSTRAP_FULL)) {
         cache_set('schema', $schema);
       }
+      if ($rebuild) {
+        cache_clear_all('schema:', 'cache', TRUE);
+      }
     }
   }
 
-  if (!isset($table)) {
-    return $schema;
-  }
-  elseif (isset($schema[$table])) {
-    return $schema[$table];
-  }
-  else {
-    return FALSE;
-  }
+  return $schema;
 }
 
 /**
