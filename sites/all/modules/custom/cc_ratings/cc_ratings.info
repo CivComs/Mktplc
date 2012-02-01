@@ -2,7 +2,7 @@
 name = CC Ratings
 description = Additional rating processing.
 core = 7.x
-package = Warecorp
+package = "Civic Commons Marketplace"
 
 dependencies[] = fivestar
 

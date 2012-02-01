@@ -3,4 +3,4 @@ description = Output flagging buttons in a separate block.
 core = 7.x
 files[] = cc_flag_block.module
 dependencies[] = flag
-package = Warecorp
+package = "Civic Commons Marketplace"

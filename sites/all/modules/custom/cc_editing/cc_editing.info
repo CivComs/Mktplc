@@ -1,7 +1,7 @@
 name = Editing Enhancements
 description = Provides (user focused) editing enhancements for the Marketplace application.
 core = 7.x
-package = Civic Commons
+package = "Civic Commons Marketplace"
 
 ; File registry
 files[] = cc_editing.module

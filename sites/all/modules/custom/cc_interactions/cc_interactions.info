@@ -1,7 +1,7 @@
 name = Interactions
 description = Provides a specific workflow for the Interactions content type.
 core = 7.x
-package = Warecorp
+package = "Civic Commons Marketplace"
 dependencies[] = prepopulate
 
 files[] = cc_interactions.module

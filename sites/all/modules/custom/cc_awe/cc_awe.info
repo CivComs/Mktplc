@@ -1,7 +1,7 @@
 name = Address Field World
 description = Expansion of Address Field module.
 core = 7.x
-package = Warecorp
+package = "Civic Commons Marketplace"
 
 dependencies[] = ctools
 dependencies[] = addressfield

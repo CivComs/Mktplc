@@ -1,6 +1,6 @@
-; $Id: cc_helper.info,v 0.x-dev 2011/09/21 Paul de Paula Exp $
 name = CC Helper
 description = General Helper Module.
+package = "Civic Commons Marketplace"
 core = 7.x
 scripts[] = 'cc_helper.js'
 files[] = cc_helper.inc
