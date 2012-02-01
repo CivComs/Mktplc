@@ -14,7 +14,7 @@ function cc_application_field_default_fields() {
   $fields['node-application-field_application_civfunction'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_application_civfunction',
@@ -81,7 +81,7 @@ function cc_application_field_default_fields() {
         'active' => 1,
         'module' => 'options',
         'settings' => array(),
-        'type' => 'options_select',
+        'type' => 'options_buttons',
         'weight' => '7',
       ),
     ),
@@ -919,7 +919,7 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
       ),
       'module' => 'image',
       'settings' => array(
-        'default_image' => '621',
+        'default_image' => '826',
         'uri_scheme' => 'public',
       ),
       'translatable' => '0',
@@ -1640,67 +1640,6 @@ If the organization is not yet listed on the Marketplace, it will not appear wit
     ),
   );
 
-  // Exported field: 'node-application-field_application_ss_id'
-  $fields['node-application-field_application_ss_id'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_application_ss_id',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'number_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'application',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'CC Researchers only: If the item has an entry in shortstack.codeforamerica.org, add it here.',
-      'display' => array(
-        'cc_business_card' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '18',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_application_ss_id',
-      'label' => 'Short Stack ID',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '7',
-      ),
-    ),
-  );
-
   // Exported field: 'node-application-field_application_stds'
   $fields['node-application-field_application_stds'] = array(
     'field_config' => array(
@@ -2231,7 +2170,6 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   t('Add Deployment, Creation, Evaluation, Support');
   t('App Description');
   t('App Homepage');
-  t('CC Researchers only: If the item has an entry in shortstack.codeforamerica.org, add it here.');
   t('Demo URL');
   t('Don\'t see a term you need? Add it <a href="https://docs.google.com/a/codeforamerica.org/spreadsheet/embeddedform?formkey=dEtwOHRvOV9JdmVXNTBMXzNoNGdtUnc6MQ">here</a>');
   t('Enter the URL of the application homepage where people can go to find more information');
@@ -2250,7 +2188,6 @@ If the vendor is not yet listed on the Marketplace, it will not appear with it\'
   t('Screenshots');
   t('Separate tags w/ a comma.');
   t('Short Description for Search Results');
-  t('Short Stack ID');
   t('Software Function');
   t('Software Requirements');
   t('Software Type');

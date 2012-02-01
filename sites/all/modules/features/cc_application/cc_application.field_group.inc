@@ -194,13 +194,13 @@ function cc_application_field_group_info() {
     'label' => 'Main',
     'weight' => '0',
     'children' => array(
-      0 => 'group_application_sfthosted',
+      0 => 'group_application_basic',
       1 => 'group_application_categories',
-      2 => 'group_application_basic',
+      2 => 'group_application_features',
       3 => 'group_application_media',
       4 => 'group_application_orgs',
       5 => 'group_application_relations',
-      6 => 'group_application_features',
+      6 => 'group_application_sfthosted',
     ),
     'format_type' => 'tabs',
     'format_settings' => array(
@@ -253,8 +253,7 @@ function cc_application_field_group_info() {
     'weight' => '1',
     'children' => array(
       0 => 'field_application_type',
-      1 => 'field_application_ss_id',
-      2 => 'field_application_rating',
+      1 => 'field_application_rating',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -334,7 +333,7 @@ function cc_application_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_application_main';
   $field_group->data = array(
-    'label' => 'Code Repo & Demo Hosting (If Applicable)',
+    'label' => 'Code Repo & Demos',
     'weight' => '6',
     'children' => array(
       0 => 'field_application_hostname',
@@ -343,7 +342,7 @@ function cc_application_field_group_info() {
     ),
     'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Code Repo & Demo Hosting (If Applicable)',
+      'label' => 'Code Repo & Demos',
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => '',
