@@ -1564,36 +1564,9 @@ article.node-interaction {
   text-align: right;
 }
 
-/*
-body.node-type-interaction .field-name-field-interaction-date {
-  margin-top: 25px;
+/**
+ * Profile
+ */
+#region-content .profile h3 {
+  margin-top: 2em;
 }
-
-body.node-type-interaction .field-name-field-interaction-organization,
-body.node-type-interaction .field-name-field-interaction-organization *,
-body.node-type-interaction .field-name-field-interaction-type,
-body.node-type-interaction .field-name-field-interaction-type *,
-body.node-type-interaction .field-name-field-interaction-application,
-body.node-type-interaction .field-name-field-interaction-application * 
-{
-  display: inline;
-}
-
-body.node-type-interaction #region-content {
-  padding-top: 25px;
-}
-
-
-body.node-type-interaction .field-name-field-interaction-organization,
-body.node-type-interaction .field-name-field-interaction-type,
-body.node-type-interaction .field-name-field-interaction-application
-{
-  font-size: 1.5em;
-}
-body.node-type-interaction .field-name-field-interaction-organization,
-body.node-type-interaction .field-name-field-interaction-application
-{
-  font-size: 1.5em;
-  font-weight: bold;
-}
-*/
