@@ -1565,8 +1565,17 @@ article.node-interaction {
 }
 
 /**
- * Profile
+ * Profile and User Register
  */
 #region-content .profile h3 {
   margin-top: 2em;
 }
+
+/* Hide Vertical tabs on register page */
+#user-register-form .vertical-tabs {
+  margin-left: 0;
+}
+#user-register-form .vertical-tabs .vertical-tabs-list {
+  display: none;
+}
+
