@@ -1571,6 +1571,10 @@ article.node-interaction {
   margin-top: 2em;
 }
 
+.profile .user-picture {
+  float: none;
+}
+
 /* Hide Vertical tabs on register page */
 #user-register-form .vertical-tabs {
   margin-left: 0;
