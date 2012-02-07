@@ -3064,7 +3064,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'interaction_type';
-  $handler->display->display_options['block_description'] = 'KKKApps: that this org has used';
+  $handler->display->display_options['block_description'] = 'Apps: that this org has used';
 
   /* Display: Block: Apps made in This place */
   $handler = $view->new_display('block', 'Block: Apps made in This place', 'block_7');
@@ -3306,7 +3306,7 @@ print $value ? \'used in \'. $value . \' \'. format_plural($value, \'place\', \'
   $handler->display->display_options['filters']['type']['value'] = array(
     'application' => 'application',
   );
-  $handler->display->display_options['block_description'] = 'KKKApps: apps in place';
+  $handler->display->display_options['block_description'] = 'Apps: apps in place';
   $export['applications'] = $view;
 
   $view = new view;
