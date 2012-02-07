@@ -22,7 +22,7 @@ function engagement_commons_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Engagement Commons';
+  $handler->display->display_options['title'] = 'Featured stories';
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -75,11 +75,6 @@ function engagement_commons_views_default_views() {
   $handler->display->display_options['style_options']['views_slideshow_cycle']['cleartype'] = 0;
   $handler->display->display_options['style_options']['views_slideshow_cycle']['cleartypenobg'] = 0;
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Footer: Global: Text area */
-  $handler->display->display_options['footer']['area']['id'] = 'area';
-  $handler->display->display_options['footer']['area']['table'] = 'views';
-  $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['empty'] = FALSE;
   /* Field: Content: Story Image */
   $handler->display->display_options['fields']['field_story_image']['id'] = 'field_story_image';
   $handler->display->display_options['fields']['field_story_image']['table'] = 'field_data_field_story_image';
@@ -234,20 +229,12 @@ function engagement_commons_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['footer'] = FALSE;
-  /* Footer: Global: Text area */
-  $handler->display->display_options['footer']['area']['id'] = 'area';
-  $handler->display->display_options['footer']['area']['table'] = 'views';
-  $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['label'] = 'Engagement Commons Main content';
-  $handler->display->display_options['footer']['area']['empty'] = TRUE;
-  $handler->display->display_options['footer']['area']['content'] = '<h1>Engagement Commons</h1>
-<p>A social sweater vest incubator could be great RT @pahlkadot.  Mad Men apps built by cool graphics through civic leadership can you write a blog post? Pandas through communication story ideate if you overlay incubator Google and #civic leaders recruiting awesome innovation through where\'s my blog post?</p>';
-  $handler->display->display_options['footer']['area']['format'] = 'full_html';
-  $handler->display->display_options['footer']['area']['tokenize'] = 0;
   $handler->display->display_options['path'] = 'engagement-commons';
 
   /* Display: Engagement Commons Feed */
   $handler = $view->new_display('feed', 'Engagement Commons Feed', 'feed');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Engagement Commons Stories';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['style_plugin'] = 'rss';
   $handler->display->display_options['row_plugin'] = 'node_rss';
@@ -256,6 +243,7 @@ function engagement_commons_views_default_views() {
     'default' => 'default',
     'page' => 'page',
   );
+  $handler->display->display_options['sitename_title'] = 0;
   $export['engagement_commons_page'] = $view;
 
   return $export;
