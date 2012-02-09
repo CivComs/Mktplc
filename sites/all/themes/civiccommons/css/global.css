@@ -1600,8 +1600,8 @@ article.node-interaction {
 .engagement-commons #region-content,
 .engagement-commons #region-sidebar-second {
   margin-top: 64px;
-  background: transparent url("../images/engagement_commons/eg-featured-bg.jpg") top left repeat-x;
-  height: 350px;
+  background: #2e86e5 url("../images/engagement_commons/eg-featured-bg.jpg") top left repeat-x;
+  height: 360px;
 }
 
 .engagement-commons #region-content {
@@ -1611,6 +1611,10 @@ article.node-interaction {
 .engagement-commons #region-sidebar-second {
   margin-left: 0;
   padding-left: 10px;
+}
+
+.engagement-commons #region-content .block {
+  margin-bottom: 0;
 }
 
 .engagement-commons #region-sidebar-second .region-inner {
@@ -1646,7 +1650,8 @@ article.node-interaction {
 }
 
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-row {
-  width: 630px;
+  width: 640px;
+  margin-bottom: 5px;
 }
 
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field {
@@ -1677,4 +1682,36 @@ article.node-interaction {
 
 .engagement-commons .feed-icon {
   margin-left: 5px;
+}
+
+.engagement-commons #zone-header #block-system-user-menu {
+  display: none;
+}
+
+.engagement-commons #block-menu-menu-mktplc-section-nav {
+  margin-bottom: 2px;
+}
+
+.engagement-commons #region-search-bar .region-search-bar-inner {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.engagement-commons #region-content-leftcolumn {
+  margin-top: 2em;
+  width: 920px;
+}
+
+.engagement-commons #block-block-37 {
+  font-size: 1.25em;
+}
+
+.engagement-commons #block-block-37 h2.block-title {
+  color: #0d59ac;
+  background: none;
+  border: none;
+  padding: 0;
+  text-transform: none;
+  font-size: 1.25em;
 }
