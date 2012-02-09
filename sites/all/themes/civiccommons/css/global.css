@@ -1638,14 +1638,37 @@ article.node-interaction {
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-row,
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page a {
   color: #FFFFFF;
+  text-decoration: none;
 }
 
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page {
   margin-left: 10px;
 }
 
+.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field {
+  max-width: 150px !important;
+  margin-right: 0;
+}
+
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-image {
   float: right;
+  max-width: none !important;
+}
+
+.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-created {
+  color: #99c8fa;
+  font-size: .8em;
+  margin-bottom: 15px;
+}
+
+.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-view-node {
+  margin-top: 15px;
+  font-style: italic;
+  font-size: .8em;
+}
+
+.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-title a {
+  font-size: 1.25em;
 }
 
 .engagement-commons .feed-icon {
