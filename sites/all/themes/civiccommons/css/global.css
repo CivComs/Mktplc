@@ -1645,14 +1645,18 @@ article.node-interaction {
   margin-left: 10px;
 }
 
+.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-row {
+  width: 630px;
+}
+
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field {
-  max-width: 150px !important;
+  max-width: 200px;
   margin-right: 0;
 }
 
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-image {
   float: right;
-  max-width: none !important;
+  max-width: none;
 }
 
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-created {
