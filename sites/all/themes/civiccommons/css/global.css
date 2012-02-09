@@ -1226,18 +1226,16 @@ border-bottom: none;
   clear: right;
 }
 
-/*
- *
+/**
  * Footer
- *
  */
-footer {
+footer#section-footer {
   color: #a5a5a5;
   background: #44484F url('http://civiccommons.org/wp-content/themes/biznizz/images/dark-noise.png') 0 0 repeat scroll;
   margin: 40px 0 0;
   padding: 20px 0;
 }
-footer h2.block-title {
+footer#section-footer h2.block-title {
   color: #fff;
   background: transparent;
   font-size: 18px;
@@ -1245,11 +1243,11 @@ footer h2.block-title {
   padding: 0;
   border: 0;
 }
-footer a:link,
-footer a:visited {
+footer#section-footer a:link,
+footer#section-footer a:visited {
   color: #a5a5a5;
 }
-footer a:hover {
+footer#section-footer a:hover {
   color: #cacaca;
 }
 
@@ -1650,7 +1648,7 @@ article.node-interaction {
 }
 
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-row {
-  width: 640px;
+  width: 630px;
   margin-bottom: 5px;
 }
 
