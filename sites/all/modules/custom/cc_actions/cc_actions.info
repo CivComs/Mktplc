@@ -1,0 +1,5 @@
+name = User Actions
+description = The CC Actions module is aimed at providing a focused block (or interface) for users in order to take contextual action, such as editing a node.
+core = 7.x
+package = "Civic Commons Marketplace"
+
