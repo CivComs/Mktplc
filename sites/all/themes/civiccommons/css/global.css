@@ -1582,6 +1582,14 @@ article.node-interaction {
 }
 
 /**
+ * Story content type
+ */
+.node .field-name-field-story-image {
+  float: left;
+  margin: 0 10px 10px 0;
+}
+
+/**
  * Engagement Commons
  */
 .engagement-commons #breadcrumb {
