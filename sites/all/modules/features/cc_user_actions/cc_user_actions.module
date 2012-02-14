@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC User Actions feature.
+ */
+
+include_once('cc_user_actions.features.inc');
