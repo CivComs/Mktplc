@@ -698,44 +698,5 @@ function cc_contexts_context_default_contexts() {
   t('Taxonomy listing pages');
   $export['taxonomy'] = $context;
 
-  $context = new stdClass;
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
-  $context->api_version = 3;
-  $context->name = 'user_content';
-  $context->description = 'Provides a context for all significant node types.  For instance, having an Edit block on node pages.';
-  $context->tag = 'content';
-  $context->conditions = array(
-    'node' => array(
-      'values' => array(
-        'application' => 'application',
-        'interaction' => 'interaction',
-        'organization' => 'organization',
-        'project' => 'project',
-      ),
-      'options' => array(
-        'node_form' => '0',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'cc_editing-cc_editing_node_edit' => array(
-          'module' => 'cc_editing',
-          'delta' => 'cc_editing_node_edit',
-          'region' => 'sidebar_second',
-          'weight' => '-64',
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 0;
-
-  // Translatables
-  // Included for use with string extractors like potx.
-  t('Provides a context for all significant node types.  For instance, having an Edit block on node pages.');
-  t('content');
-  $export['user_content'] = $context;
-
   return $export;
 }
