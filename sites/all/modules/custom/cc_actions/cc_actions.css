@@ -1,0 +1,72 @@
+/**
+ * @file
+ * CSS for CC Actions module.  In theory, this should
+ * be in the theme.
+ */
+
+#block-cc-actions-cc-actions h2.block-title {
+  display: none;
+}
+
+#block-cc-actions-cc-actions .content {
+  padding: 0;
+}
+
+#block-cc-actions-cc-actions .top-level-item {
+  background-color: #2E86E5;
+  font-size: 1.25em;
+  padding: .25em .8em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+#block-cc-actions-cc-actions .cc-actions-profile-item {
+  font-size: 1.75em;
+  font-weight: bold;
+}
+
+#block-cc-actions-cc-actions .cc-actions-profile-item img {
+  float: right;
+  margin: 10px;
+}
+
+#block-cc-actions-cc-actions .item-list ul ul {
+  padding-top: .5em;
+}
+
+#block-cc-actions-cc-actions .item-list ul li {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+#block-cc-actions-cc-actions .item-list ul li li {
+  padding-left: .8em;
+}
+
+#block-cc-actions-cc-actions .item-list ul li a.cc-actions-local-edit-link {
+  background-color: #FE892C;
+  color: #FFFFFF;
+  display: block;
+  margin-left: -.8em;
+  padding-left: .8em;
+  font-weight: bold;
+}
+
+.cc-actions-general-block {
+  padding: 9px;
+  text-align: center;
+  border: 3px dashed #FDE9BC;
+}
+
+#block-cc-actions-cc-actions .cc-actions-general-block h2.block-title {
+  display: block;
+  color: #555;
+  background-image: none;
+  background-color: transparent;
+  border: none;
+}
+
+.front #block-cc-actions-cc-actions {
+  margin-top: -16px;
+}

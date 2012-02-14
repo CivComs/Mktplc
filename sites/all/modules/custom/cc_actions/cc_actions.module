@@ -19,3 +19,197 @@ function cc_actions_help($path, $arg) {
   
   }
 }
+
+/**
+ * Implements hook_block_info().
+ */
+function cc_actions_block_info() {
+  $blocks['cc_actions'] = array(
+    'info' => t('User Profile and Actions'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cc_actions_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'cc_actions':
+      $block['subject'] = t('My Profile');
+      $block['content'] = array(
+        '#theme' => 'cc_actions_profile_block',
+      );
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cc_actions_theme($existing, $type, $theme, $path) {
+  return array(
+    'cc_actions_profile_block' => array(
+      'variables' => array(
+      ),
+    ),
+  );
+}
+
+/**
+ * Theme function for Profile Action block
+ */
+function theme_cc_actions_profile_block($vars) {
+  $output = '';
+  $logged_in = FALSE;
+  $items = array();
+  $add_items = array();
+  global $user;
+  
+  // Add CSS
+  drupal_add_css(drupal_get_path('module', 'cc_actions') . '/cc_actions.css');
+  
+  // User links
+  if ($user->uid > 0) {
+    $sub_items = array();
+    $account = user_load($user->uid);
+    $logged_in = TRUE;
+    
+    // Profile image
+    $image = '';
+    if ($user->picture) {
+      $file = file_load($user->picture);
+      $image = theme('image_style', array(
+        'style_name' => 'thumbnail',
+        'path' => $file->uri,
+      ));
+    }
+    
+    // Profile links
+    $sub_items[] = '
+      <div class="cc-actions-profile-item">
+        ' . $image . '
+        ' . l($account->name, 'user/' . $account->uid) . '
+      </div>
+      ';
+    $sub_items[] = l(t('Edit Profile'), 'user/' . $account->uid . '/edit');
+    $sub_items[] = l(t('My Edits'), 'user/' . $account->uid . '/track');
+    $sub_items[] = l(t('Logout'), 'user/logout');
+    $items[] = array(
+      'data' => '<div class="top-level-item">' . t('My account') . '</div>',
+      'children' => $sub_items,
+    );
+    
+    // Add content links (will display later)
+    $add_items[] = l(t('Add an app'), 'node/add/application');
+    $add_items[] = l(t('Add an organization'), 'node/add/organization');
+    $add_items[] = l(t('Add an interaction'), 'node/add/interaction');
+    $add_items[] = l(t('Add a story'), 'node/add/story');
+  }
+  
+  // Local links
+  $links = menu_primary_local_tasks();
+  // Find the edit link if there is one.
+  foreach ($links as $l => $link) {
+    if ($link['#link']['title'] == t('Edit')) {
+      $links[$l]['#link']['localized_options'] = array(
+        'attributes' => array(
+          'class' => array(
+            'cc-actions-local-edit-link',
+          ),
+        ),
+      );
+    }
+  }
+  if (!empty($links)) {
+    $links = drupal_render($links);
+    $items[] = array(
+      'data' => '<div class="top-level-item">' . t('This page') . '</div>',
+      'children' => array($links),
+    );
+  }
+  
+  // Check editablity
+  $editable = cc_actions_check_editability();
+  
+  // If logged in or any local links, render
+  // as list.  Otherwise, show edit box
+  // for items that an authenticated user
+  // has permission for.  And finally
+  // if all else fails, show generic add
+  // block.
+  if (!empty($links) || $logged_in) {  
+    if (!empty($add_items)) {
+      $items[] = array(
+        'data' => '<div class="top-level-item">' . t('Add content') . '</div>',
+        'children' => $add_items,
+      );
+    }
+  
+    // Create a list for now.
+    $output .= theme('item_list', array(
+      'items' => $items,
+    ));
+  }
+  elseif ($editable && function_exists('cc_editing_node_edit_block')) {
+    $output .= '
+      <div class="cc-actions-general-block">
+        ' . cc_editing_node_edit_block() . '
+      </div>
+    ';
+  }
+  else {
+    $options = array(
+      'attributes' => array(
+        'class' => array(
+          'add-button',
+        ),
+      ),
+    );
+    $output .= '
+      <div class="cc-actions-general-block">
+        <h2 class="block-title">' . t('Help buld the Marketplace') . '</h2>
+        ' . l(t('Add an App'), 'node/add/application', $options) . '
+        <div class="example"><em>' . t('WordPress') . '</em></div>
+        ' . l(t('tell us who did what'), 'node/add/interaction', $options) . '
+        <div class="example"><em>' . t('NY Senate deployed Drupal') . '</em></div>
+        <p>' . t('The Marketplace is a wiki: <strong>you</strong> should improve it by <strong>adding civic software</strong> you know about, and where it’s being used.') . '</p>
+      </div>
+    ';
+  }
+  
+  return $output;
+}
+
+/**
+ * Check Editability
+ *
+ * Given the page, check if it is a node,
+ * and if a normal authenticated user could
+ * edit it if logged in.
+ */
+function cc_actions_check_editability() {
+  $edtiable = FALSE;
+  // content-editor = 9
+  // authenitcated = 2
+  $perms = user_role_permissions(array(
+    2 => 2,
+    9 => 9.
+  ));
+  
+  $node = menu_get_object();
+  if (is_object($node) && !empty($node->nid)) {
+    $perm = 'edit any ' . $node->type . ' content';
+    foreach ($perms as $r_perm) {
+      if (array_key_exists($perm, $r_perm)) {
+        $editable = TRUE;
+      }
+    }
+  }
+  
+  return $editable;
+}
