@@ -1713,3 +1713,42 @@ article.node-interaction {
 .view.view-user-views .views-field-created {
   font-size: 12px;
 }
+
+/**
+ * Application Views
+ */
+.view-id-applications.view-display-id-block_8 .meta {
+  display: none;
+}
+
+/**
+ * Three column regions.  They get their heights shared.
+ */
+.region-content-main-left #block-views-interactions-block .content {
+  padding: 0;
+}
+
+.container-16 .grid-5.region-content-main-left,
+.container-16 .grid-5.region-content-main-middle, 
+.container-16 .grid-5.region-content-main-right {
+  width: 300px;
+}
+ 
+.region-content-main-left .view, 
+.region-content-main-middle .view, 
+.region-content-main-right .view {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+.region-content-main-left .view .item-list, 
+.region-content-main-middle .view .item-list, 
+.region-content-main-right .view .item-list {
+  position: absolute;
+  bottom: 0;
+}
+.region-content-main-left .view .views-row-last, 
+.region-content-main-middle .view .views-row-last, 
+.region-content-main-right .view .views-row-last {
+  padding-bottom: 50px;
+}
