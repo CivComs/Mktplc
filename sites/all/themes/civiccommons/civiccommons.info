@@ -38,6 +38,10 @@ regions[content_bottom3] = Content Bottom 3
 regions[footer_first] = Footer First
 regions[footer_second] = Footer Second
 
+regions[content_main_left] = Content Main Left
+regions[content_main_middle] = Content Main Middle
+regions[content_main_right] = Content Main Right
+
 ; ZONES
 
 zones[branding] = Branding
