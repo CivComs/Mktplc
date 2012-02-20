@@ -5,14 +5,18 @@
  
 // Namespace jQuery
 (function($) {
-  $(document).ready(function() {
-    // Fire of row evenizers on page load
-    evenizeRowHeights(".view-applications .views-row .views-field-field-application-sdesc");
-    evenizeRowHeights(".view-places .views-row .field-content");
-    evenizeRowHeights(".meta");
-    // Make front page columns same height
-    evenizeRowHeights(".front .region-content-main-left .view, .front .region-content-main-middle .view, .front .region-content-main-right .view");
-  });
+  Drupal.behaviors.civiccommonsThemeInit = {
+    attach: function(context) {
+      // Fire of row evenizers on page load, and every other
+      // behavior, as it is difficult to tell when these
+      // elements change
+      evenizeRowHeights(".view-applications .views-row .views-field-field-application-sdesc");
+      evenizeRowHeights(".view-places .views-row .field-content");
+      evenizeRowHeights(".meta");
+      // Make front page columns same height
+      evenizeRowHeights(".region-content-main-left .view, .region-content-main-middle .view, .region-content-main-right .view");
+    }
+  };
 
   /**
    * Makes all app listing rows the same height --
