@@ -1274,15 +1274,12 @@ body .openlayers-map img.olImageLoadError {
  * Home page
  */
 
-/* recent activity block */ 
+/**
+ * Recent activity block
+ */ 
 #block-views-interactions-block,
-#block-views-interactions-block-1
- {
+#block-views-interactions-block-1 {
   height: 31em;
-}
-
-#block-views-interactions-block h2 {
-  width: 915px;
 }
 
 #block-views-interactions-block-1 .block-inner {
@@ -1697,4 +1694,22 @@ article.node-interaction {
   padding: 0;
   text-transform: none;
   font-size: 1.25em;
+}
+
+/**
+ * General/generic Views styling
+ */
+.view .views-field-picture {
+  float: left;
+  margin: 0 10px 5px 0;
+}
+
+.view.view-user-views .views-field-name a {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.view.view-user-views .views-field-created {
+  font-size: 12px;
 }
