@@ -416,12 +416,10 @@ input#edit-go {
   /* this button is hidden via JS but there's a flicker */
   display: none;
 }
-.block-custom-search-blocks {
-  float: right;
-  width: auto;
-  clear: none;
-}
 
+/**
+ * Search bar region
+ */
 #region-search-bar .section-nav .menu {
   float:left;
   border-right: 1px solid #dcdcdc;
@@ -433,13 +431,6 @@ input#edit-go {
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-#region-search-bar li.first.leaf {
-  width: 211px;
-  text-align: center;
-  margin-right: 10px;
-  border-right: 1px solid gainsboro;
 }
 
 #region-search-bar .section-nav .menu a,
@@ -464,29 +455,15 @@ input#edit-go {
   background-image: url("../images/nav-bg-selected38.png");
 
 }
-/* Utilizing CSS3 multiple bg images for the marketplace item */
-#region-search-bar .section-nav li.first.leaf a {
-  color: #FE892C;
-  text-transform: uppercase;
-  font-size: 1.5em;
-  background: url('../images/nav38px.png') 0 0 repeat-x;
-  background: url('../images/home.png') 7px 7px no-repeat, url('../images/nav38px.png') 0 0 repeat-x;
-}
-#region-search-bar .section-nav li.first.leaf a:active {
-  background-image: url("../images/nav-bg-selected38.png");
-  background-image: url('../images/home.png'), url("../images/nav-bg-selected38.png");
-}
-#region-search-bar .section-nav li.first.leaf a:hover {
-  background-image: url("../images/nav-bg-hover38.png");
-  background-image: url('../images/home.png'), url("../images/nav-bg-hover38.png");
+
+#region-search-bar .block-custom-search-blocks {
+  float: left;
+  width: 750px;
+  margin-bottom: 0;
+  clear: none;
+  padding-top: 10px;
 }
 
-#region-search-bar .search-form {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  width: 535px;
-}
 #region-search-bar input {
   margin: 0;
 }
@@ -498,7 +475,7 @@ input#edit-go {
   height: 38px;
   line-height: 38px;
   font-size: 15px;
-  width: 468px;
+  width: 700px;
   margin: 0 10px 0 0;
   font-style: italic;
   border: 1px solid #EEE;
