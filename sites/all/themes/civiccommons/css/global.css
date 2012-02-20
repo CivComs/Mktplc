@@ -335,7 +335,7 @@ ul.nice-menu:hover a.active {
   border-right: 0;
   border-bottom: 0;
   background-color: transparent;
-  padding-left: 42px;
+  padding-left: 28px;
 }
 .block-nice-menus:first-child ul.nice-menu a,
 .block-nice-menus:first-child ul.nice-menu a:visited {
