@@ -335,34 +335,28 @@ function cc_contexts_context_default_contexts() {
           'region' => 'content',
           'weight' => '-10',
         ),
+        'cc_wiki-cc_wiki_home' => array(
+          'module' => 'cc_wiki',
+          'delta' => 'cc_wiki_home',
+          'region' => 'content_doormat',
+          'weight' => '-10',
+        ),
         'views-interactions-block' => array(
           'module' => 'views',
           'delta' => 'interactions-block',
-          'region' => 'content_leftcolumn',
+          'region' => 'content_main_left',
           'weight' => '-10',
         ),
-        'views-applications-block_2' => array(
+        'views-applications-block_8' => array(
           'module' => 'views',
-          'delta' => 'applications-block_2',
-          'region' => 'content_leftcolumn',
-          'weight' => '-9',
-        ),
-        'views-interactions-block_1' => array(
-          'module' => 'views',
-          'delta' => 'interactions-block_1',
-          'region' => 'content_rightcolumn',
+          'delta' => 'applications-block_8',
+          'region' => 'content_main_middle',
           'weight' => '-10',
         ),
-        'views-applications-block_3' => array(
+        'views-user_views-block' => array(
           'module' => 'views',
-          'delta' => 'applications-block_3',
-          'region' => 'content_rightcolumn',
-          'weight' => '-9',
-        ),
-        'views-apps_browse_by-block_2' => array(
-          'module' => 'views',
-          'delta' => 'apps_browse_by-block_2',
-          'region' => 'content_main',
+          'delta' => 'user_views-block',
+          'region' => 'content_main_right',
           'weight' => '-10',
         ),
       ),
