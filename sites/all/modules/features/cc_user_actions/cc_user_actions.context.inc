@@ -23,6 +23,7 @@ function cc_user_actions_context_default_contexts() {
         '~applications' => '~applications',
         '~places' => '~places',
         '~places/*' => '~places/*',
+        '~<front>' => '~<front>',
       ),
     ),
   );
