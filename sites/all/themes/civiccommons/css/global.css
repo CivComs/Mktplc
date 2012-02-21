@@ -271,6 +271,9 @@ aside .content {
   margin: 0 0 3px -10px !important;
   padding: 16px 10px 0 0 !important;
 }
+.site-name-slogan {
+  display: none;
+}
 #region-top-menu {
   margin-right: 0;
   float: right;
