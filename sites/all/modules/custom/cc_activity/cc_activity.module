@@ -1,0 +1,121 @@
+<?php
+/**
+ * @file
+ * Main module file for the CC Activity module.
+ * 
+ * Custom module that pulls together activity 
+ * from the internet into content for the site.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function cc_activity_help($path, $arg) {
+  switch ($path) {
+    // Main module help for the CC Activity module
+    case 'admin/help#cc_activity':
+      return '<p>' . t('Custom module that pulls together activity from the internet into content for the site.') . '</p>';
+  
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function cc_activity_block_info() {
+  $blocks['cc_activity_press'] = array(
+    'info' => t('Press Highlights for Home Page'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cc_activity_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'cc_activity_press':
+      $block['subject'] = t('Civic Commons in the Press');
+      $block['content'] = array(
+        '#theme' => 'cc_activity_press_block',
+      );
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cc_activity_theme($existing, $type, $theme, $path) {
+  return array(
+    'cc_activity_press_block' => array(
+      'variables' => array(
+      ),
+    ),
+  );
+}
+
+/**
+ * Theme function for Press Activity block
+ */
+function theme_cc_activity_press_block($vars) {
+  $output = '';
+  
+  // Add CSS
+  drupal_add_css(drupal_get_path('module', 'cc_activity') . '/cc_activity.css');
+  
+  // Press items
+  $items = array();
+  $items[] = array(
+    'image' => 'press-frontpage-wsj.png',
+    'url' => 'http://blogs.wsj.com/digits/2011/05/27/app-watch-this-app-could-save-your-life/',
+    'track' => 'http://blogs.wsj.com',
+  );
+  $items[] = array(
+    'image' => 'press-frontpage-mashable.png',
+    'url' => 'http://mashable.com/2011/03/31/government-it-dashboard/',
+    'track' => 'http://mashable.com',
+  );
+  $items[] = array(
+    'image' => 'press-frontpage-radar.png',
+    'url' => 'http://radar.oreilly.com/m/2011/03/white-house-it-dashboard-open-source.html',
+    'track' => 'http://radar.oreilly.com',
+  );
+  $items[] = array(
+    'image' => 'press-frontpage-governing.png',
+    'url' => 'http://governingpeople.com/jefferysmith/21563/code-america-federal-government-release-federal-it-dashboard-public-use',
+    'track' => 'http://governingpeople.com',
+  );
+  $items[] = array(
+    'image' => 'press-frontpage-wired.png',
+    'url' => 'http://www.wired.com/magazine/2010/11/ff_311_new_york/',
+    'track' => 'http://www.wired.com',
+  );
+  
+  // Render items
+  $output .= '<div class="cc-activity-press-block">';
+  $onlick = "javascript:_gaq.push(['_trackEvent', 'outbound-article', '%s']);";
+  $imgpath = drupal_get_path('module', 'cc_activity') . '/img/';
+  foreach ($items as $k => $i) {
+    $output .=  '
+      <span class="cc-activity-press-block-item">
+        ' . l(
+          theme('image', array('path' => $imgpath . $i['image'])),
+          $i['url'],
+          array(
+            'html' => TRUE,
+            'attributes' => array(
+              'onclick' =>  sprintf($onclick, $i['track']),
+            ),
+          )) . '
+      </span>
+    ';
+  }
+  $output .= '</div>';
+  
+  return $output;
+}

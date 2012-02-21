@@ -1,0 +1,4 @@
+name = Activity
+description = Custom module that pulls together activity from the internet into content for the site.
+package = "Civic Commons Marketplace"
+core = 7.x

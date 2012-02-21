@@ -1,0 +1,11 @@
+/**
+ * @file
+ * Main CSS for CC Activity module.
+ */
+.cc-activity-press-block {
+  text-align: center;
+  padding: 10px;
+}
+.cc-activity-press-block-item {
+  padding: 10px;
+}
