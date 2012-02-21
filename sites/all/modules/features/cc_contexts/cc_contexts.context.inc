@@ -339,6 +339,12 @@ function cc_contexts_context_default_contexts() {
           'module' => 'cc_wiki',
           'delta' => 'cc_wiki_home',
           'region' => 'content_doormat',
+          'weight' => '-69',
+        ),
+        'cc_activity-cc_activity_press' => array(
+          'module' => 'cc_activity',
+          'delta' => 'cc_activity_press',
+          'region' => 'content_doormat',
           'weight' => '-10',
         ),
         'views-interactions-block' => array(

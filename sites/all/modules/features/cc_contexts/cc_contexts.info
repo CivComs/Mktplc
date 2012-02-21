@@ -1,4 +1,5 @@
 core = "7.x"
+dependencies[] = "cc_activity"
 dependencies[] = "cc_api"
 dependencies[] = "cc_application"
 dependencies[] = "cc_interaction"
