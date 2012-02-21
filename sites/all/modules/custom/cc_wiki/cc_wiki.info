@@ -1,0 +1,4 @@
+name = Wiki Integration
+description = Custom module to provide Wiki integration.
+package = "Civic Commons Marketplace"
+core = 7.x

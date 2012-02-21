@@ -1,0 +1,121 @@
+<?php
+/**
+ * @file
+ * Main module file for the CC Wiki module.
+ * 
+ * Custom module to provide Wiki integration.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function cc_wiki_help($path, $arg) {
+  switch ($path) {
+    // Main module help for the CC Wiki module
+    case 'admin/help#cc_wiki':
+      return '<p>' . t('Custom module to provide Wiki integration.') . '</p>';
+  
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function cc_wiki_block_info() {
+  $blocks['cc_wiki_home'] = array(
+    'info' => t('Wiki Highlight for Home Page'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cc_wiki_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'cc_wiki_home':
+      $block['subject'] = t('Civic Commons Wiki');
+      $block['content'] = array(
+        '#theme' => 'cc_wiki_home_block',
+      );
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cc_wiki_theme($existing, $type, $theme, $path) {
+  return array(
+    'cc_wiki_home_block' => array(
+      'variables' => array(
+      ),
+    ),
+  );
+}
+
+/**
+ * Theme function for Wiki Home block
+ */
+function theme_cc_wiki_home_block($vars) {
+  $output = '';
+  
+  // Add CSS
+  drupal_add_css(drupal_get_path('module', 'cc_wiki') . '/cc_wiki.css');
+  
+  $output .=  '
+    <div class="featured-column featured-column-first">
+      <h3><span class="mw-headline" id="Policy_.26_Guidelines">
+        ' . t('Policy & Guidelines') . '
+      </span></h3>
+      <ul>
+        <li><a href="http://wiki.civiccommons.org/Open_Governance_Policy" title="' . t('Open Governance Policy') . '">
+          ' . t('Open Governance Policy') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Open_Government_Guidebook" title="' . t('Open Government Guidebook') . '">
+          ' . t('Guidelines') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Open_Source_Policy" title="' . t('Open Source Policy') . '">
+          ' . t('Open Source Policy') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Open_Source_Case_Studies" title="' . t('Open Source Case Studies') . '">
+          ' . t('Open Source Case Studies') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Legal_and_Procurement_Issues_Guide" title="' . t('Legal and Procurement Issues Guide') . '">
+          ' . t('Legal and Procurement Issues Guide') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Social_Media_Policy" title="' . t('Social Media Policy') . '">
+          ' . t('Social Media Policy') . '</a></li>
+      </ul>
+    </div>
+    <div class="featured-column">
+      <h3><span class="mw-headline" id="Software_.26_Standards">
+        ' . t('Software & Standards') . '
+      </span></h3>
+      <ul>
+        <li><a href="http://wiki.civiccommons.org/Civic_Software" title="' . t('Open Source Apps') . '">
+          ' . t('Open Source Apps') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Data_Standards" title="' . t('Data Standards') . '">
+          ' . t('Data Standards') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Applications" title="' . t('Taxonomy of Apps & Standards') . '">
+          ' . t('Taxonomy of Apps & Standards') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Standards_Priorities" title="' . t('Standards Priorities') . '">
+          ' . t('Standards Priorities') . '</a></li>
+      </ul>
+    </div>
+    <div class="featured-column featured-column-last">
+      <h3><span class="mw-headline" id="Initiatives_.26_Organizations">
+        ' . t('Initiatives & Organizations') . '
+      </span></h3>
+      <ul>
+        <li><a href="http://wiki.civiccommons.org/Initiatives" title="' . t('Initiatives') . '">
+          ' . t('Open Government & Data Initiatives') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Organizations" title="' . t('Organizations') . '">
+          ' . t('Civic Technology Organizations') . '</a></li>
+        <li><a href="http://wiki.civiccommons.org/Organizations/Open_Source" title="' . t('Organizations/Open Source') . '">
+          ' . t('Government Open Source Organizations') . '</a></li>
+      </ul>
+    </div>
+  ';
+  
+  return $output;
+}

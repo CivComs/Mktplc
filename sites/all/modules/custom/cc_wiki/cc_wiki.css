@@ -1,0 +1,12 @@
+/**
+ * @file
+ * Main CSS for CC Wiki module.
+ */
+#block-cc-wiki-cc-wiki-home .featured-column {
+  float: left;
+  width: 300px;
+  margin-right: 20px;
+}
+#block-cc-wiki-cc-wiki-home .featured-column-last {
+  margin-right: 0;
+}
