@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC User Views feature.
+ */
+
+include_once('cc_user_views.features.inc');
