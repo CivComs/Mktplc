@@ -26,6 +26,9 @@ function cc_activity_block_info() {
   $blocks['cc_activity_press'] = array(
     'info' => t('Press Highlights for Home Page'),
   );
+  $blocks['cc_activity_recent'] = array(
+    'info' => t('Recent Internet Activity'),
+  );
 
   return $blocks;
 }
@@ -43,6 +46,13 @@ function cc_activity_block_view($delta = '') {
         '#theme' => 'cc_activity_press_block',
       );
       break;
+      
+    case 'cc_activity_recent':
+      $block['subject'] = t('Recent Activity');
+      $block['content'] = array(
+        '#theme' => 'cc_activity_recent_block',
+      );
+      break;
   }
   return $block;
 }
@@ -53,6 +63,10 @@ function cc_activity_block_view($delta = '') {
 function cc_activity_theme($existing, $type, $theme, $path) {
   return array(
     'cc_activity_press_block' => array(
+      'variables' => array(
+      ),
+    ),
+    'cc_activity_recent_block' => array(
       'variables' => array(
       ),
     ),
@@ -117,6 +131,66 @@ function theme_cc_activity_press_block($vars) {
   }
   $output .= '</div>';
   
+  return $output;
+}
+
+/**
+ * Theme function for Press Activity block
+ */
+function theme_cc_activity_recent_block($vars) {
+  $output = '';
+  $meta = cc_activity_feed_meta();
+  
+  // Add CSS
+  drupal_add_css(drupal_get_path('module', 'cc_activity') . '/cc_activity.css');
+  
+  // Vertical tabs stuff
+  drupal_add_js('misc/vertical-tabs.js');
+  drupal_add_css('misc/vertical-tabs.css');
+  
+  // Get the latest activity
+  $activities = array();
+  $result = db_query("SELECT * FROM {cc_activity} WHERE type != '' ORDER BY type ASC, id ASC");
+  foreach ($result as $record) {
+    $activities[$record->type][] = $record;
+  }
+  
+  // If no content, don't display the block.
+  if (empty($activities)) {
+    return $output;
+  }
+
+  // Create output
+  $output .= '<div class="cc-activity-recent vertical-tabs-panes">';
+  foreach ($activities as $t => $type) {
+    $output .= '
+      <fieldset>
+        <legend>' . $meta[$t]['name'] . '</legend>
+        <div class="cc-activity-recent-' . $t . '-container">
+          <h2>' . t('From !link', array('!link' => l($meta[$t]['name'], $meta[$t]['name_url']))) . '</h2>
+    ';
+    
+    $count = 0;
+    foreach ($type as $k => $a) {
+      $count++;
+      if ($count <= $meta[$t]['display']) {
+        $output .= '
+          <div class="cc-activity-recent-item cc-activity-recent-item-' . $a->id . '">
+            <h3>' . l($a->title, $a->original_url) . '</h3>
+            <div class="cc-activity-recent-item' . $a->id . '-description">
+              ' . filter_xss_admin($a->content) . '
+            </div>
+          </div>
+        ';
+      }
+    }
+    $output .= '
+        </div>
+      </fieldset>
+    ';
+  }
+  
+  $output .= '</div>';
   return $output;
 }
 
@@ -221,7 +295,7 @@ function cc_activity_cron() {
 }
 
 /**
- * 
+ * Define the sources and categories of feeds for CC.
  */
 function cc_activity_feed_meta() {
   return array(
@@ -231,13 +305,15 @@ function cc_activity_feed_meta() {
       'type' => 'tumblr',
       'search_url' => 'tumblr.com',
       'feed' => 'http://civiccommons.tumblr.com/rss',
+      'display' => 3,
     ),
     'open311' => array(
-      'name' => t('Open311'),
+      'name' => t('Open311 Blog'),
       'name_url' => 'http://open311.org/',
       'type' => 'open311',
       'search_url' => 'open311.org',
       'feed' => 'http://open311.org/blog/feed/rss/',
+      'display' => 8,
     ),
     'cc_discuss' => array(
       'name' => t('Civic Commons Discussion Group'),
@@ -245,6 +321,7 @@ function cc_activity_feed_meta() {
       'type' => 'cc_discuss',
       'search_url' => 'groups.google.com/a/civiccommons.org',
       'feed' => 'http://groups.google.com/a/civiccommons.org/group/discuss/feed/rss_v2_0_topics.xml',
+      'display' => 8,
     ),
     'cc_wiki' => array(
       'name' => t('Civic Commons Wiki'),
@@ -252,6 +329,7 @@ function cc_activity_feed_meta() {
       'type' => 'cc_wiki',
       'search_url' => 'wiki.civiccommons',
       'feed' => 'http://wiki.civiccommons.org/index.php?namespace=0&title=Special%3ARecentChanges&feed=rss',
+      'display' => 8,
     ),
     'twitter' => array(
       'name' => t('Twitter'),
@@ -259,6 +337,7 @@ function cc_activity_feed_meta() {
       'type' => 'twitter',
       'search_url' => 'twitter.com',
       'feed' => 'http://search.twitter.com/search.rss?q=CivComs&include_entities=true&result_type=mixed',
+      'display' => 8,
     ),
   );
 }

@@ -9,3 +9,20 @@
 .cc-activity-press-block-item {
   padding: 10px;
 }
+
+.cc-activity-recent h2 {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+  text-align: right;
+}
+.cc-activity-recent h3 {
+  font-size: 1.25;
+}
+.cc-activity-recent h3 a {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.cc-activity-recent-item {
+  margin-bottom: 1.5em;
+}
