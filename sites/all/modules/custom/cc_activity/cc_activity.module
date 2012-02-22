@@ -201,3 +201,64 @@ function cc_activity_feeds_plugins() {
   );
   return $info; 
 }
+
+/**
+ * Implements hook_cron().
+ */
+function cc_activity_cron() {
+  // Update the cc_activity table with a more meaningful type
+  // as this is no possible to set with Feeds.
+  $meta = cc_activity_feed_meta();
+  foreach ($meta as $m => $type) {
+    $count = db_update('cc_activity')
+      ->fields(array(
+        'type' => $type['type'],
+      ))
+      ->condition('type', '')
+      ->condition('original_url', '%' . $type['search_url'] . '%', 'LIKE')
+      ->execute();
+  }
+}
+
+/**
+ * 
+ */
+function cc_activity_feed_meta() {
+  return array(
+    'tumblr' => array(
+      'name' => t('Tumblr'),
+      'name_url' => 'http://civiccommons.tumblr.com/',
+      'type' => 'tumblr',
+      'search_url' => 'tumblr.com',
+      'feed' => 'http://civiccommons.tumblr.com/rss',
+    ),
+    'open311' => array(
+      'name' => t('Open311'),
+      'name_url' => 'http://open311.org/',
+      'type' => 'open311',
+      'search_url' => 'open311.org',
+      'feed' => 'http://open311.org/blog/feed/rss/',
+    ),
+    'cc_discuss' => array(
+      'name' => t('Civic Commons Discussion Group'),
+      'name_url' => 'http://groups.google.com/a/civiccommons.org/group/discuss',
+      'type' => 'cc_discuss',
+      'search_url' => 'groups.google.com/a/civiccommons.org',
+      'feed' => 'http://groups.google.com/a/civiccommons.org/group/discuss/feed/rss_v2_0_topics.xml',
+    ),
+    'cc_wiki' => array(
+      'name' => t('Civic Commons Wiki'),
+      'name_url' => 'http://wiki.civiccommons.org/',
+      'type' => 'cc_wiki',
+      'search_url' => 'wiki.civiccommons',
+      'feed' => 'http://wiki.civiccommons.org/index.php?namespace=0&title=Special%3ARecentChanges&feed=rss',
+    ),
+    'twitter' => array(
+      'name' => t('Twitter'),
+      'name_url' => 'http://twitter.com/civcoms',
+      'type' => 'twitter',
+      'search_url' => 'twitter.com',
+      'feed' => 'http://search.twitter.com/search.rss?q=CivComs&include_entities=true&result_type=mixed',
+    ),
+  );
+}
