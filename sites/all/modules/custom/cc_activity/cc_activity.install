@@ -1,0 +1,48 @@
+<?php
+/**
+ * @file
+ * Install file for the CC Activity module.
+ * 
+ * Handles schema for CC Activity Entity type.
+ */
+ 
+/**
+ * Implements hook_schema().
+ */
+function cc_activity_schema() {
+  $schema['cc_activity'] = array(
+    'description' => 'CC Activity table to hold activity from the interwebs.', 
+    'fields' => array(
+      'id' => array(
+        'description' => 'The primary identifier.', 
+        'type' => 'serial', 
+        'unsigned' => TRUE, 
+        'not null' => TRUE,
+      ), 
+      'type' => array(
+        'description' => 'The type of this content, e.g. twitter.', 
+        'type' => 'varchar', 
+        'length' => 32, 
+        'not null' => TRUE, 
+        'default' => '',
+      ), 
+      'url' => array(
+        'description' => 'Original content location.',
+        'type' => 'varchar', 
+        'length' => 512, 
+        'not null' => TRUE, 
+        'default' => '',
+      ), 
+      'content' => array(
+        'description' => 'The content of the data.', 
+        'type' => 'text',
+        'size' => 'medium',
+      ),
+    ), 
+    'indexes' => array(
+      'cc_activity_type_index' => array('type'),
+    ),
+    'primary key' => array('id'),
+  );
+  return $schema;
+}

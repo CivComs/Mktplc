@@ -119,3 +119,67 @@ function theme_cc_activity_press_block($vars) {
   
   return $output;
 }
+
+/**
+ * Implements hook_entity_info().
+ */
+function cc_activity_entity_info() {
+  return array(
+    'cc_activity' => array(
+      'label' => t('CC Activity'),
+      'plural label' => t('CC Activities'),
+      'description' => t('Activities around the internets concerning CC.'),
+      'entity class' => 'Entity',
+      'controller class' => 'EntityAPIController',
+      'base table' => 'cc_activity',
+      'access callback' => 'cc_activity_entity_access',
+      'module' => 'profile2',
+      'entity keys' => array(
+        'id' => 'id',
+      ),
+      'fieldable' => TRUE,
+      'admin ui' => array(
+        'path' => 'admin/structure/cc_activity',
+      ),
+      'label callback' => 'entity_class_label',
+      'uri callback' => 'entity_class_uri',
+    ),
+  );
+}
+
+/**
+ * Access callback for the entity API.
+ */
+function cc_activity_entity_access($op, $type = NULL, $account = NULL) {
+  return user_access('administer site configuration', $account);
+}
+
+/**
+ * Loads a CC ACtivity object
+ */
+function cc_activity_load($id) {
+  return entity_load_single('cc_activity', $id);
+}
+
+/**
+ * Deletes a CC ACtivity object
+ */
+function cc_activity_save($activity) {
+  return entity_save('cc_activity', $activity);
+}
+
+/**
+ * Deletes a CC ACtivity object
+ */
+function cc_activity_delete($id) {
+  return entity_delete('cc_activity', $id);
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function cc_activity_ctools_plugin_api($owner, $api) {
+  if ($owner == 'feeds' && $api == 'plugins') {
+    return array('version' => 1);
+  }
+}
