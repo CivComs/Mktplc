@@ -7,6 +7,14 @@
  */
  
 /**
+ * Implements hook_enable().
+ */
+function cc_activity_enable() {
+  // Clear the cache to display in Feeds as available plugin.
+  cache_clear_all('plugins:feeds:plugins', 'cache');
+}
+ 
+/**
  * Implements hook_schema().
  */
 function cc_activity_schema() {
@@ -26,8 +34,15 @@ function cc_activity_schema() {
         'not null' => TRUE, 
         'default' => '',
       ), 
-      'url' => array(
+      'original_url' => array(
         'description' => 'Original content location.',
+        'type' => 'varchar', 
+        'length' => 512, 
+        'not null' => TRUE, 
+        'default' => '',
+      ), 
+      'title' => array(
+        'description' => 'The title of the activity data.',
         'type' => 'varchar', 
         'length' => 512, 
         'not null' => TRUE, 

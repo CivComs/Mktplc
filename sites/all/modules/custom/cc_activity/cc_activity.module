@@ -183,3 +183,21 @@ function cc_activity_ctools_plugin_api($owner, $api) {
     return array('version' => 1);
   }
 }
+
+/**
+ * Implementation of hook_feeds_plugins().
+ */
+function cc_activity_feeds_plugins() {
+  $info = array();
+  $info['FeedsActivityProcessor'] = array(
+    'name' => 'Activity processor',
+    'description' => 'Processes data into the activity data table.',
+    'handler' => array(
+      'parent' => 'FeedsProcessor',
+      'class' => 'FeedsActivityProcessor',
+      'file' => 'FeedsActivityProcessor.inc',
+      'path' => drupal_get_path('module', 'cc_activity') . '/plugins',
+    ),
+  );
+  return $info; 
+}

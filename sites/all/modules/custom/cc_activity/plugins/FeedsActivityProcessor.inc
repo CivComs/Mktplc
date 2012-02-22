@@ -8,7 +8,7 @@
 /**
  * Feeds processor plugin. Create CC Activity data from feed items.
  */
-class FeedsUserProcessor extends FeedsProcessor {
+class FeedsActivityProcessor extends FeedsProcessor {
   /**
    * Define entity type.
    */
@@ -45,8 +45,8 @@ class FeedsUserProcessor extends FeedsProcessor {
    * Validates a user account.
    */
   protected function entityValidate($activity) {
-    if (empty($activity->id)) {
-      throw new FeedsValidationException(t('Activity not validated.'));
+    if (empty($activity->content)) {
+      throw new FeedsValidationException(t('Activity has no content.'));
     }
   }
 
@@ -62,7 +62,7 @@ class FeedsUserProcessor extends FeedsProcessor {
    */
   protected function entityDeleteMultiple($activities) {
     foreach ($activities as $activity) {
-      cc_activity_delete($uid);
+      cc_activity_delete($activity);
     }
   }
 
@@ -101,7 +101,7 @@ class FeedsUserProcessor extends FeedsProcessor {
         'description' => t('Unique ID of the Activity.'),
         'optional_unique' => TRUE,
        ),
-      'url' => array(
+      'original_url' => array(
         'name' => t('Activity URL'),
         'description' => t('URL of original content.'),
         'optional_unique' => TRUE,
@@ -110,9 +110,13 @@ class FeedsUserProcessor extends FeedsProcessor {
         'name' => t('Activity Type'),
         'description' => t('The type of the activity, e.g. twitter.'),
        ),
+      'title' => array(
+        'name' => t('Activity Title'),
+        'description' => t('The activity feed title.'),
+      ),
       'content' => array(
         'name' => t('Activity Content'),
-        'description' => t('The unencrypted user password.'),
+        'description' => t('The content from the activity feed.'),
       ),
     );
 
