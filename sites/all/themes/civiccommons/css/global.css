@@ -1427,7 +1427,10 @@ body.front #zone-content .region-content {
 }
 
 .beta .build {
-  margin-left: 217px;
+  /*margin-left: 217px;*/
+  float: right;
+  margin-right: 46px;
+  margin-top: -4px;
 }
 
 .beta .red {
