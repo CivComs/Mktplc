@@ -1,5 +1,4 @@
 <?php
-// $Id: captcha.install,v 1.11.2.8 2011/02/03 23:43:56 soxofaan Exp $
 
 /**
  * @file
@@ -135,27 +134,34 @@ function captcha_requirements($phase) {
  */
 function captcha_install() {
   $t = get_t();
-  drupal_install_schema('captcha');
-
   // Insert some default CAPTCHA points.
   $form_ids = array(
-    'comment_form',
-    'contact_mail_user', 'contact_mail_page',
-    'user_register', 'user_pass', 'user_login', 'user_login_block',
+    'contact_site_form', 'contact_personal_form',
+    'user_register_form', 'user_pass', 'user_login', 'user_login_block',
     'forum_node_form'
   );
+  // Add form_ids of all currently known node types too.
+  foreach (node_type_get_names() as $type => $name) {
+    $form_ids[] = 'comment_node_' . $type . '_form';
+  }
   foreach ($form_ids as $form_id) {
-    db_query("INSERT INTO {captcha_points} (form_id, module, captcha_type) VALUES ('%s', NULL, NULL)", $form_id);
+    db_insert('captcha_points')
+      ->fields(array(
+        'form_id' => $form_id,
+        'module' => NULL,
+        'captcha_type' => NULL,
+      ))
+      ->execute();
   }
 
   // Be friendly to your users: what to do after install?
   drupal_set_message($t('You can now <a href="!captcha_admin">configure the CAPTCHA module</a> for your site.',
-    array('!captcha_admin' => url('admin/user/captcha'))), 'status');
+    array('!captcha_admin' => url('admin/config/people/captcha'))), 'status');
 
   // Explain to users that page caching may be disabled.
-  if (variable_get('cache', CACHE_DISABLED) != CACHE_DISABLED) {
+  if (variable_get('cache', 0) != 0) {
     drupal_set_message($t('Note that the CAPTCHA module disables <a href="!performance_admin">page caching</a> of pages that include a CAPTCHA challenge.',
-      array('!performance_admin' => url('admin/settings/performance'))), 'warning');
+      array('!performance_admin' => url('admin/config/development/performance'))), 'warning');
   }
 
 }
@@ -325,6 +331,7 @@ function captcha_update_6202() {
 }
 
 
+
 /**
  * Implementation of hook_update_N()
  * Rename the type field to captcha_type in captcha_points.
@@ -333,4 +340,53 @@ function captcha_update_6203() {
   $ret = array();
   db_change_field($ret, 'captcha_points', 'type', 'captcha_type', array('type' => 'varchar', 'length' => 64));
   return $ret;
+}
+
+
+/**
+ * Migrate form configuration for changed form ids in Drupal 7.
+ */
+function captcha_update_7000() {
+  // 'user_register' became 'user_register_form'.
+  db_update('captcha_points')
+    ->fields(array('form_id' => 'user_register_form'))
+    ->condition('form_id', 'user_register')
+    ->execute();
+  // 'contact_mail_page' became 'contact_site_form'.
+  db_update('captcha_points')
+    ->fields(array('form_id' => 'contact_site_form'))
+    ->condition('form_id', 'contact_mail_page')
+    ->execute();
+  // 'contact_mail_user' became 'contact_personal_form'.
+  db_update('captcha_points')
+    ->fields(array('form_id' => 'contact_personal_form'))
+    ->condition('form_id', 'contact_mail_user')
+    ->execute();
+
+  // The D6-style comment_form form_id is split per node type
+  // in D7: comment_node_{type}_form, e.g. comment_node_page_form.
+  // Get the current settings for 'comment_form'.
+  $captcha_point = db_query(
+    "SELECT * FROM {captcha_points} WHERE form_id = :comment_form_id",
+    array(':comment_form_id' => 'comment_form')
+  )->fetchObject();
+  if ($captcha_point !== FALSE) {
+    // Create entries for D7-style node form IDs.
+    $module = $captcha_point->module;
+    $captcha_type = $captcha_point->captcha_type;
+    foreach (node_type_get_names() as $type => $name) {
+      $form_id = 'comment_node_' . $type . '_form';
+      db_insert('captcha_points')
+        ->fields(array(
+          'form_id' => $form_id,
+          'module' => $module,
+          'captcha_type' => $captcha_type,
+        ))
+        ->execute();
+    }
+    // Delete outdated entry.
+    db_delete('captcha_points')
+      ->condition('form_id', 'comment_form')
+      ->execute();
+  }
 }

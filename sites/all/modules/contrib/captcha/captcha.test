@@ -1,5 +1,4 @@
 <?php
-// $Id: captcha.test,v 1.14.2.15 2010/12/30 00:22:56 soxofaan Exp $
 
 /**
  * @file
@@ -14,6 +13,7 @@
 // TODO: test if entry on status report (Already X blocked form submissions) works
 // TODO: test space ignoring validation of image CAPTCHA
 
+// TODO: refactor the 'comment_body[' . LANGUAGE_NONE . '][0][value]' stuff
 
 // Some constants for better reuse.
 define('CAPTCHA_WRONG_RESPONSE_ERROR_MESSAGE',
@@ -50,12 +50,12 @@ abstract class CaptchaBaseWebTestCase extends DrupalWebTestCase {
    * Form ID of comment form on standard (page) node
    * @var string
    */
-  const COMMENT_FORM_ID = 'comment_form';
+  const COMMENT_FORM_ID = 'comment_node_page_form';
 
   /**
    * Drupal path of the (general) CAPTCHA admin page
    */
-  const CAPTCHA_ADMIN_PATH = 'admin/user/captcha';
+  const CAPTCHA_ADMIN_PATH = 'admin/config/people/captcha';
 
 
   function setUp() {
@@ -65,7 +65,7 @@ abstract class CaptchaBaseWebTestCase extends DrupalWebTestCase {
 
     // Create a normal user.
     $permissions = array(
-      'access comments', 'post comments', 'post comments without approval',
+      'access comments', 'post comments', 'skip comment approval',
       'access content', 'create page content', 'edit own page content',
     );
     $this->normal_user = $this->drupalCreateUser($permissions);
@@ -76,6 +76,9 @@ abstract class CaptchaBaseWebTestCase extends DrupalWebTestCase {
     $permissions[] = 'administer permissions';
     $permissions[] = 'administer content types';
     $this->admin_user = $this->drupalCreateUser($permissions);
+
+    // Put comments on page nodes on a separate page (default in D7: below post).
+    variable_set('comment_form_location_page', COMMENT_FORM_SEPARATE_PAGE);
 
   }
 
@@ -123,7 +126,7 @@ abstract class CaptchaBaseWebTestCase extends DrupalWebTestCase {
   protected function createNodeWithCommentsEnabled($type='page') {
     $node_settings = array(
       'type' => $type,
-      'comment' => COMMENT_NODE_READ_WRITE,
+      'comment' => COMMENT_NODE_OPEN,
     );
     $node = $this->drupalCreateNode($node_settings);
     return $node;
@@ -135,7 +138,7 @@ abstract class CaptchaBaseWebTestCase extends DrupalWebTestCase {
   protected function getCommentFormValues() {
     $edit = array(
       'subject' => 'comment_subject ' . $this->randomName(32),
-      'comment' => 'comment_body ' . $this->randomName(256),
+      'comment_body[' . LANGUAGE_NONE . '][0][value]' => 'comment_body ' . $this->randomName(256),
     );
     return $edit;
   }
@@ -146,7 +149,7 @@ abstract class CaptchaBaseWebTestCase extends DrupalWebTestCase {
   protected function getNodeFormValues() {
     $edit = array(
       'title' => 'node_title ' . $this->randomName(32),
-      'body' => 'node_body ' . $this->randomName(256),
+      'body[' . LANGUAGE_NONE . '][0][value]' => 'node_body ' . $this->randomName(256),
     );
     return $edit;
   }
@@ -174,7 +177,7 @@ abstract class CaptchaBaseWebTestCase extends DrupalWebTestCase {
    */
   protected function getMathCaptchaSolutionFromForm() {
     // Get the math challenge.
-    $elements = $this->xpath('//div[@id="edit-captcha-response-wrapper"]/span[@class="field-prefix"]');
+    $elements = $this->xpath('//div[@class="form-item form-type-textfield form-item-captcha-response"]/span[@class="field-prefix"]');
     $challenge = (string) $elements[0];
     // Extract terms and operator from challenge.
     $matches = array();
@@ -196,9 +199,9 @@ abstract class CaptchaBaseWebTestCase extends DrupalWebTestCase {
     $edit = array(
       '1[access comments]' => true,
       '1[post comments]' => true,
-      '1[post comments without approval]' => true,
+      '1[skip comment approval]' => true,
     );
-    $this->drupalPost('admin/user/permissions', $edit, 'Save permissions');
+    $this->drupalPost('admin/people/permissions', $edit, 'Save permissions');
     $this->assertText('The changes have been saved.');
     // Log admin out
     $this->drupalLogout();
@@ -267,7 +270,7 @@ class CaptchaTestCase extends CaptchaBaseWebTestCase {
    */
   protected function assertCommentPosting($captcha_response, $should_pass, $message) {
     // Make sure comments on pages can be saved directely without preview.
-    variable_set('comment_preview_page', COMMENT_PREVIEW_OPTIONAL);
+    variable_set('comment_preview_page', DRUPAL_OPTIONAL);
 
     // Create a node with comments enabled.
     $node = $this->createNodeWithCommentsEnabled();
@@ -275,7 +278,7 @@ class CaptchaTestCase extends CaptchaBaseWebTestCase {
     // Post comment on node.
     $edit = $this->getCommentFormValues();
     $comment_subject = $edit['subject'];
-    $comment_body = $edit['comment'];
+    $comment_body = $edit['comment_body[' . LANGUAGE_NONE . '][0][value]'];
     $edit['captcha_response'] = $captcha_response;
     $this->drupalPost('comment/reply/' . $node->nid, $edit, t('Save'));
 
@@ -285,7 +288,7 @@ class CaptchaTestCase extends CaptchaBaseWebTestCase {
       // Get node page and check that comment shows up.
       $this->drupalGet('node/' . $node->nid);
       $this->assertText($comment_subject, $message .' Comment should show up on node page.', 'CAPTCHA');
-      $this->assertText($comment_body, $message .' Comment should show up on node page.', 'CAPTCHA');
+      $this->assertText($comment_body, $message . ' Comment should show up on node page.', 'CAPTCHA');
     }
     else {
       // Check for error message.
@@ -293,7 +296,7 @@ class CaptchaTestCase extends CaptchaBaseWebTestCase {
       // Get node page and check that comment is not present.
       $this->drupalGet('node/' . $node->nid);
       $this->assertNoText($comment_subject, $message .' Comment should not show up on node page.', 'CAPTCHA');
-      $this->assertNoText($comment_body, $message .' Comment should not show up on node page.', 'CAPTCHA');
+      $this->assertNoText($comment_body, $message . ' Comment should not show up on node page.', 'CAPTCHA');
     }
   }
 
@@ -464,7 +467,7 @@ class CaptchaAdminTestCase extends CaptchaBaseWebTestCase {
       t('Check CAPTCHA setting for form: expected: @expected, received: @received.',
       array('@expected' => var_export($challenge_type, TRUE), '@received' => var_export($result, TRUE))),
       'CAPTCHA');
-      }
+  }
 
   /**
    * Testing of the CAPTCHA administration links.
@@ -599,7 +602,7 @@ class CaptchaAdminTestCase extends CaptchaBaseWebTestCase {
    */
   function testCaptchaPlacementCacheFlushing() {
     // Set CAPTCHA on user register form.
-    captcha_set_form_id_setting('user_register', 'captcha/Math');
+    captcha_set_form_id_setting('user_register_form', 'captcha/Math');
     // Visit user register form to fill the CAPTCHA placement cache.
     $this->drupalGet('user/register');
     // Check if there is CAPTCHA placement cache.
@@ -619,10 +622,10 @@ class CaptchaAdminTestCase extends CaptchaBaseWebTestCase {
    * @return stdClass object
    */
   private function getCaptchaPointSettingFromDatabase($form_id) {
-    $result = db_fetch_object(db_query(
-      "SELECT * FROM {captcha_points} WHERE form_id='%s'",
-      array($form_id)
-    ));
+    $result = db_query(
+      "SELECT * FROM {captcha_points} WHERE form_id = :form_id",
+      array(':form_id' => $form_id)
+    )->fetchObject();
     return $result;
   }
 
@@ -788,7 +791,7 @@ class CaptchaPersistenceTestCase extends CaptchaBaseWebTestCase {
     captcha_set_form_id_setting('user_login', 'captcha/Test');
     $this->drupalGet('user');
     $this->assertCaptchaPresence(TRUE);
-    captcha_set_form_id_setting('user_register', 'captcha/Test');
+    captcha_set_form_id_setting('user_register_form', 'captcha/Test');
     $this->drupalGet('user/register');
     $this->assertCaptchaPresence(TRUE);
   }

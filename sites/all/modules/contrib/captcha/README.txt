@@ -1,5 +1,3 @@
-// $Id: README.txt,v 1.20.2.1 2010/07/05 21:37:21 soxofaan Exp $
-
 Readme file for the CAPTCHA module for Drupal
 ---------------------------------------------
 
@@ -26,7 +24,7 @@ Conflicts/known issues:
   error: unknown CAPTCHA session ID'.
 
 Configuration:
-  The configuration page is at admin/user/captcha,
+  The configuration page is at admin/config/people/captcha,
   where you can configure the CAPTCHA module
   and enable challenges for the desired forms.
   You can also tweak the image CAPTCHA to your liking.

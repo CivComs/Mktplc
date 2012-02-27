@@ -1,12 +1,18 @@
-; $Id: captcha.info,v 1.7 2008/02/17 12:49:24 soxofaan Exp $
 name = CAPTCHA
 description = Base CAPTCHA module for adding challenges to arbitrary forms.
 package = "Spam control"
-core = 6.x
+core = 7.x
+configure = admin/config/people/captcha
 
-; Information added by drupal.org packaging script on January 1, 1970 - 00:00
-version = "6.x-2.4"
-core = "6.x"
+files[] = captcha.module
+files[] = captcha.inc
+files[] = captcha.admin.inc
+files[] = captcha.install
+files[] = captcha.test
+
+; Information added by drupal.org packaging script on 2012-01-02
+version = "7.x-1.0-beta2"
+core = "7.x"
 project = "captcha"
-datestamp = "1297123619"
+datestamp = "1325504137"
 

@@ -153,6 +153,29 @@
  * @endcode
  * NOTE: MySQL and SQLite's definition of a schema is a database.
  *
+ * Advanced users can add or override initial commands to execute when
+ * connecting to the database server, as well as PDO connection settings. For
+ * example, to enable MySQL SELECT queries to exceed the max_join_size system
+ * variable, and to reduce the database connection timeout to 5 seconds:
+ *
+ * @code
+ * $databases['default']['default'] = array(
+ *   'init_commands' => array(
+ *     'big_selects' => 'SET SQL_BIG_SELECTS=1',
+ *   ),
+ *   'pdo' => array(
+ *     PDO::ATTR_TIMEOUT => 5,
+ *   ),
+ * );
+ * @endcode
+ *
+ * WARNING: These defaults are designed for database portability. Changing them
+ * may cause unexpected behavior, including potential data loss.
+ *
+ * @see DatabaseConnection_mysql::__construct
+ * @see DatabaseConnection_pgsql::__construct
+ * @see DatabaseConnection_sqlite::__construct
+ *
  * Database configuration format:
  * @code
  *   $databases['default']['default'] = array(
@@ -177,7 +200,21 @@
  *   );
  * @endcode
  */
-$databases = array();
+$databases = array (
+  'default' => 
+  array (
+    'default' => 
+    array (
+      'database' => 'civic.lo',
+      'username' => 'root',
+      'password' => '',
+      'host' => 'localhost',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+    ),
+  ),
+);
 
 /**
  * Access control for update.php script.
@@ -209,7 +246,7 @@ $update_free_access = FALSE;
  *   $drupal_hash_salt = file_get_contents('/home/example/salt.txt');
  *
  */
-$drupal_hash_salt = '';
+$drupal_hash_salt = '0MsFlvkkhwlBBeO9Gh0xk8sZqBXMW6S-HwzJ0jMqumg';
 
 /**
  * Base URL (optional).
@@ -288,7 +325,7 @@ ini_set('session.cookie_lifetime', 2000000);
  * between your various domains. Make sure to always start the $cookie_domain
  * with a leading dot, as per RFC 2109.
  */
-# $cookie_domain = '.example.com';
+ $cookie_domain = '.civic.lo';
 
 /**
  * Variable overrides:
@@ -487,13 +524,3 @@ $conf['404_fast_html'] = '<html xmlns="http://www.w3.org/1999/xhtml"><head><titl
  * Remove the leading hash signs to disable.
  */
 # $conf['allow_authorize_operations'] = FALSE;
-
-/**
- * Smart start:
- *
- * If you would prefer to be redirected to the installation system when a
- * valid settings.php file is present but no tables are installed, remove
- * the leading hash sign below.
- */
-# $conf['pressflow_smart_start'] = TRUE;
-

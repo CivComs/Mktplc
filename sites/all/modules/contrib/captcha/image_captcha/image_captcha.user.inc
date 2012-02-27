@@ -1,5 +1,4 @@
 <?php
-// $Id: image_captcha.user.inc,v 1.25.2.1 2010/11/29 23:33:37 soxofaan Exp $
 
 /**
  * @file
@@ -13,12 +12,19 @@
  * Menu callback function that generates the CAPTCHA image.
  */
 function image_captcha_image($captcha_sid=NULL) {
+  // If output buffering is on: discard current content and disable further buffering
+  if (ob_get_level()) {
+    ob_end_clean();
+  }
+  
   if (!$captcha_sid) {
     exit();
   }
 
   // Get solution (the code to show).
-  $code = db_result(db_query("SELECT solution FROM {captcha_sessions} WHERE csid = %d", (int)($captcha_sid)));
+  $code = db_query("SELECT solution FROM {captcha_sessions} WHERE csid = :csid",
+    array(':csid' => $captcha_sid)
+  )->fetchField();
 
   // Only generate captcha if code exists in the session.
   if ($code !== FALSE) {
@@ -32,11 +38,11 @@ function image_captcha_image($captcha_sid=NULL) {
     // Send the image resource as an image file to the client.
     $file_format = variable_get('image_captcha_file_format', IMAGE_CAPTCHA_FILE_FORMAT_JPG);
     if ($file_format == IMAGE_CAPTCHA_FILE_FORMAT_JPG) {
-      drupal_set_header("Content-type: image/jpeg");
+      drupal_add_http_header('Content-Type', 'image/jpeg');
       imagejpeg($image);
     }
     else {
-      drupal_set_header("Content-type: image/png");
+      drupal_add_http_header('Content-Type', 'image/png');
       imagepng($image);
     }
     // Clean up the image resource.
@@ -62,6 +68,7 @@ function _image_captcha_hex_to_rgb($hex) {
   return $rgb;
 }
 
+
 /**
  * Base function for generating a image CAPTCHA.
  */
@@ -71,11 +78,7 @@ function _image_captcha_generate_image($code) {
 
   // get other settings
   $font_size = (int) variable_get('image_captcha_font_size', 30);
-  $character_spacing = (float) variable_get('image_captcha_character_spacing', '1.2');
-  $characters = _image_captcha_utf8_split($code);
-  $character_quantity = count($characters);
-  $width = $character_spacing * $font_size * $character_quantity;
-  $height = 2 * $font_size;
+  list($width, $height) = _image_captcha_image_size($code);
 
   // create image resource
   $image = imagecreatetruecolor($width, $height);
@@ -93,12 +96,8 @@ function _image_captcha_generate_image($code) {
   }
   imagefilledrectangle($image, 0, 0, $width, $height, $background_color);
 
-  // Do we need to draw in RTL mode?
-  global $language;
-  $rtl = $language->direction && ((bool) variable_get('image_captcha_rtl_support', 0));
-
   // draw text
-  $result = _image_captcha_image_generator_print_string($image, $width, $height, $fonts, $font_size, $code, $rtl);
+  $result = _image_captcha_image_generator_print_string($image, $width, $height, $fonts, $font_size, $code);
   if (!$result) {
     return FALSE;
   }
@@ -231,7 +230,7 @@ function _image_captcha_image_generator_add_dots(&$image, $width, $height, $colo
 /**
  * Helper function for drawing text on the image.
  */
-function _image_captcha_image_generator_print_string(&$image, $width, $height, $fonts, $font_size, $text, $rtl=FALSE) {
+function _image_captcha_image_generator_print_string(&$image, $width, $height, $fonts, $font_size, $text) {
   // get characters
   $characters = _image_captcha_utf8_split($text);
   $character_quantity = count($characters);
@@ -261,9 +260,6 @@ function _image_captcha_image_generator_print_string(&$image, $width, $height, $
   foreach ($characters as $c => $character) {
     // initial position of character: in the center of its cage
     $center_x = ($c + 0.5) * $ccage_width;
-    if ($rtl) {
-      $center_x = $width - $center_x;
-    }
     $center_y = 0.5 * $height;
 
     // Pick a random font from the list.
@@ -271,7 +267,7 @@ function _image_captcha_image_generator_print_string(&$image, $width, $height, $
 
     // Get character dimensions for TrueType fonts.
     if ($font != 'BUILTIN') {
-      $bbox = imagettfbbox($font_size, 0, realpath($font), $character);
+      $bbox = imagettfbbox($font_size, 0, drupal_realpath($font), $character);
       // In very rare cases with some versions of the GD library, the x-value
       // of the left side of the bounding box as returned by the first call of
       // imagettfbbox is corrupt (value -2147483648 = 0x80000000).
@@ -279,7 +275,7 @@ function _image_captcha_image_generator_print_string(&$image, $width, $height, $
       // can be used as workaround.
       // This issue is discussed at http://drupal.org/node/349218.
       if ($bbox[2] < 0) {
-        $bbox = imagettfbbox($font_size, 0, realpath($font), $character);
+        $bbox = imagettfbbox($font_size, 0, drupal_realpath($font), $character);
       }
     }
     else {
@@ -326,7 +322,7 @@ function _image_captcha_image_generator_print_string(&$image, $width, $height, $
       imagestring($image, 5, $pos_x, $pos_y, $character, $color);
     }
     else {
-      imagettftext($image, $font_size, $angle, $pos_x, $pos_y, $color, realpath($font), $character);
+      imagettftext($image, $font_size, $angle, $pos_x, $pos_y, $color, drupal_realpath($font), $character);
     }
 
     // For debugging purposes: draw character bounding box (only valid when rotation is disabled).
