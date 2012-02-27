@@ -1,0 +1,253 @@
+<?php
+
+// $Id$
+
+/**
+ * @file
+ * Main Wysiwyg Button Order system
+ *
+ * The Wysiwyg Button Order system integrates with the Wysiwyg module admin page
+ * to provide the functionality of re-ordering buttons and adding separators
+ * between them.
+ */
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function wysiwyg_button_order_form_wysiwyg_profile_form_alter(&$form, &$form_state) {
+
+  // Define currently supported editors.
+  $supported = array(
+    'tinymce',
+    'fckeditor',
+    'ckeditor',
+  );
+
+  // Only do something when the editor is supported.
+  if (in_array($form['editor']['#value'], $supported)) {
+    // Add javascript.
+    drupal_add_js(drupal_get_path('module', 'wysiwyg_button_order') . '/wysiwyg_button_order.js');
+
+    // Get the plugins, the format and the profile.
+    $plugins = wysiwyg_get_plugins($form['editor']['#value']);
+    $format = $form['format']['#value'];
+    $profile = wysiwyg_get_profile($format);
+
+    // Build the form.
+    $form['buttonorder'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Order and separators'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#tree' => TRUE,
+      '#theme' => 'buttonorder_form',
+      '#weight' => -1,
+    );
+    // Change the weight of existing items so that our form fits in a logical place.
+    $form['buttons']['#weight'] = -2;
+    $form['basic']['#weight'] = -3;
+
+    // Get buttonorder settings if they have been saved already.
+    if (isset($profile->settings['buttonorder']) && !empty($profile->settings['buttonorder'])) {
+
+      $o_buttons = $profile->settings['buttonorder'];
+      $o_buttons = explode(',', $o_buttons);
+      // add increment to separators
+      $count_sep = 0;
+      foreach ($o_buttons as $k => $b) {
+        $o_buttons[$k] = ($b == 'separator') ? $b . '-' . ++$count_sep : $b;
+      }
+      $o_buttons = array_flip($o_buttons);
+    }
+
+    // Get active buttons.
+    foreach ($plugins as $name => $meta) {
+      if (isset($meta['buttons']) && is_array($meta['buttons'])) {
+        foreach ($meta['buttons'] as $button => $title) {
+          if (!empty($profile->settings['buttons'][$name][$button])) {
+            $u_buttons[$button] = array(
+              'group' => $name,
+              'name' => $title
+            );
+          }
+        }
+      }
+      elseif (isset($meta['extensions']) && is_array($meta['extensions'])) {
+        foreach ($meta['extensions'] as $extension => $title) {
+          if (!empty($profile->settings['buttons'][$name][$extension])) {
+            $u_buttons[$extension] = array(
+              'group' => $name,
+              'name' => $title
+            );
+          }
+        }
+      }
+    }
+
+    if (isset($u_buttons)) {
+      if (isset($o_buttons)) {
+        foreach ($o_buttons as $key => $val) {
+          if (isset($u_buttons[$key])) {
+            $buttonset[$key] = $u_buttons[$key];
+          }
+          elseif ((substr($key, 0, 9) == 'separator')) {
+            $buttonset[$key] = array(
+              'group' => '---------------',
+              'name' => t('Separator'),
+            );
+          }
+        }
+      }
+      else {
+        $buttonset = $u_buttons;
+      }
+
+      $order = 0;
+      foreach ($buttonset as $name => $val) {
+        $form['buttonorder'][$name]['name'] = array(
+          '#markup' => $val['name'],
+        );
+        $form['buttonorder'][$name]['group'] = array(
+          '#markup' => $val['group'],
+          '#prefix' => '<em>',
+          '#suffix' => '</em>',
+        );
+        $form['buttonorder'][$name]['weight'] = array(
+          '#type' => 'hidden',
+          '#title' => t('Weight for @title', array('@title' => $val['name'])),
+          '#title_display' => 'invisible',
+          '#default_value' => $order++,
+        );
+        $form['buttonorder'][$name]['remove'] = array(
+          '#type' => 'link',
+          '#title' => t('Remove'),
+          '#href' => '#',
+        );
+      }
+    }
+
+    // add a submit function before the usual submit
+    array_unshift($form['#submit'], 'wysiwyg_button_order_submit');
+  }
+}
+
+/**
+ * Form submission handler for wysiwyw_buttonorder_form().
+ */
+function wysiwyg_button_order_submit($form, &$form_state) {
+//  drupal_set_message('<pre>' . print_r($form_state['input'], TRUE) . '</pre>');
+
+  if (!empty($form_state['input'])) {
+    if (isset($form_state['input']['buttonorder'])) {
+      $input_format = $form_state['values']['format'];
+
+      $buttonorder = FALSE;
+
+      foreach ($form_state['input']['buttonorder'] as $key => $val) {
+        if (!is_null($val['weight'])) {
+          if (substr($key, 0, 9) == 'separator') {
+            $buttonorder[] = substr($key, 0, 9);
+          }
+          else {
+            $buttonorder[] = $key;
+          }
+        }
+      }
+      // make our ordered buttonarray into a comma separated string
+      $buttonorder = implode(',', $buttonorder);
+      unset($form_state['values']['buttonorder']);
+      $form_state['values']['buttonorder'] = $buttonorder;
+      drupal_set_message(t('Buttons have be re-ordered for %format.', array('%format' => $input_format)));
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wysiwyg_button_order_theme() {
+  return array(
+    'buttonorder_form' => array(
+      'render element' => 'theme',
+    ),
+  );
+}
+
+/**
+ * Returns HTML for the draggable wysiwyg buttonorder table.
+ */
+function theme_buttonorder_form($variables) {
+  $form = $variables['theme'];
+  $rows = array();
+
+  if (element_children($form)) {
+    foreach (element_children($form) as $name) {
+      $form[$name]['weight']['#attributes']['class'] = array('buttons-weight');
+      $form[$name]['group']['#attributes']['class'] = array('buttons-group');
+      $form[$name]['name']['#attributes']['class'] = array('buttons-name');
+      $form[$name]['remove']['#attributes']['class'] = array('removelink');
+
+      $rows[] = array(
+        'data' => array(
+          drupal_render($form[$name]['name']),
+          drupal_render($form[$name]['group']),
+          drupal_render($form[$name]['weight']),
+          drupal_render($form[$name]['remove']),
+        ),
+        'class' => (substr($name, 0, 9) == 'separator' ? array('draggable', 'separator') : array('draggable')),
+        'id' => 'order-' . $name,
+      );
+    }
+    $header = array(t('Name'), t('Group'), t('Weight'), array('data' => t('Operations')));
+    $output = theme('table', array(
+      'header' => $header,
+      'rows' => $rows,
+      'attributes' => array('id' => 'buttonorder'),
+            ));
+    $output .= drupal_render_children($form);
+
+    drupal_add_tabledrag('buttonorder', 'order', 'sibling', 'buttons-weight');
+
+    return $output;
+  }
+  else {
+    drupal_set_message(t('To use the Wysiwyg Button Order module, enable some buttons, save, then return to this page.'));
+  }
+}
+
+/**
+ * Implements hook_settings_alter().
+ */
+function wysiwyg_button_order_wysiwyg_editor_settings_alter(&$settings, $context) {
+  // TinyMCE.
+  if ($context['profile']->editor == 'tinymce') {
+    $which = $context['profile']->format;
+    $row = db_query("SELECT w.format, ff.name, w.settings FROM {wysiwyg} w INNER JOIN {filter_format} ff ON ff.format=w.format WHERE w.format = :which", array(':which' => $which))->fetch();
+    if (isset($row->settings)) {
+      $things = unserialize($row->settings);
+      // check if a button order has been set, if true, load the buttonorder
+      if (isset($things['buttonorder'])) {
+        $settings['theme_advanced_buttons1'] = $things['buttonorder'];
+      }
+    }
+  }
+  // FCKeditor and CKeditor.
+  if ($context['profile']->editor == 'fckeditor' || $context['profile']->editor == 'ckeditor') {
+    $which = $context['profile']->format;
+    $row = db_query("SELECT w.format, ff.name, w.settings FROM {wysiwyg} w INNER JOIN {filter_format} ff ON ff.format=w.format WHERE w.format = :which", array(':which' => $which))->fetch();
+    if (isset($row->settings)) {
+      $things = unserialize($row->settings);
+      // check if a button order has been set, if true, load the buttonorder
+      if (isset($things['buttonorder'])) {
+        $things = explode(',', $things['buttonorder']);
+        array_walk($things, create_function('&$val', 'if($val=="separator") $val = "-";'));
+        switch ($context['profile']->editor) {
+          case 'fckeditor' : $settings['buttons'][0] = $things;
+            break;
+          case 'ckeditor' : $settings['toolbar'][0] = $things;
+            break;
+        }
+      }
+    }
+  }
+}
