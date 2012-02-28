@@ -1414,7 +1414,6 @@ body.front #zone-content .region-content {
   
 }
 .beta span{
-  padding-right: #fafadf;
   background: #FAFAD5;
   padding: 4px;
   opacity: 0.8;
@@ -1430,9 +1429,10 @@ body.front #zone-content .region-content {
   /*margin-left: 217px;*/
   float: right;
   margin-right: 46px;
-  margin-top: -4px;
 }
-
+.construction {
+  float:left;
+}
 .beta .red {
   color:#C33;
   margin-right:5px;
