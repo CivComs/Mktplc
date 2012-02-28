@@ -177,14 +177,7 @@
  *   );
  * @endcode
  */
-    $databases['default']['default'] = array(
-      'driver' => 'mysql',
-      'database' => 'cc',
-      'username' => 'cc',
-      'password' => 'cc',
-      'host' => 'localhost',
-      'prefix' => '',
-    );
+$databases = array();
 
 /**
  * Access control for update.php script.
