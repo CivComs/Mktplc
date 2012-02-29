@@ -955,6 +955,10 @@ border-bottom: none;
 }
 
 /* Block: Add to the Marketplace */
+.block.add-to-marketplace {
+  font-size: 12px;
+  padding: 0 10px;
+}
 .block.add-to-marketplace,
 .block.highlight,
 #region-sidebar-second .block {
@@ -1058,11 +1062,11 @@ border-bottom: none;
  font-style: italic;
 }
 
-#region-sidebar-second{
+#region-sidebar-second {
   margin-top: 16px;
 }
 
-.add-to-marketplace {
+#region-sidebar-second .add-to-marketplace {
    margin-top: -16px;
 }
 
@@ -1733,6 +1737,19 @@ article.node-interaction {
   display: none;
 }
 
+.view-top-applications-by-interactions .views-field-field-application-logo {
+  margin: 0 10px 5px 0;
+  float: left;
+}
+
+.view-top-applications-by-interactions .views-field-nid {
+  font-size: .85em;
+}
+
+.view-top-applications-by-interactions .views-field-field-application-sdesc {
+  margin-left: 70px;
+}
+
 /**
  * Organization Views
  */
@@ -1768,7 +1785,9 @@ article.node-interaction {
 .region-content-main-left .view .item-list, 
 .region-content-main-middle .view .item-list, 
 .region-content-main-right .view .item-list,
-.region-content-main-right .view .view-footer {
+.region-content-main-right .view .view-footer,
+.region-content-main-middle .view .view-footer,
+.region-content-main-left .view .view-footer {
   position: absolute;
   bottom: 0;
   width: 100%;

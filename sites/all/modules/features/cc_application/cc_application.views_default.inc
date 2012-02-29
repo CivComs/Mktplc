@@ -6710,5 +6710,171 @@ print $value;
   $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
   $export['related_apps_block'] = $view;
 
+  $view = new view;
+  $view->name = 'top_applications_by_interactions';
+  $view->description = '';
+  $view->tag = 'applications';
+  $view->base_table = 'node';
+  $view->human_name = 'Top Applications (by Interactions)';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Top Applications';
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['query_comment'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '3';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'field_application_logo' => 'field_application_logo',
+    'title' => 'title',
+    'nid' => 'nid',
+  );
+  $handler->display->display_options['row_options']['hide_empty'] = 1;
+  $handler->display->display_options['row_options']['default_field_elements'] = 1;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['empty'] = FALSE;
+  $handler->display->display_options['footer']['area']['content'] = '<a class="views-more" href="/apps">View more</a>';
+  $handler->display->display_options['footer']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['footer']['area']['tokenize'] = 0;
+  /* Relationship: Content: Add Deployment, Creation, Evaluation, Support (field_application_interactions) */
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['id'] = 'field_application_interactions_nid';
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['table'] = 'field_data_field_application_interactions';
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['field'] = 'field_application_interactions_nid';
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['required'] = 1;
+  $handler->display->display_options['relationships']['field_application_interactions_nid']['delta'] = '-1';
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_application_logo']['id'] = 'field_application_logo';
+  $handler->display->display_options['fields']['field_application_logo']['table'] = 'field_data_field_application_logo';
+  $handler->display->display_options['fields']['field_application_logo']['field'] = 'field_application_logo';
+  $handler->display->display_options['fields']['field_application_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_application_logo']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_application_logo']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_application_logo']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_application_logo']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_application_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_application_logo']['settings'] = array(
+    'image_style' => 'dashboard_app_logo-52x54',
+    'image_link' => 'content',
+  );
+  $handler->display->display_options['fields']['field_application_logo']['group_column'] = 'entity id';
+  $handler->display->display_options['fields']['field_application_logo']['field_api_classes'] = 0;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Field: COUNT(Content: Nid) */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'field_application_interactions_nid';
+  $handler->display->display_options['fields']['nid']['group_type'] = 'count';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['nid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['nid']['format_plural'] = 0;
+  $handler->display->display_options['fields']['nid']['prefix'] = '(';
+  $handler->display->display_options['fields']['nid']['suffix'] = ')';
+  /* Field: Content: Short Description for Search Results */
+  $handler->display->display_options['fields']['field_application_sdesc']['id'] = 'field_application_sdesc';
+  $handler->display->display_options['fields']['field_application_sdesc']['table'] = 'field_data_field_application_sdesc';
+  $handler->display->display_options['fields']['field_application_sdesc']['field'] = 'field_application_sdesc';
+  $handler->display->display_options['fields']['field_application_sdesc']['label'] = '';
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_application_sdesc']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_application_sdesc']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_application_sdesc']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_application_sdesc']['group_column'] = 'entity id';
+  $handler->display->display_options['fields']['field_application_sdesc']['field_api_classes'] = 0;
+  /* Sort criterion: COUNT(Content: Nid) */
+  $handler->display->display_options['sorts']['nid']['id'] = 'nid';
+  $handler->display->display_options['sorts']['nid']['table'] = 'node';
+  $handler->display->display_options['sorts']['nid']['field'] = 'nid';
+  $handler->display->display_options['sorts']['nid']['relationship'] = 'field_application_interactions_nid';
+  $handler->display->display_options['sorts']['nid']['group_type'] = 'count';
+  $handler->display->display_options['sorts']['nid']['order'] = 'DESC';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+
+  /* Display: Top Applications by Interactions Block */
+  $handler = $view->new_display('block', 'Top Applications by Interactions Block', 'block');
+  $handler->display->display_options['block_description'] = 'Top Applications by Interactions Block';
+  $export['top_applications_by_interactions'] = $view;
+
   return $export;
 }

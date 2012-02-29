@@ -353,21 +353,21 @@ function cc_contexts_context_default_contexts() {
           'region' => 'content_doormat',
           'weight' => '-8',
         ),
-        'views-interactions-block' => array(
-          'module' => 'views',
-          'delta' => 'interactions-block',
-          'region' => 'content_main_left',
-          'weight' => '-10',
-        ),
-        'views-applications-block_8' => array(
-          'module' => 'views',
-          'delta' => 'applications-block_8',
-          'region' => 'content_main_middle',
-          'weight' => '-10',
-        ),
         'views-bd03f50c003e3695ccac2c405ee2189c' => array(
           'module' => 'views',
           'delta' => 'bd03f50c003e3695ccac2c405ee2189c',
+          'region' => 'content_main_left',
+          'weight' => '-10',
+        ),
+        'views-5cf5174068e83941c214a8509efabc2a' => array(
+          'module' => 'views',
+          'delta' => '5cf5174068e83941c214a8509efabc2a',
+          'region' => 'content_main_middle',
+          'weight' => '-10',
+        ),
+        'block-24' => array(
+          'module' => 'block',
+          'delta' => 24,
           'region' => 'content_main_right',
           'weight' => '-10',
         ),
