@@ -421,6 +421,30 @@ input#edit-go {
 }
 
 /**
+ * General views (generic views) styling
+ */
+.view .views-field-picture {
+  float: left;
+  margin: 0 10px 5px 0;
+}
+
+.view.view-user-views .views-field-name a,
+.view .views-field-title a {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.view.view-user-views .views-field-created {
+  font-size: 12px;
+}
+
+.view .view-footer p {
+  margin-bottom: 0;
+  text-align: right;
+}
+
+/**
  * Search bar region
  */
 #region-search-bar .section-nav .menu {
@@ -1703,28 +1727,22 @@ article.node-interaction {
 }
 
 /**
- * General/generic Views styling
- */
-.view .views-field-picture {
-  float: left;
-  margin: 0 10px 5px 0;
-}
-
-.view.view-user-views .views-field-name a {
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.view.view-user-views .views-field-created {
-  font-size: 12px;
-}
-
-/**
  * Application Views
  */
 .view-id-applications.view-display-id-block_8 .meta {
   display: none;
+}
+
+/**
+ * Organization Views
+ */
+.view-top-organizations-by-interaction .views-row .views-field {
+  float: left;
+  width: 235px;
+}
+.view-top-organizations-by-interaction .views-row .views-field-nid {
+  width: 60px;
+  text-align: right;
 }
 
 /**
@@ -1749,9 +1767,11 @@ article.node-interaction {
 }
 .region-content-main-left .view .item-list, 
 .region-content-main-middle .view .item-list, 
-.region-content-main-right .view .item-list {
+.region-content-main-right .view .item-list,
+.region-content-main-right .view .view-footer {
   position: absolute;
   bottom: 0;
+  width: 100%;
 }
 .region-content-main-left .view .views-row-last, 
 .region-content-main-middle .view .views-row-last, 
