@@ -365,9 +365,9 @@ function cc_contexts_context_default_contexts() {
           'region' => 'content_main_middle',
           'weight' => '-10',
         ),
-        'views-user_views-block' => array(
+        'views-bd03f50c003e3695ccac2c405ee2189c' => array(
           'module' => 'views',
-          'delta' => 'user_views-block',
+          'delta' => 'bd03f50c003e3695ccac2c405ee2189c',
           'region' => 'content_main_right',
           'weight' => '-10',
         ),
