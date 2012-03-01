@@ -1787,7 +1787,7 @@ article.node-interaction {
 .region-content-main-right .view {
   position: relative;
   margin: 0;
-  padding: 0 5px 0px 15px;
+  padding: 0 0.8em;
 }
 .region-content-main-left .view .item-list, 
 .region-content-main-middle .view .item-list, 
