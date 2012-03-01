@@ -13,6 +13,42 @@ function cc_contexts_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'add_to_marketplace';
+  $context->description = '\'Add to the Market Place\' block on several pages';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '<front>' => '<front>',
+        'civic-function/*' => 'civic-function/*',
+        'software-functions/*' => 'software-functions/*',
+        'software-licenses/*' => 'software-licenses/*',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'block-24' => array(
+          'module' => 'block',
+          'delta' => 24,
+          'region' => 'sidebar_second',
+          'weight' => '25',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('\'Add to the Market Place\' block on several pages');
+  t('Sidebar Right');
+  $export['add_to_marketplace'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'api_block';
   $context->description = 'Context for the API block.';
   $context->tag = 'api';
@@ -121,6 +157,39 @@ function cc_contexts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('theme');
   $export['apps'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'at_glance_apps';
+  $context->description = 'At a glance (Apps)\' block on all pages (without context settings)';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '*' => '*',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-at_a_glance_application_-block' => array(
+          'module' => 'views',
+          'delta' => 'at_a_glance_application_-block',
+          'region' => 'sidebar_second',
+          'weight' => '-55',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('At a glance (Apps)\' block on all pages (without context settings)');
+  t('Sidebar Right');
+  $export['at_glance_apps'] = $context;
 
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
@@ -255,6 +324,131 @@ function cc_contexts_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'content_application';
+  $context->description = 'Condition: content type - application';
+  $context->tag = 'Content';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'application' => 'application',
+      ),
+      'options' => array(
+        'node_form' => '1',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'block-23' => array(
+          'module' => 'block',
+          'delta' => 23,
+          'region' => 'content',
+          'weight' => '30',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 1;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Condition: content type - application');
+  t('Content');
+  $export['content_application'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'content_application_node';
+  $context->description = 'Condition: content type - application; path - node/*';
+  $context->tag = 'Content';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'application' => 'application',
+      ),
+      'options' => array(
+        'node_form' => '1',
+      ),
+    ),
+    'path' => array(
+      'values' => array(
+        'node/*' => 'node/*',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-cc_organizations-block' => array(
+          'module' => 'views',
+          'delta' => 'cc_organizations-block',
+          'region' => 'content',
+          'weight' => '10',
+        ),
+        'views-interactions-block_2' => array(
+          'module' => 'views',
+          'delta' => 'interactions-block_2',
+          'region' => 'content',
+          'weight' => '40',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 1;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Condition: content type - application; path - node/*');
+  t('Content');
+  $export['content_application_node'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'content_organization';
+  $context->description = 'Condition: content type - organization';
+  $context->tag = 'Content';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'organization' => 'organization',
+      ),
+      'options' => array(
+        'node_form' => '1',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-applications-block_5' => array(
+          'module' => 'views',
+          'delta' => 'applications-block_5',
+          'region' => 'content',
+          'weight' => '-45',
+        ),
+        'views-applications-block_6' => array(
+          'module' => 'views',
+          'delta' => 'applications-block_6',
+          'region' => 'content',
+          'weight' => '-10',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 1;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Condition: content type - organization');
+  t('Content');
+  $export['content_organization'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'dashboard';
   $context->description = '';
   $context->tag = 'theme';
@@ -312,6 +506,171 @@ function cc_contexts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('theme');
   $export['dashboard'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'exposed_form_five';
+  $context->description = '"Exposed form: applications-page_5" on "deployed/apps" page';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'deployed/apps' => 'deployed/apps',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views--exp-applications-page_5' => array(
+          'module' => 'views',
+          'delta' => '-exp-applications-page_5',
+          'region' => 'sidebar_second',
+          'weight' => '15',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('"Exposed form: applications-page_5" on "deployed/apps" page');
+  t('Sidebar Right');
+  $export['exposed_form_five'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'exposed_form_four';
+  $context->description = '"Exposed form: applications-page_4" block on "recent/apps" page.';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'recent/apps' => 'recent/apps',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views--exp-applications-page_4' => array(
+          'module' => 'views',
+          'delta' => '-exp-applications-page_4',
+          'region' => 'sidebar_second',
+          'weight' => '5',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('"Exposed form: applications-page_4" block on "recent/apps" page.');
+  t('Sidebar Right');
+  $export['exposed_form_four'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'exposed_form_one';
+  $context->description = '\'Exposed form: applications-page_1\' block on "all/apps" page.';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'all/apps' => 'all/apps',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views--exp-applications-page_1' => array(
+          'module' => 'views',
+          'delta' => '-exp-applications-page_1',
+          'region' => 'sidebar_second',
+          'weight' => '-25',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('\'Exposed form: applications-page_1\' block on "all/apps" page.');
+  t('Sidebar Right');
+  $export['exposed_form_one'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'exposed_form_three';
+  $context->description = '\'Exposed form: applications-page_3\' block on "" page.';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'most-used/apps' => 'most-used/apps',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views--exp-applications-page_3' => array(
+          'module' => 'views',
+          'delta' => '-exp-applications-page_3',
+          'region' => 'sidebar_second',
+          'weight' => '-5',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('\'Exposed form: applications-page_3\' block on "" page.');
+  t('Sidebar Right');
+  $export['exposed_form_three'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'exposed_form_two';
+  $context->description = '\'Exposed form: applications-page_2\' block on "most-watched/apps" page.';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'most-watched/apps' => 'most-watched/apps',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views--exp-applications-page_2' => array(
+          'module' => 'views',
+          'delta' => '-exp-applications-page_2',
+          'region' => 'sidebar_second',
+          'weight' => '-15',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('\'Exposed form: applications-page_2\' block on "most-watched/apps" page.');
+  t('Sidebar Right');
+  $export['exposed_form_two'] = $context;
 
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
@@ -380,6 +739,39 @@ function cc_contexts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('home');
   $export['home'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'log_in';
+  $context->description = 'Log In block on \'user/register\' page.';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'user/register' => 'user/register',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'block-30' => array(
+          'module' => 'block',
+          'delta' => 30,
+          'region' => 'sidebar_second',
+          'weight' => '35',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Log In block on \'user/register\' page.');
+  t('Sidebar Right');
+  $export['log_in'] = $context;
 
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
@@ -605,6 +997,39 @@ function cc_contexts_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'places_add_place_app';
+  $context->description = '\'Places / add a place (App)\' block on all pages (without context settings)';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '*' => '*',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-6411095ab78ed6f4a9989c94614d5403' => array(
+          'module' => 'views',
+          'delta' => '6411095ab78ed6f4a9989c94614d5403',
+          'region' => 'sidebar_second',
+          'weight' => '-65',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('\'Places / add a place (App)\' block on all pages (without context settings)');
+  t('Sidebar Right');
+  $export['places_add_place_app'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'project';
   $context->description = '';
   $context->tag = '';
@@ -669,6 +1094,146 @@ function cc_contexts_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'sign_up';
+  $context->description = 'Sign Up block on user/login, user/denied, toboggan/denied pages.';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'user/login' => 'user/login',
+        'user/denied' => 'user/denied',
+        'toboggan/denied' => 'toboggan/denied',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'block-31' => array(
+          'module' => 'block',
+          'delta' => 31,
+          'region' => 'sidebar_second',
+          'weight' => '45',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Sidebar Right');
+  t('Sign Up block on user/login, user/denied, toboggan/denied pages.');
+  $export['sign_up'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'sitewide_blocks';
+  $context->description = 'Blocks that shown on all pages.';
+  $context->tag = 'theme';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '*' => '*',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'system-main' => array(
+          'module' => 'system',
+          'delta' => 'main',
+          'region' => 'content',
+          'weight' => '-65',
+        ),
+        'views-projects_use_this_app-block' => array(
+          'module' => 'views',
+          'delta' => 'projects_use_this_app-block',
+          'region' => 'content',
+          'weight' => '-20',
+        ),
+        'disqus-disqus_comments' => array(
+          'module' => 'disqus',
+          'delta' => 'disqus_comments',
+          'region' => 'content',
+          'weight' => '20',
+        ),
+        'block-32' => array(
+          'module' => 'block',
+          'delta' => 32,
+          'region' => 'branding',
+          'weight' => '-10',
+        ),
+        'nice_menus-1' => array(
+          'module' => 'nice_menus',
+          'delta' => 1,
+          'region' => 'top_menu',
+          'weight' => '-10',
+        ),
+        'nice_menus-2' => array(
+          'module' => 'nice_menus',
+          'delta' => 2,
+          'region' => 'top_menu',
+          'weight' => '0',
+        ),
+        'menu-menu-mktplc-section-nav' => array(
+          'module' => 'menu',
+          'delta' => 'menu-mktplc-section-nav',
+          'region' => 'search_bar',
+          'weight' => '-70',
+        ),
+        'custom_search_blocks-1' => array(
+          'module' => 'custom_search_blocks',
+          'delta' => 1,
+          'region' => 'search_bar',
+          'weight' => '-60',
+        ),
+        'user-login' => array(
+          'module' => 'user',
+          'delta' => 'login',
+          'region' => 'search_bar',
+          'weight' => '50',
+        ),
+        'addtoany-addtoany_button' => array(
+          'module' => 'addtoany',
+          'delta' => 'addtoany_button',
+          'region' => 'search_bar',
+          'weight' => '60',
+        ),
+        'block-5' => array(
+          'module' => 'block',
+          'delta' => 5,
+          'region' => 'content_bottom',
+          'weight' => '-10',
+        ),
+        'block-6' => array(
+          'module' => 'block',
+          'delta' => 6,
+          'region' => 'content_bottom2',
+          'weight' => '-10',
+        ),
+        'block-7' => array(
+          'module' => 'block',
+          'delta' => 7,
+          'region' => 'content_bottom3',
+          'weight' => '-10',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Blocks that shown on all pages.');
+  t('theme');
+  $export['sitewide_blocks'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'taxonomy';
   $context->description = 'Taxonomy listing pages';
   $context->tag = '';
@@ -703,6 +1268,123 @@ function cc_contexts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Taxonomy listing pages');
   $export['taxonomy'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'user_menu_block';
+  $context->description = '\'User menu\' block';
+  $context->tag = 'theme';
+  $context->conditions = array(
+    'user' => array(
+      'values' => array(
+        'administrator' => 'administrator',
+        'authenticated user' => 'authenticated user',
+        'content editor' => 'content editor',
+        'documentation maintainer' => 'documentation maintainer',
+        'software developer' => 'software developer',
+        'software user' => 'software user',
+        'software vendor' => 'software vendor',
+        'user administrator' => 'user administrator',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'system-user-menu' => array(
+          'module' => 'system',
+          'delta' => 'user-menu',
+          'region' => 'search_bar',
+          'weight' => '0',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('\'User menu\' block');
+  t('theme');
+  $export['user_menu_block'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'view_related_apps';
+  $context->description = '\'View: Related Apps Block\' block on "node/*" pages with node type "application"';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'application' => 'application',
+      ),
+      'options' => array(
+        'node_form' => '1',
+      ),
+    ),
+    'path' => array(
+      'values' => array(
+        'node/*' => 'node/*',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-related_apps_block-block' => array(
+          'module' => 'views',
+          'delta' => 'related_apps_block-block',
+          'region' => 'sidebar_second',
+          'weight' => '-35',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 1;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('\'View: Related Apps Block\' block on "node/*" pages with node type "application"');
+  t('Sidebar Right');
+  $export['view_related_apps'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'who_service_this_app';
+  $context->description = '\'View: Vendors Who Service This App (Block)\' block on all pages with content type "application"';
+  $context->tag = 'Sidebar Right';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'application' => 'application',
+      ),
+      'options' => array(
+        'node_form' => '1',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-d0c47a77065f0e15e04252546a319bde' => array(
+          'module' => 'views',
+          'delta' => 'd0c47a77065f0e15e04252546a319bde',
+          'region' => 'sidebar_second',
+          'weight' => '-45',
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('\'View: Vendors Who Service This App (Block)\' block on all pages with content type "application"');
+  t('Sidebar Right');
+  $export['who_service_this_app'] = $context;
 
   return $export;
 }
