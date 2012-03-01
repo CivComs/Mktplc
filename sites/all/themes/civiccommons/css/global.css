@@ -1771,7 +1771,7 @@ article.node-interaction {
  */
 .view-top-organizations-by-interaction .views-row .views-field {
   float: left;
-  width: 235px;
+  width: 210px;
 }
 .view-top-organizations-by-interaction .views-row .views-field-nid {
   width: 60px;
@@ -1796,7 +1796,7 @@ article.node-interaction {
 .region-content-main-right .view {
   position: relative;
   margin: 0;
-  padding: 0;
+  padding: 0 5px 0px 15px;
 }
 .region-content-main-left .view .item-list, 
 .region-content-main-middle .view .item-list, 
