@@ -1750,6 +1750,10 @@ article.node-interaction {
   margin-left: 70px;
 }
 
+.view-top-applications-by-interactions .views-field-field-application-sdesc {
+  font-size: .85em;
+}
+
 /**
  * Organization Views
  */
@@ -1795,5 +1799,5 @@ article.node-interaction {
 .region-content-main-left .view .views-row-last, 
 .region-content-main-middle .view .views-row-last, 
 .region-content-main-right .view .views-row-last {
-  padding-bottom: 50px;
+  padding-bottom: 30px;
 }
