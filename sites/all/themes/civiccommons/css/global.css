@@ -628,7 +628,7 @@ h2.block-title,
   letter-spacing: -0.05em;
   text-transform: uppercase;
   line-height: 2;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   padding: 0 0.8em;
   border-top: 1px solid #99c5ff;
   border-right: 1px solid #5684bf;
@@ -639,6 +639,11 @@ h2.block-title,
   -webkit-border-radius: 5px;
           border-radius: 5px; */
 }
+
+#block-views-places-block-3 h2.block-title {
+	margin-bottom: 5px;
+}
+
 #region-content .field-label {
   margin-top: 20px;
 }
