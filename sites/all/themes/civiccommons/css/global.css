@@ -12,15 +12,6 @@ body.front .view-apps-browse-by .views-field-field-organization-address-2 .cc-or
   margin: 10px 0;
 }
 
-.region-content-main-left .view, .region-content-main-middle .view, .region-content-main-right .view {
-  padding-left: 15px;
-  padding-right: 5px;
-}
-
-.view-top-organizations-by-interaction .views-row .views-field {
-  width: 210px;
-}
-
 .view-id-top_applications_by_interactions .views-row {
   margin-bottom: 15px;	
 }
