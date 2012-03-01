@@ -10,3 +10,10 @@
 #block-cc-wiki-cc-wiki-home .featured-column-last {
   margin-right: 0;
 }
+
+#block-cc-wiki-cc-wiki-home .featured-column-first {
+  float: left;
+  width: 200px;
+  margin-right: 20px;
+  padding-left: .8em;
+}
