@@ -343,7 +343,6 @@ a:hover {
 }
 p {
   margin: 0 0 9px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   line-height: 18px;
 }
@@ -1764,7 +1763,7 @@ table .span12 {
   filter: alpha(opacity=40);
   cursor: pointer;
 }
-.btn {
+.form-submit, .btn {
   display: inline-block;
   padding: 4px 10px 4px;
   margin-bottom: 0;
