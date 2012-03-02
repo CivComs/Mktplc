@@ -1,4 +1,4 @@
-f
+
 /**
  * Generic elements.
  */
@@ -437,8 +437,6 @@ div.submitted {
 /**
  * Tables.
  */
-
-/*
 table {
   width: 100%;
   font-size: 0.923em;
@@ -485,12 +483,12 @@ table th a {
   position: relative;
 }
 table th.active a {
-  padding: 0 25px 0 0;
+  padding: 0 25px 0 0; /* LTR */
 }
 table th.active img {
   position: absolute;
   top: 3px;
-  right: 3px;
+  right: 3px; /* LTR */
 }
 table td.active {
   background: #e9e9dd;
@@ -522,18 +520,13 @@ table.system-status-report tr.error {
   color: #8c2e0b;
   background-color: #fef5f1;
 }
-
-*/
-
 /**
  * Exception for webkit bug with the right border of the last cell
  * in some tables, since it's webkit only, we can use :last-child
  */
-/*
 tr td:last-child {
-  border-right: 1px solid #bebfb9; 
+  border-right: 1px solid #bebfb9; /* LTR */
 }
-*/
 
 
 /**
@@ -652,12 +645,7 @@ body div.form-type-radio div.description,
 body div.form-type-checkbox div.description {
   margin-left: 1.5em; /* LTR */
 }
-
-
-
-/*
-
-input.form-submit,
+/* input.form-submit,
 a.button {
   cursor: pointer;
   padding: 4px 17px;
@@ -677,7 +665,6 @@ a.button {
   -webkit-border-radius: 20px;
   border-radius: 20px;
 }
-
 a.button:link,
 a.button:visited,
 a.button:hover,
@@ -685,15 +672,14 @@ a.button:active {
   text-decoration: none;
   color: #5a5a5a;
 }
-
 input.form-submit:active {
   background: #666;
   color: #fff;
   border-color: #555;
   text-shadow: #222 0 -1px 0;
 }
-
 */
+
 input.form-button-disabled,
 input.form-button-disabled:active {
   background: #eee none;
