@@ -22,10 +22,14 @@ body {
 
 }
 
-th.field-label {
+form .field-multiple-table th.field-label, th.field-label {
   padding-left: 10px;
   background-image: url(/sites/all/themes/civiccommons/images/bluehead.png);
   color: white;
+}
+
+th.field-label label {
+	color: white;
 }
 
 
