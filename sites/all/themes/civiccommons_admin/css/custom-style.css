@@ -204,8 +204,6 @@ form {
   margin: 0 0 18px;
 }
 fieldset {
-  padding: 0;
-  margin: 0;
   border: 0;
 }
 legend {
@@ -236,7 +234,6 @@ input,
 button,
 select,
 textarea {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 label {
   display: block;
