@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the uniqueness module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function uniqueness_install() {
+  drupal_set_message(st("Uniqueness settings are available under !link.",
+    array('!link' => l(st('Administer > Site configuration > Uniqueness'), 'admin/config/uniqueness'))
+  ));
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function uniqueness_uninstall() {
+  // Remove all variables whose name starts with "uniqueness_"
+  global $conf;
+  foreach (array_keys($conf) as $key) {
+    if (strpos($key, 'uniqueness_') === 0) {
+      variable_del($key);
+    }
+  }
+}
