@@ -263,12 +263,12 @@ aside .content {
 #zone-branding-wrapper {
  position:relative;
  padding-top: 40px;
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/header-bg.png') center 40px no-repeat;
+  background: url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/rd/header-bg.png') center 40px no-repeat;
 
 }
 #zone-branding {
   
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/tagline.png') 248px 29px no-repeat;
+  background: url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/rd/tagline.png') 248px 29px no-repeat;
 }
 #zone-branding .logo-img {
   float: left;
@@ -301,7 +301,7 @@ ul.nice-menu a {
   display: block;
   height: 31px;
   color: #559efc;
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
+  background: url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
   text-decoration: none;
   padding: 0 19px;
   font-size: 16px;
@@ -324,7 +324,7 @@ ul.nice-menu:hover a.active:hover {
   -webkit-box-shadow: inset 0 0 5px 0 #a2a2a2;
 }
 ul.nice-menu:hover a.active {
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
+  background: url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
   border-top: 1px solid #fafafa;
   border-left: 1px solid #fafafa;
   color: #559efc;
@@ -1248,7 +1248,7 @@ border-bottom: none;
  */
 footer#section-footer {
   color: #a5a5a5;
-  background: #44484F url('http://civiccommons.org/wp-content/themes/biznizz/images/dark-noise.png') 0 0 repeat scroll;
+  background: #44484F url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/dark-noise.png') 0 0 repeat scroll;
   margin: 40px 0 0;
   padding: 20px 0;
 }
