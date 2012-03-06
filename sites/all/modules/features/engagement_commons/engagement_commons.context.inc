@@ -28,23 +28,11 @@ function engagement_commons_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'block-24' => array(
-          'module' => 'block',
-          'delta' => 24,
-          'region' => 'sidebar_second',
-          'weight' => '-10',
-        ),
-        'block-37' => array(
-          'module' => 'block',
-          'delta' => 37,
-          'region' => 'content_leftcolumn',
-          'weight' => '-10',
-        ),
         'block-36' => array(
           'module' => 'block',
           'delta' => 36,
-          'region' => 'search_bar',
-          'weight' => '-59',
+          'region' => 'content_top_full',
+          'weight' => '-10',
         ),
       ),
     ),
