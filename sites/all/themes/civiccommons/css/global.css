@@ -1330,15 +1330,18 @@ body .openlayers-map img.olImageLoadError {
   padding: 10px 0; 
 }
 
-#block-block-22 .block-inner .block-title {
+#block-block-22 .block-inner .content {
   background: transparent;
   border: none;
   color: #777;
   text-align: left;
   text-transform: none;
-  font-size: 1.5em;
+  font-size: 1.25em;
   font-weight: 100;
-  margin: 0 0 20px 190px;
+  margin: 0 100px 30px 210px;
+}
+#block-block-22 .block-inner .content a {
+  text-decoration: none;
 }
 body.front #block-system-main {
   margin: 0;
@@ -1352,7 +1355,7 @@ body.front #page-title {
 }
 body.front #zone-content .region-content {
   /*background: transparent url('../images/hammer.jpg') 40px 1em no-repeat;*/
-  background: transparent url('../images/gov-gov-gray-100.png') 70px 33px no-repeat;
+  background: transparent url('../images/gov-gov-gray-100.png') 70px 44px no-repeat;
 }
 
 /**
