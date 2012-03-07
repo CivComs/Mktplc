@@ -28,6 +28,12 @@ function engagement_commons_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'views-engagement_commons_page-block_1' => array(
+          'module' => 'views',
+          'delta' => 'engagement_commons_page-block_1',
+          'region' => 'content_doormat',
+          'weight' => '-10',
+        ),
         'block-36' => array(
           'module' => 'block',
           'delta' => 36,

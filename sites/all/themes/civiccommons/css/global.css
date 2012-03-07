@@ -1625,7 +1625,6 @@ article.node-interaction {
 
 .engagement-commons #region-content-top-full {
   background-color: #225F97;
-
 }
 
 .engagement-commons #region-content {
@@ -1654,7 +1653,7 @@ article.node-interaction {
   width: 300px;
   color: #222222;
   position: absolute;
-  top: 75px;
+  top: 50px;
   right: 0;
   text-align: right;
   padding-right: 20px
@@ -1664,13 +1663,18 @@ article.node-interaction {
   font-size: 2.25em;
   font-weight: normal;
   text-transform: uppercase;
-  top: 125px;
-  padding: 10px 20px;
+  top: 100px;
+  padding: 0 20px 10px 20px;
+  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-apps {
   color: #666666;
-  top: 105px;
+  top: 80px;
+}
+.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-apps .views-label {
+  font-weight: normal;
 }
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-apps a {
   color: #666666;
@@ -1679,9 +1683,9 @@ article.node-interaction {
 
 .engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-nothing {
   text-transform: uppercase;
-  padding: 10px 20px;
+  padding: 10px 20px 0 20px;
   color: #666666;
-  height: 150px;
+  height: 40px;
   background-color: rgb(255, 255, 255);
   background-color: rgba(255, 255, 255, 0.7);
 }
@@ -1707,10 +1711,28 @@ article.node-interaction {
   font-size: 1.25em;
 }
 
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 td {
+  width: 240px;
+  padding: 10px;
+  text-align: center;
+}
+
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .views-label {
+  color: #666666;
+  font-weight: normal;
+  font-size: .85em;
+}
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .field-content {
+  display: inline;
+}
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .field-content a {
+  text-decoration: none;
+}
+
 /**
  * Application Views
  */
-.view-id-applications.view-display-id-block_8 .meta {
+.view-id-applications.view-display-id-block_8 .meta td {
   display: none;
 }
 

@@ -12,17 +12,17 @@ function engagement_commons_views_default_views() {
 
   $view = new view;
   $view->name = 'engagement_commons_page';
-  $view->description = 'Provides landing page for engagement commons.';
-  $view->tag = 'default';
+  $view->description = 'Provides views for engagement commons.';
+  $view->tag = 'engagement_commons';
   $view->base_table = 'node';
-  $view->human_name = 'Engagement Commons Page';
+  $view->human_name = 'Engagement Commons Views';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Featured stories';
+  $handler->display->display_options['title'] = 'Engagement Commons';
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -120,7 +120,7 @@ function engagement_commons_views_default_views() {
   $handler->display->display_options['fields']['field_story_apps']['id'] = 'field_story_apps';
   $handler->display->display_options['fields']['field_story_apps']['table'] = 'field_data_field_story_apps';
   $handler->display->display_options['fields']['field_story_apps']['field'] = 'field_story_apps';
-  $handler->display->display_options['fields']['field_story_apps']['label'] = 'Utilizing ';
+  $handler->display->display_options['fields']['field_story_apps']['label'] = 'utilizing ';
   $handler->display->display_options['fields']['field_story_apps']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_story_apps']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['field_story_apps']['alter']['absolute'] = 0;
@@ -191,21 +191,21 @@ function engagement_commons_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'story' => 'story',
   );
-  /* Filter criterion: Content: Site Section (field_site_section) */
-  $handler->display->display_options['filters']['field_site_section_tid']['id'] = 'field_site_section_tid';
-  $handler->display->display_options['filters']['field_site_section_tid']['table'] = 'field_data_field_site_section';
-  $handler->display->display_options['filters']['field_site_section_tid']['field'] = 'field_site_section_tid';
-  $handler->display->display_options['filters']['field_site_section_tid']['value'] = array(
-    335 => '335',
-  );
-  $handler->display->display_options['filters']['field_site_section_tid']['reduce_duplicates'] = 0;
-  $handler->display->display_options['filters']['field_site_section_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_site_section_tid']['vocabulary'] = 'site_section';
   /* Filter criterion: Content: Featured Image (field_featured_image:fid) */
   $handler->display->display_options['filters']['field_featured_image_fid']['id'] = 'field_featured_image_fid';
   $handler->display->display_options['filters']['field_featured_image_fid']['table'] = 'field_data_field_featured_image';
   $handler->display->display_options['filters']['field_featured_image_fid']['field'] = 'field_featured_image_fid';
   $handler->display->display_options['filters']['field_featured_image_fid']['operator'] = 'not empty';
+  /* Filter criterion: Content: Story Category (field_story_civic_function) */
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['id'] = 'field_story_civic_function_tid';
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['table'] = 'field_data_field_story_civic_function';
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['field'] = 'field_story_civic_function_tid';
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['value'] = array(
+    426 => '426',
+  );
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['reduce_duplicates'] = 0;
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['vocabulary'] = 'civic_function';
 
   /* Display: Engagement Commons Page */
   $handler = $view->new_display('page', 'Engagement Commons Page', 'page');
@@ -229,6 +229,92 @@ function engagement_commons_views_default_views() {
     'page' => 'page',
   );
   $handler->display->display_options['sitename_title'] = 0;
+
+  /* Display: Engagement Commons Stories Block */
+  $handler = $view->new_display('block', 'Engagement Commons Stories Block', 'block_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Recent Stories';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'grid';
+  $handler->display->display_options['style_options']['fill_single_line'] = 1;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['hide_empty'] = 1;
+  $handler->display->display_options['row_options']['default_field_elements'] = 1;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Field: Content: Apps references */
+  $handler->display->display_options['fields']['field_story_apps']['id'] = 'field_story_apps';
+  $handler->display->display_options['fields']['field_story_apps']['table'] = 'field_data_field_story_apps';
+  $handler->display->display_options['fields']['field_story_apps']['field'] = 'field_story_apps';
+  $handler->display->display_options['fields']['field_story_apps']['label'] = 'utilizing ';
+  $handler->display->display_options['fields']['field_story_apps']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['element_label_colon'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_story_apps']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_story_apps']['group_rows'] = 1;
+  $handler->display->display_options['fields']['field_story_apps']['delta_limit'] = '1';
+  $handler->display->display_options['fields']['field_story_apps']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_story_apps']['delta_reversed'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['delta_first_last'] = 0;
+  $handler->display->display_options['fields']['field_story_apps']['field_api_classes'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'story' => 'story',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Story Category (field_story_civic_function) */
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['id'] = 'field_story_civic_function_tid';
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['table'] = 'field_data_field_story_civic_function';
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['field'] = 'field_story_civic_function_tid';
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['value'] = array(
+    426 => '426',
+  );
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['reduce_duplicates'] = 0;
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_story_civic_function_tid']['vocabulary'] = 'civic_function';
   $export['engagement_commons_page'] = $view;
 
   return $export;
