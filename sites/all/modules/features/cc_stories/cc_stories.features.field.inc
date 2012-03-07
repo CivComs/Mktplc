@@ -84,51 +84,44 @@ function cc_stories_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '31',
+        'weight' => '10',
       ),
     ),
   );
 
-  // Exported field: 'node-story-field_site_section'
-  $fields['node-story-field_site_section'] = array(
+  // Exported field: 'node-story-field_featured_image'
+  $fields['node-story-field_featured_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_site_section',
+      'field_name' => 'field_featured_image',
       'foreign keys' => array(
-        'tid' => array(
+        'fid' => array(
           'columns' => array(
-            'tid' => 'tid',
+            'fid' => 'fid',
           ),
-          'table' => 'taxonomy_term_data',
+          'table' => 'file_managed',
         ),
       ),
       'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
+        'fid' => array(
+          0 => 'fid',
         ),
       ),
-      'module' => 'taxonomy',
+      'module' => 'image',
       'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'depth' => '',
-            'parent' => '0',
-            'vocabulary' => 'site_section',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
+        'default_image' => 0,
+        'uri_scheme' => 'public',
       ),
       'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
+      'type' => 'image',
     ),
     'field_instance' => array(
       'bundle' => 'story',
-      'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'This field will put the content in a specific section of the site.',
+      'description' => 'This image is used for featured sections of the site, like Engagement Commons.',
       'display' => array(
         'cc_business_card' => array(
           'label' => 'above',
@@ -140,7 +133,7 @@ function cc_stories_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -150,18 +143,28 @@ function cc_stories_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_site_section',
-      'label' => 'Site Section',
+      'field_name' => 'field_featured_image',
+      'label' => 'Featured Image',
       'required' => 0,
       'settings' => array(
+        'alt_field' => 1,
+        'file_directory' => 'featured-images',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '20MB',
+        'max_resolution' => '',
+        'min_resolution' => '940x300',
+        'title_field' => 0,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '34',
+        'module' => 'image',
+        'settings' => array(
+          'preview_image_style' => 'thumbnail',
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'image_image',
+        'weight' => '8',
       ),
     ),
   );
@@ -190,6 +193,7 @@ function cc_stories_field_default_fields() {
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
+          'activity_feeds' => 0,
           'application' => 'application',
           'application_release' => 0,
           'article' => 0,
@@ -250,14 +254,92 @@ function cc_stories_field_default_fields() {
         'settings' => array(
           'autocomplete_match' => 'contains',
           'autocomplete_path' => 'node_reference/autocomplete',
-          'references_dialog_add' => 0,
-          'references_dialog_edit' => 0,
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
           'references_dialog_search' => 0,
           'references_dialog_search_view' => '',
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '32',
+        'weight' => '11',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-story-field_story_civic_function'
+  $fields['node-story-field_story_civic_function'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_story_civic_function',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'depth' => '',
+            'parent' => '0',
+            'vocabulary' => 'civic_function',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'story',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Tag this story with a Civic Function.',
+      'display' => array(
+        'cc_business_card' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 6,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_story_civic_function',
+      'label' => 'Story Category',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '13',
       ),
     ),
   );
@@ -341,7 +423,7 @@ function cc_stories_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '2',
+        'weight' => '7',
       ),
     ),
   );
@@ -370,6 +452,7 @@ function cc_stories_field_default_fields() {
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
+          'activity_feeds' => 0,
           'application' => 0,
           'application_release' => 0,
           'article' => 0,
@@ -430,14 +513,14 @@ function cc_stories_field_default_fields() {
         'settings' => array(
           'autocomplete_match' => 'contains',
           'autocomplete_path' => 'node_reference/autocomplete',
-          'references_dialog_add' => 0,
-          'references_dialog_edit' => 0,
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
           'references_dialog_search' => 0,
           'references_dialog_search_view' => '',
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '33',
+        'weight' => '12',
       ),
     ),
   );
@@ -446,13 +529,15 @@ function cc_stories_field_default_fields() {
   // Included for use with string extractors like potx.
   t('An image to represent the Story.');
   t('Apps references');
+  t('Featured Image');
   t('Org references');
   t('Organizations that are significant to this story.');
   t('References to Applications that are relevant to the story.');
-  t('Site Section');
   t('Story');
+  t('Story Category');
   t('Story Image');
-  t('This field will put the content in a specific section of the site.');
+  t('Tag this story with a Civic Function.');
+  t('This image is used for featured sections of the site, like Engagement Commons.');
 
   return $fields;
 }
