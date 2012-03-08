@@ -1612,7 +1612,8 @@ article.node-interaction {
 /**
  * Engagement Commons
  */
-.engagement-commons #breadcrumb {
+.engagement-commons #breadcrumb,
+.engagement-commons #block-user-login {
   display: none;
 }
 
