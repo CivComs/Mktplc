@@ -1728,6 +1728,14 @@ article.node-interaction {
 .engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .field-content a {
   text-decoration: none;
 }
+.engagement-commons #block-views-engagement-commons-page-block-1 h2.block-title {
+  display: none;
+}
+
+/** Figure out something better **/
+.engagement-commons .feed-icon {
+  display: none;
+}
 
 /**
  * Application Views
