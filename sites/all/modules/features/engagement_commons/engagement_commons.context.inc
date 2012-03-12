@@ -28,10 +28,10 @@ function engagement_commons_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'views-engagement_commons_page-block_1' => array(
-          'module' => 'views',
-          'delta' => 'engagement_commons_page-block_1',
-          'region' => 'content_doormat',
+        'block-24' => array(
+          'module' => 'block',
+          'delta' => 24,
+          'region' => 'sidebar_second',
           'weight' => '-10',
         ),
         'block-36' => array(
@@ -39,6 +39,18 @@ function engagement_commons_context_default_contexts() {
           'delta' => 36,
           'region' => 'content_top_full',
           'weight' => '-10',
+        ),
+        'views-engagement_commons_page-block_2' => array(
+          'module' => 'views',
+          'delta' => 'engagement_commons_page-block_2',
+          'region' => 'content_top_full',
+          'weight' => '-9',
+        ),
+        'views-engagement_commons_page-block_1' => array(
+          'module' => 'views',
+          'delta' => 'engagement_commons_page-block_1',
+          'region' => 'content_top_full',
+          'weight' => '-8',
         ),
       ),
     ),

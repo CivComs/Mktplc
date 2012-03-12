@@ -1619,17 +1619,9 @@ article.node-interaction {
 
 .engagement-commons #block-block-36 {
   height: 65px;
-  margin-top: -10px;
+  margin-top: -4px;
   background: transparent url("../images/engagement_commons/eg-banner.jpg") top left no-repeat;
   color: transparent;
-}
-
-.engagement-commons #region-content-top-full {
-  background-color: #225F97;
-}
-
-.engagement-commons #region-content {
-  width: 940px;
 }
 
 .engagement-commons h1#page-title {
@@ -1641,16 +1633,24 @@ article.node-interaction {
   background-color: #225F97;
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page,
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-row,
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page a {
+.engagement-commons #block-views-engagement-commons-page-block-2 {
+  margin-bottom: 0;
+}
+
+.engagement-commons #block-views-engagement-commons-page-block-2 h2.block-title {
+  display: none;
+}
+
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame,
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-row,
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame a {
   color: #FFFFFF;
   text-decoration: none;
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-nothing,
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-title a,
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-apps {
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-nothing,
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-title a,
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps {
   width: 300px;
   color: #222222;
   position: absolute;
@@ -1660,7 +1660,7 @@ article.node-interaction {
   padding-right: 20px
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-title a {
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-title a {
   font-size: 2.25em;
   font-weight: normal;
   text-transform: uppercase;
@@ -1670,19 +1670,19 @@ article.node-interaction {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-apps {
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps {
   color: #666666;
   top: 80px;
 }
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-apps .views-label {
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps .views-label {
   font-weight: normal;
 }
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-apps a {
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps a {
   color: #666666;
   font-weight: bold;
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-nothing {
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-nothing {
   text-transform: uppercase;
   padding: 10px 20px 0 20px;
   color: #666666;
@@ -1713,9 +1713,15 @@ article.node-interaction {
 }
 
 .engagement-commons .view-engagement-commons-page.view-display-id-block_1 td {
-  width: 240px;
+  width: 25%;
   padding: 10px;
   text-align: center;
+}
+
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-application-logo {
+  float: none;
+  margin: 0 auto;
+  width: auto;
 }
 
 .engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .views-label {
@@ -1729,8 +1735,10 @@ article.node-interaction {
 .engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .field-content a {
   text-decoration: none;
 }
-.engagement-commons #block-views-engagement-commons-page-block-1 h2.block-title {
-  display: none;
+
+.engagement-commons .view-id-engagement_commons_page.view-display-id-page .views-field-field-story-image {
+  float: left;
+  margin: 0 10px 5px 0;
 }
 
 /** Figure out something better **/
