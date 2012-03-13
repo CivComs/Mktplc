@@ -19,7 +19,6 @@ function cc_contexts_context_default_contexts() {
   $context->conditions = array(
     'path' => array(
       'values' => array(
-        '<front>' => '<front>',
         'civic-function/*' => 'civic-function/*',
         'software-functions/*' => 'software-functions/*',
         'software-licenses/*' => 'software-licenses/*',
