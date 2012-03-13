@@ -5,7 +5,7 @@
 body {
   color: #000;
   background: #fff;
-  font: normal 81.3%/1.538em "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+  font: normal 81.3%/1.538em "PT Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
 }
 a {
   color: #0074BD;
@@ -645,12 +645,12 @@ body div.form-type-radio div.description,
 body div.form-type-checkbox div.description {
   margin-left: 1.5em; /* LTR */
 }
-input.form-submit,
+/* input.form-submit,
 a.button {
   cursor: pointer;
   padding: 4px 17px;
   margin-bottom: 1em;
-  margin-right: 1em; /* LTR */
+  margin-right: 1em;
   color: #5a5a5a;
   text-align: center;
   font-weight: normal;
@@ -678,6 +678,8 @@ input.form-submit:active {
   border-color: #555;
   text-shadow: #222 0 -1px 0;
 }
+*/
+
 input.form-button-disabled,
 input.form-button-disabled:active {
   background: #eee none;

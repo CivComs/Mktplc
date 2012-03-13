@@ -522,8 +522,8 @@ function _cc_helper_creators_info($appid) {
   return $out;
 }
 
-function cc_helper_block_view_alter(&$data, $block){
-  if($block->bid=='block-22'){
+function cc_helper_block_view_alter(&$data, $block) {
+  if ($block->bid == 'block-22') {
     $count_apps = db_query("SELECT COUNT(*) FROM {node} WHERE type = 'Application'")->fetchField();
     $count_places = db_select('field_data_field_organization_address', 'a')
       ->fields('a', array('field_organization_address_locality'))
@@ -531,9 +531,16 @@ function cc_helper_block_view_alter(&$data, $block){
       ->countQuery()
       ->execute()
       ->fetchField();
-    $block->title = 'tracking '.$count_apps.' apps in '.$count_places.' cities';
+    $app_count = l(t('!count apps', array('!count' => $count_apps)), 'apps');
+    $count_cities = l(t('!count cities', array('!count' => $count_places)), 'places');
+    $data['content'] = t('Civic Commons is a marketplace for open innovation in government, tracking !count_apps in !count_cities.',
+      array(
+        '!count_apps' => $app_count,
+        '!count_cities' => $count_cities,
+      ));
+      
+    $block->title = '';
   }
-  
 }
 
 function cc_helper_form_alter(&$form, &$form_state, $form_id) {

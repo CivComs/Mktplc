@@ -1028,6 +1028,18 @@ return _cc_helper_sharing($place);';
   $handler->display->display_options['filters']['field_organization_type_tid']['hierarchy'] = 1;
   $handler->display->display_options['block_description'] = 'Places: Organizations';
   $handler->display->display_options['block_caching'] = '-1';
+
+  /* Display: Block: Places Main */
+  $handler = $view->new_display('block', 'Block: Places Main', 'block_3');
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  $handler->display->display_options['block_description'] = 'Map of Places Block';
   $export['places'] = $view;
 
   return $export;

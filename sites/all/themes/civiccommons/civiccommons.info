@@ -42,6 +42,8 @@ regions[content_main_left] = Content Main Left
 regions[content_main_middle] = Content Main Middle
 regions[content_main_right] = Content Main Right
 
+regions[content_top_full] = Content Top Full
+
 ; ZONES
 
 zones[branding] = Branding
@@ -291,6 +293,16 @@ settings[alpha_zone_content_primary] = ''
 settings[alpha_zone_content_css] = ''
 settings[alpha_zone_content_wrapper_css] = ''
 settings[alpha_zone_content_equal_height_container] = '0'
+settings[alpha_region_content_top_full_force] = '0'
+settings[alpha_region_content_top_full_zone] = 'content'
+settings[alpha_region_content_top_full_prefix] = '0'
+settings[alpha_region_content_top_full_columns] = '16'
+settings[alpha_region_content_top_full_suffix] = '0'
+settings[alpha_region_content_top_full_weight] = '-90'
+settings[alpha_region_content_top_full_position] = '0'
+settings[alpha_region_content_top_full_css] = ''
+settings[alpha_region_content_top_full_equal_height_element] = '0'
+settings[alpha_region_content_top_full_equal_height_container] = '0'
 settings[alpha_region_content_main_left_force] = '0'
 settings[alpha_region_content_main_left_zone] = 'content'
 settings[alpha_region_content_main_left_prefix] = '0'

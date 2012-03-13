@@ -497,3 +497,12 @@ $conf['404_fast_html'] = '<html xmlns="http://www.w3.org/1999/xhtml"><head><titl
  */
 # $conf['pressflow_smart_start'] = TRUE;
 
+/**
+ * Use (pantheon) Redis for caching
+ */
+$conf['redis_client_interface'] = 'PhpRedis';
+$conf['cache_backends'][]       = 'sites/all/modules/redis/redis.autoload.inc';
+$conf['cache_default_class']    = 'Redis_Cache';
+
+// You can also use Redis for locks, but there are known problems.
+//$conf['lock_inc'] = 'sites/all/modules/redis/redis.lock.inc';

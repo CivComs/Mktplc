@@ -78,7 +78,7 @@ function civiccommons_process_region(&$vars) {
     $vars['site_slogan_hidden'] = $theme->page['site_slogan_hidden'];
     $vars['logo'] = $theme->page['logo'];
     $vars['logo_img'] = $vars['logo'] ? '<img src="' . $vars['logo'] . '" alt="' . $vars['site_name'] . '" id="logo" />' : '';
-    $vars['linked_logo_img'] = $vars['logo'] ? l($vars['logo_img'], 'http://civiccommons.org', array('attributes' => array('rel' => 'home', 'title' => t($vars['site_name'])), 'html' => TRUE)) : '';
+    $vars['linked_logo_img'] = $vars['logo'] ? l($vars['logo_img'], '<front>', array('attributes' => array('title' => t($vars['site_name'])), 'html' => TRUE)) : '';
   }
 }
 

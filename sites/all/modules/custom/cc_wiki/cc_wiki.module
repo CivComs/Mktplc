@@ -69,6 +69,14 @@ function theme_cc_wiki_home_block($vars) {
   
   $output .=  '
     <div class="featured-column featured-column-first">
+      <h3><span class="mw-headline">
+        ' . t('An Open Innovation Playbook') . '
+      </span></h3>
+      <p>
+        <em>' .t('Best practices, tips, and examples: because it\'s not just what but how.') . '</em>
+      </p>
+    </div>
+    <div class="featured-column">
       <h3><span class="mw-headline" id="Policy_.26_Guidelines">
         ' . t('Policy & Guidelines') . '
       </span></h3>

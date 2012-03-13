@@ -12,11 +12,15 @@ body.front .view-apps-browse-by .views-field-field-organization-address-2 .cc-or
   margin: 10px 0;
 }
 
+.view-id-top_applications_by_interactions .views-row {
+  margin-bottom: 15px;	
+}
 
 #zone-header .block-addtoany {
 text-indent: -9999px !important;
 background: none !important;
 }
+
 
 /* activity feed */
 
@@ -259,12 +263,12 @@ aside .content {
 #zone-branding-wrapper {
  position:relative;
  padding-top: 40px;
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/header-bg.png') center 40px no-repeat;
+  background: url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/rd/header-bg.png') center 40px no-repeat;
 
 }
 #zone-branding {
   
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/tagline.png') 248px 29px no-repeat;
+  background: url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/rd/tagline.png') 248px 29px no-repeat;
 }
 #zone-branding .logo-img {
   float: left;
@@ -297,7 +301,7 @@ ul.nice-menu a {
   display: block;
   height: 31px;
   color: #559efc;
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
+  background: url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
   text-decoration: none;
   padding: 0 19px;
   font-size: 16px;
@@ -320,7 +324,7 @@ ul.nice-menu:hover a.active:hover {
   -webkit-box-shadow: inset 0 0 5px 0 #a2a2a2;
 }
 ul.nice-menu:hover a.active {
-  background: url('http://civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
+  background: url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/rd/nav-button-bg.png') left bottom repeat-x;
   border-top: 1px solid #fafafa;
   border-left: 1px solid #fafafa;
   color: #559efc;
@@ -624,7 +628,7 @@ h2.block-title,
   letter-spacing: -0.05em;
   text-transform: uppercase;
   line-height: 2;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   padding: 0 0.8em;
   border-top: 1px solid #99c5ff;
   border-right: 1px solid #5684bf;
@@ -635,6 +639,11 @@ h2.block-title,
   -webkit-border-radius: 5px;
           border-radius: 5px; */
 }
+
+#block-views-places-block-3 h2.block-title {
+	margin-bottom: 5px;
+}
+
 #region-content .field-label {
   margin-top: 20px;
 }
@@ -1239,7 +1248,7 @@ border-bottom: none;
  */
 footer#section-footer {
   color: #a5a5a5;
-  background: #44484F url('http://civiccommons.org/wp-content/themes/biznizz/images/dark-noise.png') 0 0 repeat scroll;
+  background: #44484F url('http://blog.civiccommons.org/wp-content/themes/biznizz/images/dark-noise.png') 0 0 repeat scroll;
   margin: 40px 0 0;
   padding: 20px 0;
 }
@@ -1321,15 +1330,18 @@ body .openlayers-map img.olImageLoadError {
   padding: 10px 0; 
 }
 
-#block-block-22 .block-inner .block-title {
+#block-block-22 .block-inner .content {
   background: transparent;
   border: none;
   color: #777;
   text-align: left;
   text-transform: none;
-  font-size: 1.5em;
+  font-size: 1.25em;
   font-weight: 100;
-  margin: 0 0 20px 190px;
+  margin: 0 100px 30px 210px;
+}
+#block-block-22 .block-inner .content a {
+  text-decoration: none;
 }
 body.front #block-system-main {
   margin: 0;
@@ -1343,7 +1355,7 @@ body.front #page-title {
 }
 body.front #zone-content .region-content {
   /*background: transparent url('../images/hammer.jpg') 40px 1em no-repeat;*/
-  background: transparent url('../images/gov-gov-gray-100.png') 70px 33px no-repeat;
+  background: transparent url('../images/gov-gov-gray-100.png') 70px 44px no-repeat;
 }
 
 /**
@@ -1600,102 +1612,83 @@ article.node-interaction {
 /**
  * Engagement Commons
  */
-.engagement-commons #breadcrumb {
+.engagement-commons #breadcrumb,
+.engagement-commons #block-user-login {
   display: none;
 }
 
 .engagement-commons #block-block-36 {
   height: 65px;
-  margin-top: -10px;
+  margin-top: -4px;
   background: transparent url("../images/engagement_commons/eg-banner.jpg") top left no-repeat;
   color: transparent;
 }
 
-.engagement-commons #region-content,
-.engagement-commons #region-sidebar-second {
-  margin-top: 64px;
-  background: #2e86e5 url("../images/engagement_commons/eg-featured-bg.jpg") top left repeat-x;
-  height: 360px;
+.engagement-commons h1#page-title {
+ display: none;
 }
 
-.engagement-commons #region-content {
-  margin-right: 0;
-  padding-right: 10px;
-}
-.engagement-commons #region-sidebar-second {
-  margin-left: 0;
-  padding-left: 10px;
+#views_slideshow_cycle_teaser_section_engagement_commons_page-page {
+  width: 940px;
+  background-color: #225F97;
 }
 
-.engagement-commons #region-content .block {
+.engagement-commons #block-views-engagement-commons-page-block-2 {
   margin-bottom: 0;
 }
 
-.engagement-commons #region-sidebar-second .region-inner {
-  padding-top: 60px;
-  padding-right: 10px;
+.engagement-commons #block-views-engagement-commons-page-block-2 h2.block-title {
+  display: none;
 }
 
-.engagement-commons #region-sidebar-second #block-block-24 {
-  background-color: #d2e8ff;
-  border: none;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-
-.engagement-commons h1#page-title {
-  border-bottom: 3px solid #00356d;
-  color: #00356d;
-  font-size: 20px;
-  margin-top: 20px;
-  margin-left: 10px;
-}
-
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page,
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-row,
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page a {
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame,
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-row,
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame a {
   color: #FFFFFF;
   text-decoration: none;
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page {
-  margin-left: 10px;
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-nothing,
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-title a,
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps {
+  width: 300px;
+  color: #222222;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  text-align: right;
+  padding-right: 20px
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-row {
-  width: 630px;
-  margin-bottom: 5px;
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-title a {
+  font-size: 2.25em;
+  font-weight: normal;
+  text-transform: uppercase;
+  top: 100px;
+  padding: 0 20px 10px 20px;
+  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field {
-  max-width: 200px;
-  margin-right: 0;
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps {
+  color: #666666;
+  top: 80px;
+}
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps .views-label {
+  font-weight: normal;
+}
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps a {
+  color: #666666;
+  font-weight: bold;
 }
 
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-field-story-image {
-  float: right;
-  max-width: none;
-}
-
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-created {
-  color: #99c8fa;
-  font-size: .8em;
-  margin-bottom: 15px;
-}
-
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-view-node {
-  margin-top: 15px;
-  font-style: italic;
-  font-size: .8em;
-}
-
-.engagement-commons #views_slideshow_cycle_main_engagement_commons_page-page .views-field-title a {
-  font-size: 1.25em;
-}
-
-.engagement-commons .feed-icon {
-  margin-left: 5px;
+.engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-nothing {
+  text-transform: uppercase;
+  padding: 10px 20px 0 20px;
+  color: #666666;
+  height: 40px;
+  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .engagement-commons #zone-header #block-system-user-menu {
@@ -1704,17 +1697,6 @@ article.node-interaction {
 
 .engagement-commons #block-menu-menu-mktplc-section-nav {
   margin-bottom: 2px;
-}
-
-.engagement-commons #region-search-bar .region-search-bar-inner {
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-
-.engagement-commons #region-content-leftcolumn {
-  margin-top: 2em;
-  width: 920px;
 }
 
 .engagement-commons #block-block-37 {
@@ -1730,10 +1712,44 @@ article.node-interaction {
   font-size: 1.25em;
 }
 
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 td {
+  width: 25%;
+  padding: 10px;
+  text-align: center;
+}
+
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-application-logo {
+  float: none;
+  margin: 0 auto;
+  width: auto;
+}
+
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .views-label {
+  color: #666666;
+  font-weight: normal;
+  font-size: .85em;
+}
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .field-content {
+  display: inline;
+}
+.engagement-commons .view-engagement-commons-page.view-display-id-block_1 .views-field-field-story-apps .field-content a {
+  text-decoration: none;
+}
+
+.engagement-commons .view-id-engagement_commons_page.view-display-id-page .views-field-field-story-image {
+  float: left;
+  margin: 0 10px 5px 0;
+}
+
+/** Figure out something better **/
+.engagement-commons .feed-icon {
+  display: none;
+}
+
 /**
  * Application Views
  */
-.view-id-applications.view-display-id-block_8 .meta {
+.view-id-applications.view-display-id-block_8 .meta td {
   display: none;
 }
 
@@ -1750,12 +1766,16 @@ article.node-interaction {
   margin-left: 70px;
 }
 
+.view-top-applications-by-interactions .views-field-field-application-sdesc {
+  font-size: .85em;
+}
+
 /**
  * Organization Views
  */
 .view-top-organizations-by-interaction .views-row .views-field {
   float: left;
-  width: 235px;
+  width: 210px;
 }
 .view-top-organizations-by-interaction .views-row .views-field-nid {
   width: 60px;
@@ -1780,7 +1800,7 @@ article.node-interaction {
 .region-content-main-right .view {
   position: relative;
   margin: 0;
-  padding: 0;
+  padding: 0 0.8em;
 }
 .region-content-main-left .view .item-list, 
 .region-content-main-middle .view .item-list, 
@@ -1795,5 +1815,5 @@ article.node-interaction {
 .region-content-main-left .view .views-row-last, 
 .region-content-main-middle .view .views-row-last, 
 .region-content-main-right .view .views-row-last {
-  padding-bottom: 50px;
+  padding-bottom: 30px;
 }
