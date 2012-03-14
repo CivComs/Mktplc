@@ -70,8 +70,9 @@ function theme_cc_actions_profile_block($vars) {
   $add_items = array();
   global $user;
   
-  // Add CSS
+  // Add CSS and JS
   drupal_add_css(drupal_get_path('module', 'cc_actions') . '/cc_actions.css');
+  drupal_add_js(drupal_get_path('module', 'cc_actions') . '/cc_actions.js');
   
   // User links
   if ($user->uid > 0) {
@@ -102,6 +103,9 @@ function theme_cc_actions_profile_block($vars) {
     $items[] = array(
       'data' => '<div class="top-level-item">' . t('My account') . '</div>',
       'children' => $sub_items,
+      'class' => array(
+        'cc-actions-my-account',
+      ),
     );
     
     // Add content links (will display later)

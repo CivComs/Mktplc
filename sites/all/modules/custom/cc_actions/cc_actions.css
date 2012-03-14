@@ -4,6 +4,10 @@
  * be in the theme.
  */
 
+#block-cc-actions-cc-actions {
+  border: 1px solid #DDDDDD;
+}
+
 #block-cc-actions-cc-actions h2.block-title {
   display: none;
 }
@@ -13,11 +17,18 @@
 }
 
 #block-cc-actions-cc-actions .top-level-item {
-  background-color: #2E86E5;
-  font-size: 1.25em;
-  padding: .25em .8em;
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+  color: white;
+  background-color: #669FE9;
+  font-size: 16px;
+  font-weight: normal;
+  letter-spacing: -0.05em;
   text-transform: uppercase;
-  color: #FFFFFF;
+  line-height: 2;
+  margin-bottom: 10px;
+  padding: 0 0.8em;
+  border-bottom: 1px solid #5684BF;
+  background-image: url('../images/bluehead.png');
 }
 
 #block-cc-actions-cc-actions .cc-actions-profile-item {
@@ -69,4 +80,41 @@
 
 .front #block-cc-actions-cc-actions {
   margin-top: -16px;
+}
+
+#block-cc-actions-cc-actions li.cc-actions-my-account .top-level-item {
+  cursor: pointer;
+}
+
+.no-js #block-cc-actions-cc-actions li.cc-actions-my-account .top-level-item {
+  cursor: inherit;
+}
+
+#block-cc-actions-cc-actions li.cc-actions-my-account .top-level-item {
+  margin-bottom: 0;
+  background-image: url("images/bullet_arrow_right.png");
+  background-position: top right;
+  background-repeat: no-repeat;
+}
+
+.no-js #block-cc-actions-cc-actions li.first .top-level-item {
+  margin-bottom: inherit;
+  background-image: none;
+}
+
+#block-cc-actions-cc-actions li.cc-actions-my-account .top-level-item.cc-actions-expanded {
+  background-image: url("images/bullet_arrow_down.png");
+}
+
+/**
+ * If JS, then display none by default 
+ */
+#block-cc-actions-cc-actions li {
+  display: none;
+}
+#block-cc-actions-cc-actions li.cc-actions-my-account {
+  display: block;
+}
+.no-js #block-cc-actions-cc-actions li {
+  display: block;
 }

@@ -1817,3 +1817,12 @@ article.node-interaction {
 .region-content-main-right .view .views-row-last {
   padding-bottom: 30px;
 }
+
+/**
+ * User Actions Block
+ */
+#block-cc-actions-cc-actions .top-level-item,
+#block-cc-actions-cc-actions li.first {
+  background-image: url('../images/bluehead.png');
+  background-repeat: no-repeat;
+}

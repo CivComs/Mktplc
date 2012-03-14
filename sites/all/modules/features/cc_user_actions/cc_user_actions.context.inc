@@ -24,6 +24,8 @@ function cc_user_actions_context_default_contexts() {
         '~places' => '~places',
         '~places/*' => '~places/*',
         '~<front>' => '~<front>',
+        '~search' => '~search',
+        '~search/*' => '~search/*',
       ),
     ),
   );
