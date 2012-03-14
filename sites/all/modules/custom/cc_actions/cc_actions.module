@@ -146,7 +146,7 @@ function theme_cc_actions_profile_block($vars) {
   // has permission for.  And finally
   // if all else fails, show generic add
   // block.
-  if (!empty($links) || $logged_in) {  
+  if ($logged_in) {  
     if (!empty($add_items)) {
       $items[] = array(
         'data' => '<div class="top-level-item">' . t('Add content') . '</div>',
