@@ -1615,6 +1615,10 @@ article.node-interaction {
   display: none;
 }
 
+.engagement-commons #region-sidebar-second {
+  margin-top: 16px;
+}
+
 .engagement-commons #block-block-36 {
   height: 65px;
   margin-top: -4px;
