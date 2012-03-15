@@ -1163,7 +1163,7 @@ function cc_contexts_context_default_contexts() {
           'module' => 'disqus',
           'delta' => 'disqus_comments',
           'region' => 'content',
-          'weight' => '20',
+          'weight' => '80',
         ),
         'block-32' => array(
           'module' => 'block',
