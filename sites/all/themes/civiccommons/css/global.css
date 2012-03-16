@@ -1621,9 +1621,14 @@ article.node-interaction {
 
 .engagement-commons #block-block-36 {
   height: 125px;
-  margin-top: -4px;
+  margin-top: 5px;
   background: transparent url("../images/engagement_commons/eg-banner.png") top left no-repeat;
   color: transparent;
+  padding-bottom: 0px;
+  border-bottom: 5px solid #669FE9;
+}
+
+.engagement-commons #block-block-36 .block {
   padding-bottom: 0px;
 }
 
@@ -1643,6 +1648,8 @@ article.node-interaction {
 
 .engagement-commons #block-views-engagement-commons-page-block-2 {
   margin-bottom: 0;
+  height: 300px;
+  overflow: hidden;
 }
 
 .engagement-commons #block-views-engagement-commons-page-block-2 h2.block-title {
