@@ -1764,12 +1764,12 @@ article.node-interaction {
 }
 
 .engagement-commons .grid-11 .view-id-engagement_commons_page .view-content {
-  padding: 0px 0.8em;
+  padding: .08em 0.8em;
 }
 
 .engagement-commons .grid-11 .view-id-engagement_commons_page .views-field-title .field-content a {
   font-family: 'PT Sans', Helvetica, Arial;
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: normal;
 }
 
