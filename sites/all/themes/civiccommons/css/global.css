@@ -1628,8 +1628,8 @@ article.node-interaction {
   border-bottom: 5px solid #669FE9;
 }
 
-.engagement-commons #block-block-36 .block {
-  padding-bottom: 0px;
+.engagement-commons .block #block-block-36 {
+  margin-bottom: 0px;
 }
 
 .engagement-commons h1#page-title {
