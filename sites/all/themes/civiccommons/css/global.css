@@ -1664,12 +1664,13 @@ article.node-interaction {
 
 .engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-title a {
   font-size: 2.25em;
-  font-weight: normal;
+  font-weight: bold;
   text-transform: uppercase;
   top: 100px;
-  padding: 0 20px 10px 20px;
+  padding: 10px 20px 10px 20px;
   background-color: rgb(255, 255, 255);
   background-color: rgba(255, 255, 255, 0.7);
+  line-height: 1.2em;
 }
 
 .engagement-commons .view-engagement-commons-page .views-slideshow-cycle-main-frame .views-field-field-story-apps {
