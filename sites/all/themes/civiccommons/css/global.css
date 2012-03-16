@@ -1763,6 +1763,17 @@ article.node-interaction {
   display: none;
 }
 
+.engagement-commons .view-id-engagement_commons_page .view-display-id-page .view-content {
+  padding: 0 0.8em;
+}
+
+.engagement-commons .view-id-engagement_commons_page .view-display-id-page .view-content .views-field-title .field-content a {
+  font-family: 'PT Sans', Helvetica, Arial;
+  font-size: 3em;
+}
+
+
+
 /**
  * Application Views
  */
