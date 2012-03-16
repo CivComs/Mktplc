@@ -1624,6 +1624,7 @@ article.node-interaction {
   margin-top: -4px;
   background: transparent url("../images/engagement_commons/eg-banner.jpg") top left no-repeat;
   color: transparent;
+  padding-bottom: 0px;
 }
 
 .engagement-commons h1#page-title {
@@ -1633,6 +1634,11 @@ article.node-interaction {
 #views_slideshow_cycle_teaser_section_engagement_commons_page-page {
   width: 940px;
   background-color: #225F97;
+}
+
+.engagement-commons .view-id-engagement_commons_page view-display-id-block_2 {
+  height: 300px;
+  overflow: hidden;
 }
 
 .engagement-commons #block-views-engagement-commons-page-block-2 {
