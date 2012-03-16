@@ -1763,13 +1763,14 @@ article.node-interaction {
   display: none;
 }
 
-.engagement-commons .view-id-engagement_commons_page .view-content {
+.engagement-commons .grid-11 .view-id-engagement_commons_page .view-content {
   padding: 0px 0.8em;
 }
 
-.engagement-commons .view-id-engagement_commons_page .views-field-title .field-content a {
+.engagement-commons .grid-11 .view-id-engagement_commons_page .views-field-title .field-content a {
   font-family: 'PT Sans', Helvetica, Arial;
-  font-size: 3em;
+  font-size: 2em;
+  font-weight: normal;
 }
 
 
