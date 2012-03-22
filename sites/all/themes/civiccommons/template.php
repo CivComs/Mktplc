@@ -60,6 +60,7 @@ function civiccommons_preprocess_page(&$vars, $hook) {
   drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction1.js', $options);
   drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction2.js', $options);
   drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/chartbeat.js', $options);
+  drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/olark.js', $options);
 }
 
 
