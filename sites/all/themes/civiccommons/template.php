@@ -59,6 +59,7 @@ function civiccommons_preprocess_page(&$vars, $hook) {
   $options = array('type' => 'file', 'scope' => 'footer', 'weight' => 5, 'cache' => FALSE);
   drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction1.js', $options);
   drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/getsatisfaction2.js', $options);
+  drupal_add_js(drupal_get_path('theme', 'civiccommons') .'/js/chartbeat.js', $options);
 }
 
 
