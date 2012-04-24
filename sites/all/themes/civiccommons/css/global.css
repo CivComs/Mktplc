@@ -1637,6 +1637,11 @@ article.node-interaction {
  display: none;
 }
 
+.ec-stories h1#page-title {
+ display: inline;
+}
+
+
 #views_slideshow_cycle_teaser_section_engagement_commons_page-page {
   width: 940px;
   background-color: #225F97;
