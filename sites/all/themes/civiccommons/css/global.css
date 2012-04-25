@@ -1642,7 +1642,15 @@ article.node-interaction {
 }
 
 .engagement-commons #region-sidebar-second .add-to-marketplace {
-    margin-top: 0px;
+  margin-top: 0px;
+}
+
+.ec-stories #region-sidebar-second { 
+  margin-top: 16px;
+}
+
+.engagement-commons #region-sidebar-second { 
+  margin-top: 0px;
 }
 
 .ec-stories h1#page-title {
