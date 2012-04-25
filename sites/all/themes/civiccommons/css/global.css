@@ -1645,12 +1645,12 @@ article.node-interaction {
   margin-top: 0px;
 }
 
-.ec-stories #region-sidebar-second { 
-  margin-top: 16px;
-}
-
 .engagement-commons #region-sidebar-second { 
   margin-top: 0px;
+}
+
+.ec-stories #region-sidebar-second { 
+  margin-top: 16px;
 }
 
 .ec-stories h1#page-title {
@@ -1662,6 +1662,11 @@ article.node-interaction {
   font-style: italic;
   margin-bottom: 10px;
 }
+
+.engagement-commons .views-row {
+  margin: 10px 0 30px;
+}
+
 
 #views_slideshow_cycle_teaser_section_engagement_commons_page-page {
   width: 940px;
@@ -1781,7 +1786,7 @@ article.node-interaction {
 
 .engagement-commons .view-id-engagement_commons_page.view-display-id-page .views-field-field-story-image {
   float: left;
-  margin: 0 10px 5px 0;
+  margin: 0 20px 5px 0;
 }
 
 /** Figure out something better **/
