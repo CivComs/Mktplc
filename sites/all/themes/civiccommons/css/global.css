@@ -138,7 +138,7 @@ time, mark, audio, video {
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section { display:block; }
 nav ul { list-style:none; }
-blockquote, q { quotes:none; }
+blockquote, q { quotes:none; line-height: 1.3em; margin: 5px 0 5px 50px; font-size: .85em; border-left: 5px solid #CCC; padding-left: 15px;}
 blockquote:before, blockquote:after,
 q:before, q:after { content:''; content:none; }
 a { margin:0; padding:0; font-size:100%; vertical-align:baseline; background:transparent; }
@@ -1603,8 +1603,8 @@ article.node-interaction {
  * Story content type
  */
 .node .field-name-field-story-image {
-  float: left;
-  margin: 0 10px 10px 0;
+  float: right;
+  margin: 0 10px 10px 10px;
 }
 
 /**
@@ -1645,6 +1645,11 @@ article.node-interaction {
  display: inline;
 }
 
+.ec-stories footer.submitted {
+  font-size: 100%;
+  font-style: italic;
+  margin-bottom: 10px;
+}
 
 #views_slideshow_cycle_teaser_section_engagement_commons_page-page {
   width: 940px;
