@@ -1641,6 +1641,10 @@ article.node-interaction {
  display: none;
 }
 
+.engagement-commons #region-sidebar-second .add-to-marketplace {
+    margin-top: 0px;
+}
+
 .ec-stories h1#page-title {
  display: inline;
 }
